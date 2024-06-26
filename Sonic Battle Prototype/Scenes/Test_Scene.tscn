@@ -1,0 +1,82 @@
+[gd_scene load_steps=6 format=3 uid="uid://cm2hjo0hbid4s"]
+
+[ext_resource type="PackedScene" uid="uid://3vv715sdbbdw" path="res://Scenes/Sonic.tscn" id="1_qi3r3"]
+[ext_resource type="PackedScene" uid="uid://k3p37vahfpip" path="res://Scenes/MainCam.tscn" id="2_p7c5h"]
+[ext_resource type="PackedScene" uid="uid://cc0h3y8ciho6e" path="res://Scenes/Sandbag.tscn" id="3_ow11g"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gg5gf"]
+albedo_color = Color(0, 0.384314, 0.160784, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qyvr7"]
+albedo_color = Color(0.843137, 0.45098, 0, 1)
+
+[node name="Node3D" type="Node3D"]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(8, 0, 0, 0, 1, 0, 0, 0, 8, 0, 0, 0)
+use_collision = true
+size = Vector3(1, 0.25, 1)
+material = SubResource("StandardMaterial3D_gg5gf")
+
+[node name="Sonic" parent="." instance=ExtResource("1_qi3r3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.362478, 0)
+
+[node name="Sonic2" parent="." instance=ExtResource("1_qi3r3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.282629, 0.362478, 0)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.628289, 0.77798, 0, -0.77798, 0.628289, 0, 1.57726, 3.33821)
+
+[node name="MainCam" parent="." instance=ExtResource("2_p7c5h")]
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 0, 0)
+visible = false
+use_collision = true
+size = Vector3(1, 10, 8)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 0, 0)
+visible = false
+use_collision = true
+size = Vector3(1, 10, 8)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4.5)
+visible = false
+use_collision = true
+size = Vector3(8, 10, 1)
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4.5)
+visible = false
+use_collision = true
+size = Vector3(8, 10, 1)
+
+[node name="CSGBox3D6" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, -2)
+use_collision = true
+material = SubResource("StandardMaterial3D_qyvr7")
+
+[node name="CSGBox3D7" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, 2)
+use_collision = true
+material = SubResource("StandardMaterial3D_qyvr7")
+
+[node name="CSGBox3D8" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 2)
+use_collision = true
+material = SubResource("StandardMaterial3D_qyvr7")
+
+[node name="CSGBox3D9" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -2)
+use_collision = true
+material = SubResource("StandardMaterial3D_qyvr7")
+
+[node name="CSGBox3D10" type="CSGBox3D" parent="."]
+transform = Transform3D(0.707107, -0.707107, 0, 0.707107, 0.707107, 0, 0, 0, 1, 0, 0, -2)
+use_collision = true
+material = SubResource("StandardMaterial3D_qyvr7")
+
+[node name="Sandbag" parent="." instance=ExtResource("3_ow11g")]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, -1.20077, 0.493528, 0.320405)
