@@ -32,8 +32,8 @@ var launch_power : Vector3
 var hurt = false
 var launched = false
 
-var ground_skill = "pow"
-var air_skill = "pow"
+var ground_skill = "set"
+var air_skill = "set"
 var immunity = "set"
 
 var bouncing = false
@@ -46,6 +46,9 @@ var thrown_ring = false
 var chasing_ring = false
 
 var ring = preload("res://Scenes/ThrowRing.tscn")
+
+var set_mine = preload("res://Scenes/SonicMine.tscn")
+var active_mine
 
 func _process(delta):
 	if $DropShadowRange.is_colliding():
@@ -339,6 +342,12 @@ func ground_special():
 			chasing_ring = true
 	elif ground_skill == "set":
 		$AnimationPlayer.play("setGround")
+		if active_mine == null:
+			var new_mine = set_mine.instantiate()
+			new_mine.position = position
+			new_mine.user = self
+			active_mine = new_mine
+			get_tree().root.add_child(new_mine)
 
 func air_special():
 	if air_skill == "shot":
@@ -375,3 +384,11 @@ func air_special():
 				velocity = Vector3(10, -5, 0)
 	elif air_skill == "set":
 		$AnimationPlayer.play("setAir")
+		can_air_attack = false
+		if active_mine == null:
+			velocity.y = 3
+			var new_mine = set_mine.instantiate()
+			new_mine.position = position
+			new_mine.user = self
+			active_mine = new_mine
+			get_tree().root.add_child(new_mine)
