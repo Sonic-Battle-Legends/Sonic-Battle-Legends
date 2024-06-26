@@ -1,0 +1,65 @@
+[gd_scene load_steps=7 format=3 uid="uid://ckve28f1lvhor"]
+
+[ext_resource type="Texture2D" uid="uid://cnvca7d2mepgx" path="res://Sprites/Sonic.png" id="1_8aib6"]
+[ext_resource type="Script" path="res://Scripts/ThrowRing.gd" id="1_488t5"]
+
+[sub_resource type="Animation" id="Animation_fv1ue"]
+resource_name = "rotate"
+length = 0.4
+loop_mode = 1
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite3D:region_rect")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Rect2(218, 1179, 11, 15), Rect2(232, 1179, 15, 15), Rect2(250, 1179, 11, 15), Rect2(264, 1179, 4, 15)]
+}
+
+[sub_resource type="Animation" id="Animation_3c0ge"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite3D:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Rect2(218, 1179, 11, 15)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_flgee"]
+_data = {
+"RESET": SubResource("Animation_3c0ge"),
+"rotate": SubResource("Animation_fv1ue")
+}
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ltc8v"]
+radius = 0.0775516
+
+[node name="ThrowRing" type="CharacterBody3D"]
+collision_layer = 0
+script = ExtResource("1_488t5")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "rotate"
+libraries = {
+"": SubResource("AnimationLibrary_flgee")
+}
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+texture_filter = 2
+texture = ExtResource("1_8aib6")
+region_enabled = true
+region_rect = Rect2(218, 1179, 11, 15)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_ltc8v")

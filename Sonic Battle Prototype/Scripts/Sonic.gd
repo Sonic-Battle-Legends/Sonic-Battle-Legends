@@ -32,6 +32,21 @@ var launch_power : Vector3
 var hurt = false
 var launched = false
 
+var ground_skill = "pow"
+var air_skill = "pow"
+var immunity = "set"
+
+var bouncing = false
+
+var shot_projectile = preload("res://Scenes/SonicWave.tscn")
+
+var active_ring
+var thrown_ring = false
+
+var chasing_ring = false
+
+var ring = preload("res://Scenes/ThrowRing.tscn")
+
 func _process(delta):
 	if $DropShadowRange.is_colliding():
 		$DropShadow.visible = true
@@ -53,6 +68,9 @@ func _physics_process(delta):
 		dashing = false
 		can_airdash = true
 		can_air_attack = true
+		if bouncing:
+			velocity.y = 5
+			can_air_attack = false
 		if Input.is_action_just_pressed("ui_left") && $AnimationPlayer.current_animation == "startWalk" && velocity.x < 0:
 			velocity = Vector3(-DASH_SPEED, 4, velocity.z)
 			$AnimationPlayer.play("dash")
@@ -146,9 +164,20 @@ func _physics_process(delta):
 			$AnimationPlayer.play("punch1")
 			launch_power = Vector3(0, 2, 0)
 			current_punch = 1
+		
+		if Input.is_action_just_pressed("ui_cancel") && is_on_floor():
+			attacking = true
+			ground_special()
+		elif Input.is_action_just_pressed("ui_cancel") && !is_on_floor() && can_air_attack:
+			attacking = true
+			can_air_attack = false
+			air_special()
 	else:
 		velocity.x = lerp(velocity.x, 0.0, 0.1)
 		velocity.z = lerp(velocity.z, 0.0, 0.1)
+	
+	if chasing_ring:
+		velocity = lerp(velocity, (active_ring.transform.origin - transform.origin) * 20, 0.5)
 	
 	handle_animation()
 	move_and_slide()
@@ -226,11 +255,29 @@ func _on_animation_player_animation_finished(anim_name):
 			starting = false
 		else:
 			$AnimationPlayer.play("hurtStrong")
+	elif anim_name in ["shotGround", "shotAir", "powGround", "powAir", "setGround", "setAir"]:
+		attacking = false
+		starting = false
+		bouncing = false
+		if chasing_ring:
+			chasing_ring = false
+			thrown_ring = false
+			active_ring.queue_free()
+		if !is_on_floor():
+			jumping = false
+			falling = true
+			$AnimationPlayer.play("fall")
 
 func get_hurt():
 	hurt = true
 	falling = false
 	jumping = false
+	bouncing = false
+	
+	if chasing_ring:
+			chasing_ring = false
+			thrown_ring = false
+			active_ring.queue_free()
 	if abs(velocity.x) > 8 || abs(velocity.z) > 8:
 		$AnimationPlayer.play("hurtStrong")
 	else:
@@ -247,3 +294,84 @@ func _on_hitbox_body_entered(body):
 	if body.is_in_group("CanHurt") && body != self:
 		body.velocity = launch_power
 		body.get_hurt()
+
+func ground_special():
+	if ground_skill == "shot":
+		can_air_attack = false
+		$AnimationPlayer.play("shotGround")
+		var new_shot = shot_projectile.instantiate()
+		new_shot.user = self
+		new_shot.position = position
+		var input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+		var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+		if direction:
+			new_shot.velocity = Vector3(direction.x * 3, 0, direction.z * 3)
+			velocity = Vector3(direction.x * -5, 5, direction.z * -5)
+		else:
+			if facing_left:
+				new_shot.velocity = Vector3(-3, 0, 0)
+				velocity = Vector3(5, 5, 0)
+			else:
+				new_shot.velocity = Vector3(3, 0, 0)
+				velocity = Vector3(-5, 5, 0)
+		
+		get_tree().root.add_child(new_shot)
+	elif ground_skill == "pow":
+		if !thrown_ring:
+			$AnimationPlayer.play("powGround")
+			var new_ring = ring.instantiate()
+			active_ring = new_ring
+			thrown_ring = true
+			new_ring.position = position
+			var input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+			var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+			if direction:
+				new_ring.velocity = Vector3(direction.x * 3, 5, direction.z * 3)
+			else:
+				if facing_left:
+					new_ring.velocity = Vector3(-3, 5, 0)
+				else:
+					new_ring.velocity = Vector3(3, 5, 0)
+			get_tree().root.add_child(new_ring)
+		else:
+			launch_power = Vector3(0, 2, 0)
+			$AnimationPlayer.play("powAir")
+			chasing_ring = true
+	elif ground_skill == "set":
+		$AnimationPlayer.play("setGround")
+
+func air_special():
+	if air_skill == "shot":
+		$AnimationPlayer.play("shotAir")
+		var new_shot = shot_projectile.instantiate()
+		new_shot.user = self
+		new_shot.position = position
+		var input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+		var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+		if direction:
+			new_shot.velocity = Vector3(direction.x * 3, 0, direction.z * 3)
+			velocity = Vector3(direction.x * -5, 2, direction.z * -5)
+		else:
+			if facing_left:
+				new_shot.velocity = Vector3(-3, 0, 0)
+				velocity = Vector3(5, 2, 0)
+			else:
+				new_shot.velocity = Vector3(3, 0, 0)
+				velocity = Vector3(-5, 2, 0)
+		
+		get_tree().root.add_child(new_shot)
+	elif air_skill == "pow":
+		$AnimationPlayer.play("powAir")
+		bouncing = true
+		launch_power = Vector3(0, 2, 0)
+		var input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+		var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+		if direction:
+			velocity = Vector3(direction.x * 10, -5, direction.z * 10)
+		else:
+			if facing_left:
+				velocity = Vector3(-10, -5, 0)
+			else:
+				velocity = Vector3(10, -5, 0)
+	elif air_skill == "set":
+		$AnimationPlayer.play("setAir")
