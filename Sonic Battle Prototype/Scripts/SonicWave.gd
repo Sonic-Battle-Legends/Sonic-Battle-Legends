@@ -18,6 +18,9 @@ func _physics_process(delta):
 	else:
 		$Sprite3D.flip_h = true
 	
+	if is_on_wall():
+		queue_free()
+	
 	move_and_slide()
 
 
@@ -27,5 +30,6 @@ func _on_animation_player_animation_finished(anim_name):
 
 func _on_hitbox_body_entered(body):
 	if body.is_in_group("CanHurt") && body != user:
-		body.velocity = Vector3(velocity.x, 3, velocity.z)
-		body.get_hurt()
+		if body.immunity != "shot":
+			body.velocity = Vector3(velocity.x, 3, velocity.z)
+			body.get_hurt()

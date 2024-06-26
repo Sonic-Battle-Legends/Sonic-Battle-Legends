@@ -32,9 +32,9 @@ var launch_power : Vector3
 var hurt = false
 var launched = false
 
-var ground_skill = "set"
-var air_skill = "set"
-var immunity = "set"
+var ground_skill = "shot"
+var air_skill = "pow"
+var immunity = "shot"
 
 var bouncing = false
 
@@ -49,6 +49,8 @@ var ring = preload("res://Scenes/ThrowRing.tscn")
 
 var set_mine = preload("res://Scenes/SonicMine.tscn")
 var active_mine
+
+var pow_move = false
 
 func _process(delta):
 	if $DropShadowRange.is_colliding():
@@ -262,6 +264,7 @@ func _on_animation_player_animation_finished(anim_name):
 		attacking = false
 		starting = false
 		bouncing = false
+		pow_move = false
 		if chasing_ring:
 			chasing_ring = false
 			thrown_ring = false
@@ -295,8 +298,9 @@ func get_hurt():
 
 func _on_hitbox_body_entered(body):
 	if body.is_in_group("CanHurt") && body != self:
-		body.velocity = launch_power
-		body.get_hurt()
+		if !pow_move || body.immunity != "pow":
+			body.velocity = launch_power
+			body.get_hurt()
 
 func ground_special():
 	if ground_skill == "shot":
@@ -338,6 +342,7 @@ func ground_special():
 			get_tree().root.add_child(new_ring)
 		else:
 			launch_power = Vector3(0, 2, 0)
+			pow_move = true
 			$AnimationPlayer.play("powAir")
 			chasing_ring = true
 	elif ground_skill == "set":
@@ -371,6 +376,7 @@ func air_special():
 		get_tree().root.add_child(new_shot)
 	elif air_skill == "pow":
 		$AnimationPlayer.play("powAir")
+		pow_move = true
 		bouncing = true
 		launch_power = Vector3(0, 2, 0)
 		var input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")

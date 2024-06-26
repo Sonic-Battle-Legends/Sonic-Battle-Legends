@@ -24,5 +24,6 @@ func _on_area_3d_body_entered(body):
 	if body.is_in_group("CanHurt") && body != user:
 		if $AnimationPlayer.current_animation == "idle":
 			$AnimationPlayer.play("explode")
-		body.velocity = Vector3(0, 7, 0)
-		body.get_hurt()
+		if body.immunity != "set":
+			body.velocity = Vector3(0, 7, 0)
+			body.get_hurt()

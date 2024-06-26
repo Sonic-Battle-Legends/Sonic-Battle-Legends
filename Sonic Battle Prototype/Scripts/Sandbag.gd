@@ -2,7 +2,7 @@ extends CharacterBody3D
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = 20
-
+var immunity = "none"
 
 func _physics_process(delta):
 	# Add the gravity.
