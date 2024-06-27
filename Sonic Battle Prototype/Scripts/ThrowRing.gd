@@ -22,3 +22,7 @@ func _physics_process(delta):
 	
 
 	move_and_slide()
+
+@rpc("any_peer", "call_local")
+func delete():
+	queue_free()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://ckve28f1lvhor"]
+[gd_scene load_steps=8 format=3 uid="uid://ckve28f1lvhor"]
 
 [ext_resource type="Texture2D" uid="uid://cnvca7d2mepgx" path="res://Sprites/Sonic.png" id="1_8aib6"]
 [ext_resource type="Script" path="res://Scripts/ThrowRing.gd" id="1_488t5"]
@@ -45,6 +45,14 @@ _data = {
 [sub_resource type="SphereShape3D" id="SphereShape3D_ltc8v"]
 radius = 0.0775516
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_17ln7"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/sync = true
+properties/1/path = NodePath("AnimationPlayer:current_animation")
+properties/1/spawn = true
+properties/1/sync = true
+
 [node name="ThrowRing" type="CharacterBody3D"]
 collision_layer = 0
 script = ExtResource("1_488t5")
@@ -63,3 +71,6 @@ region_rect = Rect2(218, 1179, 11, 15)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("SphereShape3D_ltc8v")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_17ln7")

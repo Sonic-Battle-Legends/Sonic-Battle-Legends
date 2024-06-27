@@ -27,7 +27,7 @@ func _on_animation_player_animation_finished(anim_name):
 	elif anim_name == "explode":
 		queue_free()
 
-
+@rpc("any_peer", "reliable")
 func _on_area_3d_body_entered(body):
 	# If the hitbox hits something that can be hurt and isn't the user, they will take a hit and
 	# be launched upwards.
@@ -37,5 +37,5 @@ func _on_area_3d_body_entered(body):
 			$AnimationPlayer.play("explode")
 		if body.immunity != "set":
 			# If the collision body is immune to "set" moves, they will not be affected.
-			body.velocity = Vector3(0, 7, 0)
-			body.get_hurt()
+			# body.get_hurt.rpc_id(body.get_multiplayer_authority(), Vector3(0, 7, 0))
+			body.get_hurt(Vector3(0, 7, 0))

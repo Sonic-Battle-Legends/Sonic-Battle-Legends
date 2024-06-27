@@ -9,14 +9,20 @@ const SPEED = 5.0
 # The speed at which the wave falls, right now everyone and everything should have a gravity of 20.
 var gravity = 20
 
+var constant_vel : Vector3
+
 # The active player that spawned this projectile. Hitboxes will not interact with the user.
 var user
+
+func _ready():
+	constant_vel = velocity
 
 func _physics_process(delta):
 	# Add the gravity.
 	if !is_on_floor():
 		velocity.y -= gravity * delta
-	
+	velocity.x = constant_vel.x
+	velocity.z = constant_vel.z
 	# Chooses direction based on where the player sent it.
 	if velocity.x >= 0:
 		$Sprite3D.flip_h = false
@@ -25,15 +31,16 @@ func _physics_process(delta):
 	
 	# If the wave hits a wall, it disappears.
 	if is_on_wall():
-		queue_free()
+		rpc("delete")
+		queue_free.call_deferred()
 	
 	move_and_slide()
 
-
 func _on_animation_player_animation_finished(anim_name):
 	# Disappears when the animation ends.
-	queue_free()
-
+	
+	rpc("delete")
+	queue_free.call_deferred()
 
 func _on_hitbox_body_entered(body):
 	# If the hitbox hits something that can be hurt and isn't the user, they will take a hit and
@@ -41,5 +48,9 @@ func _on_hitbox_body_entered(body):
 	if body.is_in_group("CanHurt") && body != user:
 		if body.immunity != "shot":
 			# If the collision body is immune to "shot" moves, they will not be affected.
-			body.velocity = Vector3(velocity.x, 3, velocity.z)
-			body.get_hurt()
+			# body.get_hurt.rpc_id(body.get_multiplayer_authority(), Vector3(velocity.x, 3, velocity.z))
+			body.get_hurt(Vector3(velocity.x, 3, velocity.z))
+
+@rpc("any_peer", "call_local")
+func delete():
+	queue_free()

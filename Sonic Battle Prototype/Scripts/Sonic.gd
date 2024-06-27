@@ -5,6 +5,7 @@ extends CharacterBody3D
 # character-specific actions will need to be adjusted in order to copy this code over.
 # Original code by The8BitLeaf.
 
+
 # Basic movement speed values for Sonic.
 const SPEED = 4.0
 const JUMP_VELOCITY = 6.0
@@ -56,9 +57,9 @@ var launched = false
 
 # Skills! These strings determine what Sonic's grounded and midair special type are.
 # Immunity determines which category of special move Sonic is immune to.
-var ground_skill = "shot"
-var air_skill = "pow"
-var immunity = "shot"
+var ground_skill = "pow"
+var air_skill = "shot"
+var immunity = "none"
 
 # Sonic's midair "pow" special move bounces off the ground, so this state makes sure he does that.
 var bouncing = false
@@ -87,6 +88,15 @@ var active_mine
 # this boolean ensures that immunities still apply.
 var pow_move = false
 
+func _enter_tree():
+	
+	set_multiplayer_authority(str(name).to_int())
+
+func _ready():
+	if not is_multiplayer_authority(): return
+	
+	$MainCam.current = true
+	
 # Setting a drop shadow is weird in _physics_process(), so the drop shadow code is in _process().
 func _process(delta):
 	# If the drop shadow ray detects ground, it sets the visual shadow at the collision point.
@@ -97,6 +107,7 @@ func _process(delta):
 		$DropShadow.visible = false
 
 func _physics_process(delta):
+	if !is_multiplayer_authority(): return
 	
 	if !is_on_floor():
 		# add the gravity.
@@ -234,11 +245,11 @@ func _physics_process(delta):
 		# The code for initiating Sonic's grounded and midair specials, which go to functions that check the selected skills.
 		if Input.is_action_just_pressed("ui_cancel") && is_on_floor():
 			attacking = true
-			ground_special()
+			rpc("ground_special", randi(), direction)
 		elif Input.is_action_just_pressed("ui_cancel") && !is_on_floor() && can_air_attack:
 			attacking = true
 			can_air_attack = false
-			air_special()
+			rpc("air_special", randi(), direction)
 	else:
 		# if Sonic is in his attacking or hurt state, he slows to a halt.
 		velocity.x = lerp(velocity.x, 0.0, 0.1)
@@ -364,13 +375,15 @@ func _on_animation_player_animation_finished(anim_name):
 
 # A function that handles Sonic getting hurt. Knockback is determined by the thing that initiates this
 # function, which is why you don't see it here.
-func get_hurt():
+@rpc("any_peer","reliable","call_local")
+func get_hurt(launch_speed):
 	# A bunch of states reset to make sure getting hurt cancels them out.
 	hurt = true
 	falling = false
 	jumping = false
 	bouncing = false
 	
+	velocity = launch_speed
 	# If Sonic was chasing a ring, the ring is deleted.
 	if chasing_ring:
 			chasing_ring = false
@@ -393,14 +406,15 @@ func get_hurt():
 
 # Very simple signal state determining when the attack hitbox actually hits something.
 func _on_hitbox_body_entered(body):
+	if !is_multiplayer_authority(): return
 	if body.is_in_group("CanHurt") && body != self:
 		# If the current attack is Sonic's "pow" move, the hitbox pays attention to immunities.
 		if !pow_move || body.immunity != "pow":
-			body.velocity = launch_power
-			body.get_hurt()
+			body.get_hurt.rpc_id(body.get_multiplayer_authority(), launch_power)
 
 # The function for determining what happens with each selected grounded special move.
-func ground_special():
+@rpc("any_peer", "reliable", "call_local")
+func ground_special(id, dir):
 	if ground_skill == "shot":
 		# Sonic's ground "shot" move sends a shockwave in the direction specified by the player.
 		# Sonic is also launched back away from the direction of the projectile.
@@ -410,24 +424,25 @@ func ground_special():
 		#Instantiates a new shot projectile.
 		var new_shot = shot_projectile.instantiate()
 		new_shot.user = self	# This makes sure Sonic can't hit himself with a projectile.
-		new_shot.position = position
-		# Need to determine the current input direction since the original direction value
-		# is defined within _physics_process()
-		var input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
-		var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+		new_shot.set_meta("author", name)
+		new_shot.name = "wave" + str(id)
 		# Code for choosing what direction the projectile is sent and where Sonic is sent.
-		if direction:
-			new_shot.velocity = Vector3(direction.x * 3, 0, direction.z * 3)
-			velocity = Vector3(direction.x * -5, 5, direction.z * -5)
+		if dir:
+			new_shot.velocity = Vector3(dir.x * 3, 0, dir.z * 3)
+			velocity = Vector3(dir.x * -5, 5, dir.z * -5)
 		else:
-			if facing_left:
+			if $Sprite3D.flip_h:
 				new_shot.velocity = Vector3(-3, 0, 0)
 				velocity = Vector3(5, 5, 0)
 			else:
 				new_shot.velocity = Vector3(3, 0, 0)
 				velocity = Vector3(-5, 5, 0)
+		
+		new_shot.position = position
 		# Creates the projectile.
-		get_tree().root.add_child(new_shot)
+		new_shot.set_multiplayer_authority(get_multiplayer_authority())
+		# get_tree().current_scene.add_child(new_shot, true)
+		get_tree().current_scene.add_child(new_shot, true)
 	elif ground_skill == "pow":
 		# Sonic's ground "pow" move first throws a ring. If the player inputs the move again,
 		# Sonic will accelerate in the direction of the ring.
@@ -437,22 +452,19 @@ func ground_special():
 			#Instantiates a new ring projectile
 			var new_ring = ring.instantiate()
 			active_ring = new_ring
+			new_ring.name = "ring" + str(id)
 			thrown_ring = true
 			new_ring.position = position
-			# Need to determine the current input direction since the original direction value
-			# is defined within _physics_process()
-			var input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
-			var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 			# Code to determine what direction the ring is thrown.
-			if direction:
-				new_ring.velocity = Vector3(direction.x * 3, 5, direction.z * 3)
+			if dir:
+				new_ring.velocity = Vector3(dir.x * 3, 5, dir.z * 3)
 			else:
-				if facing_left:
+				if $Sprite3D.flip_h:
 					new_ring.velocity = Vector3(-3, 5, 0)
 				else:
 					new_ring.velocity = Vector3(3, 5, 0)
 			# Creates the ring projectile.
-			get_tree().root.add_child(new_ring)
+			get_tree().current_scene.add_child(new_ring, true)
 		else:	# When a ring is on the field.
 			launch_power = Vector3(0, 2, 0)
 			pow_move = true
@@ -466,12 +478,14 @@ func ground_special():
 			# Instantiates a new mine object.
 			var new_mine = set_mine.instantiate()
 			new_mine.position = position
+			new_mine.name = "mine" + str(id)
+			new_mine.set_multiplayer_authority(get_multiplayer_authority())
 			new_mine.user = self	# This makes sure Sonic can't hit himself with his own mine.
 			active_mine = new_mine
 			# Creates the mine
-			get_tree().root.add_child(new_mine)
-
-func air_special():
+			get_tree().current_scene.add_child(new_mine, true)
+@rpc("authority","call_local")
+func air_special(id, dir):
 	if air_skill == "shot":
 		# This works almost exactly the same as the grounded version,
 		# Sonic sends a wave projectile that falls to the ground, which moves based on a specified
@@ -480,17 +494,15 @@ func air_special():
 		#Instantiates a new shot projectile.
 		var new_shot = shot_projectile.instantiate()
 		new_shot.user = self	# This makes sure Sonic can't hit himself with a projectile.
+		new_shot.name = "wave" + str(id)
+		new_shot.set_multiplayer_authority(get_multiplayer_authority())
 		new_shot.position = position
-		# Need to determine the current input direction since the original direction value
-		# is defined within _physics_process()
-		var input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
-		var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 		# Code for choosing what direction the projectile is sent and where Sonic is sent.
-		if direction:
-			new_shot.velocity = Vector3(direction.x * 3, 0, direction.z * 3)
-			velocity = Vector3(direction.x * -5, 2, direction.z * -5)
+		if dir:
+			new_shot.velocity = Vector3(dir.x * 3, 0, dir.z * 3)
+			velocity = Vector3(dir.x * -5, 2, dir.z * -5)
 		else:
-			if facing_left:
+			if $Sprite3D.flip_h:
 				new_shot.velocity = Vector3(-3, 0, 0)
 				velocity = Vector3(5, 2, 0)
 			else:
@@ -498,7 +510,7 @@ func air_special():
 				velocity = Vector3(-5, 2, 0)
 		
 		# Creates the projectile
-		get_tree().root.add_child(new_shot)
+		get_tree().current_scene.add_child(new_shot, true)
 	elif air_skill == "pow":
 		# Sonic's midair "pow" move causes him to curl into a ball and launch himself towards the ground
 		# and foward slightly depending on held direction/facing_left.
@@ -507,15 +519,11 @@ func air_special():
 		pow_move = true
 		bouncing = true	# Initiates the "bouncing" state for bouncing off the ground.
 		launch_power = Vector3(0, 2, 0)
-		# Need to determine the current input direction since the original direction value
-		# is defined within _physics_process()
-		var input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
-		var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 		# Code for choosing what direction Sonic is sent.
-		if direction:
-			velocity = Vector3(direction.x * 10, -5, direction.z * 10)
+		if dir:
+			velocity = Vector3(dir.x * 10, -5, dir.z * 10)
 		else:
-			if facing_left:
+			if $Sprite3D.flip_h:
 				velocity = Vector3(-10, -5, 0)
 			else:
 				velocity = Vector3(10, -5, 0)
@@ -529,8 +537,11 @@ func air_special():
 			velocity.y = 3
 			# Instantiates a new mine object.
 			var new_mine = set_mine.instantiate()
+			new_mine.name = "mine" + str(id)
 			new_mine.position = position
 			new_mine.user = self	# This makes sure Sonic can't hit himself with his own mine.
 			active_mine = new_mine
 			# Creates the mine object.
-			get_tree().root.add_child(new_mine)
+			get_tree().current_scene.add_child(new_mine, true)
+
+

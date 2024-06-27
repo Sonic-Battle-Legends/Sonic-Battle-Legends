@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://wthuqkgsrxvy"]
+[gd_scene load_steps=11 format=3 uid="uid://wthuqkgsrxvy"]
 
 [ext_resource type="Texture2D" uid="uid://cnvca7d2mepgx" path="res://Sprites/Sonic.png" id="1_raevc"]
 [ext_resource type="Script" path="res://Scripts/SonicMine.gd" id="1_uumn5"]
@@ -173,6 +173,17 @@ radius = 0.0802966
 [sub_resource type="SphereShape3D" id="SphereShape3D_fdm11"]
 radius = 0.0835429
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_ifyqv"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/sync = true
+properties/1/path = NodePath("AnimationPlayer:current_animation")
+properties/1/spawn = true
+properties/1/sync = true
+properties/2/path = NodePath("Area3D/CollisionShape3D:disabled")
+properties/2/spawn = true
+properties/2/sync = true
+
 [node name="SonicMine" type="CharacterBody3D" groups=["Mine"]]
 collision_layer = 0
 script = ExtResource("1_uumn5")
@@ -197,6 +208,9 @@ collision_mask = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
 shape = SubResource("SphereShape3D_fdm11")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_ifyqv")
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
