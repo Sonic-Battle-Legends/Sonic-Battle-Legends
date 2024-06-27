@@ -3,6 +3,21 @@
 [ext_resource type="Script" path="res://Scripts/SonicWave.gd" id="1_dmdae"]
 [ext_resource type="Texture2D" uid="uid://cnvca7d2mepgx" path="res://Sprites/Sonic.png" id="1_too07"]
 
+[sub_resource type="Animation" id="Animation_plqpf"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite3D:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Rect2(60, 2097, 27, 28)]
+}
+
 [sub_resource type="Animation" id="Animation_bdcqx"]
 resource_name = "move"
 length = 0.7
@@ -18,21 +33,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
 "update": 0,
 "values": [Rect2(60, 2097, 27, 28), Rect2(97, 2067, 42, 58), Rect2(150, 2071, 50, 54), Rect2(210, 2077, 55, 48), Rect2(277, 2079, 60, 46), Rect2(346, 2068, 61, 57), Rect2(416, 2074, 60, 51), Rect2(486, 2072, 61, 53), Rect2(561, 2069, 60, 56), Rect2(630, 2068, 61, 58), Rect2(701, 2065, 60, 62), Rect2(772, 2089, 60, 38), Rect2(843, 2097, 61, 27), Rect2(915, 2103, 61, 21)]
-}
-
-[sub_resource type="Animation" id="Animation_plqpf"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite3D:region_rect")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Rect2(60, 2097, 27, 28)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_r1265"]

@@ -3,6 +3,21 @@
 [ext_resource type="Texture2D" uid="uid://cnvca7d2mepgx" path="res://Sprites/Sonic.png" id="1_8aib6"]
 [ext_resource type="Script" path="res://Scripts/ThrowRing.gd" id="1_488t5"]
 
+[sub_resource type="Animation" id="Animation_3c0ge"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite3D:region_rect")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Rect2(218, 1179, 11, 15)]
+}
+
 [sub_resource type="Animation" id="Animation_fv1ue"]
 resource_name = "rotate"
 length = 0.4
@@ -19,21 +34,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
 "values": [Rect2(218, 1179, 11, 15), Rect2(232, 1179, 15, 15), Rect2(250, 1179, 11, 15), Rect2(264, 1179, 4, 15)]
-}
-
-[sub_resource type="Animation" id="Animation_3c0ge"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite3D:region_rect")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Rect2(218, 1179, 11, 15)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_flgee"]
