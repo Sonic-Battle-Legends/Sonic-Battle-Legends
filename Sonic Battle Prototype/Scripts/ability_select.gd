@@ -58,7 +58,21 @@ var empty_string = ""
 
 
 func _ready():
-	# initialise fields
+	initialise_fields()
+
+
+func _process(_delta):
+	move_selector()
+	
+	select_ability()
+	
+	undo_previous_selection()
+	
+	check_timeout()
+
+
+## set the hud to it's default values
+func initialise_fields():
 	menu_title.text = str(titles.find_key(0)) + " Attack"
 	timer = get_tree().create_timer(STARTING_TIME)
 	abilities_symbol = [shot_symbol, pow_symbol, set_symbol]
@@ -67,12 +81,13 @@ func _ready():
 	pow_slot.text = empty_string
 	set_slot.text = empty_string
 	
-	# add a int to correspond each possible index the selector can reach
+	# add an int to correspond each possible index the selector can reach
 	for i in range(abilities.size()):
 		possible_positions.append(i)
 
-func _process(_delta):
-	# move selector to the right
+
+## move selector to the left or right
+func move_selector():
 	if Input.is_action_just_pressed("right"):
 		if current_position < (possible_positions.size() - 1):
 			current_position += 1
@@ -83,8 +98,15 @@ func _process(_delta):
 		if current_position > 0:
 			current_position -= 1
 			set_selector()
-	
-	# select current ability and set it into the current slot
+
+
+## set the selector position
+func set_selector():
+	selector.position = abilities_symbol[possible_positions[current_position]].position + selector_position_correction
+
+
+## select current ability and set it into the current slot
+func select_ability():
 	if Input.is_action_just_pressed("punch") or done:
 		# if there is still an ability slot to be select
 		if selected_abilites.size() < abilities_symbol.size():
@@ -127,8 +149,10 @@ func _process(_delta):
 			# create character
 			Instantiables.add_player(get_parent())
 			queue_free()
-	
-	# undo previous selection if any
+
+
+## undo previous selection if any
+func undo_previous_selection():
 	if Input.is_action_just_pressed("pause"):
 		if selected_abilites.size() > 0:
 			# erase the text bellow the respective skill image and
@@ -142,9 +166,9 @@ func _process(_delta):
 			if selected_abilites[selected_abilites.size() - 1] == "SET":
 				slot_titles[2].text = empty_string
 				possible_positions.append(2)
-			'''
-			slot_titles[slot_titles.find(selected_abilites[selected_abilites.size() - 1])].text = ""
-			'''
+			
+			#slot_titles[slot_titles.find(selected_abilites[selected_abilites.size() - 1])].text = ""
+		
 			
 			# reorder the positions
 			possible_positions.sort()
@@ -156,22 +180,24 @@ func _process(_delta):
 			selected_abilites.remove_at(selected_abilites.size() - 1)
 			
 			change_menu_title_text()
-	
-	# update the time left to select an ability
+
+
+## update the time left to select an ability
+func check_timeout():
 	time_left_text.text = str(int(timer.time_left))
+	
+	# if the timer runs out,
+	# select a default value to the unselected slots and start the battle
 	if not done and (timer == null or timer.time_left <= 0):
-		# if the timer runs out,
-		# select a default value to the unselected slots and start the battle
 		for i in range(abilities.size()): #abs(abilities.size() - selected_abilites.size())):
 			if selected_abilites.find(abilities.find_key(i)) == not_found:
 				selected_abilites.append(abilities.find_key(i))
+				# could set it using the select ability method instead
+				# current_position = 0
+				# select_ability()
 		
 		# set "done" to start the battle
 		done = true
-
-
-func set_selector():
-	selector.position = abilities_symbol[possible_positions[current_position]].position + selector_position_correction
 
 
 ## change the title of the ability menu accordingly
