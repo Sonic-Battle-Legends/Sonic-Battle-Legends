@@ -28,7 +28,6 @@ func _on_host_button_pressed():
 	GlobalVariables.character_id = unique_id
 	
 	var ability_selection_menu = Instantiables.create(Instantiables.objects.ABILITYSELECT)
-	push_warning(ability_selection_menu)
 	add_child(ability_selection_menu, true)
 	
 	#add_player(unique_id)

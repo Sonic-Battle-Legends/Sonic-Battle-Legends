@@ -1,0 +1,75 @@
+[gd_scene load_steps=9 format=3 uid="uid://de531opgpvhcw"]
+
+[ext_resource type="Script" path="res://Scripts/pointer_spawner.gd" id="1_lb4wj"]
+[ext_resource type="PackedScene" uid="uid://ddci126xkh77i" path="res://Models/pointer.blend" id="2_7canr"]
+[ext_resource type="Material" uid="uid://58e30ip8afyy" path="res://Materials/shadowMaterial.tres" id="3_vgnia"]
+[ext_resource type="PackedScene" uid="uid://k3p37vahfpip" path="res://Scenes/MainCam.tscn" id="4_4fc7j"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_s15qi"]
+size = Vector3(0.4, 0.4, 0.4)
+
+[sub_resource type="Animation" id="Animation_eq7ff"]
+resource_name = "spin"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("target_spot/pointer_mesh:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.7, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1.10957),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 2.0944, 0), Vector3(0, 4.18879, 0), Vector3(0, 6.28319, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_8xr3a"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("target_spot/pointer_mesh:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_tq3iu"]
+_data = {
+"RESET": SubResource("Animation_8xr3a"),
+"spin": SubResource("Animation_eq7ff")
+}
+
+[node name="PointerSpawner" type="CharacterBody3D" node_paths=PackedStringArray("raycaster", "target_spot")]
+script = ExtResource("1_lb4wj")
+raycaster = NodePath("RayCast3D")
+target_spot = NodePath("target_spot")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+shape = SubResource("BoxShape3D_s15qi")
+
+[node name="target_spot" type="CSGCylinder3D" parent="."]
+radius = 0.1
+height = 0.01
+material = ExtResource("3_vgnia")
+
+[node name="pointer_mesh" parent="target_spot" instance=ExtResource("2_7canr")]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_tq3iu")
+}
+autoplay = "spin"
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.16791, 0)
+target_position = Vector3(0, -8, 0)
+
+[node name="MainCam" parent="." instance=ExtResource("4_4fc7j")]

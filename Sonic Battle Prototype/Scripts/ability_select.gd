@@ -146,8 +146,12 @@ func select_ability():
 			# add the selected abilities to the global variables
 			# so that the abilities are accessible to the character
 			GlobalVariables.selected_abilities = selected_abilites.duplicate()
-			# create character
-			Instantiables.add_player(get_parent())
+			# create character or pointer to select where to spawn the charater
+			if GlobalVariables.defeated:
+				var spawner = Instantiables.create(Instantiables.objects.POINTERSPAWNER)
+				get_parent().add_child(spawner)
+			else:
+				Instantiables.add_player(get_parent())
 			queue_free()
 
 

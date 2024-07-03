@@ -20,17 +20,22 @@ const ABILITY_SELECT = preload("res://Scenes/ability_select.tscn")
 # sonic character
 const SONIC = preload("res://Scenes/Sonic.tscn")
 
+# pointer to spawn the character at target spot
+const POINTER_SPAWNER = preload("res://Scenes/pointer_spawner.tscn")
+
 # to match-case block
 # should get a variable with the name of a string instead
-enum objects {SHOT_PROJECTILE, RING, SET_MINE, ABILITYSELECT}
+enum objects {SHOT_PROJECTILE, RING, SET_MINE, ABILITYSELECT, POINTERSPAWNER}
 
 
 # create a Sonic character
-func add_player(parent_node):
+func add_player(parent_node, spawn_position = Vector3.ZERO):
+	GlobalVariables.defeated = false
 	var player = SONIC.instantiate()
 	player.name = str(GlobalVariables.character_id)
 	# add the selected abilities to the character
 	player.set_abilities(GlobalVariables.selected_abilities)
+	player.position = spawn_position
 	parent_node.add_child(player, true)
 
 
@@ -49,6 +54,8 @@ func create(object_to_create, place_to_add_as_child = null):
 			new_object = SET_MINE.instantiate()
 		objects.ABILITYSELECT:
 			new_object = ABILITY_SELECT.instantiate()
+		objects.POINTERSPAWNER:
+			new_object = POINTER_SPAWNER.instantiate()
 	
 	if place_to_add_as_child == null:
 		return new_object
