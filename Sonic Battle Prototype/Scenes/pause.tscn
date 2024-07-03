@@ -2,10 +2,13 @@
 
 [ext_resource type="Script" path="res://Scripts/PauseScript.gd" id="1_qgnnd"]
 
-[node name="Pause" type="Node" node_paths=PackedStringArray("pause_menu")]
+[node name="Pause" type="Node" node_paths=PackedStringArray("pause_menu", "resume_button", "restart_button", "main_menu_button")]
 process_mode = 3
 script = ExtResource("1_qgnnd")
 pause_menu = NodePath("pause_menu_placeholder")
+resume_button = NodePath("pause_menu_placeholder/Resume Button")
+restart_button = NodePath("pause_menu_placeholder/Restart Button")
+main_menu_button = NodePath("pause_menu_placeholder/Main Menu Button")
 
 [node name="pause_menu_placeholder" type="Control" parent="."]
 layout_mode = 3
@@ -18,7 +21,57 @@ layout_mode = 0
 offset_left = 525.0
 offset_top = 230.0
 offset_right = 753.0
-offset_bottom = 333.0
-text = "Paused
+offset_bottom = 472.0
+text = "				   Paused
 
-Press \"ESC\" key to resume"
+  Press \"ESC\" key to resume"
+editable = false
+
+[node name="Resume Button" type="Button" parent="pause_menu_placeholder"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 544.0
+offset_top = 313.0
+offset_right = 692.0
+offset_bottom = 346.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Resume"
+
+[node name="Restart Button" type="Button" parent="pause_menu_placeholder"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 545.0
+offset_top = 357.0
+offset_right = 693.0
+offset_bottom = 390.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Restart"
+
+[node name="Main Menu Button" type="Button" parent="pause_menu_placeholder"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 546.0
+offset_top = 400.0
+offset_right = 694.0
+offset_bottom = 433.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Main Menu"
+
+[connection signal="pressed" from="pause_menu_placeholder/Resume Button" to="." method="_on_resume_button_pressed"]
+[connection signal="pressed" from="pause_menu_placeholder/Restart Button" to="." method="_on_restart_button_pressed"]
+[connection signal="pressed" from="pause_menu_placeholder/Main Menu Button" to="." method="_on_main_menu_button_pressed"]
