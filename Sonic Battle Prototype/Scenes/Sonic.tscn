@@ -1,8 +1,10 @@
-[gd_scene load_steps=34 format=3 uid="uid://3vv715sdbbdw"]
+[gd_scene load_steps=35 format=3 uid="uid://3vv715sdbbdw"]
 
 [ext_resource type="Script" path="res://Scripts/Sonic.gd" id="1_0e6eq"]
 [ext_resource type="Texture2D" uid="uid://cnvca7d2mepgx" path="res://Sprites/Sonic.png" id="1_w8pxe"]
 [ext_resource type="PackedScene" uid="uid://k3p37vahfpip" path="res://Scenes/MainCam.tscn" id="3_il73g"]
+[ext_resource type="Material" uid="uid://58e30ip8afyy" path="res://Materials/shadowMaterial.tres" id="3_rvjhs"]
+[ext_resource type="PackedScene" uid="uid://kiqyfxt7rwap" path="res://Scenes/hud.tscn" id="5_72pfc"]
 
 [sub_resource type="Animation" id="Animation_spsdn"]
 length = 0.001
@@ -804,44 +806,42 @@ _data = {
 radius = 0.0824041
 height = 0.305693
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fvow2"]
-transparency = 1
-albedo_color = Color(0, 0, 0, 0.635294)
-
 [sub_resource type="SphereShape3D" id="SphereShape3D_rpmoy"]
 radius = 0.0880643
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_u2him"]
 properties/0/path = NodePath(".:position")
 properties/0/spawn = true
-properties/0/sync = true
+properties/0/replication_mode = 1
 properties/1/path = NodePath(".:rotation")
 properties/1/spawn = true
-properties/1/sync = true
+properties/1/replication_mode = 1
 properties/2/path = NodePath("DropShadow:position")
 properties/2/spawn = true
-properties/2/sync = true
+properties/2/replication_mode = 1
 properties/3/path = NodePath("AnimationPlayer:current_animation")
 properties/3/spawn = true
-properties/3/sync = true
+properties/3/replication_mode = 1
 properties/4/path = NodePath("Hitbox/CollisionShape3D2:disabled")
 properties/4/spawn = true
-properties/4/sync = true
+properties/4/replication_mode = 1
 properties/5/path = NodePath("Sprite3D:flip_h")
 properties/5/spawn = true
-properties/5/sync = true
+properties/5/replication_mode = 1
 
-[node name="Sonic" type="CharacterBody3D" groups=["CanHurt", "Player"]]
+[node name="Sonic" type="CharacterBody3D" node_paths=PackedStringArray("hud", "camera") groups=["CanHurt", "Player"]]
 collision_layer = 2
 floor_max_angle = 1.0472
 floor_snap_length = 0.2
 script = ExtResource("1_0e6eq")
+hud = NodePath("HUD")
+camera = NodePath("MainCam")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-autoplay = "idle"
 libraries = {
 "": SubResource("AnimationLibrary_soexl")
 }
+autoplay = "idle"
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
 texture_filter = 2
@@ -859,7 +859,7 @@ hit_from_inside = true
 [node name="DropShadow" type="CSGCylinder3D" parent="."]
 radius = 0.1
 height = 0.01
-material = SubResource("StandardMaterial3D_fvow2")
+material = ExtResource("3_rvjhs")
 
 [node name="Hitbox" type="Area3D" parent="."]
 collision_mask = 3
@@ -875,6 +875,8 @@ disabled = true
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_u2him")
+
+[node name="HUD" parent="." instance=ExtResource("5_72pfc")]
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]

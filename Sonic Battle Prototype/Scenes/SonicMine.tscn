@@ -176,23 +176,23 @@ radius = 0.0835429
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_ifyqv"]
 properties/0/path = NodePath(".:position")
 properties/0/spawn = true
-properties/0/sync = true
+properties/0/replication_mode = 1
 properties/1/path = NodePath("AnimationPlayer:current_animation")
 properties/1/spawn = true
-properties/1/sync = true
+properties/1/replication_mode = 1
 properties/2/path = NodePath("Area3D/CollisionShape3D:disabled")
 properties/2/spawn = true
-properties/2/sync = true
+properties/2/replication_mode = 1
 
-[node name="SonicMine" type="CharacterBody3D" groups=["Mine"]]
+[node name="SonicMine" type="CharacterBody3D" groups=["Mine", "PlayerAttack"]]
 collision_layer = 0
 script = ExtResource("1_uumn5")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-autoplay = "idle"
 libraries = {
 "": SubResource("AnimationLibrary_unt0o")
 }
+autoplay = "idle"
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
 texture_filter = 2

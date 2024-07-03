@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://dn6soenbfit7t"]
+
+[ext_resource type="PackedScene" uid="uid://r34p2t7ewfao" path="res://Models/test_stage_v1.blend" id="1_37onf"]
+
+[node name="test_stage_v1" type="Node3D"]
+
+[node name="test_stage_v1" parent="." instance=ExtResource("1_37onf")]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, -0.357858, 0)
+
+[node name="invisible_walls" parent="test_stage_v1" index="1"]
+visible = false
+
+[editable path="test_stage_v1"]

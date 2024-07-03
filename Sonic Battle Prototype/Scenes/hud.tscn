@@ -1,0 +1,52 @@
+[gd_scene load_steps=5 format=3 uid="uid://kiqyfxt7rwap"]
+
+[ext_resource type="Script" path="res://Scripts/hud.gd" id="1_i2t3l"]
+[ext_resource type="Theme" uid="uid://brh2hu8jk3nha" path="res://Text Themes/HUD_v1.tres" id="1_t5ht1"]
+[ext_resource type="Texture2D" uid="uid://dofyi4jiyto42" path="res://Textures/icon.svg" id="2_kygp5"]
+[ext_resource type="Theme" uid="uid://cgbqhln08lgao" path="res://Text Themes/HUD_v2.tres" id="3_sxpx6"]
+
+[node name="HUD" type="Control" node_paths=PackedStringArray("life_ui", "special_ui", "points_ui", "avatar_ui")]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_i2t3l")
+life_ui = NodePath("lifeUI")
+special_ui = NodePath("SpecialUI")
+points_ui = NodePath("Avatar/pointsUI")
+avatar_ui = NodePath("Avatar")
+
+[node name="lifeUI" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_left = 29.0
+offset_top = 32.0
+offset_right = 262.0
+offset_bottom = 105.0
+theme = ExtResource("1_t5ht1")
+text = "Life: 100"
+
+[node name="SpecialUI" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_left = 29.0
+offset_top = 85.0
+offset_right = 379.0
+offset_bottom = 162.0
+theme = ExtResource("1_t5ht1")
+text = "Special: 100"
+
+[node name="Avatar" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 31.0
+offset_top = 530.0
+offset_right = 111.0
+offset_bottom = 603.0
+texture = ExtResource("2_kygp5")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="pointsUI" type="RichTextLabel" parent="Avatar"]
+layout_mode = 0
+offset_left = 82.0
+offset_top = -6.0
+offset_right = 240.0
+offset_bottom = 83.0
+theme = ExtResource("3_sxpx6")
+text = "0 Pt"
