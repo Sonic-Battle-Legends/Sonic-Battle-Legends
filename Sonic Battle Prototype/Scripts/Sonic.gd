@@ -22,6 +22,12 @@ const DOUBLETAP_DELAY: float = 0.2
 # max distance from ground to allow jump through coyote time
 const MAX_COYOTE_GROUND_DISTANCE: float = 0.1
 
+# default life total value
+const MAX_LIFE_TOTAL = 100
+
+# default max special amount
+const MAX_SPECIAL_AMOUNT = 100
+
 # The speed at which Sonic falls, right now everyone and everything should have a gravity of 20.
 var gravity = 20
 
@@ -104,11 +110,29 @@ var doubletap_timer = DOUBLETAP_DELAY
 # to allow dash only after a double tap
 var dash_triggered = false
 
-var life_total: int = 100
+# values presented on hud
+var life_total: int = MAX_LIFE_TOTAL
 var special_amount: int = 0
 var points: int = 0
 
+# value that will increase when pressing healing to trigger the heal method
+var healing_time: float = 0.0
+# the rate the healing_time will increase
+var healing_pace: float = 0.1
+# the amount of heling_time to trigger a heal call
+var healing_threshold: float = 3.0
+
 var punch_timer: SceneTreeTimer
+
+# store the input state transmited by a input node or CPU node
+# this allows to separate the inputs from the character script
+# which helps creating CPU characters
+var punch_pressed: bool = false
+var special_pressed: bool = false
+var jump_pressed: bool = false
+var attack_pressed: bool = false
+var guard_pressed: bool = false
+
 
 # Head Up Display
 @export_category("HUD")
@@ -132,10 +156,7 @@ func _ready():
 
 
 # Setting a drop shadow is weird in _physics_process(), so the drop shadow code is in _process().
-func _process(delta):
-	if Input.is_action_just_pressed("change_cam_position"):
-		camera.rotate_camera()
-	
+func _process(delta):	
 	# If the drop shadow ray detects ground, it sets the visual shadow at the collision point.
 	if $DropShadowRange.is_colliding():
 		$DropShadow.visible = true
@@ -189,45 +210,15 @@ func _physics_process(delta):
 		handle_dash()
 		
 	if !attacking && !hurt:
-		# Get the input direction
-		var input_dir = Input.get_vector("left", "right", "up", "down")
-		direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
-		# change input accordingly to the camera rotation
-		direction *= camera.spin
-		
-		# Handle Jump.
 		handle_jump()
 		
-		# Code for handling basic movement
-		if direction:
-			# If Sonic is at a standstill before moving, he enters his starting state for dashes and strong attacks.
-			if !starting && !walking && is_on_floor():
-				starting = true
-				$AnimationPlayer.play("startWalk")
-			velocity.x = lerp(velocity.x, direction.x * SPEED, 0.1)
-			velocity.z = lerp(velocity.z, direction.z * SPEED, 0.1)
-		else:
-			walking = false
-			velocity.x = lerp(velocity.x, 0.0, 0.1)
-			velocity.z = lerp(velocity.z, 0.0, 0.1)
+		handle_movement_input()
 		
-		# Code for determining the direction Sonic is facing.
-		# Since some moves hold backwards without turning.
-		var flip_threshold = 2
-		# if the character is on idle or walk animation, flip the sprite with the input
-		if walking or starting:
-			flip_threshold = 0.001
-		if velocity.x > flip_threshold:
-			facing_left = false
-			$Sprite3D.flip_h = false
-			$Hitbox.rotation.y = deg_to_rad(0)
-		elif velocity.x < -flip_threshold:
-			facing_left = true
-			$Sprite3D.flip_h = true
-			$Hitbox.rotation.y = deg_to_rad(180)
+		handle_sprite_orientation()
 		
-		# ALL the basic attacks are handled in this chain of if statements.
 		handle_attack()
+		
+		handle_healing()
 		
 	else:
 		# if Sonic is in his attacking or hurt state, he slows to a halt.
@@ -243,29 +234,43 @@ func _physics_process(delta):
 	move_and_slide()
 
 
-# check double tap
-func _input(event):
-	if event is InputEventKey and event.is_pressed() and is_on_floor():
-		if last_keycode == event.keycode and doubletap_timer >= 0 and directional_just_pressed():
-			dash_triggered = true
-			last_keycode = 0
-		else:
-			last_keycode = event.keycode
-		doubletap_timer = DOUBLETAP_DELAY
+## handle the movement of the character given an input
+func handle_movement_input():	
+	# Code for handling basic movement
+	if direction:
+		# If Sonic is at a standstill before moving, he enters his starting state for dashes and strong attacks.
+		if !starting && !walking && is_on_floor():
+			starting = true
+			$AnimationPlayer.play("startWalk")
+		velocity.x = lerp(velocity.x, direction.x * SPEED, 0.1)
+		velocity.z = lerp(velocity.z, direction.z * SPEED, 0.1)
+	else:
+		walking = false
+		velocity.x = lerp(velocity.x, 0.0, 0.1)
+		velocity.z = lerp(velocity.z, 0.0, 0.1)
 
 
-## check if at least one of the directional button was pressed
-func directional_just_pressed() -> bool:
-	return Input.is_action_just_pressed("left") \
-		or Input.is_action_just_pressed("right") \
-		or Input.is_action_just_pressed("up") \
-		or Input.is_action_just_pressed("down")
+## Code for determining the direction the character is facing.
+func handle_sprite_orientation():
+	# Since some moves hold backwards without turning.
+	var flip_threshold = 2
+	# if the character is on idle or walk animation, flip the sprite with the input
+	if walking or starting:
+		flip_threshold = 0.001
+	if velocity.x > flip_threshold:
+		facing_left = false
+		$Sprite3D.flip_h = false
+		$Hitbox.rotation.y = deg_to_rad(0)
+	elif velocity.x < -flip_threshold:
+		facing_left = true
+		$Sprite3D.flip_h = true
+		$Hitbox.rotation.y = deg_to_rad(180)
 
 
 ## method to check and perform the dash movement
 func handle_dash():
 	# This set of "if" statements handles the dash. Pressing your current velocity direction
-	# while in the starting state causes Sonic to dash in that direction, recreating the "double-tap" input.
+	# while in the starting state causes Sonic to dash in that direction, recreating the "double-tap" input
 	# This is probably a very workaround solution and there's probably a way to make it work better
 	# But this is the best solution I could come up with.
 	# added a dash_triggered to prevent dashing when simply pressing diagonals
@@ -301,13 +306,13 @@ func handle_dash():
 ## method to control the jump
 func handle_jump():
 	# If you're in the air, Sonic performs his midair action (as long as he hasn't used it yet.)
-	if Input.is_action_just_pressed("jump") && (is_on_floor() || coyote_time()):
+	if jump_pressed && (is_on_floor() || coyote_time()):
 		velocity.y = JUMP_VELOCITY
 		jumping = true
 		jump_clicked = true
 		# remove current coyote timer form the variable
 		coyote_timer = null
-	elif Input.is_action_just_pressed("jump") && !is_on_floor() && can_airdash:
+	elif jump_pressed && !is_on_floor() && can_airdash:
 		dashing = true
 		can_airdash = false
 		# remove current coyote timer form the variable
@@ -361,8 +366,9 @@ func create_punch_timer():
 
 
 ## method to determine what happens when punch attack is pressed, grounded or not
+## ALL the basic attacks are handled in this chain of if statements.
 func handle_attack():
-	if Input.is_action_just_pressed("punch") && starting:
+	if attack_pressed && starting:
 		# The code for Sonic's strong attacks. If he's holding the opposite direction,
 		# he executes an up strong attack which slightly bumps him backwards.
 		if (facing_left && direction.x > 0) || (!facing_left && direction.x < 0):
@@ -378,14 +384,14 @@ func handle_attack():
 			$AnimationPlayer.play("strong")
 			launch_power = Vector3(direction.x * 20, 5, direction.z * 20)
 			attacking = true
-	elif Input.is_action_just_pressed("punch") && dashing && can_airdash:
+	elif attack_pressed && dashing && can_airdash:
 		# The code for Sonic's dash attack. His dash attack stalls him in the air for a short time.
 		can_airdash = false
 		attacking = true
 		$AnimationPlayer.play("dashAttack")
 		launch_power = Vector3(velocity.x, 2, velocity.z)
 		velocity.y = 3
-	elif Input.is_action_just_pressed("punch") && !dashing && !is_on_floor() && can_air_attack:
+	elif attack_pressed && !dashing && !is_on_floor() && can_air_attack:
 		# The code for Sonic's midair attack. He can only use this once before landing, and it
 		# sends the opponent downwards.
 		attacking = true
@@ -396,7 +402,7 @@ func handle_attack():
 		else:
 			launch_power = Vector3(5, -2, 0)
 		velocity.y = 4
-	elif Input.is_action_just_pressed("punch") && is_on_floor() && !starting:
+	elif attack_pressed && is_on_floor() && !starting:
 		# The code to initiate Sonic's 3-hit combo. The rest of the punches are in _on_animation_player_animation_finished().
 		create_punch_timer()
 		attacking = true
@@ -405,13 +411,43 @@ func handle_attack():
 		current_punch = 1
 	
 	# The code for initiating Sonic's grounded and midair specials, which go to functions that check the selected skills.
-	if Input.is_action_just_pressed("special") && is_on_floor():
+	if special_pressed && is_on_floor():
 		attacking = true
 		rpc("ground_special", randi(), direction)
-	elif Input.is_action_just_pressed("special") && !is_on_floor() && can_air_attack:
+	elif special_pressed && !is_on_floor() && can_air_attack:
 		attacking = true
 		can_air_attack = false
 		rpc("air_special", randi(), direction)
+
+
+## method to pace the healing of the character given an input
+func handle_healing():
+	if guard_pressed:
+		healing_time += healing_pace
+		if healing_time >= healing_threshold:
+			heal()
+			healing_time = 0
+	else:
+		healing_time = 0
+
+
+## method to heal the character's life total
+func heal(amount = 4):
+	if life_total < MAX_LIFE_TOTAL:
+		life_total += amount
+	if life_total > MAX_LIFE_TOTAL:
+		life_total = MAX_LIFE_TOTAL
+	hud.change_life(life_total)
+	increase_special(1)
+
+
+## method to fill the character's special amount
+func increase_special(amount = 1):
+	if special_amount < MAX_SPECIAL_AMOUNT:
+		special_amount += amount
+	if special_amount > MAX_SPECIAL_AMOUNT:
+		special_amount = MAX_SPECIAL_AMOUNT
+	hud.change_special(special_amount)
 
 
 ## increase the total points gained in-game by one
@@ -469,6 +505,7 @@ func handle_animation():
 	'''
 
 
+## method to set the abilities and immunity of the character
 func set_abilities(new_abilities: Array):
 	ground_skill = new_abilities[0]
 	air_skill = new_abilities[1]
@@ -514,7 +551,7 @@ func _on_animation_player_animation_finished(anim_name):
 		# it moves on to the next punch.
 		# NOTE: I tried making it so that the punches execute with pressing the button instead of holding,
 		# but I couldn't get it working right so this will have to do for now.
-		if Input.is_action_pressed("punch"):# and punch_timer != null and punch_timer.time_left > 0:
+		if attack_pressed:# and punch_timer != null and punch_timer.time_left > 0:
 			# create a new timer to give time for a possible combo sequence
 			create_punch_timer()
 			if current_punch == 1:
