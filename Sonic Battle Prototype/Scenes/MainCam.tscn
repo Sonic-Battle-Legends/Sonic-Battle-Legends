@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://k3p37vahfpip"]
+[gd_scene load_steps=3 format=3 uid="uid://k3p37vahfpip"]
 
 [ext_resource type="Script" path="res://Scripts/MainCam.gd" id="1_2ikkk"]
+[ext_resource type="PackedScene" uid="uid://bvn1yjxoq8fdx" path="res://Scenes/pause.tscn" id="2_y5lqp"]
 
 [node name="MainCam" type="Camera3D"]
 projection = 1
@@ -8,3 +9,8 @@ size = 3.0
 script = ExtResource("1_2ikkk")
 
 [node name="LookingAt" type="Node3D" parent="."]
+
+[node name="Pause" parent="." instance=ExtResource("2_y5lqp")]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.628289, 0.77798, 0, -0.77798, 0.628289, 0, 1.25018, 3.33821)

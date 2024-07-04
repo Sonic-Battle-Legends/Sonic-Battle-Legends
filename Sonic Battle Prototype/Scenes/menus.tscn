@@ -1,0 +1,439 @@
+[gd_scene load_steps=4 format=3 uid="uid://dasd2d602fnvh"]
+
+[ext_resource type="Script" path="res://Scripts/Menus.gd" id="1_v57px"]
+[ext_resource type="Texture2D" uid="uid://dofyi4jiyto42" path="res://Textures/icon.svg" id="2_xj80o"]
+[ext_resource type="Script" path="res://Scripts/ServerJoin2.gd" id="3_2yac5"]
+
+[node name="Menus" type="Control" node_paths=PackedStringArray("intro_animation", "main_menu", "options_menu", "online_or_offline_menu", "online_menu", "mode_selection_menu", "character_selection_menu", "area_selection_menu", "canvas_server_menu")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_v57px")
+intro_animation = NodePath("IntroAnimation")
+main_menu = NodePath("MainMenu")
+options_menu = NodePath("OptionsMenu")
+online_or_offline_menu = NodePath("OnlineOrOffline")
+online_menu = NodePath("OnlineMenu/canvas/MainOnlineMenu")
+mode_selection_menu = NodePath("ModeSelection")
+character_selection_menu = NodePath("CharacterSelection")
+area_selection_menu = NodePath("AreaSelect")
+canvas_server_menu = NodePath("OnlineMenu/canvas")
+
+[node name="IntroAnimation" type="VideoStreamPlayer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="placeholder title" type="RichTextLabel" parent="IntroAnimation"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -155.5
+offset_top = -68.5
+offset_right = 155.5
+offset_bottom = 68.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Intro Animation goes here
+
+press any key to skip"
+
+[node name="MainMenu" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="titlle" type="RichTextLabel" parent="MainMenu"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -137.0
+offset_top = 64.0
+offset_right = 185.0
+offset_bottom = 174.0
+grow_horizontal = 2
+text = "SONIC BATTLE UNLIMITED EDITION
+
+MAIN MENU"
+
+[node name="static background" type="TextureRect" parent="MainMenu"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = -64.0
+offset_right = 64.0
+offset_bottom = 64.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_xj80o")
+
+[node name="dynamic background" type="TextureRect" parent="MainMenu"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = -64.0
+offset_right = 64.0
+offset_bottom = 64.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_xj80o")
+
+[node name="start button" type="Button" parent="MainMenu"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -88.0
+offset_top = 81.0
+offset_right = 102.0
+offset_bottom = 125.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Start"
+
+[node name="options button" type="Button" parent="MainMenu"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -88.0
+offset_top = 132.0
+offset_right = 102.0
+offset_bottom = 176.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Options"
+
+[node name="quit button" type="Button" parent="MainMenu"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -88.0
+offset_top = 183.0
+offset_right = 102.0
+offset_bottom = 227.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Quit"
+
+[node name="OptionsMenu" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="title" type="RichTextLabel" parent="OptionsMenu"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -26.0
+offset_top = 68.0
+offset_right = 150.0
+offset_bottom = 169.0
+grow_horizontal = 2
+text = "OPTIONS"
+
+[node name="options back button" type="Button" parent="OptionsMenu"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -89.0
+offset_top = -29.0
+offset_right = 89.0
+offset_bottom = 29.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Back"
+
+[node name="OnlineOrOffline" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="OnlineOrOffline"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -89.0
+offset_top = 79.0
+offset_right = 104.0
+offset_bottom = 142.0
+grow_horizontal = 2
+text = "CONNECTION"
+
+[node name="online button" type="Button" parent="OnlineOrOffline"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -92.0
+offset_top = -25.0
+offset_right = 92.0
+offset_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Online"
+
+[node name="offline button" type="Button" parent="OnlineOrOffline"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -90.0
+offset_top = 37.0
+offset_right = 94.0
+offset_bottom = 87.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Offline"
+
+[node name="OnlineMenu" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="canvas" type="Node3D" parent="OnlineMenu" node_paths=PackedStringArray("main_menu", "address_entry")]
+script = ExtResource("3_2yac5")
+main_menu = NodePath("MainOnlineMenu")
+address_entry = NodePath("MainOnlineMenu/MarginContainer/VBoxContainer/AddressEntry")
+
+[node name="MainOnlineMenu" type="PanelContainer" parent="OnlineMenu/canvas"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 379.0
+offset_top = 237.0
+offset_right = -379.0
+offset_bottom = -237.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="OnlineMenu/canvas/MainOnlineMenu"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="OnlineMenu/canvas/MainOnlineMenu/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="OnlineMenu/canvas/MainOnlineMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Menu"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HostButton" type="Button" parent="OnlineMenu/canvas/MainOnlineMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Host"
+
+[node name="JoinButton" type="Button" parent="OnlineMenu/canvas/MainOnlineMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Join"
+
+[node name="AddressEntry" type="LineEdit" parent="OnlineMenu/canvas/MainOnlineMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+placeholder_text = "Enter Room Code"
+alignment = 1
+
+[node name="ModeSelection" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="title" type="RichTextLabel" parent="ModeSelection"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -41.0
+offset_top = 59.0
+offset_right = 154.0
+offset_bottom = 129.0
+grow_horizontal = 2
+text = "MODE SELECTION"
+
+[node name="story mode button" type="Button" parent="ModeSelection"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -168.0
+offset_top = -4.0
+offset_right = -24.0
+offset_bottom = 106.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Story
+Mode"
+
+[node name="battle mode button" type="Button" parent="ModeSelection"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -4.0
+offset_top = -4.0
+offset_right = 140.0
+offset_bottom = 106.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Battle
+Mode"
+
+[node name="challenge mode button" type="Button" parent="ModeSelection"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 160.0
+offset_top = -4.0
+offset_right = 304.0
+offset_bottom = 106.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Challenge
+Mode"
+
+[node name="CharacterSelection" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CharacterSelection"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -62.0
+offset_top = 64.0
+offset_right = 138.0
+offset_bottom = 155.0
+grow_horizontal = 2
+text = "Character Selection"
+
+[node name="sonic character button" type="Button" parent="CharacterSelection"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -57.0
+offset_top = -45.0
+offset_right = 54.0
+offset_bottom = 69.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Sonic"
+
+[node name="AreaSelect" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="title" type="RichTextLabel" parent="AreaSelect"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -66.0
+offset_top = 38.0
+offset_right = 184.0
+offset_bottom = 157.0
+grow_horizontal = 2
+text = "Area Selection"
+
+[node name="area 1 button" type="Button" parent="AreaSelect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -124.0
+offset_top = -112.5
+offset_right = 124.0
+offset_bottom = 112.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Area 1 "
+
+[connection signal="pressed" from="MainMenu/start button" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="MainMenu/options button" to="." method="_on_options_button_pressed"]
+[connection signal="pressed" from="MainMenu/quit button" to="." method="_on_quit_button_pressed"]
+[connection signal="pressed" from="OptionsMenu/options back button" to="." method="_on_options_back_button_pressed"]
+[connection signal="pressed" from="OnlineOrOffline/online button" to="." method="_on_online_button_pressed"]
+[connection signal="pressed" from="OnlineOrOffline/offline button" to="." method="_on_offline_button_pressed"]
+[connection signal="pressed" from="OnlineMenu/canvas/MainOnlineMenu/MarginContainer/VBoxContainer/HostButton" to="OnlineMenu/canvas" method="_on_host_button_pressed"]
+[connection signal="pressed" from="OnlineMenu/canvas/MainOnlineMenu/MarginContainer/VBoxContainer/JoinButton" to="OnlineMenu/canvas" method="_on_join_button_pressed"]
+[connection signal="pressed" from="ModeSelection/story mode button" to="." method="_on_story_mode_button_pressed"]
+[connection signal="pressed" from="ModeSelection/battle mode button" to="." method="_on_battle_mode_button_pressed"]
+[connection signal="pressed" from="ModeSelection/challenge mode button" to="." method="_on_challenge_mode_button_pressed"]
+[connection signal="pressed" from="CharacterSelection/sonic character button" to="." method="_on_sonic_character_button_pressed"]
+[connection signal="pressed" from="AreaSelect/area 1 button" to="." method="_on_area_1_button_pressed"]

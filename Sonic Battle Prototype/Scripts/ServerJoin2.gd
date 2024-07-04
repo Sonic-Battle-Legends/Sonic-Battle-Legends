@@ -1,13 +1,12 @@
 extends Node3D
 
-@onready var main_menu = $CanvasLayer/MainMenu
-@onready var address_entry = $CanvasLayer/MainMenu/MarginContainer/VBoxContainer/AddressEntry
+#@onready var main_menu = $CanvasLayer/MainMenu
+#@onready var address_entry = $CanvasLayer/MainMenu/MarginContainer/VBoxContainer/AddressEntry
+@export var main_menu: PanelContainer
+@export var address_entry: LineEdit
 
-#const Player = preload("res://Scenes/Sonic.tscn")
 const PORT = 9999
 var enet_peer = ENetMultiplayerPeer.new()
-
-#const Cam = preload("res://Scenes/MainCam.tscn")
 
 
 func _ready():
@@ -15,6 +14,13 @@ func _ready():
 
 
 func _on_host_button_pressed():
+	add_player()
+	
+	#var ability_selection_menu = Instantiables.create(Instantiables.objects.ABILITYSELECT)
+	#add_child(ability_selection_menu, true)
+
+
+func add_player():
 	main_menu.hide()
 	
 	enet_peer.create_server(PORT)
@@ -27,11 +33,8 @@ func _on_host_button_pressed():
 	var unique_id = multiplayer.get_unique_id()
 	GlobalVariables.character_id = unique_id
 	
-	var ability_selection_menu = Instantiables.create(Instantiables.objects.ABILITYSELECT)
-	add_child(ability_selection_menu, true)
-	
-	#add_player(unique_id)
-	
+	GlobalVariables.main_menu.after_online_setup()
+
 
 func remove_player(peer_id):
 	var player = get_node_or_null(str(peer_id))
@@ -43,13 +46,4 @@ func _on_join_button_pressed():
 	
 	enet_peer.create_client("localhost", PORT)
 	multiplayer.multiplayer_peer = enet_peer
-	
-'''
-func add_player(peer_id):
-	var player = Player.instantiate()
-	player.name = str(peer_id)
-	#var cam = Cam.instantiate()
-	#cam.player = player
-	add_child(player, true)
-	#add_child(cam)
-'''
+

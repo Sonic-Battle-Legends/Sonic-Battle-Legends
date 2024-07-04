@@ -1,0 +1,63 @@
+[gd_scene load_steps=7 format=3 uid="uid://dhcmo5dwjo44o"]
+
+[ext_resource type="Script" path="res://Scripts/hub_marker.gd" id="1_cd3qu"]
+[ext_resource type="PackedScene" uid="uid://ddxbjdh025x2k" path="res://Models/prism.blend" id="1_haeub"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cupuc"]
+
+[sub_resource type="Animation" id="Animation_etoyf"]
+resource_name = "spin"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("prism2:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.7, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 2.0944, 0), Vector3(0, 4.18879, 0), Vector3(0, 6.28319, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_fhwok"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("prism2:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_0p04b"]
+_data = {
+"RESET": SubResource("Animation_fhwok"),
+"spin": SubResource("Animation_etoyf")
+}
+
+[node name="hub_marker" type="Node3D"]
+script = ExtResource("1_cd3qu")
+
+[node name="prism2" parent="." instance=ExtResource("1_haeub")]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" groups=["Stage1"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("BoxShape3D_cupuc")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_0p04b")
+}
+autoplay = "spin"
+
+[connection signal="area_entered" from="Area3D" to="." method="_on_area_3d_area_entered"]

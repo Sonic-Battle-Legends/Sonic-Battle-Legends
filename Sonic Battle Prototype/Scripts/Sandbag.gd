@@ -21,5 +21,5 @@ func _physics_process(delta):
 	move_and_slide()
 
 # Literally just a blank function since the hitbox code calls a "get_hurt()" function
-func get_hurt():
+func get_hurt(_direction):
 	pass
