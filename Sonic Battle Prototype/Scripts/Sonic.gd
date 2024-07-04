@@ -628,8 +628,7 @@ func _on_hitbox_body_entered(body):
 func defeated():
 		# player must get the ability selection screen again
 		# then select a location to spawn
-		# what happens to the connection if the character is deleted?
-		GlobalVariables.respawn()
+		Instantiables.respawn()
 
 
 ## A function that handles Sonic getting hurt. Knockback is determined by the thing that initiates this

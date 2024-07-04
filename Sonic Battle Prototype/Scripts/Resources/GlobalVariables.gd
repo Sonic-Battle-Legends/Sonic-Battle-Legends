@@ -44,40 +44,6 @@ var points_to_win: int = 8
 var game_ended: bool = false
 
 
-## bridge from the hub area's hub marker to the selected stage
-func go_to_stage_from_hub(new_stage: PackedScene):
-	game_ended = false
-	# remove the hub and the character from the main scene
-	if current_hub != null:
-		current_hub.queue_free()
-	main_menu.canvas_server_menu.remove_player(multiplayer.multiplayer_peer)
-	respawn()
-	
-	# create the new stage
-	Instantiables.load_stage(new_stage)
-
-
-## bridge from the battle's pause menu back to the main menu
-func go_to_main_menu_from_battle():
-	# remove the hub and the character from the main scene
-	if current_stage != null:
-		current_stage.queue_free()
-	if current_hub != null:
-		current_hub.queue_free()
-	main_menu.canvas_server_menu.remove_player(multiplayer.multiplayer_peer)
-	current_character.queue_free()
-	main_menu.start_menu()
-
-
-## respawn the character
-func respawn():
-	current_character.queue_free()
-	# create the ability selection that will later create the
-	# point spawner to spawn the character on the stage
-	var ability_selection_menu = Instantiables.create(Instantiables.objects.ABILITYSELECT)
-	main_menu.get_parent().add_child(ability_selection_menu, true)
-
-
 ## the character that triggers this method is the winner of the battle
 func win():
 	game_ended = true

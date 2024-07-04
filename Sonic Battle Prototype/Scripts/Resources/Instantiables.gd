@@ -90,5 +90,37 @@ func create(object_to_create, place_to_add_as_child = null):
 			
 	if place_to_add_as_child == null:
 		return new_object
+
+
+## respawn the character
+func respawn():
+	GlobalVariables.current_character.queue_free()
+	# create the ability selection that will later create the
+	# point spawner to spawn the character on the stage
+	var ability_selection_menu = Instantiables.create(Instantiables.objects.ABILITYSELECT)
+	GlobalVariables.main_menu.get_parent().add_child(ability_selection_menu, true)
+
+
+## bridge from the hub area's hub marker to the selected stage
+func go_to_stage_from_hub(new_stage: PackedScene):
+	GlobalVariables.game_ended = false
+	# remove the hub and the character from the main scene
+	if GlobalVariables.current_hub != null:
+		GlobalVariables.current_hub.queue_free()
+	GlobalVariables.main_menu.canvas_server_menu.remove_player(multiplayer.multiplayer_peer)
+	respawn()
 	
-	
+	# create the new stage
+	Instantiables.load_stage(new_stage)
+
+
+## bridge from the battle's pause menu back to the main menu
+func go_to_main_menu_from_battle():
+	# remove the hub and the character from the main scene
+	if GlobalVariables.current_stage != null:
+		GlobalVariables.current_stage.queue_free()
+	if GlobalVariables.current_hub != null:
+		GlobalVariables.current_hub.queue_free()
+	GlobalVariables.main_menu.canvas_server_menu.remove_player(multiplayer.multiplayer_peer)
+	GlobalVariables.current_character.queue_free()
+	GlobalVariables.main_menu.start_menu()
