@@ -413,13 +413,15 @@ func handle_attack():
 		current_punch = 1
 	
 	# The code for initiating Sonic's grounded and midair specials, which go to functions that check the selected skills.
-	if special_pressed && is_on_floor():
-		attacking = true
-		rpc("ground_special", randi(), direction)
-	elif special_pressed && !is_on_floor() && can_air_attack:
-		attacking = true
-		can_air_attack = false
-		rpc("air_special", randi(), direction)
+	# no abilities on the hub areas
+	if GlobalVariables.current_hub == null:
+		if special_pressed && is_on_floor():
+			attacking = true
+			rpc("ground_special", randi(), direction)
+		elif special_pressed && !is_on_floor() && can_air_attack:
+			attacking = true
+			can_air_attack = false
+			rpc("air_special", randi(), direction)
 
 
 ## method to pace the healing of the character given an input
