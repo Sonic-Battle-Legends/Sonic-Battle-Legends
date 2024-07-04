@@ -1,9 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://dasd2d602fnvh"]
+[gd_scene load_steps=4 format=3 uid="uid://dasd2d602fnvh"]
 
 [ext_resource type="Script" path="res://Scripts/Menus.gd" id="1_v57px"]
 [ext_resource type="Texture2D" uid="uid://dofyi4jiyto42" path="res://Textures/icon.svg" id="2_xj80o"]
+[ext_resource type="Script" path="res://Scripts/ServerJoin2.gd" id="3_2yac5"]
 
-[node name="Menus" type="Control" node_paths=PackedStringArray("intro_animation", "main_menu", "options_menu", "online_or_offline_menu", "mode_selection_menu", "character_selection_menu", "area_selection_menu")]
+[node name="Menus" type="Control" node_paths=PackedStringArray("intro_animation", "main_menu", "options_menu", "online_or_offline_menu", "online_menu", "mode_selection_menu", "character_selection_menu", "area_selection_menu", "canvas_server_menu")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -15,11 +16,14 @@ intro_animation = NodePath("IntroAnimation")
 main_menu = NodePath("MainMenu")
 options_menu = NodePath("OptionsMenu")
 online_or_offline_menu = NodePath("OnlineOrOffline")
+online_menu = NodePath("OnlineMenu/canvas/MainOnlineMenu")
 mode_selection_menu = NodePath("ModeSelection")
 character_selection_menu = NodePath("CharacterSelection")
 area_selection_menu = NodePath("AreaSelect")
+canvas_server_menu = NodePath("OnlineMenu/canvas")
 
 [node name="IntroAnimation" type="VideoStreamPlayer" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -229,6 +233,56 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "Offline"
 
+[node name="OnlineMenu" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="canvas" type="Node3D" parent="OnlineMenu" node_paths=PackedStringArray("main_menu", "address_entry")]
+script = ExtResource("3_2yac5")
+main_menu = NodePath("MainOnlineMenu")
+address_entry = NodePath("MainOnlineMenu/MarginContainer/VBoxContainer/AddressEntry")
+
+[node name="MainOnlineMenu" type="PanelContainer" parent="OnlineMenu/canvas"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 379.0
+offset_top = 237.0
+offset_right = -379.0
+offset_bottom = -237.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="OnlineMenu/canvas/MainOnlineMenu"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="OnlineMenu/canvas/MainOnlineMenu/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="OnlineMenu/canvas/MainOnlineMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Menu"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HostButton" type="Button" parent="OnlineMenu/canvas/MainOnlineMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Host"
+
+[node name="JoinButton" type="Button" parent="OnlineMenu/canvas/MainOnlineMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Join"
+
+[node name="AddressEntry" type="LineEdit" parent="OnlineMenu/canvas/MainOnlineMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+placeholder_text = "Enter Room Code"
+alignment = 1
+
 [node name="ModeSelection" type="Control" parent="."]
 visible = false
 layout_mode = 1
@@ -376,6 +430,8 @@ text = "Area 1 "
 [connection signal="pressed" from="OptionsMenu/options back button" to="." method="_on_options_back_button_pressed"]
 [connection signal="pressed" from="OnlineOrOffline/online button" to="." method="_on_online_button_pressed"]
 [connection signal="pressed" from="OnlineOrOffline/offline button" to="." method="_on_offline_button_pressed"]
+[connection signal="pressed" from="OnlineMenu/canvas/MainOnlineMenu/MarginContainer/VBoxContainer/HostButton" to="OnlineMenu/canvas" method="_on_host_button_pressed"]
+[connection signal="pressed" from="OnlineMenu/canvas/MainOnlineMenu/MarginContainer/VBoxContainer/JoinButton" to="OnlineMenu/canvas" method="_on_join_button_pressed"]
 [connection signal="pressed" from="ModeSelection/story mode button" to="." method="_on_story_mode_button_pressed"]
 [connection signal="pressed" from="ModeSelection/battle mode button" to="." method="_on_battle_mode_button_pressed"]
 [connection signal="pressed" from="ModeSelection/challenge mode button" to="." method="_on_challenge_mode_button_pressed"]

@@ -153,6 +153,8 @@ func _ready():
 	
 	# update the hud with the default values when starting the game
 	hud.update_hud(life_total, special_amount, points)
+	
+	GlobalVariables.current_character = self
 
 
 # Setting a drop shadow is weird in _physics_process(), so the drop shadow code is in _process().
@@ -507,9 +509,10 @@ func handle_animation():
 
 ## method to set the abilities and immunity of the character
 func set_abilities(new_abilities: Array):
-	ground_skill = new_abilities[0]
-	air_skill = new_abilities[1]
-	immunity = new_abilities[2]
+	if new_abilities.size() == 3:
+		ground_skill = new_abilities[0]
+		air_skill = new_abilities[1]
+		immunity = new_abilities[2]
 
 
 ## Signal function for when animations are finished.

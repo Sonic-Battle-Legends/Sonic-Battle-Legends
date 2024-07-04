@@ -35,7 +35,7 @@ func add_player(parent_node, spawn_position = Vector3.ZERO):
 	player.name = str(GlobalVariables.character_id)
 	# add the selected abilities to the character
 	player.set_abilities(GlobalVariables.selected_abilities)
-	player.position = spawn_position
+	player.position = spawn_position + Vector3(0, 0.2, 0)
 	parent_node.add_child(player, true)
 
 

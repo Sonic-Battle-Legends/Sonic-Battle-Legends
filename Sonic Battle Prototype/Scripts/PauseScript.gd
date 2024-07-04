@@ -44,7 +44,8 @@ func restart():
 
 
 func go_to_main_menu():
-	get_tree().change_scene_to_file("res://Scenes/menus.tscn")
+	GlobalVariables.go_to_main_menu_from_battle()
+	#get_tree().change_scene_to_file("res://Scenes/menus.tscn")
 
 
 func _on_resume_button_pressed():
