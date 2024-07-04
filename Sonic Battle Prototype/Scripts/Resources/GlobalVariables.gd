@@ -44,6 +44,7 @@ var points_to_win: int = 8
 var game_ended: bool = false
 
 
+## bridge from the hub area's hub marker to the selected stage
 func go_to_stage_from_hub(new_stage: PackedScene):
 	game_ended = false
 	# remove the hub and the character from the main scene
@@ -53,10 +54,10 @@ func go_to_stage_from_hub(new_stage: PackedScene):
 	respawn()
 	
 	# create the new stage
-	current_stage = new_stage.instantiate()
-	main_menu.get_parent().add_child(current_stage)
+	Instantiables.load_stage(new_stage)
 
 
+## bridge from the battle's pause menu back to the main menu
 func go_to_main_menu_from_battle():
 	# remove the hub and the character from the main scene
 	if current_stage != null:
@@ -68,6 +69,7 @@ func go_to_main_menu_from_battle():
 	main_menu.start_menu()
 
 
+## respawn the character
 func respawn():
 	current_character.queue_free()
 	# create the ability selection that will later create the
@@ -76,7 +78,7 @@ func respawn():
 	main_menu.get_parent().add_child(ability_selection_menu, true)
 
 
-# the character that triggers this method is the winner
+## the character that triggers this method is the winner of the battle
 func win():
 	game_ended = true
 	var score_menu = Instantiables.create(Instantiables.objects.SCORESCREEN)

@@ -26,9 +26,14 @@ const SONIC = preload("res://Scenes/Sonic.tscn")
 # pointer to spawn the character at target spot
 const POINTER_SPAWNER = preload("res://Scenes/pointer_spawner.tscn")
 
+# the hub area with the hub markers that lead to stages
+const HUB_TEST = preload("res://Scenes/Hubs/hub_test.tscn")
+
 # to match-case block
 # should get a variable with the name of a string instead
 enum objects {SHOT_PROJECTILE, RING, SET_MINE, ABILITYSELECT, POINTERSPAWNER, SCORESCREEN}
+
+enum hubs {HUBTEST}
 
 
 # create a Sonic character
@@ -40,6 +45,27 @@ func add_player(parent_node, spawn_position = Vector3.ZERO):
 	player.set_abilities(GlobalVariables.selected_abilities)
 	player.position = spawn_position + Vector3(0, 0.2, 0)
 	parent_node.add_child(player, true)
+
+
+## load a stage in the Main hierarchy
+func load_stage(new_stage):
+	# store the current stage on global variables
+	GlobalVariables.current_stage = new_stage.instantiate()
+	# create the stage in the Main scene
+	GlobalVariables.main_menu.get_parent().add_child(GlobalVariables.current_stage)
+
+
+## load a hub in the Main hierarchy
+func load_hub(hub_to_create):
+	var new_hub
+	match hub_to_create:
+		hubs.HUBTEST:
+			new_hub = HUB_TEST.instantiate()
+	
+	# store the current hub on global variables
+	GlobalVariables.current_hub = new_hub
+	# create the hub in the Main scene
+	GlobalVariables.main_menu.get_parent().add_child(GlobalVariables.current_hub)
 
 
 ## create a preloaded scene

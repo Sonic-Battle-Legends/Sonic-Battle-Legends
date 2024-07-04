@@ -22,8 +22,6 @@ extends Control
 
 var current_selection: int = 0
 
-const HUB_TEST = preload("res://Scenes/Hubs/hub_test.tscn")
-
 
 func _ready():
 	GlobalVariables.main_menu = self
@@ -44,6 +42,7 @@ func start_menu():
 	intro_animation.show()
 
 
+## hide all menu screens so they won't overlap each other
 func hide_menus():
 	intro_animation.hide()
 	main_menu.hide()
@@ -55,23 +54,21 @@ func hide_menus():
 	area_selection_menu.hide()
 
 
+## proceed with the normal screens sequence after online setup
 func after_online_setup():
 	hide_menus()
 	mode_selection_menu.show()
 
 
+## called after the area has been selected
 func go_to_area_scene():
 	# go to the area scene or hub of the selected area
 	# the area is a placeholder for now
 	# testing a game loop
 	# the same hub will be selected every time for now
 	GlobalVariables.playable_areas.find_key(GlobalVariables.area_selected)
-	var new_scene = HUB_TEST.instantiate()
-	# store the current hub on global variables
-	GlobalVariables.current_hub = new_scene
-	# create the hub
-	get_parent().add_child(new_scene)
-	# create the character
+	Instantiables.load_hub(Instantiables.hubs.HUBTEST)
+	# create the character in the Main scene
 	Instantiables.add_player(get_parent())
 	# hide menus
 	hide_menus()
@@ -144,6 +141,8 @@ func _on_area_1_button_pressed():
 	go_to_area_scene()
 
 
+# most of the back buttons from the menus trigger this method
+# except for the options menu, which can be changed to call this as well
 func _on_back_button_pressed():
 	if online_or_offline_menu.is_visible_in_tree():
 		hide_menus()
