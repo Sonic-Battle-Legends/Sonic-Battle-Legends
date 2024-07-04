@@ -147,7 +147,7 @@ func select_ability():
 			# so that the abilities are accessible to the character
 			GlobalVariables.selected_abilities = selected_abilites.duplicate()
 			# create character or pointer to select where to spawn the charater
-			if GlobalVariables.defeated:
+			if GlobalVariables.defeated or GlobalVariables.current_hub == null:
 				var spawner = Instantiables.create(Instantiables.objects.POINTERSPAWNER)
 				get_parent().add_child(spawner)
 			else:

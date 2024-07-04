@@ -38,12 +38,27 @@ func toggle_pause():
 
 func restart():
 	if GlobalVariables.play_online == false:
+		# reset the connection so it can be stablished again
+		# there was an error when going offline and restating the hub and trying to go offline again 
+		# the error was:
+		'''
+		E 0:00:07:0278   ServerJoin2.gd:26 @ add_player(): Couldn't create an ENet host.
+	  	<C++ Error>    Parameter "host" is null.
+  		<C++ Source>   modules/enet/enet_connection.cpp:318 @ _create()
+  		<Stack Trace>  ServerJoin2.gd:26 @ add_player()
+						Menus.gd:113 @ _on_offline_button_pressed()
+
+		'''
+		#if GlobalVariables.current_hub != null:
+		#	GlobalVariables.main_menu.canvas_server_menu.remove_player(multiplayer.multiplayer_peer)
+		
 		# restart current match
 		get_tree().paused = false
 		get_tree().reload_current_scene()
 
 
 func go_to_main_menu():
+	get_tree().paused = false
 	GlobalVariables.go_to_main_menu_from_battle()
 	#get_tree().change_scene_to_file("res://Scenes/menus.tscn")
 

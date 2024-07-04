@@ -35,6 +35,7 @@ func _ready():
 func _process(_delta):
 	# intro animation
 	if intro_animation.is_visible_in_tree() and Input.is_anything_pressed():
+		push_warning("here")
 		intro_animation.hide()
 		main_menu.show()
 
