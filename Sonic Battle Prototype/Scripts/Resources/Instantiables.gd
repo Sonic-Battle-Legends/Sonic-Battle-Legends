@@ -17,6 +17,9 @@ const SET_MINE = preload("res://Scenes/SonicMine.tscn")
 # ability selection menu
 const ABILITY_SELECT = preload("res://Scenes/ability_select.tscn")
 
+# final score screen
+const SCORE_SCREEN = preload("res://Scenes/score_screen.tscn")
+
 # sonic character
 const SONIC = preload("res://Scenes/Sonic.tscn")
 
@@ -25,7 +28,7 @@ const POINTER_SPAWNER = preload("res://Scenes/pointer_spawner.tscn")
 
 # to match-case block
 # should get a variable with the name of a string instead
-enum objects {SHOT_PROJECTILE, RING, SET_MINE, ABILITYSELECT, POINTERSPAWNER}
+enum objects {SHOT_PROJECTILE, RING, SET_MINE, ABILITYSELECT, POINTERSPAWNER, SCORESCREEN}
 
 
 # create a Sonic character
@@ -56,7 +59,9 @@ func create(object_to_create, place_to_add_as_child = null):
 			new_object = ABILITY_SELECT.instantiate()
 		objects.POINTERSPAWNER:
 			new_object = POINTER_SPAWNER.instantiate()
-	
+		objects.SCORESCREEN:
+			new_object = SCORE_SCREEN.instantiate()
+			
 	if place_to_add_as_child == null:
 		return new_object
 	

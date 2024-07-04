@@ -35,23 +35,26 @@ var current_hub
 var current_stage
 
 var selected_abilities: Array
+var character_points: int = 0
 var defeated: bool = true
+
+# win condition
+var points_to_win: int = 8
+# store if someone won the game already
+var game_ended: bool = false
 
 
 func go_to_stage_from_hub(new_stage: PackedScene):
+	game_ended = false
 	# remove the hub and the character from the main scene
 	if current_hub != null:
 		current_hub.queue_free()
 	main_menu.canvas_server_menu.remove_player(multiplayer.multiplayer_peer)
-	current_character.queue_free()
+	respawn()
+	
 	# create the new stage
 	current_stage = new_stage.instantiate()
 	main_menu.get_parent().add_child(current_stage)
-	#get_tree().call_deferred("change_scene_to_file", new_stage)
-	# create the ability selection that will later create the
-	# point spawner to spawn the character on the stage
-	var ability_selection_menu = Instantiables.create(Instantiables.objects.ABILITYSELECT)
-	main_menu.get_parent().add_child(ability_selection_menu, true)
 
 
 func go_to_main_menu_from_battle():
@@ -63,3 +66,19 @@ func go_to_main_menu_from_battle():
 	main_menu.canvas_server_menu.remove_player(multiplayer.multiplayer_peer)
 	current_character.queue_free()
 	main_menu.start_menu()
+
+
+func respawn():
+	current_character.queue_free()
+	# create the ability selection that will later create the
+	# point spawner to spawn the character on the stage
+	var ability_selection_menu = Instantiables.create(Instantiables.objects.ABILITYSELECT)
+	main_menu.get_parent().add_child(ability_selection_menu, true)
+
+
+# the character that triggers this method is the winner
+func win():
+	game_ended = true
+	var score_menu = Instantiables.create(Instantiables.objects.SCORESCREEN)
+	score_menu.winner = character_id
+	main_menu.get_parent().add_child(score_menu, true)

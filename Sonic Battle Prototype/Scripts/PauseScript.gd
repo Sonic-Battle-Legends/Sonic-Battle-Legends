@@ -12,19 +12,24 @@ func _ready():
 	else:
 		restart_button.show()
 
-func _process(_delta):	
-	# pause / resume the game when pressing "pause" button
-	if Input.is_action_just_pressed("pause"):
-		toggle_pause()
-	
-	if get_tree().is_paused():
-		# show the mouse the confine it within the screen while paused
-		pause_menu.show()
-		Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED)
+func _process(_delta):
+	if GlobalVariables.game_ended == false:
+		# pause / resume the game when pressing "pause" button
+		if Input.is_action_just_pressed("pause"):
+			toggle_pause()
+		
+		if get_tree().is_paused():
+			# show the mouse the confine it within the screen while paused
+			pause_menu.show()
+			Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED)
+		else:
+			# hide the mouse and hold it in place while not paused
+			pause_menu.hide()
+			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	else:
-		# hide the mouse and hold it in place while not paused
+		get_tree().paused = true
 		pause_menu.hide()
-		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+		Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED)
 
 
 func toggle_pause():

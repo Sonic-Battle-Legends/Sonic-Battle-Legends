@@ -35,7 +35,6 @@ func _ready():
 func _process(_delta):
 	# intro animation
 	if intro_animation.is_visible_in_tree() and Input.is_anything_pressed():
-		push_warning("here")
 		intro_animation.hide()
 		main_menu.show()
 
@@ -143,3 +142,21 @@ func _on_area_1_button_pressed():
 	GlobalVariables.area_selected = GlobalVariables.playable_areas.area1
 	hide_menus()
 	go_to_area_scene()
+
+
+func _on_back_button_pressed():
+	if online_or_offline_menu.is_visible_in_tree():
+		hide_menus()
+		main_menu.show()
+	if online_menu.is_visible_in_tree():
+		hide_menus()
+		online_or_offline_menu.show()
+	if mode_selection_menu.is_visible_in_tree():
+		hide_menus()
+		online_or_offline_menu.show()
+	if character_selection_menu.is_visible_in_tree():
+		hide_menus()
+		mode_selection_menu.show()
+	if area_selection_menu.is_visible_in_tree():
+		hide_menus()
+		character_selection_menu.show()
