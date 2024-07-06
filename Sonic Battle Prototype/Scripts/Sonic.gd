@@ -144,12 +144,14 @@ var guard_pressed: bool = false
 
 func _enter_tree():
 	
-	set_multiplayer_authority(str(name).to_int())
-
+	#set_multiplayer_authority(str(name).to_int())
+	set_multiplayer_authority(GlobalVariables.character_id)
 
 func _ready():
 	if not is_multiplayer_authority(): return
 	$MainCam.current = true
+	
+	points = GlobalVariables.character_points
 	
 	# update the hud with the default values when starting the game
 	hud.update_hud(life_total, special_amount, points)
@@ -221,6 +223,9 @@ func _physics_process(delta):
 		handle_attack()
 		
 		handle_healing()
+		
+		if life_total <= 0 and GlobalVariables.game_ended == false:
+			defeated()
 		
 	else:
 		# if Sonic is in his attacking or hurt state, he slows to a halt.
@@ -458,6 +463,9 @@ func increase_special(amount = 1):
 func increase_points():
 	points += 1
 	hud.change_points(points)
+	GlobalVariables.character_points = points
+	if points >= GlobalVariables.points_to_win:
+			GlobalVariables.win()
 
 
 ## This function mostly handles what animations play with what booleans.
@@ -615,6 +623,12 @@ func _on_hitbox_body_entered(body):
 		# If the current attack is Sonic's "pow" move, the hitbox pays attention to immunities.
 		if !pow_move || body.immunity != "pow":
 			body.get_hurt.rpc_id(body.get_multiplayer_authority(), launch_power)
+
+
+func defeated():
+		# player must get the ability selection screen again
+		# then select a location to spawn
+		Instantiables.respawn()
 
 
 ## A function that handles Sonic getting hurt. Knockback is determined by the thing that initiates this

@@ -1,9 +1,6 @@
 extends Node3D
 
 
-#@export var main_menu: PanelContainer
-#@export var address_entry: LineEdit
-
 const PORT = 9999
 var enet_peer = ENetMultiplayerPeer.new()
 
@@ -18,7 +15,6 @@ func _on_host_button_pressed():
 
 func configure_player():
 	GlobalVariables.main_menu.online_menu.hide()
-	#main_menu.hide()
 	
 	if GlobalVariables.character_id == null:
 		# need to check if enet already exists
@@ -42,12 +38,10 @@ func remove_player(peer_id):
 	var player = get_node_or_null(str(peer_id))
 	if player:
 		player.queue_free()
-		push_warning("player removed")
 
 
 func _on_join_button_pressed():
 	GlobalVariables.main_menu.online_menu.hide()
-	#main_menu.hide()
 	
 	enet_peer.create_client("localhost", PORT)
 	multiplayer.multiplayer_peer = enet_peer

@@ -45,9 +45,10 @@ func _on_area_3d_area_entered(area):
 			# cause normal damage to this enemy
 			get_hurt(Vector3.ZERO)
 		else:
-			last_character_this_took_damage_from = area.get_parent().user
-			# cause more damage to this enemy if the source is within the PlayerAttack group, shockwave for example
-			get_hurt(Vector3.ZERO, 3)
+			if area.get_parent() != null and area.get_parent().user != null:
+				last_character_this_took_damage_from = area.get_parent().user
+				# cause more damage to this enemy if the source is within the PlayerAttack group, shockwave for example
+				get_hurt(Vector3.ZERO, 3)
 		
 
 

@@ -6,25 +6,33 @@ extends Node
 @export var main_menu_button: Button
 
 
-func _ready():
+func _process(_delta):
 	if GlobalVariables.play_online:
 		restart_button.hide()
 	else:
 		restart_button.show()
-
-func _process(_delta):	
-	# pause / resume the game when pressing "pause" button
-	if Input.is_action_just_pressed("pause"):
-		toggle_pause()
-	
-	if get_tree().is_paused():
-		# show the mouse the confine it within the screen while paused
-		pause_menu.show()
-		Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED)
+		
+	# allow to pause on a stage or hub while the game has not being won yet
+	if GlobalVariables.game_ended == false and GlobalVariables.current_character != null and (GlobalVariables.current_hub != null or GlobalVariables.current_stage != null):
+		# pause / resume the game when pressing "pause" button
+		if Input.is_action_just_pressed("pause"):
+			toggle_pause()
+		
+		if get_tree().is_paused():
+			# show the mouse the confine it within the screen while paused
+			pause_menu.show()
+			Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED)
+		else:
+			# hide the mouse and hold it in place while not paused
+			pause_menu.hide()
+			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	else:
-		# hide the mouse and hold it in place while not paused
+		# game ended, score screen appeared
+		get_tree().paused = GlobalVariables.game_ended
+		# else it's on main menu
+		
 		pause_menu.hide()
-		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+		Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED)
 
 
 func toggle_pause():
@@ -38,14 +46,25 @@ func toggle_pause():
 
 func restart():
 	if GlobalVariables.play_online == false:
-		# restart current match
 		get_tree().paused = false
-		get_tree().reload_current_scene()
+		
+		# if it's restarting a hub
+		if GlobalVariables.current_hub != null and GlobalVariables.hub_selected != null:
+			Instantiables.go_to_hub(GlobalVariables.hub_selected)
+		# if restarting a stage
+		elif GlobalVariables.current_stage != null and GlobalVariables.stage_selected != null:
+			Instantiables.go_to_stage(GlobalVariables.stage_selected)
+		# if restarting an area
+		# for now go to main menu
+		else:
+			get_tree().reload_current_scene()
+			#GlobalVariables.main_menu.start_menu()
 
-
-func go_to_main_menu():
-	GlobalVariables.go_to_main_menu_from_battle()
-	#get_tree().change_scene_to_file("res://Scenes/menus.tscn")
+# exit
+func go_back():
+	get_tree().paused = false
+	
+	Instantiables.exit_current_ambient()
 
 
 func _on_resume_button_pressed():
@@ -56,5 +75,6 @@ func _on_restart_button_pressed():
 	restart()
 
 
-func _on_main_menu_button_pressed():
-	go_to_main_menu()
+# exit button
+func _on_go_to_previous_ambient_pressed():
+	go_back()

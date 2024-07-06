@@ -4,12 +4,9 @@ extends Node
 var character
 
 
-func _ready():
-	character = get_parent()
-
-
 func _process(_delta):
-	if character:		
+	character = GlobalVariables.current_character
+	if character:
 		# Get the input direction
 		var input_dir = Input.get_vector("left", "right", "up", "down")
 		character.direction = (character.transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
@@ -44,13 +41,15 @@ func directional_just_pressed() -> bool:
 
 # check double tap
 func _input(event):
-	if event is InputEventKey and event.is_pressed() and character.is_on_floor():
-		if character.last_keycode == event.keycode and character.doubletap_timer >= 0:
-			if directional_just_pressed():
-				character.dash_triggered = true
-			if Input.is_action_just_pressed("guard"):
-				character.camera.rotate_camera()
-			character.last_keycode = 0
-		else:
-			character.last_keycode = event.keycode
-		character.doubletap_timer = character.DOUBLETAP_DELAY
+	character = GlobalVariables.current_character
+	if character:
+		if event is InputEventKey and event.is_pressed() and character.is_on_floor():
+			if character.last_keycode == event.keycode and character.doubletap_timer >= 0:
+				if directional_just_pressed():
+					character.dash_triggered = true
+				if Input.is_action_just_pressed("guard"):
+					character.camera.rotate_camera()
+				character.last_keycode = 0
+			else:
+				character.last_keycode = event.keycode
+			character.doubletap_timer = character.DOUBLETAP_DELAY

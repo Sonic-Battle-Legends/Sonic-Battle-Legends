@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Scripts/Menus.gd" id="1_v57px"]
 [ext_resource type="Texture2D" uid="uid://dofyi4jiyto42" path="res://Textures/icon.svg" id="2_xj80o"]
-[ext_resource type="Script" path="res://Scripts/ServerJoin2.gd" id="3_2yac5"]
+[ext_resource type="PackedScene" uid="uid://bvn1yjxoq8fdx" path="res://Scenes/pause.tscn" id="4_ns075"]
 
 [node name="Menus" type="Control" node_paths=PackedStringArray("intro_animation", "main_menu", "options_menu", "online_or_offline_menu", "online_menu", "mode_selection_menu", "character_selection_menu", "area_selection_menu", "canvas_server_menu")]
 layout_mode = 3
@@ -23,7 +23,6 @@ area_selection_menu = NodePath("AreaSelect")
 canvas_server_menu = NodePath("OnlineMenu/canvas")
 
 [node name="IntroAnimation" type="VideoStreamPlayer" parent="."]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -196,10 +195,10 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -89.0
-offset_top = 79.0
-offset_right = 104.0
-offset_bottom = 142.0
+offset_left = -56.0
+offset_top = 83.0
+offset_right = 137.0
+offset_bottom = 146.0
 grow_horizontal = 2
 text = "CONNECTION"
 
@@ -233,24 +232,39 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "Offline"
 
+[node name="back button" type="Button" parent="OnlineOrOffline"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -83.0
+offset_top = 128.0
+offset_right = 95.0
+offset_bottom = 186.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Back"
+
 [node name="OnlineMenu" type="Control" parent="."]
+visible = false
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="canvas" type="Node3D" parent="OnlineMenu" node_paths=PackedStringArray("main_menu", "address_entry")]
-script = ExtResource("3_2yac5")
-main_menu = NodePath("MainOnlineMenu")
-address_entry = NodePath("MainOnlineMenu/MarginContainer/VBoxContainer/AddressEntry")
+[node name="canvas" type="Node3D" parent="OnlineMenu"]
+visible = false
 
 [node name="MainOnlineMenu" type="PanelContainer" parent="OnlineMenu/canvas"]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 379.0
 offset_top = 237.0
 offset_right = -379.0
-offset_bottom = -237.0
+offset_bottom = -180.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -266,7 +280,7 @@ layout_mode = 2
 
 [node name="Label" type="Label" parent="OnlineMenu/canvas/MainOnlineMenu/MarginContainer/VBoxContainer"]
 layout_mode = 2
-text = "Menu"
+text = "Connection"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -283,6 +297,10 @@ layout_mode = 2
 placeholder_text = "Enter Room Code"
 alignment = 1
 
+[node name="back button" type="Button" parent="OnlineMenu/canvas/MainOnlineMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Back"
+
 [node name="ModeSelection" type="Control" parent="."]
 visible = false
 layout_mode = 1
@@ -297,10 +315,10 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -41.0
-offset_top = 59.0
-offset_right = 154.0
-offset_bottom = 129.0
+offset_left = -69.0
+offset_top = 55.0
+offset_right = 126.0
+offset_bottom = 125.0
 grow_horizontal = 2
 text = "MODE SELECTION"
 
@@ -311,10 +329,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -168.0
-offset_top = -4.0
-offset_right = -24.0
-offset_bottom = 106.0
+offset_left = -236.0
+offset_top = -25.0
+offset_right = -92.0
+offset_bottom = 85.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "Story
@@ -327,10 +345,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -4.0
-offset_top = -4.0
-offset_right = 140.0
-offset_bottom = 106.0
+offset_left = -72.0
+offset_top = -25.0
+offset_right = 72.0
+offset_bottom = 85.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "Battle
@@ -343,14 +361,29 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 160.0
-offset_top = -4.0
-offset_right = 304.0
-offset_bottom = 106.0
+offset_left = 92.0
+offset_top = -25.0
+offset_right = 236.0
+offset_bottom = 85.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "Challenge
 Mode"
+
+[node name="back button" type="Button" parent="ModeSelection"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -83.0
+offset_top = 128.0
+offset_right = 95.0
+offset_bottom = 186.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Back"
 
 [node name="CharacterSelection" type="Control" parent="."]
 visible = false
@@ -366,9 +399,9 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -62.0
+offset_left = -77.0
 offset_top = 64.0
-offset_right = 138.0
+offset_right = 123.0
 offset_bottom = 155.0
 grow_horizontal = 2
 text = "Character Selection"
@@ -380,13 +413,28 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -57.0
-offset_top = -45.0
-offset_right = 54.0
-offset_bottom = 69.0
+offset_left = -54.0
+offset_top = -29.0
+offset_right = 57.0
+offset_bottom = 85.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "Sonic"
+
+[node name="back button" type="Button" parent="CharacterSelection"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -83.0
+offset_top = 128.0
+offset_right = 95.0
+offset_bottom = 186.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Back"
 
 [node name="AreaSelect" type="Control" parent="."]
 visible = false
@@ -416,13 +464,30 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -124.0
-offset_top = -112.5
-offset_right = 124.0
-offset_bottom = 112.5
+offset_left = -120.0
+offset_top = -84.0
+offset_right = 128.0
+offset_bottom = 81.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "Area 1 "
+
+[node name="back button" type="Button" parent="AreaSelect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -83.0
+offset_top = 128.0
+offset_right = 95.0
+offset_bottom = 186.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Back"
+
+[node name="Pause" parent="." instance=ExtResource("4_ns075")]
 
 [connection signal="pressed" from="MainMenu/start button" to="." method="_on_start_button_pressed"]
 [connection signal="pressed" from="MainMenu/options button" to="." method="_on_options_button_pressed"]
@@ -430,10 +495,17 @@ text = "Area 1 "
 [connection signal="pressed" from="OptionsMenu/options back button" to="." method="_on_options_back_button_pressed"]
 [connection signal="pressed" from="OnlineOrOffline/online button" to="." method="_on_online_button_pressed"]
 [connection signal="pressed" from="OnlineOrOffline/offline button" to="." method="_on_offline_button_pressed"]
-[connection signal="pressed" from="OnlineMenu/canvas/MainOnlineMenu/MarginContainer/VBoxContainer/HostButton" to="OnlineMenu/canvas" method="_on_host_button_pressed"]
-[connection signal="pressed" from="OnlineMenu/canvas/MainOnlineMenu/MarginContainer/VBoxContainer/JoinButton" to="OnlineMenu/canvas" method="_on_join_button_pressed"]
+[connection signal="pressed" from="OnlineOrOffline/back button" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="OnlineMenu/canvas/MainOnlineMenu/MarginContainer/VBoxContainer/HostButton" to="." method="_on_host_button_pressed"]
+[connection signal="pressed" from="OnlineMenu/canvas/MainOnlineMenu/MarginContainer/VBoxContainer/JoinButton" to="." method="_on_join_button_pressed"]
+[connection signal="pressed" from="OnlineMenu/canvas/MainOnlineMenu/MarginContainer/VBoxContainer/back button" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="ModeSelection/story mode button" to="." method="_on_story_mode_button_pressed"]
 [connection signal="pressed" from="ModeSelection/battle mode button" to="." method="_on_battle_mode_button_pressed"]
 [connection signal="pressed" from="ModeSelection/challenge mode button" to="." method="_on_challenge_mode_button_pressed"]
+[connection signal="pressed" from="ModeSelection/back button" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="CharacterSelection/sonic character button" to="." method="_on_sonic_character_button_pressed"]
+[connection signal="pressed" from="CharacterSelection/back button" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="AreaSelect/area 1 button" to="." method="_on_area_1_button_pressed"]
+[connection signal="pressed" from="AreaSelect/back button" to="." method="_on_back_button_pressed"]
+
+[editable path="Pause"]

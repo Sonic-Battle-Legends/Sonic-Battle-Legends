@@ -8,7 +8,7 @@ script = ExtResource("1_qgnnd")
 pause_menu = NodePath("pause_menu_placeholder")
 resume_button = NodePath("pause_menu_placeholder/Resume Button")
 restart_button = NodePath("pause_menu_placeholder/Restart Button")
-main_menu_button = NodePath("pause_menu_placeholder/Main Menu Button")
+main_menu_button = NodePath("pause_menu_placeholder/go to previous ambient")
 
 [node name="pause_menu_placeholder" type="Control" parent="."]
 layout_mode = 3
@@ -57,7 +57,7 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "Restart"
 
-[node name="Main Menu Button" type="Button" parent="pause_menu_placeholder"]
+[node name="go to previous ambient" type="Button" parent="pause_menu_placeholder"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -70,8 +70,8 @@ offset_right = 694.0
 offset_bottom = 433.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "Main Menu"
+text = "Exit Ambient"
 
 [connection signal="pressed" from="pause_menu_placeholder/Resume Button" to="." method="_on_resume_button_pressed"]
 [connection signal="pressed" from="pause_menu_placeholder/Restart Button" to="." method="_on_restart_button_pressed"]
-[connection signal="pressed" from="pause_menu_placeholder/Main Menu Button" to="." method="_on_main_menu_button_pressed"]
+[connection signal="pressed" from="pause_menu_placeholder/go to previous ambient" to="." method="_on_go_to_previous_ambient_pressed"]
