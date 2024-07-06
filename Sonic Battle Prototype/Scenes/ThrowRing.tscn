@@ -48,20 +48,20 @@ radius = 0.0775516
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_17ln7"]
 properties/0/path = NodePath(".:position")
 properties/0/spawn = true
-properties/0/sync = true
+properties/0/replication_mode = 1
 properties/1/path = NodePath("AnimationPlayer:current_animation")
 properties/1/spawn = true
-properties/1/sync = true
+properties/1/replication_mode = 1
 
 [node name="ThrowRing" type="CharacterBody3D"]
 collision_layer = 0
 script = ExtResource("1_488t5")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-autoplay = "rotate"
 libraries = {
 "": SubResource("AnimationLibrary_flgee")
 }
+autoplay = "rotate"
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
 texture_filter = 2

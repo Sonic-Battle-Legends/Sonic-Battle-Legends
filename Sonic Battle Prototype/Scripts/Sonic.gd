@@ -263,15 +263,16 @@ func handle_sprite_orientation():
 	var flip_threshold = 2
 	# if the character is on idle or walk animation, flip the sprite with the input
 	if walking or starting:
-		flip_threshold = 0.001
-	if velocity.x > flip_threshold:
-		facing_left = false
-		$Sprite3D.flip_h = false
-		$Hitbox.rotation.y = deg_to_rad(0)
-	elif velocity.x < -flip_threshold:
-		facing_left = true
-		$Sprite3D.flip_h = true
-		$Hitbox.rotation.y = deg_to_rad(180)
+		flip_threshold = 2
+	if !attacking:
+		if velocity.x > flip_threshold:
+			facing_left = false
+			$Sprite3D.flip_h = false
+			$Hitbox.rotation.y = deg_to_rad(0)
+		elif velocity.x < -flip_threshold:
+			facing_left = true
+			$Sprite3D.flip_h = true
+			$Hitbox.rotation.y = deg_to_rad(180)
 
 
 ## method to check and perform the dash movement
@@ -385,6 +386,7 @@ func handle_attack():
 				velocity.x = 1
 			else:
 				velocity.x = -1
+			attacking = true
 		else:
 			# If sonic holds any other direction, he executes a normal strong attack
 			# that sends the opponent in the direction he specifies.

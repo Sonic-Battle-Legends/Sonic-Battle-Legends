@@ -4,7 +4,7 @@ extends Node
 var character
 
 
-func _process(_delta):
+func _physics_process(_delta):
 	character = GlobalVariables.current_character
 	if character:
 		# Get the input direction
@@ -17,7 +17,7 @@ func _process(_delta):
 		character.jump_pressed = Input.is_action_just_pressed("jump")
 		
 		# attack check
-		character.attack_pressed = Input.is_action_pressed("punch")
+		character.attack_pressed = Input.is_action_just_pressed("punch")
 		
 		# special attack check
 		character.special_pressed = Input.is_action_just_pressed("special")
