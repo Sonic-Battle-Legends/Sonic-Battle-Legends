@@ -45,9 +45,6 @@ var current_position: abilities = abilities.SHOT
 # there is probably a better way to snap into the correct position
 var selector_position_correction: Vector2 = Vector2(-112, -20)
 
-# the timer to select the abilities
-var timer: SceneTreeTimer
-
 # set to true when the time runs out to start the battle
 var done: bool = false
 
@@ -74,7 +71,7 @@ func _process(_delta):
 ## set the hud to it's default values
 func initialise_fields():
 	menu_title.text = str(titles.find_key(0)) + " Attack"
-	timer = get_tree().create_timer(STARTING_TIME)
+	GlobalVariables.select_ability_timer = get_tree().create_timer(STARTING_TIME, false, true)
 	abilities_symbol = [shot_symbol, pow_symbol, set_symbol]
 	slot_titles = [shot_slot, pow_slot, set_slot]
 	shot_slot.text = empty_string
@@ -188,11 +185,11 @@ func undo_previous_selection():
 
 ## update the time left to select an ability
 func check_timeout():
-	time_left_text.text = str(int(timer.time_left))
+	time_left_text.text = str(int(GlobalVariables.select_ability_timer.time_left))
 	
 	# if the timer runs out,
 	# select a default value to the unselected slots and start the battle
-	if not done and (timer == null or timer.time_left <= 0):
+	if not done and (GlobalVariables.select_ability_timer == null or GlobalVariables.select_ability_timer.time_left <= 0):
 		for i in range(abilities.size()): #abs(abilities.size() - selected_abilites.size())):
 			if selected_abilites.find(abilities.find_key(i)) == not_found:
 				selected_abilites.append(abilities.find_key(i))

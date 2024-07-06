@@ -19,27 +19,38 @@ var play_mode = modes.battle
 # maybe make another list for unlockable characters
 enum playable_characters {sonic}
 var character_selected = playable_characters.sonic
-# to store the character node that was created in-game
+# to store the character node that was instantiated in-game
 var current_character
 
 # enumerator for all world areas
 # which contain some number of hubs each
 # maybe make another list for unlockable characters
 enum playable_areas {area1}
-var area_selected = playable_areas.area1
+# store the area selected in the main menu
+var area_selected # = playable_areas.area1
+# store the instantiated area
+var current_area
 
-# current hub created in-game
+enum playable_hubs {hub1}
+# store the hub selected in the main menu
+var hub_selected
+# current hub instantiated in-game
 var current_hub
 
-# current stage created in-game
+# stage selected (with PackedScene type) by hitting a hub marker in a hub area
+var stage_selected
+# current stage instantiated in-game
 var current_stage
+
+# timer to select ability and place character on stage
+var select_ability_timer: SceneTreeTimer
 
 var selected_abilities: Array
 var character_points: int = 0
 var defeated: bool = true
 
 # win condition
-var points_to_win: int = 8
+var points_to_win: int = 1
 # store if someone won the game already
 var game_ended: bool = false
 

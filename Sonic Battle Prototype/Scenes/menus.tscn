@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Scripts/Menus.gd" id="1_v57px"]
 [ext_resource type="Texture2D" uid="uid://dofyi4jiyto42" path="res://Textures/icon.svg" id="2_xj80o"]
-[ext_resource type="Script" path="res://Scripts/ServerJoin2.gd" id="3_2yac5"]
+[ext_resource type="PackedScene" uid="uid://bvn1yjxoq8fdx" path="res://Scenes/pause.tscn" id="4_ns075"]
 
 [node name="Menus" type="Control" node_paths=PackedStringArray("intro_animation", "main_menu", "options_menu", "online_or_offline_menu", "online_menu", "mode_selection_menu", "character_selection_menu", "area_selection_menu", "canvas_server_menu")]
 layout_mode = 3
@@ -253,11 +253,8 @@ anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="canvas" type="Node3D" parent="OnlineMenu" node_paths=PackedStringArray("main_menu", "address_entry")]
+[node name="canvas" type="Node3D" parent="OnlineMenu"]
 visible = false
-script = ExtResource("3_2yac5")
-main_menu = NodePath("MainOnlineMenu")
-address_entry = NodePath("MainOnlineMenu/MarginContainer/VBoxContainer/AddressEntry")
 
 [node name="MainOnlineMenu" type="PanelContainer" parent="OnlineMenu/canvas"]
 visible = false
@@ -490,6 +487,8 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "Back"
 
+[node name="Pause" parent="." instance=ExtResource("4_ns075")]
+
 [connection signal="pressed" from="MainMenu/start button" to="." method="_on_start_button_pressed"]
 [connection signal="pressed" from="MainMenu/options button" to="." method="_on_options_button_pressed"]
 [connection signal="pressed" from="MainMenu/quit button" to="." method="_on_quit_button_pressed"]
@@ -497,8 +496,8 @@ text = "Back"
 [connection signal="pressed" from="OnlineOrOffline/online button" to="." method="_on_online_button_pressed"]
 [connection signal="pressed" from="OnlineOrOffline/offline button" to="." method="_on_offline_button_pressed"]
 [connection signal="pressed" from="OnlineOrOffline/back button" to="." method="_on_back_button_pressed"]
-[connection signal="pressed" from="OnlineMenu/canvas/MainOnlineMenu/MarginContainer/VBoxContainer/HostButton" to="OnlineMenu/canvas" method="_on_host_button_pressed"]
-[connection signal="pressed" from="OnlineMenu/canvas/MainOnlineMenu/MarginContainer/VBoxContainer/JoinButton" to="OnlineMenu/canvas" method="_on_join_button_pressed"]
+[connection signal="pressed" from="OnlineMenu/canvas/MainOnlineMenu/MarginContainer/VBoxContainer/HostButton" to="." method="_on_host_button_pressed"]
+[connection signal="pressed" from="OnlineMenu/canvas/MainOnlineMenu/MarginContainer/VBoxContainer/JoinButton" to="." method="_on_join_button_pressed"]
 [connection signal="pressed" from="OnlineMenu/canvas/MainOnlineMenu/MarginContainer/VBoxContainer/back button" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="ModeSelection/story mode button" to="." method="_on_story_mode_button_pressed"]
 [connection signal="pressed" from="ModeSelection/battle mode button" to="." method="_on_battle_mode_button_pressed"]
@@ -508,3 +507,5 @@ text = "Back"
 [connection signal="pressed" from="CharacterSelection/back button" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="AreaSelect/area 1 button" to="." method="_on_area_1_button_pressed"]
 [connection signal="pressed" from="AreaSelect/back button" to="." method="_on_back_button_pressed"]
+
+[editable path="Pause"]

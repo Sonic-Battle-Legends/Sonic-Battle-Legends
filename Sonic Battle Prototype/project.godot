@@ -19,6 +19,7 @@ config/icon="res://Textures/icon.svg"
 
 Instantiables="*res://Scripts/Resources/Instantiables.gd"
 GlobalVariables="*res://Scripts/Resources/GlobalVariables.gd"
+ServerJoin="*res://Scripts/Resources/ServerJoin.gd"
 
 [input]
 

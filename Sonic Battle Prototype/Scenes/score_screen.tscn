@@ -37,7 +37,6 @@ grow_vertical = 2
 text = "Win Animation goes here"
 
 [node name="play again button" type="Button" parent="."]
-visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -77,4 +76,5 @@ text = "character ID Won!
 Score: 9999999
 points: 10"
 
+[connection signal="pressed" from="play again button" to="." method="_on_play_again_button_pressed"]
 [connection signal="pressed" from="main menu button" to="." method="_on_main_menu_button_pressed"]

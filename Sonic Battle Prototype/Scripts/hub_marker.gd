@@ -14,4 +14,5 @@ func _on_area_3d_area_entered(area):
 		# Set the stage in the marker inside a hub
 		# or make a list in the instantiables and make it accessible as a filter
 		# in the hub marker's "new_stage" field in the inspector
-		Instantiables.go_to_stage_from_hub(new_stage)
+		GlobalVariables.stage_selected = new_stage
+		Instantiables.go_to_stage(new_stage)

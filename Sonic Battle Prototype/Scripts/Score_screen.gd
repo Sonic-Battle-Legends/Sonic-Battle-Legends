@@ -12,19 +12,21 @@ func _process(_delta):
 		done = true
 		win_text_node.text = "Player " + str(winner) + " Won!"
 
-'''
+
+## play again with the same settings
 func _on_play_again_button_pressed():
 	# restart current match
-	get_tree().paused = false
-	GlobalVariables.game_ended = false
-	GlobalVariables.character_points = 0
-	# this reloads the entire Main scene not only the stage
-	get_tree().reload_current_scene()
-'''
+	Instantiables.go_to_stage(GlobalVariables.stage_selected) #restart_current_stage()
+	queue_free()
+	
+	# this reloads the entire Main scene not only the selected stage
+	# get_tree().reload_current_scene()
+
 
 
 func _on_main_menu_button_pressed():
-	GlobalVariables.go_to_main_menu_from_battle()
+	#Instantiables.go_to_main_menu_from_battle()
+	Instantiables.go_to_hub(GlobalVariables.hub_selected)
 	get_tree().paused = false
 	GlobalVariables.game_ended = false
 	GlobalVariables.character_points = 0

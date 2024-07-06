@@ -20,11 +20,16 @@ extends Control
 @export_category("SERVER CANVAS MENU")
 @export var canvas_server_menu: Node3D
 
-var current_selection: int = 0
-
 
 func _ready():
 	GlobalVariables.main_menu = self
+	
+	# reset any current ambients to prevent error when
+	# going to a previous ambient using pause menu button
+	GlobalVariables.current_stage = null
+	GlobalVariables.current_hub = null
+	GlobalVariables.current_area = null
+	
 	# hide menus and show intro animation
 	start_menu()
 
@@ -66,10 +71,7 @@ func go_to_area_scene():
 	# the area is a placeholder for now
 	# testing a game loop
 	# the same hub will be selected every time for now
-	GlobalVariables.playable_areas.find_key(GlobalVariables.area_selected)
-	Instantiables.load_hub(Instantiables.hubs.HUBTEST)
-	# create the character in the Main scene
-	Instantiables.add_player(get_parent())
+	Instantiables.go_to_hub(GlobalVariables.hub_selected)
 	# hide menus
 	hide_menus()
 
@@ -104,10 +106,22 @@ func _on_online_button_pressed():
 	online_menu.show()
 
 
+func _on_host_button_pressed():
+	ServerJoin.configure_player()
+
+
+func _on_join_button_pressed():
+	GlobalVariables.main_menu.online_menu.hide()
+	
+	ServerJoin.enet_peer.create_client("localhost", ServerJoin.PORT)
+	ServerJoin.multiplayer.multiplayer_peer = ServerJoin.enet_peer
+
+
 func _on_offline_button_pressed():
 	GlobalVariables.play_online = false
 	hide_menus()
-	canvas_server_menu.add_player()
+	ServerJoin.configure_player()
+	#canvas_server_menu.configure_player()
 	mode_selection_menu.show()
 
 
@@ -137,6 +151,7 @@ func _on_sonic_character_button_pressed():
 
 func _on_area_1_button_pressed():
 	GlobalVariables.area_selected = GlobalVariables.playable_areas.area1
+	GlobalVariables.hub_selected = Instantiables.HUB_TEST
 	hide_menus()
 	go_to_area_scene()
 

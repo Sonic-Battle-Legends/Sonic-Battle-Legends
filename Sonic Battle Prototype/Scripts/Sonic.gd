@@ -144,8 +144,8 @@ var guard_pressed: bool = false
 
 func _enter_tree():
 	
-	set_multiplayer_authority(str(name).to_int())
-
+	#set_multiplayer_authority(str(name).to_int())
+	set_multiplayer_authority(GlobalVariables.character_id)
 
 func _ready():
 	if not is_multiplayer_authority(): return
