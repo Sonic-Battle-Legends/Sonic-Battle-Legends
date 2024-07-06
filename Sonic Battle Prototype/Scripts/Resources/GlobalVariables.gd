@@ -15,6 +15,9 @@ enum modes {battle, story, challenge}
 # which mode was selected (battle mode, story mode,...)
 var play_mode = modes.battle
 
+# bellow there are many "current" and "selected" variables
+# the "current" is used to track and later delete the instantiated scene
+# the "selected" is used to instantiate a new one
 # enumerator with all playable characters
 # maybe make another list for unlockable characters
 enum playable_characters {sonic}
@@ -48,6 +51,10 @@ var select_ability_timer: SceneTreeTimer
 var selected_abilities: Array
 var character_points: int = 0
 var defeated: bool = true
+
+# variables for the hud on areas and hubs
+var total_rings: int = 0
+var extra_lives: int = 2
 
 # win condition
 var points_to_win: int = 1

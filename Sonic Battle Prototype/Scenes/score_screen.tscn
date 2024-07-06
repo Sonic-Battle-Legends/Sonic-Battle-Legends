@@ -49,9 +49,9 @@ offset_right = 56.0
 offset_bottom = 61.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "Play Again?"
+text = "Play Again"
 
-[node name="main menu button" type="Button" parent="."]
+[node name="back to hub button" type="Button" parent="."]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -64,7 +64,7 @@ offset_right = 58.0
 offset_bottom = 126.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "Main Menu"
+text = "Back to Hub"
 
 [node name="win text" type="RichTextLabel" parent="."]
 layout_mode = 0
@@ -77,4 +77,4 @@ Score: 9999999
 points: 10"
 
 [connection signal="pressed" from="play again button" to="." method="_on_play_again_button_pressed"]
-[connection signal="pressed" from="main menu button" to="." method="_on_main_menu_button_pressed"]
+[connection signal="pressed" from="back to hub button" to="." method="_on_back_to_hub_button_pressed"]

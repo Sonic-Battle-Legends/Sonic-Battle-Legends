@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://bxjkjr27crbtr"]
+
+[ext_resource type="PackedScene" uid="uid://bla4tnasvtn0v" path="res://Models/testmap.blend" id="1_w105v"]
+[ext_resource type="PackedScene" uid="uid://irlpgd8spuet" path="res://Scenes/stages/invisible_walls.tscn" id="2_nme6q"]
+
+[node name="test2" type="Node3D"]
+
+[node name="testmap" parent="." instance=ExtResource("1_w105v")]
+
+[node name="InvisibleWalls" parent="." instance=ExtResource("2_nme6q")]
+transform = Transform3D(2.055, 0, 0, 0, 2.055, 0, 0, 0, 2.055, 0, 0, 0)
+
+[editable path="testmap"]

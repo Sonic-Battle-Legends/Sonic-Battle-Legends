@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=3 uid="uid://beo1ad082li2p"]
+
+[ext_resource type="PackedScene" uid="uid://cvcjl8vjitsqc" path="res://Models/area1.blend" id="1_macyu"]
+[ext_resource type="PackedScene" uid="uid://dhcmo5dwjo44o" path="res://Scenes/hub_marker.tscn" id="2_daehw"]
+[ext_resource type="PackedScene" uid="uid://bu0kkp6n1836e" path="res://Scenes/Hubs/hub_test.tscn" id="3_dxkq0"]
+
+[node name="area1" type="Node3D"]
+
+[node name="area1" parent="." instance=ExtResource("1_macyu")]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, -1.0475, 0)
+
+[node name="hub_marker" parent="." instance=ExtResource("2_daehw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.87922, -0.153795, -2.13802)
+new_stage = ExtResource("3_dxkq0")

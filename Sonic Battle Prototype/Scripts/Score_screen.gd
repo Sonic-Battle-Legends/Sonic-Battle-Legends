@@ -3,6 +3,7 @@ extends Control
 # winner ID
 var winner
 var done: bool = false
+var button_pressed: bool = false
 
 @export var win_text_node: RichTextLabel
 
@@ -11,23 +12,28 @@ func _process(_delta):
 	if winner != null and done == false:
 		done = true
 		win_text_node.text = "Player " + str(winner) + " Won!"
+	
+	if button_pressed:
+		queue_free()
 
 
 ## play again with the same settings
 func _on_play_again_button_pressed():
-	# restart current match
-	Instantiables.go_to_stage(GlobalVariables.stage_selected) #restart_current_stage()
-	queue_free()
+	# delete this screen
+	button_pressed = true
 	
-	# this reloads the entire Main scene not only the selected stage
-	# get_tree().reload_current_scene()
+	# restart current match
+	Instantiables.go_to_stage(GlobalVariables.stage_selected) #restart_current_stage()	
 
 
-
-func _on_main_menu_button_pressed():
-	#Instantiables.go_to_main_menu_from_battle()
-	Instantiables.go_to_hub(GlobalVariables.hub_selected)
-	get_tree().paused = false
+func _on_back_to_hub_button_pressed():	
+	# delete this screen
+	button_pressed = true
+	
+	# reset win conditions
 	GlobalVariables.game_ended = false
 	GlobalVariables.character_points = 0
-	queue_free()
+	GlobalVariables.current_character.hud.update_hud(GlobalVariables.current_character.life_total, GlobalVariables.current_character.special_amount, GlobalVariables.current_character.points)
+	
+	Instantiables.go_to_hub(GlobalVariables.hub_selected)
+	get_tree().paused = false

@@ -105,7 +105,6 @@ func go_to_hub(selected_hub):
 	
 	load_hub(selected_hub)
 	
-	
 	# allow a new character to be spawned
 	#GlobalVariables.main_menu.canvas_server_menu.remove_player(multiplayer.multiplayer_peer)
 	if GlobalVariables.current_character != null:
@@ -144,7 +143,6 @@ func go_to_stage(new_stage: PackedScene):
 	
 	# allow a new character to be spawned
 	ServerJoin.remove_player(multiplayer.multiplayer_peer)
-	#GlobalVariables.main_menu.canvas_server_menu.remove_player(multiplayer.multiplayer_peer)
 	# spawn a character with ability selector
 	respawn()
 	
@@ -177,29 +175,12 @@ func respawn():
 ## exit from hub to area
 ## exit from area to main menu
 func exit_current_ambient():
-	if GlobalVariables.hub_selected != null: #GlobalVariables.current_stage != null and 
+	if GlobalVariables.hub_selected != null:
 		# if on stage, return to current hub
-		#go_to_area()
-		get_tree().reload_current_scene()
-	elif GlobalVariables.area_selected != null: #GlobalVariables.current_hub != null and 
+		go_to_hub(GlobalVariables.hub_selected)
+	elif GlobalVariables.area_selected != null:
 		# if on hub, return to current area
 		go_to_area(GlobalVariables.area_selected)
-	else: #if GlobalVariables.current_area != null:
+	else:
 		# if on area, return to main menu
 		get_tree().reload_current_scene()
-		#GlobalVariables.main_menu.start_menu()
-
-'''
-## bridge from the battle's pause menu back to the main menu
-# maybe it should go back to the hub instead
-func go_to_main_menu_from_battle():
-	# remove the hub and the character from the main scene
-	if GlobalVariables.current_stage != null:
-		GlobalVariables.current_stage.queue_free()
-	if GlobalVariables.current_hub != null:
-		GlobalVariables.current_hub.queue_free()
-	ServerJoin.remove_player(multiplayer.multiplayer_peer)
-	#GlobalVariables.main_menu.canvas_server_menu.remove_player(multiplayer.multiplayer_peer)
-	GlobalVariables.current_character.queue_free()
-	GlobalVariables.main_menu.start_menu()
-'''
