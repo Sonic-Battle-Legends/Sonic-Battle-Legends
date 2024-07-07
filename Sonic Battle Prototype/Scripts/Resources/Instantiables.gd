@@ -28,6 +28,9 @@ const SONIC = preload("res://Scenes/Sonic.tscn")
 
 const WORLD_AREA = preload("res://Scenes/Areas/world_1.tscn")
 
+# shadow character
+const SHADOW = preload("res://Scenes/Shadow.tscn")
+
 # the hub area with the hub markers that lead to stages
 const HUB_TEST = preload("res://Scenes/Hubs/city_hub.tscn")
 
@@ -48,7 +51,11 @@ enum hubs {HUBTEST}
 func add_player(parent_node, spawn_position = Vector3.ZERO):
 	GlobalVariables.defeated = false
 	
-	var player = SONIC.instantiate()
+	var player
+	if GlobalVariables.character_selected == GlobalVariables.playable_characters.sonic:
+		player = SONIC.instantiate()
+	elif GlobalVariables.character_selected == GlobalVariables.playable_characters.shadow:
+		player = SHADOW.instantiate()
 	player.name = str(GlobalVariables.character_id)
 	# add the selected abilities to the character
 	player.set_abilities(GlobalVariables.selected_abilities)
