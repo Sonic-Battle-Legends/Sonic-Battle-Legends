@@ -93,6 +93,8 @@ func create(object_to_create, place_to_add_as_child = null):
 func go_to_area(selected_area):
 	delete_places()
 	
+	GlobalVariables.hub_selected = null
+	
 	load_area(selected_area)
 	
 	# allow a new character to be spawned
