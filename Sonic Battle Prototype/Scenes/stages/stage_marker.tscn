@@ -42,7 +42,7 @@ _data = {
 "spin": SubResource("Animation_etoyf")
 }
 
-[node name="hub_marker" type="Node3D"]
+[node name="stage_marker" type="Node3D"]
 script = ExtResource("1_cd3qu")
 place_type = 2
 

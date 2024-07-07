@@ -26,7 +26,7 @@ const POINTER_SPAWNER = preload("res://Scenes/pointer_spawner.tscn")
 # sonic character
 const SONIC = preload("res://Scenes/Sonic.tscn")
 
-const WORLD_AREA = preload("res://Scenes/Areas/world_1.tscn")
+const WORLD_AREA = preload("res://Scenes/Areas/world1.tscn")
 
 # shadow character
 const SHADOW = preload("res://Scenes/Shadow.tscn")
@@ -201,7 +201,7 @@ func exit_current_ambient():
 	if GlobalVariables.hub_selected != null and GlobalVariables.current_hub == null:
 		# if on stage, return to current hub
 		go_to_hub(GlobalVariables.hub_selected)
-	elif GlobalVariables.area_selected != null:
+	elif GlobalVariables.area_selected != null and GlobalVariables.current_area == null:
 		# if on hub, return to current area
 		go_to_area(GlobalVariables.area_selected)
 	else:
