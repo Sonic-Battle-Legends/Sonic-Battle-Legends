@@ -148,6 +148,10 @@ func _on_sonic_character_button_pressed():
 	hide_menus()
 	area_selection_menu.show()
 
+func _on_shadow_character_button_pressed():
+	GlobalVariables.character_selected = GlobalVariables.playable_characters.shadow
+	hide_menus()
+	area_selection_menu.show()
 
 func _on_area_1_button_pressed():
 	GlobalVariables.area_selected = GlobalVariables.playable_areas.area1
@@ -174,3 +178,4 @@ func _on_back_button_pressed():
 	if area_selection_menu.is_visible_in_tree():
 		hide_menus()
 		character_selection_menu.show()
+

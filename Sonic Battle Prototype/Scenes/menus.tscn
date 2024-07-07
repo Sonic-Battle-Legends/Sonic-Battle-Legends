@@ -386,7 +386,6 @@ grow_vertical = 2
 text = "Back"
 
 [node name="CharacterSelection" type="Control" parent="."]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -413,13 +412,28 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -54.0
+offset_left = -110.0
 offset_top = -29.0
-offset_right = 57.0
+offset_right = 1.0
 offset_bottom = 85.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "Sonic"
+
+[node name="shadow character button" type="Button" parent="CharacterSelection"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 2.0
+offset_top = -29.0
+offset_right = 113.0
+offset_bottom = 85.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Shadow"
 
 [node name="back button" type="Button" parent="CharacterSelection"]
 layout_mode = 1
@@ -504,6 +518,7 @@ text = "Back"
 [connection signal="pressed" from="ModeSelection/challenge mode button" to="." method="_on_challenge_mode_button_pressed"]
 [connection signal="pressed" from="ModeSelection/back button" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="CharacterSelection/sonic character button" to="." method="_on_sonic_character_button_pressed"]
+[connection signal="pressed" from="CharacterSelection/shadow character button" to="." method="_on_shadow_character_button_pressed"]
 [connection signal="pressed" from="CharacterSelection/back button" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="AreaSelect/area 1 button" to="." method="_on_area_1_button_pressed"]
 [connection signal="pressed" from="AreaSelect/back button" to="." method="_on_back_button_pressed"]

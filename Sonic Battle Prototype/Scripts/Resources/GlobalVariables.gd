@@ -17,7 +17,7 @@ var play_mode = modes.battle
 
 # enumerator with all playable characters
 # maybe make another list for unlockable characters
-enum playable_characters {sonic}
+enum playable_characters {sonic, shadow}
 var character_selected = playable_characters.sonic
 # to store the character node that was instantiated in-game
 var current_character
