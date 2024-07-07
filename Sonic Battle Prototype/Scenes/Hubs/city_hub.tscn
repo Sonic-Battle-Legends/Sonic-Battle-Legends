@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=3 uid="uid://bsprksm8mhbae"]
+
+[ext_resource type="PackedScene" uid="uid://b4sfvdfh2ssee" path="res://Models/hub_test.blend" id="1_3cksg"]
+[ext_resource type="PackedScene" uid="uid://irlpgd8spuet" path="res://Scenes/stages/invisible_walls.tscn" id="2_1lcbb"]
+[ext_resource type="PackedScene" uid="uid://cchofw32sy0jj" path="res://Scenes/Areas/area_marker.tscn" id="3_qjbkr"]
+
+[node name="City_Hub" type="Node3D"]
+
+[node name="hub_test" parent="." instance=ExtResource("1_3cksg")]
+
+[node name="InvisibleWalls" parent="." instance=ExtResource("2_1lcbb")]
+transform = Transform3D(2.335, 0, 0, 0, 2.13, 0, 0, 0, 2.13, 1.06559, 0, 0)
+
+[node name="area_marker" parent="." instance=ExtResource("3_qjbkr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.1565, 0, 8.52349)

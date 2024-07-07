@@ -224,7 +224,9 @@ func _physics_process(delta):
 		
 		handle_healing()
 		
-		if life_total <= 0 and GlobalVariables.game_ended == false:
+		# defeated if going lower than the lower limit of the map or
+		# life total is less than or equal to zero
+		if position.y < -5.0 or (life_total <= 0 and GlobalVariables.game_ended == false):
 			defeated()
 		
 	else:

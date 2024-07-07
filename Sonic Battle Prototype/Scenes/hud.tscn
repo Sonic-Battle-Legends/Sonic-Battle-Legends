@@ -97,6 +97,7 @@ region_enabled = true
 region_rect = Rect2(246.987, 1176.83, 15.8053, 19.7566)
 
 [node name="RingsUI" type="RichTextLabel" parent="Area HUD/Rings"]
+layout_mode = 0
 offset_left = 116.0
 offset_top = 26.0
 offset_right = 621.0
@@ -120,6 +121,7 @@ region_enabled = true
 region_rect = Rect2(37.3665, 10.6161, 24.8369, 15.1936)
 
 [node name="ExtraLivesUI" type="RichTextLabel" parent="Area HUD/lives"]
+layout_mode = 0
 offset_left = 155.0
 offset_top = 193.0
 offset_right = 678.0

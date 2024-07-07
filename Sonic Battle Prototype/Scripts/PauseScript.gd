@@ -58,7 +58,6 @@ func restart():
 		# for now go to main menu
 		else:
 			get_tree().reload_current_scene()
-			#GlobalVariables.main_menu.start_menu()
 
 # exit
 func go_back():

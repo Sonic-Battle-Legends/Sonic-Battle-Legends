@@ -28,7 +28,7 @@ var current_character
 # enumerator for all world areas
 # which contain some number of hubs each
 # maybe make another list for unlockable characters
-enum playable_areas {area1}
+enum playable_areas {world1}
 # store the area selected in the main menu
 var area_selected # = playable_areas.area1
 # store the instantiated area

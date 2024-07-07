@@ -26,11 +26,14 @@ const POINTER_SPAWNER = preload("res://Scenes/pointer_spawner.tscn")
 # sonic character
 const SONIC = preload("res://Scenes/Sonic.tscn")
 
+const WORLD_AREA = preload("res://Scenes/Areas/world_1.tscn")
+
 # the hub area with the hub markers that lead to stages
-const HUB_TEST = preload("res://Scenes/Hubs/hub_test.tscn")
+const HUB_TEST = preload("res://Scenes/Hubs/city_hub.tscn")
 
 # to match-case block
 # should get a variable with the name of a string instead
+# attacks (shots and sets)
 enum objects {SHOT_PROJECTILE, RING, SET_MINE, ABILITYSELECT, POINTERSPAWNER, SCORESCREEN}
 
 # pointer spawner is not a screen though
@@ -81,27 +84,32 @@ func create(object_to_create, place_to_add_as_child = null):
 ## got to area
 # areas that contains hubs
 func go_to_area(selected_area):
-	# to prevent error using pause menu's "go back" button
-	# nullify current hub if any
-	GlobalVariables.current_hub = null
-	# nullify current stage if any
-	GlobalVariables.current_stage = null
-	pass
+	delete_places()
+	
+	load_area(selected_area)
+	
+	# allow a new character to be spawned
+	if GlobalVariables.current_character != null:
+		GlobalVariables.current_character.queue_free()
+		# the reference is still there so nullify it
+		GlobalVariables.current_character = null
+	# create the character in the Main scene
+	add_player(GlobalVariables.main_menu.get_parent())
+
+
+func load_area(new_area):
+	# store the current area on global variables
+	GlobalVariables.current_area = new_area.instantiate()
+	# create the area in the Main scene
+	GlobalVariables.main_menu.get_parent().add_child(GlobalVariables.current_area) # GlobalVariables.area_selected) 
 
 
 ## go to a hub
 # hubs that contains stages
 # called from menu after an area is selected
 # it should go to an area first them the player selects a hub
-func go_to_hub(selected_hub):	
-	# delete hub if it's restarting the scene
-	if GlobalVariables.current_hub != null:
-		GlobalVariables.current_hub.queue_free()
-		GlobalVariables.current_hub = null
-	# delete stage if it's restarting the scene from score screen
-	if GlobalVariables.current_stage != null:
-		GlobalVariables.current_stage.queue_free()
-		GlobalVariables.current_stage = null
+func go_to_hub(selected_hub):
+	delete_places()
 	
 	load_hub(selected_hub)
 	
@@ -132,14 +140,7 @@ func go_to_stage(new_stage: PackedScene):
 	GlobalVariables.game_ended = false
 	GlobalVariables.character_points = 0
 	
-	# delete stage if it's restarting the scene
-	if GlobalVariables.current_stage != null:
-		GlobalVariables.current_stage.queue_free()
-	
-	# when going from the hub to a stage
-	# remove the hub and the character from the main scene
-	if GlobalVariables.current_hub != null:
-		GlobalVariables.current_hub.queue_free()
+	delete_places()
 	
 	# allow a new character to be spawned
 	ServerJoin.remove_player(multiplayer.multiplayer_peer)
@@ -170,12 +171,27 @@ func respawn():
 	GlobalVariables.main_menu.get_parent().add_child(ability_selection_menu, true)
 
 
+func delete_places():
+	# delete area
+	if GlobalVariables.current_area != null:
+		GlobalVariables.current_area.queue_free()
+		GlobalVariables.current_area = null
+	# delete hub if it's restarting the scene
+	if GlobalVariables.current_hub != null:
+		GlobalVariables.current_hub.queue_free()
+		GlobalVariables.current_hub = null
+	# delete stage if it's restarting the scene from score screen
+	if GlobalVariables.current_stage != null:
+		GlobalVariables.current_stage.queue_free()
+		GlobalVariables.current_stage = null
+
+
 ## go to previous ambient
 ## exit from stage to hub
 ## exit from hub to area
 ## exit from area to main menu
 func exit_current_ambient():
-	if GlobalVariables.hub_selected != null:
+	if GlobalVariables.hub_selected != null and GlobalVariables.current_hub == null:
 		# if on stage, return to current hub
 		go_to_hub(GlobalVariables.hub_selected)
 	elif GlobalVariables.area_selected != null:

@@ -1,11 +1,12 @@
-[gd_scene load_steps=7 format=3 uid="uid://dhcmo5dwjo44o"]
+[gd_scene load_steps=8 format=3 uid="uid://bsqej6m4y7wj"]
 
-[ext_resource type="Script" path="res://Scripts/hub_marker.gd" id="1_cd3qu"]
-[ext_resource type="PackedScene" uid="uid://ddxbjdh025x2k" path="res://Models/prism.blend" id="1_haeub"]
+[ext_resource type="Script" path="res://Scripts/place_marker.gd" id="1_32qhp"]
+[ext_resource type="Material" uid="uid://cijkhftw4emig" path="res://Materials/hubMarkerMaterial.tres" id="2_gd4y1"]
+[ext_resource type="PackedScene" uid="uid://ddxbjdh025x2k" path="res://Models/prism.blend" id="2_l5jg8"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_cupuc"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_hlkbs"]
 
-[sub_resource type="Animation" id="Animation_etoyf"]
+[sub_resource type="Animation" id="Animation_atj0f"]
 resource_name = "spin"
 loop_mode = 1
 tracks/0/type = "value"
@@ -21,7 +22,7 @@ tracks/0/keys = {
 "values": [Vector3(0, 0, 0), Vector3(0, 2.0944, 0), Vector3(0, 4.18879, 0), Vector3(0, 6.28319, 0)]
 }
 
-[sub_resource type="Animation" id="Animation_fhwok"]
+[sub_resource type="Animation" id="Animation_bl01g"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -36,28 +37,34 @@ tracks/0/keys = {
 "values": [Vector3(0, 0, 0)]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_0p04b"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_gc602"]
 _data = {
-"RESET": SubResource("Animation_fhwok"),
-"spin": SubResource("Animation_etoyf")
+"RESET": SubResource("Animation_bl01g"),
+"spin": SubResource("Animation_atj0f")
 }
 
 [node name="hub_marker" type="Node3D"]
-script = ExtResource("1_cd3qu")
+script = ExtResource("1_32qhp")
+place_type = 1
 
-[node name="prism2" parent="." instance=ExtResource("1_haeub")]
+[node name="prism2" parent="." instance=ExtResource("2_l5jg8")]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)
+
+[node name="prism" parent="prism2" index="0"]
+surface_material_override/0 = ExtResource("2_gd4y1")
 
 [node name="Area3D" type="Area3D" parent="."]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" groups=["Stage1"]]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
-shape = SubResource("BoxShape3D_cupuc")
+shape = SubResource("BoxShape3D_hlkbs")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_0p04b")
+"": SubResource("AnimationLibrary_gc602")
 }
 autoplay = "spin"
 
 [connection signal="area_entered" from="Area3D" to="." method="_on_area_3d_area_entered"]
+
+[editable path="prism2"]
