@@ -1,0 +1,20 @@
+[gd_scene load_steps=5 format=3 uid="uid://b6jdl4tihpxcn"]
+
+[ext_resource type="PackedScene" uid="uid://dtkfly7qtt14x" path="res://Models/isometric_map2.blend" id="1_pph58"]
+[ext_resource type="Material" uid="uid://b2rgo2opot2ma" path="res://Materials/StageMaterial.tres" id="2_jx23a"]
+[ext_resource type="PackedScene" uid="uid://cxf4g5x00seov" path="res://Scenes/Hubs/hub_marker.tscn" id="3_yie5o"]
+[ext_resource type="PackedScene" uid="uid://cjlg76s1gu6by" path="res://Scenes/isometric_map_3.tscn" id="4_4dm8g"]
+
+[node name="isometric_map_2" type="Node3D"]
+
+[node name="isometric_map2" parent="." instance=ExtResource("1_pph58")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.22612, -1.06935, -8.48573)
+
+[node name="map" parent="isometric_map2" index="0"]
+surface_material_override/0 = ExtResource("2_jx23a")
+
+[node name="hub_marker" parent="." instance=ExtResource("3_yie5o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3047, -0.0693455, -17.5183)
+new_place = ExtResource("4_4dm8g")
+
+[editable path="isometric_map2"]

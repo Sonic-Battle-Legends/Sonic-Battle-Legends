@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://dtkfly7qtt14x"
-path="res://.godot/imported/isometric_map2.blend-fdbfaffc3d9875331a4a0090a1b12e02.scn"
+uid="uid://c8l41nksdliky"
+path="res://.godot/imported/blue_ring.blend-633ff9630dcaf035c91d5bfb3460e6b0.scn"
 
 [deps]
 
-source_file="res://Models/isometric_map2.blend"
-dest_files=["res://.godot/imported/isometric_map2.blend-fdbfaffc3d9875331a4a0090a1b12e02.scn"]
+source_file="res://Models/blue_ring.blend"
+dest_files=["res://.godot/imported/blue_ring.blend-633ff9630dcaf035c91d5bfb3460e6b0.scn"]
 
 [params]
 
@@ -18,7 +18,7 @@ nodes/root_name=""
 nodes/apply_root_scale=true
 nodes/root_scale=1.0
 meshes/ensure_tangents=true
-meshes/generate_lods=false
+meshes/generate_lods=true
 meshes/create_shadow_meshes=true
 meshes/light_baking=1
 meshes/lightmap_texel_size=0.2
