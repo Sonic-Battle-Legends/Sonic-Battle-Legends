@@ -25,5 +25,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4086, -0.113016, -2.81203)
 new_place = ExtResource("6_okk86")
 
 [node name="stage_marker2" parent="." instance=ExtResource("5_4mykb")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.98545, -0.113015, -3.79391)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.61851, -0.113015, -3.79391)
 new_place = ExtResource("7_k5lcp")

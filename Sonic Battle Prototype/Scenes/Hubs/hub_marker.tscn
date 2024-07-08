@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://cxf4g5x00seov"]
+[gd_scene load_steps=9 format=3 uid="uid://cxf4g5x00seov"]
 
 [ext_resource type="Script" path="res://Scripts/place_marker.gd" id="1_yyafq"]
 [ext_resource type="PackedScene" uid="uid://ddxbjdh025x2k" path="res://Models/prism.blend" id="2_l68n1"]
 [ext_resource type="Material" uid="uid://cijkhftw4emig" path="res://Materials/hubMarkerMaterial.tres" id="3_umaaq"]
+[ext_resource type="Material" uid="uid://58e30ip8afyy" path="res://Materials/shadowMaterial.tres" id="4_mtv6u"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_qke5g"]
 
@@ -43,7 +44,9 @@ _data = {
 "spin": SubResource("Animation_v3t1w")
 }
 
-[node name="hub_marker" type="Node3D"]
+[node name="hub_marker" type="Label3D"]
+offset = Vector2(0, 250)
+text = "Hub"
 script = ExtResource("1_yyafq")
 place_type = 1
 
@@ -64,6 +67,12 @@ libraries = {
 "": SubResource("AnimationLibrary_46xbb")
 }
 autoplay = "spin"
+
+[node name="shadow" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0118467, 0)
+radius = 0.1
+height = 0.01
+material = ExtResource("4_mtv6u")
 
 [connection signal="area_entered" from="Area3D" to="." method="_on_area_3d_area_entered"]
 

@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://cchofw32sy0jj"]
+[gd_scene load_steps=9 format=3 uid="uid://cchofw32sy0jj"]
 
 [ext_resource type="PackedScene" uid="uid://ddxbjdh025x2k" path="res://Models/prism.blend" id="1_6dd87"]
 [ext_resource type="Script" path="res://Scripts/place_marker.gd" id="1_yehlr"]
 [ext_resource type="Material" uid="uid://cfpvst83k8omc" path="res://Materials/areaMarkerMaterial.tres" id="3_ank4r"]
+[ext_resource type="Material" uid="uid://58e30ip8afyy" path="res://Materials/shadowMaterial.tres" id="4_bjnsw"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_rmisf"]
 
@@ -43,7 +44,9 @@ _data = {
 "spin": SubResource("Animation_43h3p")
 }
 
-[node name="area_marker" type="Node3D"]
+[node name="area_marker" type="Label3D"]
+offset = Vector2(0, 250)
+text = "Area"
 script = ExtResource("1_yehlr")
 
 [node name="prism2" parent="." instance=ExtResource("1_6dd87")]
@@ -63,6 +66,12 @@ libraries = {
 "": SubResource("AnimationLibrary_yt080")
 }
 autoplay = "spin"
+
+[node name="shadow" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0118467, 0)
+radius = 0.1
+height = 0.01
+material = ExtResource("4_bjnsw")
 
 [connection signal="area_entered" from="Area3D" to="." method="_on_area_3d_area_entered"]
 

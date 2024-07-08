@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://dhcmo5dwjo44o"]
+[gd_scene load_steps=8 format=3 uid="uid://dhcmo5dwjo44o"]
 
 [ext_resource type="Script" path="res://Scripts/place_marker.gd" id="1_cd3qu"]
 [ext_resource type="PackedScene" uid="uid://ddxbjdh025x2k" path="res://Models/prism.blend" id="1_haeub"]
+[ext_resource type="Material" uid="uid://58e30ip8afyy" path="res://Materials/shadowMaterial.tres" id="3_trse7"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_cupuc"]
 
@@ -42,7 +43,9 @@ _data = {
 "spin": SubResource("Animation_etoyf")
 }
 
-[node name="stage_marker" type="Node3D"]
+[node name="stage_marker" type="Label3D"]
+offset = Vector2(0, 250)
+text = "Stage"
 script = ExtResource("1_cd3qu")
 place_type = 2
 
@@ -60,5 +63,11 @@ libraries = {
 "": SubResource("AnimationLibrary_0p04b")
 }
 autoplay = "spin"
+
+[node name="shadow" type="CSGCylinder3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0118467, 0)
+radius = 0.1
+height = 0.01
+material = ExtResource("3_trse7")
 
 [connection signal="area_entered" from="Area3D" to="." method="_on_area_3d_area_entered"]
