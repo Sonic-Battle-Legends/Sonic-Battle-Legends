@@ -23,13 +23,16 @@ const SCORE_SCREEN = preload("res://Scenes/score_screen.tscn")
 # pointer to spawn the character at target spot
 const POINTER_SPAWNER = preload("res://Scenes/pointer_spawner.tscn")
 
+# ring that bounces
+const SCATTERED_RING = preload("res://Scenes/collectables/scattered_ring.tscn")
+
 # sonic character
 const SONIC = preload("res://Scenes/Sonic.tscn")
 
-const WORLD_AREA = preload("res://Scenes/Areas/world1.tscn")
-
 # shadow character
 const SHADOW = preload("res://Scenes/Shadow.tscn")
+
+const WORLD_AREA = preload("res://Scenes/Areas/world1.tscn")
 
 # the hub area with the hub markers that lead to stages
 const HUB_TEST = preload("res://Scenes/Hubs/city_hub.tscn")
@@ -86,6 +89,12 @@ func create(object_to_create, place_to_add_as_child = null):
 			
 	if place_to_add_as_child == null:
 		return new_object
+
+
+func create_scattered_ring(ring_position):
+	var new_scattered_ring = SCATTERED_RING.instantiate()
+	new_scattered_ring.position = ring_position
+	GlobalVariables.main_menu.get_parent().add_child(new_scattered_ring)
 
 
 ## got to area

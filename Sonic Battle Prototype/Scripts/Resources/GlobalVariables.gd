@@ -1,5 +1,7 @@
 extends Node
 
+# right now everyone and everything should have a gravity of 20.
+var gravity: float = 20.0
 
 # to store the main menu node
 var main_menu
@@ -47,6 +49,13 @@ var current_stage
 
 # timer to select ability and place character on stage
 var select_ability_timer: SceneTreeTimer
+
+# timer to count the time scattered rings last
+var scattered_ring_timer: SceneTreeTimer
+# time to set the scattered rings timer
+const SCATTERED_RINGS_TIME = 4.0
+
+var ring_count_towards_extra_life: int = 0
 
 var selected_abilities: Array
 var character_points: int = 0

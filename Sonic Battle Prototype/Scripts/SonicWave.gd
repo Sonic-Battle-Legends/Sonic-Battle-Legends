@@ -6,9 +6,6 @@ extends CharacterBody3D
 # Movement speed
 const SPEED = 5.0
 
-# The speed at which the wave falls, right now everyone and everything should have a gravity of 20.
-var gravity = 20
-
 var constant_vel : Vector3
 
 # The active player that spawned this projectile. Hitboxes will not interact with the user.
@@ -20,7 +17,8 @@ func _ready():
 func _physics_process(delta):
 	# Add the gravity.
 	if !is_on_floor():
-		velocity.y -= gravity * delta
+		# The speed at which the wave falls
+		velocity.y -= GlobalVariables.gravity * delta
 	velocity.x = constant_vel.x
 	velocity.z = constant_vel.z
 	# Chooses direction based on where the player sent it.

@@ -10,7 +10,7 @@ enum place {area, hub, stage}
 func _on_area_3d_area_entered(area):
 	var object = area.get_parent()
 	# when the player attacks this area marker
-	if new_place != null and object != null and object.is_in_group("Player"):
+	if new_place != null and object != null and object.is_in_group("Player") and object.attacking:
 		# enter the respective stage
 		# using the stage provided in the hub marker field instead of
 		# a stage provided by the Instantiables script to help development

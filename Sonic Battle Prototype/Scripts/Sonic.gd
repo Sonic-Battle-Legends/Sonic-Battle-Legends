@@ -28,8 +28,8 @@ const MAX_LIFE_TOTAL = 100
 # default max special amount
 const MAX_SPECIAL_AMOUNT = 100
 
-# The speed at which Sonic falls, right now everyone and everything should have a gravity of 20.
-var gravity = 20
+# max number of rings to be created when scattering rings
+const MAX_SCATTERED_RINGS_ALLOWED: int = 16
 
 # Boolean to check if Sonic is facing left or right
 var facing_left = false
@@ -133,6 +133,9 @@ var jump_pressed: bool = false
 var attack_pressed: bool = false
 var guard_pressed: bool = false
 
+# rings collected in a stage
+# start with an amount to test
+var rings: int = MAX_SCATTERED_RINGS_ALLOWED
 
 # Head Up Display
 @export_category("HUD")
@@ -189,7 +192,8 @@ func _physics_process(delta):
 	
 	if !is_on_floor():
 		# add the gravity.
-		velocity.y -= gravity * delta
+		# The speed at which Sonic falls
+		velocity.y -= GlobalVariables.gravity * delta
 		# Since starting and walking only do things on the ground, they are set to inactive here.
 		starting = false
 		walking = false
@@ -224,15 +228,19 @@ func _physics_process(delta):
 		
 		handle_healing()
 		
-		# defeated if going lower than the lower limit of the map or
-		# life total is less than or equal to zero
-		if position.y < -5.0 or (life_total <= 0 and GlobalVariables.game_ended == false):
-			defeated()
-		
 	else:
 		# if Sonic is in his attacking or hurt state, he slows to a halt.
 		velocity.x = lerp(velocity.x, 0.0, 0.1)
 		velocity.z = lerp(velocity.z, 0.0, 0.1)
+	
+	# defeated if going lower than the lower limit of the map or
+	# life total is less than or equal to zero
+	# or the character is not in a battle and don't have rings
+	if position.y < -5.0:
+		defeated()
+	if GlobalVariables.current_stage != null:
+		if (life_total <= 0 and GlobalVariables.game_ended == false):
+			defeated()
 	
 	# If Sonic is currently chasing a ring he threw from his ground "pow" move, he accelerates to its position.
 	if chasing_ring:
@@ -472,6 +480,63 @@ func increase_points():
 			GlobalVariables.win()
 
 
+## gain one extra life
+func one_up():
+	GlobalVariables.extra_lives += 1
+	hud.update_extra_lives(GlobalVariables.extra_lives)
+
+
+func collect_ring():
+	# increase the amount of rings
+	# rings collected in a stage should count towards
+	# the rings total only after the battle is over
+	if GlobalVariables.current_stage != null:
+		rings += 1
+	else:
+		GlobalVariables.total_rings += 1
+		hud.update_rings(GlobalVariables.total_rings)
+	
+	# increase a permanent counter of how many rings were collected
+	# to count towards extra lives gained
+	# this prevents extra lives gained if the character didn't
+	# lost all rings and is collecting scattered ones
+	# ( 100 rings, scattered 1 ring, collect it = extra live )
+	GlobalVariables.ring_count_towards_extra_life += 1
+	if GlobalVariables.ring_count_towards_extra_life >= 100:
+		one_up()
+		GlobalVariables.ring_count_towards_extra_life = 0
+
+
+## scatter rings in a circular pattern
+func scatter_rings():
+	create_scattered_ring_timer()
+	
+	var number_of_rings_to_scatter = rings
+	# clamp
+	number_of_rings_to_scatter = clamp(number_of_rings_to_scatter, 0, MAX_SCATTERED_RINGS_ALLOWED)
+	#if number_of_rings_to_scatter > MAX_SCATTERED_RINGS_ALLOWED:
+	#	number_of_rings_to_scatter = MAX_SCATTERED_RINGS_ALLOWED
+
+	rings = 0
+	hud.update_rings(rings)
+	
+	# relative ring position
+	var proxy_position = position + transform.basis.z
+	var angle = 360.0
+	if number_of_rings_to_scatter > 0:
+		angle = 360.0 / number_of_rings_to_scatter
+	# circular pattern
+	for i in number_of_rings_to_scatter:
+		proxy_position = proxy_position.rotated(Vector3.UP, deg_to_rad(angle * i))
+		var new_ring_position = position + proxy_position.normalized()
+		Instantiables.create_scattered_ring(new_ring_position)
+
+
+## create a timer to count how long the scaterred rings will remain on the scene
+func create_scattered_ring_timer():
+	GlobalVariables.scattered_ring_timer = get_tree().create_timer(GlobalVariables.SCATTERED_RINGS_TIME, false, true)
+
+
 ## This function mostly handles what animations play with what booleans.
 func handle_animation():
 	# None of these animations play when Sonic is in his hurt or attacking state.
@@ -644,6 +709,17 @@ func defeated():
 # function, which is why you don't see it here.
 @rpc("any_peer","reliable","call_local")
 func get_hurt(launch_speed):
+	# give a invunerability time
+	if !hurt:
+		# if had rings, scatter them
+		if rings > 0:
+			scatter_rings()
+		else:
+			# if it was not in a stage where the character have life points,
+			# defeat the character for having no rings when hurt
+			if GlobalVariables.current_stage != null:
+				defeated()
+	
 	# A bunch of states reset to make sure getting hurt cancels them out.
 	hurt = true
 	falling = false
@@ -808,3 +884,13 @@ func air_special(id, dir):
 			get_tree().current_scene.add_child(new_mine, true)
 
 
+## use Area3D to detect collectables like rings
+func _on_ring_collider_area_entered(area):
+	# store the parent of the Area3D the character collided
+	if area.get_parent() != null:
+		var collided_object = area.get_parent()
+		# collect ring
+		if collided_object.is_in_group("Ring"):
+			collect_ring()
+			if collided_object.has_method("delete_ring"):
+				collided_object.delete_ring()
