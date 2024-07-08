@@ -224,7 +224,9 @@ func _physics_process(delta):
 		
 		handle_healing()
 		
-		if life_total <= 0 and GlobalVariables.game_ended == false:
+		# defeated if going lower than the lower limit of the map or
+		# life total is less than or equal to zero
+		if position.y < -5.0 or (life_total <= 0 and GlobalVariables.game_ended == false):
 			defeated()
 		
 	else:
@@ -421,7 +423,7 @@ func handle_attack():
 	
 	# The code for initiating Sonic's grounded and midair specials, which go to functions that check the selected skills.
 	# no abilities on the hub areas
-	if GlobalVariables.current_hub == null:
+	if GlobalVariables.current_hub == null and GlobalVariables.current_area == null:
 		if special_pressed && is_on_floor():
 			attacking = true
 			rpc("ground_special", randi(), direction)
@@ -630,7 +632,12 @@ func _on_hitbox_body_entered(body):
 func defeated():
 		# player must get the ability selection screen again
 		# then select a location to spawn
-		Instantiables.respawn()
+		if GlobalVariables.current_stage != null:
+			Instantiables.respawn()
+		elif GlobalVariables.current_hub != null:
+			Instantiables.go_to_hub(GlobalVariables.hub_selected)
+		else:
+			Instantiables.go_to_area(GlobalVariables.area_selected)
 
 
 ## A function that handles Sonic getting hurt. Knockback is determined by the thing that initiates this

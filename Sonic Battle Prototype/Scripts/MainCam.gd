@@ -6,6 +6,7 @@ extends Camera3D
 
 # code modified later on
 
+
 var player	# The player target.
 var spin = 1
 
@@ -20,6 +21,11 @@ func _physics_process(_delta):
 	global_position = lerp(global_position, Vector3(player.position.x - player.velocity.x, player.position.y + 10 - player.velocity.y, player.position.z + (20 * spin) - player.velocity.z), 0.025)
 	look_at(player.position)
 
+	# make the camera farther away on the areas
+	if GlobalVariables.current_area != null:
+		size = 5
+	else:
+		size = 3
 
 func rotate_camera():
 	# spin control which side the camera will lerp to along the Z axis

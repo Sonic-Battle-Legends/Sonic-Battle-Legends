@@ -13,7 +13,7 @@ func _process(_delta):
 		restart_button.show()
 		
 	# allow to pause on a stage or hub while the game has not being won yet
-	if GlobalVariables.game_ended == false and GlobalVariables.current_character != null and (GlobalVariables.current_hub != null or GlobalVariables.current_stage != null):
+	if GlobalVariables.game_ended == false and GlobalVariables.current_character != null and (GlobalVariables.current_area != null or GlobalVariables.current_hub != null or GlobalVariables.current_stage != null):
 		# pause / resume the game when pressing "pause" button
 		if Input.is_action_just_pressed("pause"):
 			toggle_pause()
@@ -58,7 +58,6 @@ func restart():
 		# for now go to main menu
 		else:
 			get_tree().reload_current_scene()
-			#GlobalVariables.main_menu.start_menu()
 
 # exit
 func go_back():
