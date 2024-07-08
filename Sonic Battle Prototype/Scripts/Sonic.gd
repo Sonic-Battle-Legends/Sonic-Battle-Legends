@@ -720,6 +720,7 @@ func get_hurt(launch_speed):
 	if !hurt:
 		# if had rings, scatter them
 		if rings > 0:
+			# you can add the amount of rings to be scattered as a parameter
 			scatter_rings()
 		else:
 			# if it was not in a stage where the character have life points,

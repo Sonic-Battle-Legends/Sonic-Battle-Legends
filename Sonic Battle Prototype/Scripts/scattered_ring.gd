@@ -5,10 +5,17 @@ extends CharacterBody3D
 # Original code by The8BitLeaf.
 
 const DEFAULT_BOUNCE_VALUE: float = 4.0
+const MIN_TIME: int = 3.5
 var bounce_amount: float = DEFAULT_BOUNCE_VALUE
 var blinking_period: float = 0.0
 
 @export var sprite: Sprite3D
+@export var collision_area: Area3D
+
+
+func _ready():
+	collision_area.monitorable = false
+
 
 func _physics_process(delta):
 	# Add the gravity.
@@ -24,20 +31,23 @@ func _physics_process(delta):
 	velocity.x = lerp(velocity.x, 0.0, 0.02)
 	velocity.z = lerp(velocity.z, 0.0, 0.02)
 	
-
 	move_and_slide()
 	
 	if GlobalVariables.scattered_ring_timer != null:
+		# enable the detection after it scattered
+		if GlobalVariables.scattered_ring_timer.time_left <= MIN_TIME:
+			collision_area.monitorable = true
 		
-		# blink faster as the time out approaches
-		if blinking_period <= 0:
-			blinking_period = GlobalVariables.scattered_ring_timer.time_left / 5.0
-		blinking_period -= delta * 5
-		if blinking_period <= 0.0:
-			if sprite.is_visible_in_tree():
-				sprite.hide()
-			else:
-				sprite.show()
+		if GlobalVariables.scattered_ring_timer.time_left <= 3.0:
+			# blink faster as the time out approaches
+			if blinking_period <= 0:
+				blinking_period = GlobalVariables.scattered_ring_timer.time_left / 5.0
+			blinking_period -= delta * 5
+			if blinking_period <= 0.0:
+				if sprite.is_visible_in_tree():
+					sprite.hide()
+				else:
+					sprite.show()
 		
 		# delete when scaterred rings timer runs out
 		if GlobalVariables.scattered_ring_timer.time_left <= 0:
@@ -53,7 +63,7 @@ func blink():
 ## to prevent deleting another object
 func delete_ring():
 	if GlobalVariables.scattered_ring_timer != null\
-	 and GlobalVariables.scattered_ring_timer.time_left <= 3.0:
+	 and GlobalVariables.scattered_ring_timer.time_left <= MIN_TIME:
 		delete()
 
 

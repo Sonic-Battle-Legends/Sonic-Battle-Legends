@@ -48,10 +48,11 @@ _data = {
 [sub_resource type="BoxShape3D" id="BoxShape3D_cuoal"]
 size = Vector3(0.25, 0.25, 0.25)
 
-[node name="ScatteredRing" type="CharacterBody3D" node_paths=PackedStringArray("sprite") groups=["Ring"]]
+[node name="ScatteredRing" type="CharacterBody3D" node_paths=PackedStringArray("sprite", "collision_area") groups=["Ring"]]
 collision_layer = 4
 script = ExtResource("1_x8u1x")
 sprite = NodePath("Sprite3D")
+collision_area = NodePath("Area3D")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0508024, 0)
@@ -71,6 +72,7 @@ libraries = {
 autoplay = "rotate"
 
 [node name="Area3D" type="Area3D" parent="."]
+monitorable = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.188608, 0)
