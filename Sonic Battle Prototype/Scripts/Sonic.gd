@@ -29,7 +29,7 @@ const MAX_LIFE_TOTAL = 100
 const MAX_SPECIAL_AMOUNT = 100
 
 # max number of rings to be created when scattering rings
-const MAX_SCATTERED_RINGS_ALLOWED: int = 16
+const MAX_SCATTERED_RINGS_ALLOWED: int = 8
 
 # Boolean to check if Sonic is facing left or right
 var facing_left = false
@@ -508,16 +508,23 @@ func collect_ring():
 
 
 ## scatter rings in a circular pattern
-func scatter_rings():
+func scatter_rings(amount = 1):
 	create_scattered_ring_timer()
 	
-	var number_of_rings_to_scatter = rings
-	# clamp
+	var number_of_rings_to_scatter
+	
+	# inside a stage scatter one ring per hit
+	# and more rings if the hit was strong
+	# if on a hub or area scatter all rings
+	if GlobalVariables.current_stage == null:
+		amount = rings
+		
+	number_of_rings_to_scatter = amount
+	rings -= amount
+	# clamp values
 	number_of_rings_to_scatter = clamp(number_of_rings_to_scatter, 0, MAX_SCATTERED_RINGS_ALLOWED)
-	#if number_of_rings_to_scatter > MAX_SCATTERED_RINGS_ALLOWED:
-	#	number_of_rings_to_scatter = MAX_SCATTERED_RINGS_ALLOWED
-
-	rings = 0
+	rings = clamp(rings, 0, rings)
+	# update hud
 	hud.update_rings(rings)
 	
 	# relative ring position
@@ -529,7 +536,7 @@ func scatter_rings():
 	for i in number_of_rings_to_scatter:
 		proxy_position = proxy_position.rotated(Vector3.UP, deg_to_rad(angle * i))
 		var new_ring_position = position + proxy_position.normalized()
-		Instantiables.create_scattered_ring(new_ring_position)
+		Instantiables.create_scattered_ring(new_ring_position, position)
 
 
 ## create a timer to count how long the scaterred rings will remain on the scene

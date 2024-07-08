@@ -91,9 +91,10 @@ func create(object_to_create, place_to_add_as_child = null):
 		return new_object
 
 
-func create_scattered_ring(ring_position):
+func create_scattered_ring(ring_position, scatter_origin_position):
 	var new_scattered_ring = SCATTERED_RING.instantiate()
-	new_scattered_ring.position = ring_position
+	new_scattered_ring.position = scatter_origin_position
+	new_scattered_ring.velocity = (ring_position - scatter_origin_position).normalized() * 2
 	GlobalVariables.main_menu.get_parent().add_child(new_scattered_ring)
 
 

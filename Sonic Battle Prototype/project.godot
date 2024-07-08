@@ -127,6 +127,12 @@ change_cam_position={
 ]
 }
 
+[layer_names]
+
+3d_physics/layer_1="Obstacles"
+3d_physics/layer_2="Player"
+3d_physics/layer_3="Collectables"
+
 [physics]
 
 3d/canvas_textures/default_texture_filter=1
