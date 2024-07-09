@@ -9,7 +9,7 @@ extends Node
 const SHOT_PROJECTILE = preload("res://Scenes/SonicWave.tscn")
 
 # The ring prefab that Sonic will throw when he uses his "pow" move on the ground.
-const RING = preload("res://Scenes/ThrowRing.tscn")
+const TOSS_RING = preload("res://Scenes/ThrowRing.tscn")
 
 # The mine prefab for Sonic's "set" special moves.
 const SET_MINE = preload("res://Scenes/SonicMine.tscn")
@@ -23,13 +23,16 @@ const SCORE_SCREEN = preload("res://Scenes/score_screen.tscn")
 # pointer to spawn the character at target spot
 const POINTER_SPAWNER = preload("res://Scenes/pointer_spawner.tscn")
 
+# ring that bounces
+const SCATTERED_RING = preload("res://Scenes/collectables/scattered_ring.tscn")
+
 # sonic character
 const SONIC = preload("res://Scenes/Sonic.tscn")
 
-const WORLD_AREA = preload("res://Scenes/Areas/world1.tscn")
-
 # shadow character
 const SHADOW = preload("res://Scenes/Shadow.tscn")
+
+const WORLD_AREA = preload("res://Scenes/Areas/world1.tscn")
 
 # the hub area with the hub markers that lead to stages
 const HUB_TEST = preload("res://Scenes/Hubs/city_hub.tscn")
@@ -37,7 +40,7 @@ const HUB_TEST = preload("res://Scenes/Hubs/city_hub.tscn")
 # to match-case block
 # should get a variable with the name of a string instead
 # attacks (shots and sets)
-enum objects {SHOT_PROJECTILE, RING, SET_MINE, ABILITYSELECT, POINTERSPAWNER, SCORESCREEN}
+enum objects {SHOT_PROJECTILE, TOSS_RING, SET_MINE, ABILITYSELECT, POINTERSPAWNER, SCORESCREEN}
 
 # pointer spawner is not a screen though
 enum screens {ABILITYSELECT, POINTERSPAWNER, SCORESCREEN}
@@ -72,8 +75,8 @@ func create(object_to_create, place_to_add_as_child = null):
 	match object_to_create:
 		objects.SHOT_PROJECTILE:
 			new_object = SHOT_PROJECTILE.instantiate()
-		objects.RING:
-			new_object = RING.instantiate()
+		objects.TOSS_RING:
+			new_object = TOSS_RING.instantiate()
 		objects.SET_MINE:
 			new_object = SET_MINE.instantiate()
 		
@@ -86,6 +89,13 @@ func create(object_to_create, place_to_add_as_child = null):
 			
 	if place_to_add_as_child == null:
 		return new_object
+
+
+func create_scattered_ring(ring_position, scatter_origin_position):
+	var new_scattered_ring = SCATTERED_RING.instantiate()
+	new_scattered_ring.position = scatter_origin_position
+	new_scattered_ring.velocity = (ring_position - scatter_origin_position).normalized() * 2
+	GlobalVariables.main_menu.get_parent().add_child(new_scattered_ring)
 
 
 ## got to area

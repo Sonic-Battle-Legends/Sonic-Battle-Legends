@@ -4,6 +4,7 @@
 
 [node name="MainCam" type="Camera3D"]
 projection = 1
+fov = 10.0
 size = 3.0
 script = ExtResource("1_2ikkk")
 

@@ -5,16 +5,14 @@ extends CharacterBody3D
 # be prematurely detonated if a player or enemy touches them.
 # Original code by The8BitLeaf.
 
-# The speed at which the mine falls, right now everyone and everything should have a gravity of 20.
-var gravity = 20
-
 # The active player that spawned this projectile. Hitboxes will not interact with the user.
 var user
 
 func _physics_process(delta):
 	# Add the gravity.
 	if !is_on_floor():
-		velocity.y -= gravity * delta
+		# The speed at which the mine falls
+		velocity.y -= GlobalVariables.gravity * delta
 	
 	move_and_slide()
 
