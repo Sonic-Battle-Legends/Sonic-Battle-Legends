@@ -1,9 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://no4yu8coo27t"]
+[gd_scene load_steps=10 format=3 uid="uid://s00qmt7kk36o"]
 
 [ext_resource type="PackedScene" uid="uid://irlpgd8spuet" path="res://Scenes/stages/invisible_walls.tscn" id="1_pdy1m"]
 [ext_resource type="PackedScene" uid="uid://cewhnhhc0888k" path="res://Models/world_area1.blend" id="2_058ff"]
 [ext_resource type="PackedScene" uid="uid://cxf4g5x00seov" path="res://Scenes/Hubs/hub_marker.tscn" id="3_57wjv"]
-[ext_resource type="PackedScene" uid="uid://bsprksm8mhbae" path="res://Scenes/Hubs/city_hub.tscn" id="4_42gae"]
+[ext_resource type="PackedScene" uid="uid://c21jx54148kmv" path="res://Scenes/Hubs/city_hub.tscn" id="4_42gae"]
 [ext_resource type="PackedScene" uid="uid://dhcmo5dwjo44o" path="res://Scenes/stages/stage_marker.tscn" id="5_4mykb"]
 [ext_resource type="PackedScene" uid="uid://vmlbayb17hrh" path="res://Scenes/stages/king_of_the_heal.tscn" id="6_okk86"]
 [ext_resource type="PackedScene" uid="uid://b8jcukmh0qhgv" path="res://Scenes/stages/big_stage.tscn" id="7_k5lcp"]

@@ -8,6 +8,7 @@ const TIME: float = 4.0
 var timer: SceneTreeTimer
 var ring_owner
 
+
 func _ready():
 	timer = get_tree().create_timer(TIME, false, true)
 
@@ -35,7 +36,7 @@ func _physics_process(delta):
 			ring_owner.active_ring = null
 		# destroy
 		delete()
-	
+
 
 @rpc("any_peer", "call_local")
 func delete():

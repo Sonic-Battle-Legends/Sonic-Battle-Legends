@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://cvcjl8vjitsqc" path="res://Models/area1.blend" id="1_macyu"]
 [ext_resource type="PackedScene" uid="uid://dhcmo5dwjo44o" path="res://Scenes/stages/stage_marker.tscn" id="2_daehw"]
-[ext_resource type="PackedScene" uid="uid://bu0kkp6n1836e" path="res://Scenes/Hubs/hub_test.tscn" id="3_dxkq0"]
+[ext_resource type="PackedScene" uid="uid://bsprksm8mhbae" path="res://Scenes/Hubs/city_hub.tscn" id="3_dxkq0"]
 
 [node name="area1" type="Node3D"]
 

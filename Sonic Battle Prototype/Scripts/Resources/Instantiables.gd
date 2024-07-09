@@ -32,10 +32,10 @@ const SONIC = preload("res://Scenes/Sonic.tscn")
 # shadow character
 const SHADOW = preload("res://Scenes/Shadow.tscn")
 
-const WORLD_AREA = preload("res://Scenes/Areas/world1.tscn")
+var WORLD_AREA = load("res://Scenes/Areas/world1.tscn")
 
 # the hub area with the hub markers that lead to stages
-const HUB_TEST = preload("res://Scenes/Hubs/city_hub.tscn")
+var HUB_TEST = load("res://Scenes/Hubs/city_hub.tscn")
 
 # to match-case block
 # should get a variable with the name of a string instead
@@ -102,7 +102,7 @@ func create_scattered_ring(ring_position, scatter_origin_position):
 # areas that contains hubs
 func go_to_area(selected_area):
 	delete_places()
-	
+	# make the selected hub also null to prevent issues with the exit button on pause menu
 	GlobalVariables.hub_selected = null
 	
 	load_area(selected_area)
