@@ -9,7 +9,7 @@ extends Node
 const SHOT_PROJECTILE = preload("res://Scenes/SonicWave.tscn")
 
 # The ring prefab that Sonic will throw when he uses his "pow" move on the ground.
-const RING = preload("res://Scenes/ThrowRing.tscn")
+const TOSS_RING = preload("res://Scenes/ThrowRing.tscn")
 
 # The mine prefab for Sonic's "set" special moves.
 const SET_MINE = preload("res://Scenes/SonicMine.tscn")
@@ -40,7 +40,7 @@ const HUB_TEST = preload("res://Scenes/Hubs/city_hub.tscn")
 # to match-case block
 # should get a variable with the name of a string instead
 # attacks (shots and sets)
-enum objects {SHOT_PROJECTILE, RING, SET_MINE, ABILITYSELECT, POINTERSPAWNER, SCORESCREEN}
+enum objects {SHOT_PROJECTILE, TOSS_RING, SET_MINE, ABILITYSELECT, POINTERSPAWNER, SCORESCREEN}
 
 # pointer spawner is not a screen though
 enum screens {ABILITYSELECT, POINTERSPAWNER, SCORESCREEN}
@@ -75,8 +75,8 @@ func create(object_to_create, place_to_add_as_child = null):
 	match object_to_create:
 		objects.SHOT_PROJECTILE:
 			new_object = SHOT_PROJECTILE.instantiate()
-		objects.RING:
-			new_object = RING.instantiate()
+		objects.TOSS_RING:
+			new_object = TOSS_RING.instantiate()
 		objects.SET_MINE:
 			new_object = SET_MINE.instantiate()
 		

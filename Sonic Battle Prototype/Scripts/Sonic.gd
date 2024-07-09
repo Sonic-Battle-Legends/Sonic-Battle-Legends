@@ -83,7 +83,7 @@ var bouncing = false
 
 # active_ring is the object recently created by Sonic's grounded "pow" move, for checking constant positioning.
 # thrown_ring indicates when a ring is on the field, to avoid calling a null active_ring
-var active_ring
+var active_ring: CharacterBody3D
 var thrown_ring = false
 
 # The state in which Sonic is moving in the direction of active_ring.
@@ -160,6 +160,10 @@ func _ready():
 	hud.update_hud(life_total, special_amount, points)
 	
 	GlobalVariables.current_character = self
+	
+	if GlobalVariables.current_stage == null:
+		ground_skill = "POW"
+		air_skill = "POW"
 
 
 # Setting a drop shadow is weird in _physics_process(), so the drop shadow code is in _process().
@@ -243,7 +247,7 @@ func _physics_process(delta):
 			defeated()
 	
 	# If Sonic is currently chasing a ring he threw from his ground "pow" move, he accelerates to its position.
-	if chasing_ring:
+	if chasing_ring and active_ring != null:
 		velocity = lerp(velocity, (active_ring.transform.origin - transform.origin) * 20, 0.5)
 	
 	# Automatically handle the animation and character controller physics.
@@ -431,7 +435,7 @@ func handle_attack():
 	
 	# The code for initiating Sonic's grounded and midair specials, which go to functions that check the selected skills.
 	# no abilities on the hub areas
-	if GlobalVariables.current_hub == null and GlobalVariables.current_area == null:
+	if ground_skill != null and air_skill != null: #GlobalVariables.current_hub == null and GlobalVariables.current_area == null:
 		if special_pressed && is_on_floor():
 			attacking = true
 			rpc("ground_special", randi(), direction)
@@ -594,6 +598,7 @@ func handle_animation():
 
 
 ## method to set the abilities and immunity of the character
+## "SHOT", "POW" and SET" 
 func set_abilities(new_abilities: Array):
 	if new_abilities.size() == 3:
 		ground_skill = new_abilities[0]
@@ -684,7 +689,8 @@ func _on_animation_player_animation_finished(anim_name):
 		if chasing_ring:
 			chasing_ring = false
 			thrown_ring = false
-			active_ring.queue_free()
+			if active_ring != null:
+				active_ring.queue_free()
 		if !is_on_floor():
 			# Sets Sonic's falling state if he's in the air.
 			jumping = false
@@ -737,8 +743,9 @@ func get_hurt(launch_speed):
 	velocity = launch_speed
 	# If Sonic was chasing a ring, the ring is deleted.
 	if chasing_ring:
-			chasing_ring = false
-			thrown_ring = false
+		chasing_ring = false
+		thrown_ring = false
+		if active_ring != null:
 			active_ring.queue_free()
 	
 	# Depending on where Sonic is and what his velocity is, the animation is different.
@@ -794,7 +801,8 @@ func ground_special(id, dir):
 		if !thrown_ring:	# When no ring is on the field.
 			$AnimationPlayer.play("powGround")
 			#Instantiates a new ring projectile
-			var new_ring = Instantiables.create(Instantiables.objects.RING) #ring.instantiate()
+			var new_ring = Instantiables.create(Instantiables.objects.TOSS_RING) #ring.instantiate()
+			new_ring.ring_owner = self
 			active_ring = new_ring
 			new_ring.name = "ring" + str(id)
 			thrown_ring = true
