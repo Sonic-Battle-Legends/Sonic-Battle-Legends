@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://dqgtu3gjo0ymi"]
+[gd_scene load_steps=9 format=3 uid="uid://dqgtu3gjo0ymi"]
 
 [ext_resource type="Texture2D" uid="uid://cnvca7d2mepgx" path="res://Sprites/Sonic.png" id="1_kmsr0"]
 [ext_resource type="Script" path="res://Scripts/ring.gd" id="1_mm1bn"]
 [ext_resource type="Material" uid="uid://58e30ip8afyy" path="res://Materials/shadowMaterial.tres" id="2_q1fpy"]
+[ext_resource type="PackedScene" uid="uid://764xtydd1qeo" path="res://Models/Ring/Ring.blend" id="4_3ubeh"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_lhi6l"]
 size = Vector3(0.25, 0.25, 0.25)
@@ -12,32 +13,32 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite3D:region_rect")
+tracks/0/path = NodePath("Ring2:rotation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Rect2(218, 1179, 11, 15)]
+"values": [Vector3(0, 0.785398, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_fv1ue"]
 resource_name = "rotate"
-length = 0.4
+length = 0.8
 loop_mode = 1
 step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite3D:region_rect")
+tracks/0/path = NodePath("Ring2:rotation")
 tracks/0/interp = 0
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
 "update": 0,
-"values": [Rect2(218, 1179, 11, 15), Rect2(232, 1179, 15, 15), Rect2(250, 1179, 11, 15), Rect2(264, 1179, 4, 15)]
+"values": [Vector3(0, 0.785398, 0), Vector3(0, 0, 0), Vector3(0, -0.785398, 0), Vector3(0, -1.5708, 0), Vector3(0, -2.35619, 0), Vector3(0, 3.14159, 0), Vector3(0, 2.35619, 0), Vector3(0, 1.5708, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_flgee"]
@@ -51,6 +52,7 @@ script = ExtResource("1_mm1bn")
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0.305427, 0)
+visible = false
 texture_filter = 2
 texture = ExtResource("1_kmsr0")
 region_enabled = true
@@ -72,3 +74,6 @@ autoplay = "rotate"
 radius = 0.1
 height = 0.01
 material = ExtResource("2_q1fpy")
+
+[node name="Ring2" parent="." instance=ExtResource("4_3ubeh")]
+transform = Transform3D(0.0707107, 0, 0.0707107, 0, 0.1, 0, -0.0707107, 0, 0.0707107, 0, 0.125, 0)

@@ -194,6 +194,7 @@ func _process(delta):
 func _physics_process(delta):
 	if !is_multiplayer_authority(): return
 	
+	
 	if !is_on_floor():
 		# add the gravity.
 		# The speed at which Sonic falls
@@ -231,6 +232,8 @@ func _physics_process(delta):
 		handle_attack()
 		
 		handle_healing()
+		
+		rotate_model()
 		
 	else:
 		# if Sonic is in his attacking or hurt state, he slows to a halt.
@@ -430,6 +433,7 @@ func handle_attack():
 		create_punch_timer()
 		attacking = true
 		$AnimationPlayer.play("punch1")
+		$sonicrigged2/AnimationPlayer.play("PGC")
 		launch_power = Vector3(0, 2, 0)
 		current_punch = 1
 	
@@ -559,6 +563,7 @@ func handle_animation():
 					$AnimationPlayer.play("walk")
 				else:
 					$AnimationPlayer.play("idle")
+					$sonicrigged2/AnimationPlayer.play("IDLE")
 		else:
 			# Midair animations. These don't play when Sonic is dashing.
 			if !dashing:
@@ -910,3 +915,6 @@ func _on_ring_collider_area_entered(area):
 			collect_ring()
 			if collided_object.has_method("delete_ring"):
 				collided_object.delete_ring()
+
+func rotate_model():
+	$sonicrigged2.rotation.y = Vector2(velocity.z, velocity.x).angle()

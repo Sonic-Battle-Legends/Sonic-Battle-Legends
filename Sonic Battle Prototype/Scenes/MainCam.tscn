@@ -1,9 +1,16 @@
-[gd_scene load_steps=2 format=3 uid="uid://k3p37vahfpip"]
+[gd_scene load_steps=5 format=3 uid="uid://k3p37vahfpip"]
 
 [ext_resource type="Script" path="res://Scripts/MainCam.gd" id="1_2ikkk"]
+[ext_resource type="Material" uid="uid://6diw6is8k6t0" path="res://Shaders/PixelTestMaterial.tres" id="2_u5h7u"]
+
+[sub_resource type="Environment" id="Environment_2g3hd"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_44ec5"]
+material = ExtResource("2_u5h7u")
+size = Vector2(10, 10)
 
 [node name="MainCam" type="Camera3D"]
-projection = 1
+environment = SubResource("Environment_2g3hd")
 fov = 10.0
 size = 3.0
 script = ExtResource("1_2ikkk")
@@ -12,3 +19,8 @@ script = ExtResource("1_2ikkk")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.628289, 0.77798, 0, -0.77798, 0.628289, 0, 1.25018, 3.33821)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.551662)
+cast_shadow = 2
+mesh = SubResource("QuadMesh_44ec5")

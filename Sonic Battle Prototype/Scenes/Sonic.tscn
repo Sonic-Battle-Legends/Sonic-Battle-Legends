@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://3vv715sdbbdw"]
+[gd_scene load_steps=38 format=3 uid="uid://3vv715sdbbdw"]
 
 [ext_resource type="Script" path="res://Scripts/Sonic.gd" id="1_0e6eq"]
 [ext_resource type="Texture2D" uid="uid://cnvca7d2mepgx" path="res://Sprites/Sonic.png" id="1_w8pxe"]
@@ -6,6 +6,7 @@
 [ext_resource type="Material" uid="uid://58e30ip8afyy" path="res://Materials/shadowMaterial.tres" id="3_rvjhs"]
 [ext_resource type="PackedScene" uid="uid://kiqyfxt7rwap" path="res://Scenes/hud.tscn" id="5_72pfc"]
 [ext_resource type="PackedScene" uid="uid://cm41j6cu5vd54" path="res://Scenes/input.tscn" id="6_uhb43"]
+[ext_resource type="PackedScene" uid="uid://cif8ar07vb2yr" path="res://Models/Sonic/sonicrigged_2.tscn" id="7_1shw0"]
 
 [sub_resource type="Animation" id="Animation_spsdn"]
 length = 0.001
@@ -848,6 +849,7 @@ libraries = {
 autoplay = "idle"
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
+visible = false
 texture_filter = 2
 texture = ExtResource("1_w8pxe")
 region_enabled = true
@@ -888,6 +890,9 @@ replication_config = SubResource("SceneReplicationConfig_u2him")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ring_collider"]
 shape = SubResource("BoxShape3D_ij26k")
+
+[node name="sonicrigged2" parent="." instance=ExtResource("7_1shw0")]
+transform = Transform3D(0.03, 0, 0, 0, 0.03, 0, 0, 0, 0.03, 0, -0.15, 0)
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]
