@@ -11,6 +11,7 @@ size = Vector2(10, 10)
 
 [node name="MainCam" type="Camera3D"]
 environment = SubResource("Environment_2g3hd")
+current = true
 fov = 10.0
 size = 3.0
 script = ExtResource("1_2ikkk")

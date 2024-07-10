@@ -408,6 +408,7 @@ func handle_attack():
 			# If sonic holds any other direction, he executes a normal strong attack
 			# that sends the opponent in the direction he specifies.
 			$AnimationPlayer.play("strong")
+			$sonicrigged2/AnimationPlayer.play("PGC 4")
 			launch_power = Vector3(direction.x * 20, 5, direction.z * 20)
 			attacking = true
 	elif attack_pressed && dashing && can_airdash:
@@ -433,7 +434,7 @@ func handle_attack():
 		create_punch_timer()
 		attacking = true
 		$AnimationPlayer.play("punch1")
-		$sonicrigged2/AnimationPlayer.play("PGC")
+		$sonicrigged2/AnimationPlayer.play("PGC 1")
 		launch_power = Vector3(0, 2, 0)
 		current_punch = 1
 	
@@ -561,6 +562,7 @@ func handle_animation():
 			if !starting:
 				if round(velocity.x) != 0 || round(velocity.z) != 0:
 					$AnimationPlayer.play("walk")
+					$sonicrigged2/AnimationPlayer.play("WALK")
 				else:
 					$AnimationPlayer.play("idle")
 					$sonicrigged2/AnimationPlayer.play("IDLE")
@@ -569,10 +571,12 @@ func handle_animation():
 			if !dashing:
 				if velocity.y > 0:
 					$AnimationPlayer.play("jump")
+					$sonicrigged2/AnimationPlayer.play("JUMP")
 					falling = false
 				elif velocity.y <= 0 && !falling:
 					# Because falling should only play once, this is tied to the falling state.
 					$AnimationPlayer.play("fall")
+					$sonicrigged2/AnimationPlayer.play("FALL")
 					falling = true
 	'''
 	elif $AnimationPlayer.current_animation == "punch1" || $AnimationPlayer.current_animation == "punch2" || $AnimationPlayer.current_animation == "punch3":
@@ -621,6 +625,7 @@ func _on_animation_player_animation_finished(anim_name):
 		# Go back to falling state when airdash ends.
 		dashing = false
 		$AnimationPlayer.play("fall")
+		$sonicrigged2/AnimationPlayer.play("FALL")
 		falling = true
 	elif anim_name == "strong":
 		# Sonic's normal strong attack has an extra effect where he has to recoil backwards,
@@ -645,6 +650,7 @@ func _on_animation_player_animation_finished(anim_name):
 		jumping = false
 		falling = true
 		$AnimationPlayer.play("fall")
+		$sonicrigged2/AnimationPlayer.play("FALL")
 	elif anim_name == "punch1" || anim_name == "punch2" || anim_name == "punch3":
 		# The 3-hit combo. If the player is holding the attack button by the time a punch finishes,
 		# it moves on to the next punch.
@@ -655,15 +661,18 @@ func _on_animation_player_animation_finished(anim_name):
 			create_punch_timer()
 			if current_punch == 1:
 				$AnimationPlayer.play("punch2")
+				$sonicrigged2/AnimationPlayer.play("PGC 2")
 				launch_power = Vector3(0, 2, 0)
 				current_punch = 2
 			elif current_punch == 2:
 				$AnimationPlayer.play("punch3")
+				$sonicrigged2/AnimationPlayer.play("PGC 3")
 				launch_power = Vector3(0, 2, 0)
 				current_punch = 3
 			elif current_punch == 3:
 				# The final part of the combo does an immediate strong attack.
 				$AnimationPlayer.play("strong")
+				$sonicrigged2/AnimationPlayer.play("PGC 4")
 				if facing_left:
 					launch_power = Vector3(-20, 5, 0)
 				else:
@@ -701,6 +710,7 @@ func _on_animation_player_animation_finished(anim_name):
 			jumping = false
 			falling = true
 			$AnimationPlayer.play("fall")
+			$sonicrigged2/AnimationPlayer.play("FALL")
 
 
 ## Very simple signal state determining when the attack hitbox actually hits something.
