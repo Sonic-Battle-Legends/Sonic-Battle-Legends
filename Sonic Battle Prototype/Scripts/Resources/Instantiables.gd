@@ -32,10 +32,13 @@ const SONIC = preload("res://Scenes/Sonic.tscn")
 # shadow character
 const SHADOW = preload("res://Scenes/Shadow.tscn")
 
-const WORLD_AREA = preload("res://Scenes/Areas/world1.tscn")
+var first_world = load("res://Scenes/Areas/world1.tscn")
 
 # the hub area with the hub markers that lead to stages
-const HUB_TEST = preload("res://Scenes/Hubs/city_hub.tscn")
+var city_hub = load("res://Scenes/Hubs/city_hub.tscn")
+var puzzle_map = load("res://Scenes/isometric_map_1.tscn")
+var puzzle_map_2 = load("res://Scenes/isometric_map_2.tscn")
+var puzzle_map_3 = load("res://Scenes/isometric_map_3.tscn")
 
 # to match-case block
 # should get a variable with the name of a string instead
@@ -43,10 +46,16 @@ const HUB_TEST = preload("res://Scenes/Hubs/city_hub.tscn")
 enum objects {SHOT_PROJECTILE, TOSS_RING, SET_MINE, ABILITYSELECT, POINTERSPAWNER, SCORESCREEN}
 
 # pointer spawner is not a screen though
-enum screens {ABILITYSELECT, POINTERSPAWNER, SCORESCREEN}
+#enum screens {ABILITYSELECT, POINTERSPAWNER, SCORESCREEN}
 
-# hubs
-enum hubs {HUBTEST}
+## the possible worlds to select
+#enum worlds {first_world} #, second_world}
+
+## the possible hubs to select
+#enum hubs {city_hub, puzzle_map, puzzle_map_2, puzzle_map_3}
+
+## possible worlds and hubs to select with place markers
+enum worlds_and_hubs {first_world, city_hub, puzzle_map, puzzle_map_2, puzzle_map_3}
 
 
 ## create a Sonic character
@@ -100,9 +109,9 @@ func create_scattered_ring(ring_position, scatter_origin_position):
 
 ## got to area
 # areas that contains hubs
-func go_to_area(selected_area):
+func go_to_area(selected_area: PackedScene):
 	delete_places()
-	
+	# make the selected hub also null to prevent issues with the exit button on pause menu
 	GlobalVariables.hub_selected = null
 	
 	load_area(selected_area)
@@ -127,9 +136,10 @@ func load_area(new_area):
 # hubs that contains stages
 # called from menu after an area is selected
 # it should go to an area first them the player selects a hub
-func go_to_hub(selected_hub):
+func go_to_hub(selected_hub: PackedScene):
 	delete_places()
 	
+	#var hub = match_place(selected_hub)
 	load_hub(selected_hub)
 	
 	# allow a new character to be spawned
@@ -145,7 +155,7 @@ func go_to_hub(selected_hub):
 ## load a hub in the Main hierarchy
 func load_hub(hub_to_create):
 	# store the current hub on global variables
-	GlobalVariables.current_hub = hub_to_create.instantiate() #new_hub
+	GlobalVariables.current_hub = hub_to_create.instantiate()
 	# create the hub in the Main scene
 	GlobalVariables.main_menu.get_parent().add_child(GlobalVariables.current_hub)
 
@@ -176,6 +186,25 @@ func load_stage(new_stage):
 	GlobalVariables.current_stage = new_stage.instantiate()
 	# create the stage in the Main scene
 	GlobalVariables.main_menu.get_parent().add_child(GlobalVariables.current_stage)
+
+
+## match the selected enumerator with the place the player wants to go
+## get an enumerator as parameter and return a packedscene
+func match_place(place_to_match: int):
+	var place_to_go
+	
+	match place_to_match:
+		worlds_and_hubs.first_world:
+			place_to_go = first_world
+		worlds_and_hubs.city_hub:
+			place_to_go = city_hub
+		worlds_and_hubs.puzzle_map:
+			place_to_go = puzzle_map
+		worlds_and_hubs.puzzle_map_2:
+			place_to_go = puzzle_map_2
+		worlds_and_hubs.puzzle_map_3:
+			place_to_go = puzzle_map_3
+	return place_to_go
 
 
 ## respawn the character

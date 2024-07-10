@@ -14,6 +14,10 @@ func _ready():
 	# The camera locks on to the player.
 	# When we have multiple characters and respawning, this will likely change to some capacity.
 	player = get_parent()
+	# if it's in perspective mode, set the position to where it should be
+	if projection == 0:
+		position = Vector3(0, 10, 20)
+
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(_delta):

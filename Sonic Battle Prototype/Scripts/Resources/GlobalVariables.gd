@@ -30,20 +30,20 @@ var current_character
 # enumerator for all world areas
 # which contain some number of hubs each
 # maybe make another list for unlockable characters
-enum playable_areas {world1}
+#enum playable_areas {world1}
 # store the area selected in the main menu
-var area_selected # = playable_areas.area1
+var area_selected: PackedScene # = playable_areas.area1
 # store the instantiated area
 var current_area
 
-enum playable_hubs {hub1}
+#enum playable_hubs {hub1}
 # store the hub selected in the main menu
-var hub_selected
+var hub_selected: PackedScene
 # current hub instantiated in-game
 var current_hub
 
 # stage selected (with PackedScene type) by hitting a hub marker in a hub area
-var stage_selected
+var stage_selected: PackedScene
 # current stage instantiated in-game
 var current_stage
 

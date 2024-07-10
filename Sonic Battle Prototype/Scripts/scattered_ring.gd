@@ -5,7 +5,7 @@ extends CharacterBody3D
 # Original code by The8BitLeaf.
 
 const DEFAULT_BOUNCE_VALUE: float = 4.0
-const MIN_TIME: int = 3.5
+const MIN_TIME: float = 3.5
 var bounce_amount: float = DEFAULT_BOUNCE_VALUE
 var blinking_period: float = 0.0
 

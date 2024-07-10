@@ -1,10 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://bsprksm8mhbae"]
+[gd_scene load_steps=8 format=3 uid="uid://c21jx54148kmv"]
 
 [ext_resource type="PackedScene" uid="uid://b4sfvdfh2ssee" path="res://Models/hub_test.blend" id="1_3cksg"]
 [ext_resource type="PackedScene" uid="uid://irlpgd8spuet" path="res://Scenes/stages/invisible_walls.tscn" id="2_1lcbb"]
-[ext_resource type="PackedScene" uid="uid://cchofw32sy0jj" path="res://Scenes/Areas/area_marker.tscn" id="3_qjbkr"]
 [ext_resource type="PackedScene" uid="uid://dhcmo5dwjo44o" path="res://Scenes/stages/stage_marker.tscn" id="5_rj5n4"]
 [ext_resource type="PackedScene" uid="uid://bxjkjr27crbtr" path="res://Scenes/stages/test_2.tscn" id="6_ub5qx"]
+[ext_resource type="PackedScene" uid="uid://cchofw32sy0jj" path="res://Scenes/Areas/area_marker.tscn" id="7_gwt5o"]
 [ext_resource type="PackedScene" uid="uid://dqgtu3gjo0ymi" path="res://Scenes/collectables/ring.tscn" id="7_kmrjo"]
 [ext_resource type="PackedScene" uid="uid://dn6soenbfit7t" path="res://Scenes/stages/test_stage_v_1.tscn" id="7_pv12t"]
 
@@ -14,9 +14,6 @@
 
 [node name="InvisibleWalls" parent="." instance=ExtResource("2_1lcbb")]
 transform = Transform3D(2.335, 0, 0, 0, 2.13, 0, 0, 0, 2.13, 1.06559, 0, 0)
-
-[node name="area_marker" parent="." instance=ExtResource("3_qjbkr")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.1565, 0, 8.52349)
 
 [node name="stage_marker" parent="." instance=ExtResource("5_rj5n4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.04248, 0, 5.86447)
@@ -28,3 +25,6 @@ new_place = ExtResource("7_pv12t")
 
 [node name="Ring" parent="." instance=ExtResource("7_kmrjo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.28553, 6.54966e-07, 2.16711)
+
+[node name="area_marker" parent="." instance=ExtResource("7_gwt5o")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.3147, 0, 8.66507)

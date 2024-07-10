@@ -1,13 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://no4yu8coo27t"]
+[gd_scene load_steps=8 format=3 uid="uid://s00qmt7kk36o"]
 
 [ext_resource type="PackedScene" uid="uid://irlpgd8spuet" path="res://Scenes/stages/invisible_walls.tscn" id="1_pdy1m"]
 [ext_resource type="PackedScene" uid="uid://cewhnhhc0888k" path="res://Models/world_area1.blend" id="2_058ff"]
 [ext_resource type="PackedScene" uid="uid://cxf4g5x00seov" path="res://Scenes/Hubs/hub_marker.tscn" id="3_57wjv"]
-[ext_resource type="PackedScene" uid="uid://bsprksm8mhbae" path="res://Scenes/Hubs/city_hub.tscn" id="4_42gae"]
 [ext_resource type="PackedScene" uid="uid://dhcmo5dwjo44o" path="res://Scenes/stages/stage_marker.tscn" id="5_4mykb"]
 [ext_resource type="PackedScene" uid="uid://vmlbayb17hrh" path="res://Scenes/stages/king_of_the_heal.tscn" id="6_okk86"]
 [ext_resource type="PackedScene" uid="uid://b8jcukmh0qhgv" path="res://Scenes/stages/big_stage.tscn" id="7_k5lcp"]
-[ext_resource type="PackedScene" uid="uid://ck62xj4xi6tkw" path="res://Scenes/isometric_map_1.tscn" id="8_73gle"]
 [ext_resource type="PackedScene" uid="uid://dqgtu3gjo0ymi" path="res://Scenes/collectables/ring.tscn" id="9_mqwen"]
 
 [node name="world1" type="Node3D"]
@@ -18,37 +16,41 @@ transform = Transform3D(1.955, 0, 0, 0, 1.955, 0, 0, 0, 2.745, -0.831776, -2.182
 [node name="world_area1" parent="." instance=ExtResource("2_058ff")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.8574, -1.66104, -2.80514)
 
-[node name="hub_marker" parent="." instance=ExtResource("3_57wjv")]
+[node name="markers" type="Marker3D" parent="."]
+
+[node name="hub_marker" parent="markers" instance=ExtResource("3_57wjv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.86362, -0.113016, 0.501194)
 text = "City Hub"
-new_place = ExtResource("4_42gae")
+new_world_or_hub = 1
 
-[node name="stage_marker" parent="." instance=ExtResource("5_4mykb")]
+[node name="stage_marker" parent="markers" instance=ExtResource("5_4mykb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4086, -0.113016, -2.81203)
-text = "Zigurat 1"
+text = "Ziggurat 1"
 new_place = ExtResource("6_okk86")
 
-[node name="stage_marker2" parent="." instance=ExtResource("5_4mykb")]
+[node name="stage_marker2" parent="markers" instance=ExtResource("5_4mykb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.61851, -0.113015, -3.79391)
 text = "Rocky Stage"
 new_place = ExtResource("7_k5lcp")
 
-[node name="hub_marker2" parent="." instance=ExtResource("3_57wjv")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.53185, -0.113015, -8.1261)
-new_place = ExtResource("8_73gle")
-rings_to_enter = 5
+[node name="hub_marker2" parent="markers" instance=ExtResource("3_57wjv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.26786, -0.113016, -7.9877)
+text = "Puzzle"
+new_world_or_hub = 2
 
-[node name="Ring" parent="." instance=ExtResource("9_mqwen")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.307, -0.113016, -2.17048)
+[node name="collectables" type="Marker3D" parent="."]
 
-[node name="Ring2" parent="." instance=ExtResource("9_mqwen")]
+[node name="Ring" parent="collectables" instance=ExtResource("9_mqwen")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.23972, -0.113016, -2.17048)
+
+[node name="Ring2" parent="collectables" instance=ExtResource("9_mqwen")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.856553, -0.113016, -2.17048)
 
-[node name="Ring3" parent="." instance=ExtResource("9_mqwen")]
+[node name="Ring3" parent="collectables" instance=ExtResource("9_mqwen")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.471451, -0.113016, -2.17048)
 
-[node name="Ring4" parent="." instance=ExtResource("9_mqwen")]
+[node name="Ring4" parent="collectables" instance=ExtResource("9_mqwen")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0870822, -0.113016, -2.17048)
 
-[node name="Ring5" parent="." instance=ExtResource("9_mqwen")]
+[node name="Ring5" parent="collectables" instance=ExtResource("9_mqwen")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.296361, -0.113016, -2.17048)
