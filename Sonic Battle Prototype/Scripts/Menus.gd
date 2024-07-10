@@ -155,7 +155,7 @@ func _on_shadow_character_button_pressed():
 	area_selection_menu.show()
 
 func _on_area_1_button_pressed():
-	GlobalVariables.area_selected = Instantiables.WORLD_AREA
+	GlobalVariables.area_selected = Instantiables.match_place(Instantiables.worlds_and_hubs.first_world)
 	hide_menus()
 	go_to_area_scene()
 

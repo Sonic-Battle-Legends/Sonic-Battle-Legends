@@ -42,7 +42,6 @@ func remove_player(peer_id):
 	var player = get_node_or_null(str(peer_id))
 	if player:
 		player.queue_free()
-		push_warning("player removed")
 
 
 func _on_join_button_pressed():

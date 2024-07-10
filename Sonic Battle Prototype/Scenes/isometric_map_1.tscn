@@ -1,9 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://ck62xj4xi6tkw"]
+[gd_scene load_steps=7 format=3 uid="uid://ck62xj4xi6tkw"]
 
 [ext_resource type="PackedScene" uid="uid://b5w6kfvwqtv4y" path="res://Models/isometric_map1.blend" id="1_6gs36"]
 [ext_resource type="Material" uid="uid://b2rgo2opot2ma" path="res://Materials/StageMaterial.tres" id="2_71uvm"]
 [ext_resource type="PackedScene" uid="uid://cxf4g5x00seov" path="res://Scenes/Hubs/hub_marker.tscn" id="3_onfjv"]
 [ext_resource type="PackedScene" uid="uid://b6jdl4tihpxcn" path="res://Scenes/isometric_map_2.tscn" id="4_84s14"]
+[ext_resource type="PackedScene" uid="uid://1p02tjh50tcy" path="res://Scenes/move_puzzle.tscn" id="5_r0c1r"]
+[ext_resource type="PackedScene" uid="uid://dcog3d5ojuxx4" path="res://Scenes/generic_ground_button.tscn" id="6_fsrmr"]
 
 [node name="isometric_map_1" type="Node3D"]
 
@@ -14,7 +16,21 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.01997, 0, -7.43391)
 surface_material_override/0 = ExtResource("2_71uvm")
 
 [node name="hub_marker" parent="." instance=ExtResource("3_onfjv")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.06364, 0.718561, -16.7246)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.06364, 10.3844, -16.7246)
 new_place = ExtResource("4_84s14")
+new_world_or_hub = 3
+
+[node name="Move_Puzzle" parent="." node_paths=PackedStringArray("object_to_move") instance=ExtResource("5_r0c1r")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.37127, 0, -16.2856)
+object_to_move = NodePath("../hub_marker")
+
+[node name="to" parent="Move_Puzzle" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.7283, 0.771151, -0.494545)
+
+[node name="generic_ground_button" parent="." node_paths=PackedStringArray("object_with_method") instance=ExtResource("6_fsrmr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.25916, 0.71856, -16.807)
+object_with_method = NodePath("../Move_Puzzle")
+method_name = "move"
 
 [editable path="isometric_map1"]
+[editable path="Move_Puzzle"]
