@@ -36,6 +36,7 @@ var first_world = load("res://Scenes/Areas/world1.tscn")
 
 # the hub area with the hub markers that lead to stages
 var city_hub = load("res://Scenes/Hubs/city_hub.tscn")
+var ruins1 = load("res://Scenes/Hubs/ruins_1.tscn")
 var puzzle_map = load("res://Scenes/isometric_map_1.tscn")
 var puzzle_map_2 = load("res://Scenes/isometric_map_2.tscn")
 var puzzle_map_3 = load("res://Scenes/isometric_map_3.tscn")
@@ -55,7 +56,7 @@ enum objects {SHOT_PROJECTILE, TOSS_RING, SET_MINE, ABILITYSELECT, POINTERSPAWNE
 #enum hubs {city_hub, puzzle_map, puzzle_map_2, puzzle_map_3}
 
 ## possible worlds and hubs to select with place markers
-enum worlds_and_hubs {first_world, city_hub, puzzle_map, puzzle_map_2, puzzle_map_3}
+enum worlds_and_hubs {first_world, city_hub, ruins1, puzzle_map, puzzle_map_2, puzzle_map_3}
 
 
 ## create a Sonic character
@@ -198,6 +199,8 @@ func match_place(place_to_match: int):
 			place_to_go = first_world
 		worlds_and_hubs.city_hub:
 			place_to_go = city_hub
+		worlds_and_hubs.ruins1:
+			place_to_go = ruins1
 		worlds_and_hubs.puzzle_map:
 			place_to_go = puzzle_map
 		worlds_and_hubs.puzzle_map_2:
