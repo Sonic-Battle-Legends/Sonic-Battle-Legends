@@ -138,26 +138,27 @@ var guard_pressed: bool = false
 var rings: int = MAX_SCATTERED_RINGS_ALLOWED
 
 # Head Up Display
-@export_category("HUD")
-@export var hud: Control
+#@export_category("HUD")
+#@export var hud: Control
 
-@export_category("CAMERA")
-@export var camera: Camera3D
+#@export_category("CAMERA")
+#@export var camera: Camera3D
 
+var camera = null
 
 func _enter_tree():
-	
+	pass
 	#set_multiplayer_authority(str(name).to_int())
-	set_multiplayer_authority(GlobalVariables.character_id)
+	#set_multiplayer_authority(GlobalVariables.character_id)
 
 func _ready():
 	if not is_multiplayer_authority(): return
-	$MainCam.current = true
+	#$MainCam.current = true
 	
 	points = GlobalVariables.character_points
 	
 	# update the hud with the default values when starting the game
-	hud.update_hud(life_total, special_amount, points)
+	#hud.update_hud(life_total, special_amount, points)
 	
 	GlobalVariables.current_character = self
 	
@@ -167,7 +168,7 @@ func _ready():
 
 
 # Setting a drop shadow is weird in _physics_process(), so the drop shadow code is in _process().
-func _process(delta):	
+func _process(delta):
 	# If the drop shadow ray detects ground, it sets the visual shadow at the collision point.
 	if $DropShadowRange.is_colliding():
 		$DropShadow.visible = true
@@ -485,7 +486,7 @@ func heal(amount = 4):
 		life_total += amount
 	if life_total > MAX_LIFE_TOTAL:
 		life_total = MAX_LIFE_TOTAL
-	hud.change_life(life_total)
+	#hud.change_life(life_total)
 	increase_special(1)
 
 
@@ -495,13 +496,13 @@ func increase_special(amount = 1):
 		special_amount += amount
 	if special_amount > MAX_SPECIAL_AMOUNT:
 		special_amount = MAX_SPECIAL_AMOUNT
-	hud.change_special(special_amount)
+	#hud.change_special(special_amount)
 
 
 ## increase the total points gained in-game by one
 func increase_points():
 	points += 1
-	hud.change_points(points)
+	#hud.change_points(points)
 	GlobalVariables.character_points = points
 	if points >= GlobalVariables.points_to_win:
 			GlobalVariables.win()
@@ -510,7 +511,7 @@ func increase_points():
 ## gain one extra life
 func one_up():
 	GlobalVariables.extra_lives += 1
-	hud.update_extra_lives(GlobalVariables.extra_lives)
+	#hud.update_extra_lives(GlobalVariables.extra_lives)
 
 
 func collect_ring():
@@ -521,7 +522,7 @@ func collect_ring():
 		rings += 1
 	else:
 		GlobalVariables.total_rings += 1
-		hud.update_rings(GlobalVariables.total_rings)
+		#hud.update_rings(GlobalVariables.total_rings)
 	
 	# increase a permanent counter of how many rings were collected
 	# to count towards extra lives gained
@@ -552,7 +553,7 @@ func scatter_rings(amount = 1):
 	number_of_rings_to_scatter = clamp(number_of_rings_to_scatter, 0, MAX_SCATTERED_RINGS_ALLOWED)
 	rings = clamp(rings, 0, rings)
 	# update hud
-	hud.update_rings(rings)
+	#hud.update_rings(rings)
 	
 	# relative ring position
 	var proxy_position = position + transform.basis.z
@@ -759,7 +760,7 @@ func defeated():
 @rpc("any_peer","reliable","call_local")
 func get_hurt(launch_speed):
 	life_total -= 10
-	hud.change_life(life_total)
+	#hud.change_life(life_total)
 	
 	# give a invunerability time
 	if !hurt:

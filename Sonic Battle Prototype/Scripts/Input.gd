@@ -11,7 +11,8 @@ func _physics_process(_delta):
 		var input_dir = Input.get_vector("left", "right", "up", "down")
 		character.direction = (character.transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 		# change input accordingly to the camera rotation
-		character.direction *= character.camera.spin
+		if character.camera != null:
+			character.direction *= character.camera.spin
 		
 		# jump check
 		character.jump_pressed = Input.is_action_just_pressed("jump")

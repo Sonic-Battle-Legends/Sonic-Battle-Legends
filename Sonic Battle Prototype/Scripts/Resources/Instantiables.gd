@@ -32,6 +32,8 @@ const SONIC = preload("res://Scenes/Sonic.tscn")
 # shadow character
 const SHADOW = preload("res://Scenes/Shadow.tscn")
 
+var ENEMY_BOT = load("res://Scenes/enemies/Sonic_BOT.tscn")
+
 var first_world = load("res://Scenes/Areas/world1.tscn")
 
 # the hub area with the hub markers that lead to stages
@@ -179,6 +181,10 @@ func go_to_stage(new_stage: PackedScene):
 	
 	# create the new stage
 	load_stage(new_stage)
+	'''
+	'''
+	if GlobalVariables.play_online == false:
+		spawn_bot()
 
 
 ## load a stage in the Main hierarchy
@@ -187,6 +193,16 @@ func load_stage(new_stage):
 	GlobalVariables.current_stage = new_stage.instantiate()
 	# create the stage in the Main scene
 	GlobalVariables.main_menu.get_parent().add_child(GlobalVariables.current_stage)
+
+
+func spawn_bot():
+	# create a cpu character to fight
+	var new_enemy = ENEMY_BOT.instantiate()
+	var enemy_abilities = ["SHOT", "POW", "SET"]
+	new_enemy.set_abilities(enemy_abilities)
+	new_enemy.position = Vector3(0, 0.1, 0)
+	GlobalVariables.enemy_bots.append(new_enemy)
+	GlobalVariables.main_menu.get_parent().add_child(new_enemy)
 
 
 ## match the selected enumerator with the place the player wants to go
@@ -235,6 +251,12 @@ func delete_places():
 	if GlobalVariables.current_stage != null:
 		GlobalVariables.current_stage.queue_free()
 		GlobalVariables.current_stage = null
+	
+	# destroy bots
+	if GlobalVariables.enemy_bots.size() > 0:
+		for i in GlobalVariables.enemy_bots:
+			if i != null:
+				i.queue_free()
 
 
 ## go to previous ambient
