@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://bj3nlqpe18bic"]
+
+[ext_resource type="Script" path="res://Scripts/CPUcontroller.gd" id="1_vpug0"]
+
+[node name="CPUcontroller" type="Label3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+script = ExtResource("1_vpug0")

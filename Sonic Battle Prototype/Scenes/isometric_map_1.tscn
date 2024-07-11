@@ -18,7 +18,7 @@ surface_material_override/0 = ExtResource("2_71uvm")
 [node name="hub_marker" parent="." instance=ExtResource("3_onfjv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.06364, 10.3844, -16.7246)
 new_place = ExtResource("4_84s14")
-new_world_or_hub = 3
+new_world_or_hub = 4
 
 [node name="Move_Puzzle" parent="." node_paths=PackedStringArray("object_to_move") instance=ExtResource("5_r0c1r")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.37127, 0, -16.2856)

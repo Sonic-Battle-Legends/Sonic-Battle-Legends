@@ -1,0 +1,204 @@
+[gd_scene load_steps=14 format=3 uid="uid://bdj7wcc56btg8"]
+
+[ext_resource type="PackedScene" uid="uid://5b742u1yxnf" path="res://Models/ruin1.blend" id="1_8oi5j"]
+[ext_resource type="Material" uid="uid://ctynrgiidsse2" path="res://Materials/grassMaterial.tres" id="2_gll4y"]
+[ext_resource type="Material" uid="uid://bqiy2m4cne1q5" path="res://Materials/rocksMaterial.tres" id="2_it6rs"]
+[ext_resource type="Material" uid="uid://bt8c2x76648j7" path="res://Materials/ruinMaterial.tres" id="2_nrl27"]
+[ext_resource type="PackedScene" uid="uid://cxf4g5x00seov" path="res://Scenes/Hubs/hub_marker.tscn" id="2_vikbt"]
+[ext_resource type="Material" uid="uid://b06j6finw1qvt" path="res://Materials/waterMaterial.tres" id="4_3x68w"]
+[ext_resource type="PackedScene" uid="uid://l7rbse6cp0c" path="res://Scenes/water_wheel.tscn" id="7_vi3rj"]
+[ext_resource type="PackedScene" uid="uid://bvkrgatmaajyc" path="res://Scenes/spin_puzzle.tscn" id="8_xaaio"]
+[ext_resource type="PackedScene" uid="uid://dcog3d5ojuxx4" path="res://Scenes/generic_ground_button.tscn" id="9_fu63n"]
+[ext_resource type="PackedScene" uid="uid://1p02tjh50tcy" path="res://Scenes/move_puzzle.tscn" id="10_wv5tb"]
+[ext_resource type="PackedScene" uid="uid://dshayfo2x8pe5" path="res://Scenes/enemies/placeholder_enemy.tscn" id="11_tsfj2"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_e4327"]
+size = Vector3(3.07, 3.115, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_vi2q2"]
+size = Vector3(3.07, 3.115, 1)
+
+[node name="Ruins1" type="Node3D"]
+
+[node name="ruin1" parent="." instance=ExtResource("1_8oi5j")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+
+[node name="outside" parent="ruin1" index="0"]
+surface_material_override/0 = ExtResource("2_gll4y")
+surface_material_override/1 = ExtResource("2_it6rs")
+surface_material_override/2 = ExtResource("2_nrl27")
+
+[node name="ruins" parent="ruin1" index="1"]
+surface_material_override/0 = ExtResource("2_it6rs")
+surface_material_override/1 = ExtResource("2_nrl27")
+surface_material_override/2 = ExtResource("4_3x68w")
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.57301, 16.4013, -111.497)
+mesh = SubResource("BoxMesh_e4327")
+material = ExtResource("2_nrl27")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="CSGMesh3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CSGMesh3D/StaticBody3D"]
+shape = SubResource("BoxShape3D_vi2q2")
+
+[node name="hub_marker" parent="." instance=ExtResource("2_vikbt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.52966, 14.8971, -107.133)
+new_world_or_hub = 3
+
+[node name="water_wheel" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.5238, 3.15367, -47.4054)
+
+[node name="water_wheel" parent="water_wheel" instance=ExtResource("7_vi3rj")]
+start_with_arm_dowm = true
+
+[node name="arm" parent="water_wheel/water_wheel/water_wheel" index="2"]
+transform = Transform3D(1, -2.53518e-06, 0, 2.33746e-06, 0.922009, -0.38717, -9.81546e-07, -0.38717, -0.922009, 2.32113, 2.66141, -1.9318)
+
+[node name="spin_puzzle" parent="water_wheel" instance=ExtResource("8_xaaio")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.493151, 0.247798, -2.81869)
+
+[node name="water_wheel_puzzle2" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.5238, 6.07386, -62.6491)
+
+[node name="water_wheel" parent="water_wheel_puzzle2" instance=ExtResource("7_vi3rj")]
+
+[node name="arm" parent="water_wheel_puzzle2/water_wheel/water_wheel" index="2"]
+transform = Transform3D(1, -2.53518e-06, 0, 2.33746e-06, 0.922009, -0.38717, -9.81546e-07, -0.38717, -0.922009, 2.32113, 2.66141, -1.9318)
+
+[node name="spin_puzzle" parent="water_wheel_puzzle2" instance=ExtResource("8_xaaio")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.493151, 0.247798, -2.81869)
+
+[node name="generic_ground_button" parent="water_wheel_puzzle2" node_paths=PackedStringArray("object_with_method") instance=ExtResource("9_fu63n")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.83889, 0.0156612, -1.26553)
+object_with_method = NodePath("../water_wheel")
+method_name = "move_arm"
+
+[node name="generic_ground_button2" parent="water_wheel_puzzle2" node_paths=PackedStringArray("object_with_method", "button_mesh_object") instance=ExtResource("9_fu63n")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.83889, 0.0156612, -1.26553)
+object_with_method = NodePath("../Move_Puzzle")
+method_name = "move"
+button_mesh_object = NodePath("../generic_ground_button/ground_button/ground_button")
+
+[node name="wall2" type="CSGMesh3D" parent="water_wheel_puzzle2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.95077, 1.32196, -3.52363)
+mesh = SubResource("BoxMesh_e4327")
+material = ExtResource("2_nrl27")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="water_wheel_puzzle2/wall2"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="water_wheel_puzzle2/wall2/StaticBody3D"]
+shape = SubResource("BoxShape3D_vi2q2")
+
+[node name="Move_Puzzle" parent="water_wheel_puzzle2" node_paths=PackedStringArray("object_to_move") instance=ExtResource("10_wv5tb")]
+object_to_move = NodePath("../wall2")
+pace = 0.005
+delay = 1.0
+
+[node name="to" parent="water_wheel_puzzle2/Move_Puzzle" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.95077, -1.80676, -3.52363)
+
+[node name="water_wheel_puzzle3" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.5238, 8.95939, -77.8986)
+
+[node name="water_wheel" parent="water_wheel_puzzle3" instance=ExtResource("7_vi3rj")]
+
+[node name="hoist" parent="water_wheel_puzzle3/water_wheel/water_wheel" index="1"]
+transform = Transform3D(0.819552, -0.573004, 0, 0.573004, 0.819552, 0, 0, 0, 1, 0.961655, 0, -6.62939)
+
+[node name="arm" parent="water_wheel_puzzle3/water_wheel/water_wheel" index="2"]
+transform = Transform3D(1, -2.53518e-06, 0, 2.33746e-06, 0.922008, -0.38717, -9.81546e-07, -0.38717, -0.922008, -2.30921, 2.66141, -1.93179)
+visible = false
+
+[node name="spin_puzzle" parent="water_wheel_puzzle3" node_paths=PackedStringArray("object_with_method") instance=ExtResource("8_xaaio")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.493151, 0.247798, -2.81869)
+object_with_method = NodePath("../Move_Puzzle")
+name_of_the_method = "move"
+
+[node name="wall3" type="CSGMesh3D" parent="water_wheel_puzzle3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.95077, 1.2931, -3.57032)
+mesh = SubResource("BoxMesh_e4327")
+material = ExtResource("2_nrl27")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="water_wheel_puzzle3/wall3"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="water_wheel_puzzle3/wall3/StaticBody3D"]
+shape = SubResource("BoxShape3D_vi2q2")
+
+[node name="Move_Puzzle" parent="water_wheel_puzzle3" node_paths=PackedStringArray("object_to_move") instance=ExtResource("10_wv5tb")]
+object_to_move = NodePath("../wall3")
+pace = 0.005
+
+[node name="to" parent="water_wheel_puzzle3/Move_Puzzle" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.95077, -2.03862, -3.57032)
+
+[node name="water_wheel_puzzle4" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.5238, 11.9143, -93.2213)
+
+[node name="water_wheel" parent="water_wheel_puzzle4" instance=ExtResource("7_vi3rj")]
+
+[node name="hoist" parent="water_wheel_puzzle4/water_wheel/water_wheel" index="1"]
+visible = false
+
+[node name="arm" parent="water_wheel_puzzle4/water_wheel/water_wheel" index="2"]
+transform = Transform3D(1, -2.53518e-06, 0, 2.33746e-06, 0.922008, -0.38717, -9.81546e-07, -0.38717, -0.922009, -4.49818, 2.66141, -1.93179)
+visible = false
+
+[node name="spin_puzzle" parent="water_wheel_puzzle4" node_paths=PackedStringArray("object_with_method") instance=ExtResource("8_xaaio")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.791309, 1.37642, -2.81869)
+object_with_method = NodePath("../Move_Puzzle2")
+name_of_the_method = "move"
+
+[node name="wall4" type="CSGMesh3D" parent="water_wheel_puzzle4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.95077, 1.45628, -3.46941)
+mesh = SubResource("BoxMesh_e4327")
+material = ExtResource("2_nrl27")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="water_wheel_puzzle4/wall4"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="water_wheel_puzzle4/wall4/StaticBody3D"]
+shape = SubResource("BoxShape3D_vi2q2")
+
+[node name="Move_Puzzle" parent="water_wheel_puzzle4" node_paths=PackedStringArray("object_to_move") instance=ExtResource("10_wv5tb")]
+object_to_move = NodePath("../spin_puzzle")
+pace = 0.005
+
+[node name="to" parent="water_wheel_puzzle4/Move_Puzzle" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.896536, 0.153646, -2.81869)
+
+[node name="Move_Puzzle2" parent="water_wheel_puzzle4" node_paths=PackedStringArray("object_to_move") instance=ExtResource("10_wv5tb")]
+object_to_move = NodePath("../wall4")
+pace = 0.005
+
+[node name="to" parent="water_wheel_puzzle4/Move_Puzzle2" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.95077, -2.04827, -3.46941)
+
+[node name="PlaceholderEnemy" parent="." instance=ExtResource("11_tsfj2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.764, 0, -7.46904)
+
+[node name="PlaceholderEnemy2" parent="." instance=ExtResource("11_tsfj2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.32551, -4.76837e-07, -12.0384)
+
+[node name="PlaceholderEnemy3" parent="." instance=ExtResource("11_tsfj2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.72778, -9.53674e-07, -16.5638)
+
+[node name="PlaceholderEnemy4" parent="." instance=ExtResource("11_tsfj2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.327334, 0, -22.6021)
+
+[node name="PlaceholderEnemy5" parent="." instance=ExtResource("11_tsfj2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.90109, 0, -28.8711)
+
+[editable path="ruin1"]
+[editable path="water_wheel/water_wheel"]
+[editable path="water_wheel/water_wheel/water_wheel"]
+[editable path="water_wheel_puzzle2/water_wheel"]
+[editable path="water_wheel_puzzle2/water_wheel/water_wheel"]
+[editable path="water_wheel_puzzle2/Move_Puzzle"]
+[editable path="water_wheel_puzzle3/water_wheel"]
+[editable path="water_wheel_puzzle3/water_wheel/water_wheel"]
+[editable path="water_wheel_puzzle3/Move_Puzzle"]
+[editable path="water_wheel_puzzle4/water_wheel"]
+[editable path="water_wheel_puzzle4/water_wheel/water_wheel"]
+[editable path="water_wheel_puzzle4/Move_Puzzle"]
+[editable path="water_wheel_puzzle4/Move_Puzzle2"]

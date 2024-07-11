@@ -12,6 +12,8 @@ extends Node3D
 @export var pace: float = 0.1
 ## if this object should return to original position when reaching target position
 @export var move_back: bool = false
+## delay to trigger
+@export var delay: float = 0.0
 
 var target_position: Vector3
 var can_move = false
@@ -22,13 +24,16 @@ func _ready():
 	from.position = object_to_move.position
 
 
-func _process(_delta):
+func _process(delta):
 	if can_move:
-		object_to_move.position = lerp(object_to_move.position, target_position, pace)
-		if object_to_move.position == target_position:
-			can_move = false
-			if move_back and not returning:
-				reset_position()
+		if delay <= 0.0:
+			object_to_move.position = lerp(object_to_move.position, target_position, pace)
+			if object_to_move.position == target_position:
+				can_move = false
+				if move_back and not returning:
+					reset_position()
+		else:
+			delay -= delta
 
 
 func move():

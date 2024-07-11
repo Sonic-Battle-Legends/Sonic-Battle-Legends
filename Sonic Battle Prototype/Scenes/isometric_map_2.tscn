@@ -16,6 +16,6 @@ surface_material_override/0 = ExtResource("2_jx23a")
 [node name="hub_marker" parent="." instance=ExtResource("3_yie5o")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3047, -0.0693455, -17.5183)
 new_place = ExtResource("4_4dm8g")
-new_world_or_hub = 4
+new_world_or_hub = 5
 
 [editable path="isometric_map2"]

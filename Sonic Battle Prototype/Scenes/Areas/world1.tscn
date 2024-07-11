@@ -35,8 +35,9 @@ new_place = ExtResource("7_k5lcp")
 
 [node name="hub_marker2" parent="markers" instance=ExtResource("3_57wjv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.26786, -0.113016, -7.9877)
-text = "Puzzle"
+text = "Ruins"
 new_world_or_hub = 2
+rings_to_enter = 5
 
 [node name="collectables" type="Marker3D" parent="."]
 

@@ -47,6 +47,8 @@ var stage_selected: PackedScene
 # current stage instantiated in-game
 var current_stage
 
+var enemy_bots: Array[CharacterBody3D]
+
 # timer to select ability and place character on stage
 var select_ability_timer: SceneTreeTimer
 

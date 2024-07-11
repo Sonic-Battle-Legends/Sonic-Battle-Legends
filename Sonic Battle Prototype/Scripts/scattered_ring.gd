@@ -14,7 +14,8 @@ var blinking_period: float = 0.0
 
 
 func _ready():
-	collision_area.monitorable = false
+	#collision_area.monitorable = false
+	collision_area.set_deferred("monitorable", false)
 
 
 func _physics_process(delta):

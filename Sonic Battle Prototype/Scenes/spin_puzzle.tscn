@@ -1,0 +1,73 @@
+[gd_scene load_steps=9 format=3 uid="uid://bvkrgatmaajyc"]
+
+[ext_resource type="PackedScene" uid="uid://buu1h7yfe3wlq" path="res://Models/spin.blend" id="1_k0r5b"]
+[ext_resource type="Script" path="res://Scripts/spin_puzzle.gd" id="1_sisp2"]
+[ext_resource type="Material" uid="uid://bqiy2m4cne1q5" path="res://Materials/rocksMaterial.tres" id="2_6rd2n"]
+[ext_resource type="Material" uid="uid://bt8c2x76648j7" path="res://Materials/ruinMaterial.tres" id="3_8neuj"]
+
+[sub_resource type="Animation" id="Animation_mcldb"]
+resource_name = "spin_wheel"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("spin/spin:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.7, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, -1.5708), Vector3(2.0944, 0, -1.5708), Vector3(4.18879, 0, -1.5708), Vector3(6.28319, 0, -1.5708)]
+}
+
+[sub_resource type="Animation" id="Animation_7y3sl"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("spin/spin:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, -1.5708)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_22kma"]
+_data = {
+"RESET": SubResource("Animation_7y3sl"),
+"spin_wheel": SubResource("Animation_mcldb")
+}
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2na17"]
+size = Vector3(0.675, 1, 1)
+
+[node name="spin_puzzle" type="Node3D"]
+script = ExtResource("1_sisp2")
+
+[node name="spin" parent="." instance=ExtResource("1_k0r5b")]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
+
+[node name="spin" parent="spin" index="0"]
+transform = Transform3D(-1.05841e-07, 1.12608, 0, -2.42137, -4.92226e-08, 0, 0, 0, 2.42137, 0, 0, 0)
+surface_material_override/0 = ExtResource("2_6rd2n")
+
+[node name="Cube" parent="spin" index="1"]
+surface_material_override/0 = ExtResource("3_8neuj")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_22kma")
+}
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.251282)
+shape = SubResource("BoxShape3D_2na17")
+
+[connection signal="area_entered" from="Area3D" to="." method="_on_area_3d_area_entered"]
+
+[editable path="spin"]
