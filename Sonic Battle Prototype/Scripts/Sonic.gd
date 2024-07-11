@@ -266,6 +266,7 @@ func handle_movement_input():
 		if !starting && !walking && is_on_floor():
 			starting = true
 			$AnimationPlayer.play("startWalk")
+			$sonicrigged2/AnimationPlayer.play("WALK START")
 		velocity.x = lerp(velocity.x, direction.x * SPEED, 0.1)
 		velocity.z = lerp(velocity.z, direction.z * SPEED, 0.1)
 	else:
@@ -301,30 +302,38 @@ func handle_dash():
 	# added a dash_triggered to prevent dashing when simply pressing diagonals
 	# (was suposed to substitute the double tap completely but the character was making a
 	# jump animation instead of dash animation so added the dash_triggered variable instead)
-	if $AnimationPlayer.current_animation == "startWalk" and dash_triggered:
+	if dash_triggered:
+		velocity = Vector3(velocity.normalized().x * DASH_SPEED, 4, velocity.normalized().z * DASH_SPEED)
+		$AnimationPlayer.play("dash")
+		$sonicrigged2/AnimationPlayer.play("DASH")
+		dashing = true
 		'''
 		if $AnimationPlayer.current_animation == "startWalk":
 			#velocity = direction * DASH_SPEED
 			#velocity.y = 4
 			$AnimationPlayer.play("dash")
 			dashing = true
-		'''
 		if velocity.x < 0 and Input.is_action_just_pressed("left"):
 			velocity = Vector3(-DASH_SPEED, 4, velocity.z)
 			$AnimationPlayer.play("dash")
+			$sonicrigged2/AnimationPlayer.play("DASH")
 			dashing = true
 		elif velocity.x > 0 and Input.is_action_just_pressed("right"):
 			velocity = Vector3(DASH_SPEED, 4, velocity.z)
 			$AnimationPlayer.play("dash")
+			$sonicrigged2/AnimationPlayer.play("DASH")
 			dashing = true
 		elif velocity.z < 0 and Input.is_action_just_pressed("up"):
 			velocity = Vector3(velocity.x, 4, -DASH_SPEED)
 			$AnimationPlayer.play("dash")
+			$sonicrigged2/AnimationPlayer.play("DASH")
 			dashing = true
 		elif velocity.z > 0 and Input.is_action_just_pressed("down"):
 			velocity = Vector3(velocity.x, 4, DASH_SPEED)
 			$AnimationPlayer.play("dash")
+			$sonicrigged2/AnimationPlayer.play("DASH")
 			dashing = true
+		'''
 	dash_triggered = false
 
 
@@ -343,6 +352,7 @@ func handle_jump():
 		# remove current coyote timer form the variable
 		coyote_timer = null
 		$AnimationPlayer.play("airdash")
+		$sonicrigged2/AnimationPlayer.play("DJMP 1")
 		# If Sonic is inputting a direction, he airdashes in that direction.
 		# If no direction is held, he moves horizontally in the direction he's facing.
 		if direction:
@@ -396,6 +406,7 @@ func handle_attack():
 	if attack_pressed && starting:
 		# The code for Sonic's strong attacks. If he's holding the opposite direction,
 		# he executes an up strong attack which slightly bumps him backwards.
+		'''
 		if (facing_left && direction.x > 0) || (!facing_left && direction.x < 0):
 			$AnimationPlayer.play("upStrong")
 			launch_power = Vector3(0, 7, 0)
@@ -411,6 +422,13 @@ func handle_attack():
 			$sonicrigged2/AnimationPlayer.play("PGC 4")
 			launch_power = Vector3(direction.x * 20, 5, direction.z * 20)
 			attacking = true
+		'''
+		# If sonic holds any other direction, he executes a normal strong attack
+		# that sends the opponent in the direction he specifies.
+		$AnimationPlayer.play("strong")
+		$sonicrigged2/AnimationPlayer.play("PGC 4")
+		launch_power = Vector3(direction.x * 20, 5, direction.z * 20)
+		attacking = true
 	elif attack_pressed && dashing && can_airdash:
 		# The code for Sonic's dash attack. His dash attack stalls him in the air for a short time.
 		can_airdash = false
@@ -578,6 +596,9 @@ func handle_animation():
 					$AnimationPlayer.play("fall")
 					$sonicrigged2/AnimationPlayer.play("FALL")
 					falling = true
+			else:
+				if can_airdash:
+					$sonicrigged2/AnimationPlayer.play("DASH")
 	'''
 	elif $AnimationPlayer.current_animation == "punch1" || $AnimationPlayer.current_animation == "punch2" || $AnimationPlayer.current_animation == "punch3":
 		# The 3-hit combo. If the player is holding the attack button by the time a punch finishes,
@@ -615,31 +636,32 @@ func set_abilities(new_abilities: Array):
 		immunity = new_abilities[2]
 
 
-## Signal function for when animations are finished.
-func _on_animation_player_animation_finished(anim_name):
-	if anim_name == "startWalk":
+func anim_end(anim_name):
+	if anim_name == "WALK START":
 		# End the "starting" state when the starting animation ends.
 		starting = false
 		walking = true
-	elif anim_name == "airdash":
+	elif anim_name == "DJMP 1" || anim_name == "DASH":
 		# Go back to falling state when airdash ends.
 		dashing = false
 		$AnimationPlayer.play("fall")
 		$sonicrigged2/AnimationPlayer.play("FALL")
 		falling = true
-	elif anim_name == "strong":
+	elif anim_name == "PGC 4":
 		# Sonic's normal strong attack has an extra effect where he has to recoil backwards,
 		# so this code plays that recoil and adjusts his velocity accordingly.
 		$AnimationPlayer.play("strongRecoil")
-		if facing_left:
-			velocity.x = 3
-		else:
-			velocity.x = -3
+		$sonicrigged2/AnimationPlayer.play("PGC 5")
+		velocity = -$sonicrigged2.basis.z.normalized() * 3
 		velocity.y = 3
-	elif anim_name == "strongRecoil" || anim_name == "upStrong":
+		can_air_attack = false
+		can_airdash = false
+	elif anim_name == "PGC 5" || anim_name == "upStrong":
 		# Resets Sonic's attacking state when the up strong or the regular strong recoil ends.
 		attacking = false
 		starting = false
+		can_air_attack = false
+		can_airdash = false
 	elif anim_name == "dashAttack":
 		# Resets Sonic's attacking state when his dash attack ends.
 		attacking = false
@@ -651,7 +673,7 @@ func _on_animation_player_animation_finished(anim_name):
 		falling = true
 		$AnimationPlayer.play("fall")
 		$sonicrigged2/AnimationPlayer.play("FALL")
-	elif anim_name == "punch1" || anim_name == "punch2" || anim_name == "punch3":
+	elif anim_name == "PGC 1" || anim_name == "PGC 2" || anim_name == "PGC 3":
 		# The 3-hit combo. If the player is holding the attack button by the time a punch finishes,
 		# it moves on to the next punch.
 		# NOTE: I tried making it so that the punches execute with pressing the button instead of holding,
@@ -711,7 +733,6 @@ func _on_animation_player_animation_finished(anim_name):
 			falling = true
 			$AnimationPlayer.play("fall")
 			$sonicrigged2/AnimationPlayer.play("FALL")
-
 
 ## Very simple signal state determining when the attack hitbox actually hits something.
 func _on_hitbox_body_entered(body):
@@ -927,4 +948,5 @@ func _on_ring_collider_area_entered(area):
 				collided_object.delete_ring()
 
 func rotate_model():
-	$sonicrigged2.rotation.y = Vector2(velocity.z, velocity.x).angle()
+	if direction:
+		$sonicrigged2.rotation.y = Vector2(velocity.z, velocity.x).angle()

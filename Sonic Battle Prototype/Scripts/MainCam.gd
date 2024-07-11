@@ -16,13 +16,13 @@ func _ready():
 	player = get_parent()
 	# if it's in perspective mode, set the position to where it should be
 	if projection == 0:
-		position = Vector3(0, 10, 20)
+		position = Vector3(0, 10, 10)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(_delta):
 	# The camera will always slowly accelerate to the player'slocation and look at them.
-	global_position = lerp(global_position, Vector3(player.position.x - player.velocity.x, player.position.y + 10 - player.velocity.y, player.position.z + (20 * spin) - player.velocity.z), 0.025)
+	global_position = lerp(global_position, Vector3(player.position.x - player.velocity.x, player.position.y + 5 - player.velocity.y, player.position.z + (15 * spin) - player.velocity.z), 0.025)
 	look_at(player.position)
 
 	# make the camera farther away on the areas
