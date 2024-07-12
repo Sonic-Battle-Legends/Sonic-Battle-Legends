@@ -426,7 +426,7 @@ func handle_attack():
 		can_airdash = false
 		attacking = true
 		$AnimationPlayer.play("dashAttack")
-		$sonicrigged2/AnimationPlayer.play("DASH ATK (LAZY)")
+		$sonicrigged2/AnimationPlayer.play("DASH ATK")
 		launch_power = Vector3(velocity.x, 2, velocity.z)
 		velocity.y = 3
 	elif attack_pressed && !dashing && !is_on_floor() && can_air_attack:
@@ -633,6 +633,8 @@ func anim_end(anim_name):
 		starting = false
 		walking = true
 	elif anim_name == "DJMP 1":
+		$sonicrigged2/AnimationPlayer.play("DJMP 3")
+	elif anim_name == "DJMP 3":
 		# Go back to falling state when airdash ends.
 		dashing = false
 		$AnimationPlayer.play("fall")
@@ -653,7 +655,7 @@ func anim_end(anim_name):
 		starting = false
 		can_air_attack = false
 		can_airdash = false
-	elif anim_name == "DASH ATK (LAZY)":
+	elif anim_name == "DASH ATK":
 		# Resets Sonic's attacking state when his dash attack ends.
 		attacking = false
 		dashing = false
@@ -707,7 +709,7 @@ func anim_end(anim_name):
 		else:
 			$AnimationPlayer.play("hurtStrong")
 			$sonicrigged2/AnimationPlayer.play("LAUNCHED")
-	elif anim_name in ["DJMP 2", "RING", "BOMB G (LAZY)", "BOMB A (LAZY)"]:
+	elif anim_name in ["DJMP 2", "RING", "BOMB G (LAZY)", "BOMB A"]:
 		# Handles Sonic's reset states for all of his special moves.
 		attacking = false
 		starting = false
@@ -901,7 +903,7 @@ func air_special(id, dir):
 		# The mine explodes over time or on impact.
 		# In the air, Sonic also gets a slight bit of air stall.
 		$AnimationPlayer.play("setAir")
-		$sonicrigged2/AnimationPlayer.play("BOMB A (LAZY)")
+		$sonicrigged2/AnimationPlayer.play("BOMB A")
 		can_air_attack = false
 		if active_mine == null:	# Only works if there's no mine already active.
 			velocity.y = 3
