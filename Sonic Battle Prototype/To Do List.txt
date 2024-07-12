@@ -1,0 +1,25 @@
+Development Topics
+	List of things to be completed for the current scope
+
+	SAGE 2024 Scope
+		The menu is lacking the new design that was made;
+
+		The menu needs it’s title screen;
+
+		The menu join button needs to lead somewhere;
+
+		The bot might need different levels of difficulty, behaviors;
+
+		Need to figure out why more than two sonics appeared on the stage;
+
+		The character combo needs to work as intended, by pressing the button instead of holding;
+
+		Not sure if there are other animations or collisions that need fixing or to be made;
+
+		Visual effects needs to be done, probably using Godot's particle system;
+
+		The sound effects, background music and ambient music along with it's controls need to be implemented.
+
+
+	Final Scope
+
