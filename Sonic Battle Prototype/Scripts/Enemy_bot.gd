@@ -138,9 +138,6 @@ var rings: int = MAX_SCATTERED_RINGS_ALLOWED
 #@export_category("HUD")
 #@export var hud: Control
 
-#@export_category("CAMERA")
-#@export var camera: Camera3D
-
 var camera = null
 
 func _enter_tree():

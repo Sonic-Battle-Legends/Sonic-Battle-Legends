@@ -14,8 +14,15 @@ var min_attack_distance: float = 0.5
 var rings_around: Array
 var possible_targets: Array
 
+var jump_timer: SceneTreeTimer
+
+@export var raycasts_container: Marker3D
+@export var wall_detector: RayCast3D
+@export var platform_detector: RayCast3D
+
+
 func _physics_process(_delta):
-	# select target
+	# select a target
 	target = GlobalVariables.current_character
 	rings_around = get_tree().get_nodes_in_group("Ring").duplicate()
 	
@@ -29,7 +36,6 @@ func _physics_process(_delta):
 			if is_instance_valid(new_target):
 				new_target_distance = (new_target.position - position).length()
 				if new_target_distance < distance_to_target:
-					
 					target = new_target
 	
 	# make the lifetotal label face the camera
@@ -37,26 +43,40 @@ func _physics_process(_delta):
 		look_at(-get_viewport().get_camera_3d().position)
 	
 	if cpu_character:
+		# update lifetotal label text
 		text = str(cpu_character.life_total)
 		if target:
 			# go closer to target
 			target_direction = (target.position - cpu_character.position).normalized()
 			distance_to_target = (target.position - cpu_character.position).length()
 			#push_warning(distance_to_target)
+			# maybe reduce the distance if chasing a ring
 			if distance_to_target > min_attack_distance:
 				reset_properties()
 				move_towards_target()
+				
+				# if there is an obstacle jump
+				var direction = cpu_character.direction
+				direction.y = 0
+				raycasts_container.transform.basis.z = direction
+				if wall_detector.is_colliding():
+					if platform_detector.is_colliding() and (jump_timer == null or (jump_timer != null and jump_timer.time_left <= 0)):
+						cpu_character.jump_pressed = true
+						jump_timer = get_tree().create_timer(0.35, false, true)
+						'''
+						if platform_detector.get_collision_point().y < position.y:
+							pass
+							#there is a hole
+						else:
+							cpu_character.jump_pressed = true
+						'''
 				# dash
 				# cpu_character.dash_triggered = true
+			
 			# if close enough to attack, attack target
 			else:
 				attack_target()
-		
-			# if there is an obstacle jump
-			#if jump_raycast:
-				# jump check
-				#cpu_character.jump_pressed = Input.is_action_just_pressed("jump")
-		
+			
 			# guard/block/defend check
 			#if target.is_in_group("Player") and target.attacking and distance_to_target <= min_attack_distance:
 			#	cpu_character.guard_pressed = true
