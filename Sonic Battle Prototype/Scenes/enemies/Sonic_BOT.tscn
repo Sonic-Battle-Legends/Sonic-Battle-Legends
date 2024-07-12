@@ -833,7 +833,7 @@ properties/5/replication_mode = 1
 [sub_resource type="BoxShape3D" id="BoxShape3D_ij26k"]
 size = Vector3(0.25, 0.25, 0.25)
 
-[node name="Sonic_BOT" type="CharacterBody3D" groups=["CanHurt", "Player"]]
+[node name="Sonic_BOT" type="CharacterBody3D" groups=["Bot", "CanHurt", "Player"]]
 collision_layer = 2
 floor_max_angle = 1.0472
 floor_snap_length = 0.2

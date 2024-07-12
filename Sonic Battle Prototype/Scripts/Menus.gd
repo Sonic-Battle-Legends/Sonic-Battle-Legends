@@ -71,8 +71,8 @@ func go_to_area_scene():
 	# the area is a placeholder for now
 	# testing a game loop
 	# the same hub will be selected every time for now
-	Instantiables.go_to_area(GlobalVariables.area_selected)
-	#Instantiables.go_to_hub(GlobalVariables.hub_selected)
+	#Instantiables.go_to_area(GlobalVariables.area_selected)
+	Instantiables.go_to_hub(GlobalVariables.hub_selected)
 	# hide menus
 	hide_menus()
 
@@ -155,7 +155,8 @@ func _on_shadow_character_button_pressed():
 	area_selection_menu.show()
 
 func _on_area_1_button_pressed():
-	GlobalVariables.area_selected = Instantiables.match_place(Instantiables.worlds_and_hubs.city_hub) #Instantiables.match_place(Instantiables.worlds_and_hubs.first_world)
+	GlobalVariables.hub_selected = Instantiables.match_place(Instantiables.worlds_and_hubs.city_hub)
+	#GlobalVariables.area_selected = Instantiables.match_place(Instantiables.worlds_and_hubs.city_hub) #Instantiables.match_place(Instantiables.worlds_and_hubs.first_world)
 	hide_menus()
 	go_to_area_scene()
 

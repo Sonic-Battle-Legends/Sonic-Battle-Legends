@@ -9,10 +9,32 @@ var current_state: states = states.idle
 
 var target_direction: Vector3
 var distance_to_target: float
-var min_attack_distance: float = 1.0
+var min_attack_distance: float = 0.5
+
+var rings_around: Array
+var possible_targets: Array
 
 func _physics_process(_delta):
+	# select target
 	target = GlobalVariables.current_character
+	rings_around = get_tree().get_nodes_in_group("Ring").duplicate()
+	
+	possible_targets.clear()
+	possible_targets = rings_around.duplicate()
+	possible_targets.append(target)
+	
+	if possible_targets.size() > 0:
+		var new_target_distance
+		for new_target in possible_targets:
+			if is_instance_valid(new_target):
+				new_target_distance = (new_target.position - position).length()
+				if new_target_distance < distance_to_target:
+					
+					target = new_target
+	
+	# make the lifetotal label face the camera
+	if get_viewport().get_camera_3d() != null:
+		look_at(-get_viewport().get_camera_3d().position)
 	
 	if cpu_character:
 		text = str(cpu_character.life_total)
@@ -47,7 +69,7 @@ func _physics_process(_delta):
 
 func move_towards_target():
 	# Set the input direction
-	cpu_character.direction = (cpu_character.transform.basis * Vector3(target_direction.x, 0, -target_direction.y)).normalized()
+	cpu_character.direction = (cpu_character.transform.basis * Vector3(target_direction.x, 0, target_direction.z)).normalized()
 
 
 func attack_target():

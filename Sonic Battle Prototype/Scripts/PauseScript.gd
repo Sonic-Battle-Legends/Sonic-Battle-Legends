@@ -57,7 +57,8 @@ func restart():
 		# if restarting an area
 		# for now go to main menu
 		else:
-			get_tree().reload_current_scene()
+			#get_tree().reload_current_scene()
+			Instantiables.reload_current_scene()
 
 # exit
 func go_back():

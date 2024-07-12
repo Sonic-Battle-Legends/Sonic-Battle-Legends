@@ -513,6 +513,7 @@ func collect_ring():
 	# the rings total only after the battle is over
 	if GlobalVariables.current_stage != null:
 		rings += 1
+		heal()
 	else:
 		GlobalVariables.total_rings += 1
 		hud.update_rings(GlobalVariables.total_rings)
@@ -729,7 +730,7 @@ func anim_end(anim_name):
 ## Very simple signal state determining when the attack hitbox actually hits something.
 func _on_hitbox_body_entered(body):
 	if !is_multiplayer_authority(): return
-	if body.is_in_group("CanHurt") && body != self:
+	if body.is_in_group("CanHurt") && body != self and attacking:
 		# If the current attack is Sonic's "pow" move, the hitbox pays attention to immunities.
 		if !pow_move || body.immunity != "pow":
 			body.get_hurt.rpc_id(body.get_multiplayer_authority(), launch_power)

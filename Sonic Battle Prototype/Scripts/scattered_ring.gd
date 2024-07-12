@@ -1,15 +1,13 @@
 extends CharacterBody3D
 
-# The ring projectile sonic throws for his grounded "pow" move.
-# All of the important code is handled from Sonic's script, but this handles physics.
-# Original code by The8BitLeaf.
+# Original code by The8BitLeaf. changed later
 
 const DEFAULT_BOUNCE_VALUE: float = 4.0
 const MIN_TIME: float = 3.5
 var bounce_amount: float = DEFAULT_BOUNCE_VALUE
 var blinking_period: float = 0.0
 
-@export var sprite: Sprite3D
+@export var ring: Node3D
 @export var collision_area: Area3D
 
 
@@ -45,19 +43,14 @@ func _physics_process(delta):
 				blinking_period = GlobalVariables.scattered_ring_timer.time_left / 5.0
 			blinking_period -= delta * 5
 			if blinking_period <= 0.0:
-				if sprite.is_visible_in_tree():
-					sprite.hide()
+				if ring.is_visible_in_tree():
+					ring.hide()
 				else:
-					sprite.show()
+					ring.show()
 		
 		# delete when scaterred rings timer runs out
 		if GlobalVariables.scattered_ring_timer.time_left <= 0:
 			delete()
-
-
-
-func blink():
-	sprite.hide()
 
 
 ## add a method unique to the ring
