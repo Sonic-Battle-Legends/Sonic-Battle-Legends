@@ -260,12 +260,8 @@ func delete_places():
 	
 	# destroy bots
 	get_tree().call_group("Bot", "queue_free")
-	'''
-	if GlobalVariables.enemy_bots.size() > 0:
-		for i in GlobalVariables.enemy_bots:
-			if i != null:
-				i.queue_free()
-	'''
+	# destroy remaining rings
+	get_tree().call_group("Ring", "queue_free")
 
 
 func reload_current_scene():

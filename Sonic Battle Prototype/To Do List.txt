@@ -9,9 +9,7 @@ Development Topics
 		The menu join button needs to lead to a screen to select where to join;
 
 		The bot might need different levels of difficulty and behaviours;
-			using spamming SET is quite easy to beat the bot
-			
-		need to delete all rings before creating a new scene
+			spamming SET is quite easy to beat the bot
 		
 		check going on "host" then going back, click another connection setting or host again and see how the character is spawned on the stage
 			there was an error once

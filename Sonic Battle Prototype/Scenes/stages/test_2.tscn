@@ -8,6 +8,9 @@
 [node name="testmap" parent="." instance=ExtResource("1_w105v")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 
+[node name="spikes_collider" parent="testmap" index="2"]
+visible = false
+
 [node name="InvisibleWalls" parent="." instance=ExtResource("2_nme6q")]
 
 [editable path="testmap"]
