@@ -2,6 +2,25 @@
 
 [ext_resource type="Script" path="res://Scripts/CPUcontroller.gd" id="1_vpug0"]
 
-[node name="CPUcontroller" type="Label3D"]
+[node name="CPUcontroller" type="Label3D" node_paths=PackedStringArray("raycasts_container", "wall_detector", "platform_detector")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+offset = Vector2(0, 37.735)
+text = "BOT4
+100%
+1Pt"
+font_size = 25
 script = ExtResource("1_vpug0")
+raycasts_container = NodePath("raycasts")
+wall_detector = NodePath("raycasts/wallDetector")
+platform_detector = NodePath("raycasts/platformDetector")
+
+[node name="raycasts" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.2, 0)
+
+[node name="wallDetector" type="RayCast3D" parent="raycasts"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -0.05, -0.1)
+target_position = Vector3(0, -0.5, 0)
+
+[node name="platformDetector" type="RayCast3D" parent="raycasts"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.840901, 0.282106)
+target_position = Vector3(0, -1.2, 0)

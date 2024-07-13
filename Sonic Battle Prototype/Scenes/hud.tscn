@@ -31,7 +31,8 @@ offset_top = 32.0
 offset_right = 615.0
 offset_bottom = 105.0
 theme = ExtResource("2_maiyj")
-theme_override_colors/default_color = Color(0, 1, 0.368627, 1)
+theme_override_colors/default_color = Color(0, 0.964706, 0.352941, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 text = "Life: 100"
 
 [node name="SpecialUI" type="RichTextLabel" parent="Battle HUD"]
@@ -42,6 +43,7 @@ offset_right = 665.0
 offset_bottom = 162.0
 theme = ExtResource("2_maiyj")
 theme_override_colors/default_color = Color(1, 1, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 text = "Special: 100"
 
 [node name="Control" type="Control" parent="Battle HUD"]

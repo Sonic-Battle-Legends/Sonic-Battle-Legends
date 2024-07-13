@@ -13,6 +13,7 @@ var done: bool = false
 
 
 func _physics_process(_delta):
+	if not is_multiplayer_authority(): return
 	if not done:
 		# Get the input direction and handle the movement/deceleration.
 		var input_dir = Input.get_vector("left", "right", "up", "down")

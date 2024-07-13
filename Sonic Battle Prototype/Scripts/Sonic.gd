@@ -245,9 +245,6 @@ func _physics_process(delta):
 	# or the character is not in a battle and don't have rings
 	if position.y < -5.0:
 		defeated()
-	if GlobalVariables.current_stage != null:
-		if (life_total <= 0 and GlobalVariables.game_ended == false):
-			defeated()
 	
 	# If Sonic is currently chasing a ring he threw from his ground "pow" move, he accelerates to its position.
 	if chasing_ring and active_ring != null:
@@ -350,10 +347,16 @@ func handle_jump():
 		if direction:
 			velocity = Vector3(direction.x * AIRDASH_SPEED, 4, direction.z * AIRDASH_SPEED)
 		else:
+			var new_velocity = $sonicrigged2.transform.basis.z.normalized() * AIRDASH_SPEED
+			new_velocity.y = 4
+			velocity = new_velocity
+			
+			'''
 			if facing_left:
-				velocity = Vector3(0, 4, 0) #-AIRDASH_SPEED, 4, 0)
+				velocity = Vector3(-AIRDASH_SPEED, 4, 0)
 			else:
-				velocity = Vector3(0, 4, 0) #AIRDASH_SPEED, 4, 0)
+				velocity = Vector3(AIRDASH_SPEED, 4, 0)
+			'''
 
 
 ## help responsiveness feeling by forgiving the difference between the human response and the machine accuracy
@@ -498,7 +501,7 @@ func increase_points():
 	hud.change_points(points)
 	GlobalVariables.character_points = points
 	if points >= GlobalVariables.points_to_win:
-			GlobalVariables.win()
+			GlobalVariables.win(self)
 
 
 ## gain one extra life
@@ -513,6 +516,7 @@ func collect_ring():
 	# the rings total only after the battle is over
 	if GlobalVariables.current_stage != null:
 		rings += 1
+		heal(2)
 	else:
 		GlobalVariables.total_rings += 1
 		hud.update_rings(GlobalVariables.total_rings)
@@ -530,7 +534,7 @@ func collect_ring():
 
 ## scatter rings in a circular pattern
 func scatter_rings(amount = 1):
-	create_scattered_ring_timer()
+	#create_scattered_ring_timer()
 	
 	var number_of_rings_to_scatter
 	
@@ -561,8 +565,8 @@ func scatter_rings(amount = 1):
 
 
 ## create a timer to count how long the scaterred rings will remain on the scene
-func create_scattered_ring_timer():
-	GlobalVariables.scattered_ring_timer = get_tree().create_timer(GlobalVariables.SCATTERED_RINGS_TIME, false, true)
+#func create_scattered_ring_timer():
+#	GlobalVariables.scattered_ring_timer = get_tree().create_timer(GlobalVariables.SCATTERED_RINGS_TIME, false, true)
 
 
 ## This function mostly handles what animations play with what booleans.
@@ -731,13 +735,18 @@ func anim_end(anim_name):
 ## Very simple signal state determining when the attack hitbox actually hits something.
 func _on_hitbox_body_entered(body):
 	if !is_multiplayer_authority(): return
-	if body.is_in_group("CanHurt") && body != self:
+	if body.is_in_group("CanHurt") && body != self and attacking:
 		# If the current attack is Sonic's "pow" move, the hitbox pays attention to immunities.
 		if !pow_move || body.immunity != "pow":
-			body.get_hurt.rpc_id(body.get_multiplayer_authority(), launch_power)
+			body.get_hurt.rpc_id(body.get_multiplayer_authority(), launch_power, self)
 
 
-func defeated():
+func defeated(who_owns_last_attack = null):
+		# give a point for defeating the character
+		if who_owns_last_attack != null:
+			if who_owns_last_attack.has_method("increase_points"):
+				who_owns_last_attack.increase_points()
+		
 		# player must get the ability selection screen again
 		# then select a location to spawn
 		if GlobalVariables.current_stage != null:
@@ -751,21 +760,29 @@ func defeated():
 ## A function that handles Sonic getting hurt. Knockback is determined by the thing that initiates this
 # function, which is why you don't see it here.
 @rpc("any_peer","reliable","call_local")
-func get_hurt(launch_speed):
-	life_total -= 10
+func get_hurt(launch_speed, owner_of_the_attack):
+	life_total -= launch_speed.length()
 	hud.change_life(life_total)
 	
 	# give a invunerability time
 	if !hurt:
 		# if had rings, scatter them
-		if rings > 0:
+		#if rings > 0:
 			# you can add the amount of rings to be scattered as a parameter
-			scatter_rings()
-		else:
+			if launch_speed.length() > 10:
+				scatter_rings(10)
+			else:
+				scatter_rings()
+		#else:
 			# if it was not in a stage where the character have life points,
 			# defeat the character for having no rings when hurt
-			if GlobalVariables.current_stage != null:
-				defeated()
+		#	if GlobalVariables.current_stage != null:
+		#		defeated()
+	
+	if GlobalVariables.current_stage != null:
+		if (life_total <= 0 and GlobalVariables.game_ended == false):
+			defeated(owner_of_the_attack)
+	
 	
 	# A bunch of states reset to make sure getting hurt cancels them out.
 	hurt = true
@@ -927,6 +944,7 @@ func _on_ring_collider_area_entered(area):
 			collect_ring()
 			if collided_object.has_method("delete_ring"):
 				collided_object.delete_ring()
+
 
 func rotate_model():
 	if direction:

@@ -71,12 +71,12 @@ _data = {
 }
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_cuoal"]
-size = Vector3(0.25, 0.25, 0.25)
+size = Vector3(0.4, 0.25, 0.4)
 
-[node name="ScatteredRing" type="CharacterBody3D" node_paths=PackedStringArray("sprite", "collision_area") groups=["Ring"]]
+[node name="ScatteredRing" type="CharacterBody3D" node_paths=PackedStringArray("ring", "collision_area") groups=["Ring"]]
 collision_layer = 4
 script = ExtResource("1_x8u1x")
-sprite = NodePath("Sprite3D")
+ring = NodePath("Ring2")
 collision_area = NodePath("Area3D")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -91,7 +91,7 @@ texture = ExtResource("1_5e3n8")
 region_enabled = true
 region_rect = Rect2(218, 1179, 11, 15)
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." groups=["Ring"]]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_flgee")
 }

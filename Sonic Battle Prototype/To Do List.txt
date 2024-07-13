@@ -1,0 +1,36 @@
+Development Topics
+	List of things to be completed for the current scope
+
+	SAGE 2024 Scope
+		The menu is lacking the new design that was made;
+
+		The menu needs it’s title screen;
+
+		The menu join button needs to lead to a screen to select where to join;
+
+		The bot might need different levels of difficulty and behaviours;
+			using spamming SET is quite easy to beat the bot
+			
+		need to delete all rings before creating a new scene
+		
+		check going on "host" then going back, click another connection setting or host again and see how the character is spawned on the stage
+			there was an error once
+
+		Need to figure out why more than two sonics appeared on the stage;
+			might be a race condition happening after deleting all bots and spawning another one after
+			if so, condition the spawning to a limit, check if there are enough bots already
+		
+		camera needs a way to see through objects to show the players
+			except if it is intentional to hide the player
+
+		The character combo needs to work as intended, by pressing the button instead of holding;
+
+		Not sure if there are other animations or collisions that need fixing or to be made;
+
+		Visual effects needs to be done, probably using Godot's particle system;
+
+		The sound effects, background music and ambient music along with it's controls need to be implemented.
+
+
+	Final Scope
+

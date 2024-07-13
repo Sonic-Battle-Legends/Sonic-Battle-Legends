@@ -64,7 +64,7 @@ region_rect = Rect2(218, 1179, 11, 15)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.321873, 0)
 shape = SubResource("BoxShape3D_lhi6l")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." groups=["Ring"]]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_flgee")
 }

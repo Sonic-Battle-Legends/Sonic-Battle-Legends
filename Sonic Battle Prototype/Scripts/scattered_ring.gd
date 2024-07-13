@@ -1,15 +1,15 @@
 extends CharacterBody3D
 
-# The ring projectile sonic throws for his grounded "pow" move.
-# All of the important code is handled from Sonic's script, but this handles physics.
-# Original code by The8BitLeaf.
+# Original code by The8BitLeaf. changed later
 
 const DEFAULT_BOUNCE_VALUE: float = 4.0
 const MIN_TIME: float = 3.5
 var bounce_amount: float = DEFAULT_BOUNCE_VALUE
 var blinking_period: float = 0.0
 
-@export var sprite: Sprite3D
+var current_time = GlobalVariables.SCATTERED_RINGS_TIME
+
+@export var ring: Node3D
 @export var collision_area: Area3D
 
 
@@ -19,6 +19,8 @@ func _ready():
 
 
 func _physics_process(delta):
+	current_time -= delta
+	
 	# Add the gravity.
 	if !is_on_floor():
 		# The speed at which the ring falls
@@ -34,37 +36,30 @@ func _physics_process(delta):
 	
 	move_and_slide()
 	
-	if GlobalVariables.scattered_ring_timer != null:
-		# enable the detection after it scattered
-		if GlobalVariables.scattered_ring_timer.time_left <= MIN_TIME:
-			collision_area.monitorable = true
-		
-		if GlobalVariables.scattered_ring_timer.time_left <= 3.0:
-			# blink faster as the time out approaches
-			if blinking_period <= 0:
-				blinking_period = GlobalVariables.scattered_ring_timer.time_left / 5.0
-			blinking_period -= delta * 5
-			if blinking_period <= 0.0:
-				if sprite.is_visible_in_tree():
-					sprite.hide()
-				else:
-					sprite.show()
+	# enable the detection after it scattered
+	if current_time <= MIN_TIME:
+		collision_area.monitorable = true
+	
+	if current_time <= 3.0:
+		# blink faster as the time out approaches
+		if blinking_period <= 0:
+			blinking_period = current_time / 5.0
+		blinking_period -= delta * 5
+		if blinking_period <= 0.0:
+			if ring.is_visible_in_tree():
+				ring.hide()
+			else:
+				ring.show()
 		
 		# delete when scaterred rings timer runs out
-		if GlobalVariables.scattered_ring_timer.time_left <= 0:
+		if current_time <= 0:
 			delete()
-
-
-
-func blink():
-	sprite.hide()
 
 
 ## add a method unique to the ring
 ## to prevent deleting another object
 func delete_ring():
-	if GlobalVariables.scattered_ring_timer != null\
-	 and GlobalVariables.scattered_ring_timer.time_left <= MIN_TIME:
+	if current_time <= MIN_TIME:
 		delete()
 
 

@@ -181,9 +181,12 @@ func go_to_stage(new_stage: PackedScene):
 	
 	# create the new stage
 	load_stage(new_stage)
-	'''
-	'''
+	
 	if GlobalVariables.play_online == false:
+		spawn_bot()
+	else:
+		spawn_bot()
+		spawn_bot()
 		spawn_bot()
 
 
@@ -198,10 +201,9 @@ func load_stage(new_stage):
 func spawn_bot():
 	# create a cpu character to fight
 	var new_enemy = ENEMY_BOT.instantiate()
-	var enemy_abilities = ["SHOT", "POW", "SET"]
+	var enemy_abilities = ["SET", "POW", "SHOT"]
 	new_enemy.set_abilities(enemy_abilities)
 	new_enemy.position = Vector3(0, 0.1, 0)
-	GlobalVariables.enemy_bots.append(new_enemy)
 	GlobalVariables.main_menu.get_parent().add_child(new_enemy)
 
 
@@ -229,13 +231,17 @@ func match_place(place_to_match: int):
 ## respawn the character
 ## ability selection will be spawn first, then pointer selector, then the character
 func respawn():
+	if not is_multiplayer_authority(): return
+	
 	if GlobalVariables.current_character != null:
 		GlobalVariables.current_character.queue_free()
 		GlobalVariables.current_character = null
 	# create the ability selection that will later create the
 	# point spawner to spawn the character on the stage
-	var ability_selection_menu = create(objects.ABILITYSELECT)
-	GlobalVariables.main_menu.get_parent().add_child(ability_selection_menu, true)
+	if GlobalVariables.current_ability_seletor == null:
+		#var ability_selection_menu = create(objects.ABILITYSELECT)
+		GlobalVariables.current_ability_seletor = create(objects.ABILITYSELECT) #ability_selection_menu
+		GlobalVariables.main_menu.get_parent().add_child(GlobalVariables.current_ability_seletor, true)
 
 
 func delete_places():
@@ -253,10 +259,21 @@ func delete_places():
 		GlobalVariables.current_stage = null
 	
 	# destroy bots
+	get_tree().call_group("Bot", "queue_free")
+	'''
 	if GlobalVariables.enemy_bots.size() > 0:
 		for i in GlobalVariables.enemy_bots:
 			if i != null:
 				i.queue_free()
+	'''
+
+
+func reload_current_scene():
+	# destroy bots
+	get_tree().call_group("Bot", "queue_free")
+	#GlobalVariables.enemy_bots.clear()
+	# reload scene
+	get_tree().reload_current_scene()
 
 
 ## go to previous ambient
@@ -272,4 +289,5 @@ func exit_current_ambient():
 		go_to_area(GlobalVariables.area_selected)
 	else:
 		# if on area, return to main menu
-		get_tree().reload_current_scene()
+		#get_tree().reload_current_scene()
+		reload_current_scene()

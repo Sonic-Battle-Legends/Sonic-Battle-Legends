@@ -59,6 +59,7 @@ func _ready():
 
 
 func _process(_delta):
+	if not is_multiplayer_authority(): return
 	move_selector()
 	
 	select_ability()
@@ -87,6 +88,9 @@ func initialise_fields():
 func move_selector():
 	if Input.is_action_just_pressed("right"):
 		if current_position < (possible_positions.size() - 1):
+			# these line beloow causes a warning because you are using
+			# the int value instead of the name you gave to the enum.
+			# cast it like ability.SHOT or use a dictionary
 			current_position += 1
 			set_selector()
 	
@@ -170,7 +174,6 @@ func undo_previous_selection():
 			
 			#slot_titles[slot_titles.find(selected_abilites[selected_abilites.size() - 1])].text = ""
 		
-			
 			# reorder the positions
 			possible_positions.sort()
 			

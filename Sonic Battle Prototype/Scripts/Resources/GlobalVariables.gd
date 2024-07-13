@@ -47,35 +47,38 @@ var stage_selected: PackedScene
 # current stage instantiated in-game
 var current_stage
 
-var enemy_bots: Array[CharacterBody3D]
-
-# timer to select ability and place character on stage
-var select_ability_timer: SceneTreeTimer
+#var enemy_bots: Array[CharacterBody3D]
 
 # timer to count the time scattered rings last
-var scattered_ring_timer: SceneTreeTimer
+#var scattered_ring_timer: SceneTreeTimer
 # time to set the scattered rings timer
 const SCATTERED_RINGS_TIME = 4.0
 
 var ring_count_towards_extra_life: int = 0
 
+var current_ability_seletor
+# timer to select ability and place character on stage
+var select_ability_timer: SceneTreeTimer
+
 var selected_abilities: Array
 var character_points: int = 0
 var defeated: bool = true
+
+var bot_points: int = 0
 
 # variables for the hud on areas and hubs
 var total_rings: int = 0
 var extra_lives: int = 2
 
 # win condition
-var points_to_win: int = 1
+var points_to_win: int = 2
 # store if someone won the game already
 var game_ended: bool = false
 
 
 ## the character that triggers this method is the winner of the battle
-func win():
+func win(winner):
 	game_ended = true
 	var score_menu = Instantiables.create(Instantiables.objects.SCORESCREEN)
-	score_menu.winner = character_id
+	score_menu.winner = winner.name
 	main_menu.get_parent().add_child(score_menu, true)
