@@ -181,8 +181,7 @@ func go_to_stage(new_stage: PackedScene):
 	
 	# create the new stage
 	load_stage(new_stage)
-	'''
-	'''
+	
 	if GlobalVariables.play_online == false:
 		spawn_bot()
 

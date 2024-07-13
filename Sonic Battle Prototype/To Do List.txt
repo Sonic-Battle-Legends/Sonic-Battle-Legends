@@ -6,9 +6,9 @@ Development Topics
 
 		The menu needs it’s title screen;
 
-		The menu join button needs to lead somewhere;
+		The menu join button needs to lead to a screen to select where to join;
 
-		The bot might need different levels of difficulty, behaviors;
+		The bot might need different levels of difficulty and behaviours;
 
 		Need to figure out why more than two sonics appeared on the stage;
 
