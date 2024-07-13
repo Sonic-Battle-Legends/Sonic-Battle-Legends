@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://bdcinxygd23dl"]
+
+[ext_resource type="PackedScene" uid="uid://cf0f83ajx7eae" path="res://Models/lamp/lamp.blend" id="1_3gyji"]
+[ext_resource type="Texture2D" uid="uid://cvbtjoqslkvgg" path="res://Models/lamp/bulb.png" id="2_8awi1"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8mtc3"]
+blend_mode = 1
+shading_mode = 0
+albedo_color = Color(0.419813, 0.419813, 0.419813, 1)
+albedo_texture = ExtResource("2_8awi1")
+
+[node name="lamp2" instance=ExtResource("1_3gyji")]
+transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, 0)
+
+[node name="light" parent="." index="1"]
+surface_material_override/0 = SubResource("StandardMaterial3D_8mtc3")
