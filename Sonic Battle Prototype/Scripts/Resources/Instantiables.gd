@@ -184,6 +184,10 @@ func go_to_stage(new_stage: PackedScene):
 	
 	if GlobalVariables.play_online == false:
 		spawn_bot()
+	else:
+		spawn_bot()
+		spawn_bot()
+		spawn_bot()
 
 
 ## load a stage in the Main hierarchy
@@ -197,10 +201,9 @@ func load_stage(new_stage):
 func spawn_bot():
 	# create a cpu character to fight
 	var new_enemy = ENEMY_BOT.instantiate()
-	var enemy_abilities = ["SHOT", "POW", "SET"]
+	var enemy_abilities = ["SET", "POW", "SHOT"]
 	new_enemy.set_abilities(enemy_abilities)
 	new_enemy.position = Vector3(0, 0.1, 0)
-	#GlobalVariables.enemy_bots.append(new_enemy)
 	GlobalVariables.main_menu.get_parent().add_child(new_enemy)
 
 

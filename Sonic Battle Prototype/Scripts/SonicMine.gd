@@ -36,4 +36,4 @@ func _on_area_3d_body_entered(body):
 		if body.immunity != "set":
 			# If the collision body is immune to "set" moves, they will not be affected.
 			# body.get_hurt.rpc_id(body.get_multiplayer_authority(), Vector3(0, 7, 0))
-			body.get_hurt(Vector3(0, 7, 0))
+			body.get_hurt(Vector3(0, 7, 0), user)

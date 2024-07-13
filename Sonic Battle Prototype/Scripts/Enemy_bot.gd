@@ -140,15 +140,19 @@ var rings: int = MAX_SCATTERED_RINGS_ALLOWED
 
 var camera = null
 
+
 func _enter_tree():
-	#pass
 	set_multiplayer_authority(0) #str(name).to_int())
 	#set_multiplayer_authority(GlobalVariables.character_id)
+	
+	var bots_list = get_tree().get_nodes_in_group("Bot")
+	name = "BOT" + str(bots_list.size())
+
 
 func _ready():
 	#if not is_multiplayer_authority(): return
 	
-	points = GlobalVariables.character_points
+	points = GlobalVariables.bot_points
 	
 	# update the hud with the default values when starting the game
 	#hud.update_hud(life_total, special_amount, points)
@@ -237,9 +241,6 @@ func _physics_process(delta):
 	# or the character is not in a battle and don't have rings
 	if position.y < -5.0:
 		defeated()
-	if GlobalVariables.current_stage != null:
-		if (life_total <= 0 and GlobalVariables.game_ended == false):
-			defeated()
 	
 	# If Sonic is currently chasing a ring he threw from his ground "pow" move, he accelerates to its position.
 	if chasing_ring and active_ring != null:
@@ -488,9 +489,9 @@ func increase_special(amount = 1):
 func increase_points():
 	points += 1
 	#hud.change_points(points)
-	GlobalVariables.character_points = points
+	GlobalVariables.bot_points = points
 	if points >= GlobalVariables.points_to_win:
-			GlobalVariables.win()
+			GlobalVariables.win(self)
 
 
 ## gain one extra life
@@ -505,9 +506,9 @@ func collect_ring():
 	# the rings total only after the battle is over
 	if GlobalVariables.current_stage != null:
 		rings += 1
-		heal()
-	else:
-		GlobalVariables.total_rings += 1
+		heal(2)
+	#else:
+		#GlobalVariables.total_rings += 1
 		#hud.update_rings(GlobalVariables.total_rings)
 	
 	# increase a permanent counter of how many rings were collected
@@ -515,15 +516,15 @@ func collect_ring():
 	# this prevents extra lives gained if the character didn't
 	# lost all rings and is collecting scattered ones
 	# ( 100 rings, scattered 1 ring, collect it = extra live )
-	GlobalVariables.ring_count_towards_extra_life += 1
-	if GlobalVariables.ring_count_towards_extra_life >= 100:
-		one_up()
-		GlobalVariables.ring_count_towards_extra_life = 0
+	#GlobalVariables.ring_count_towards_extra_life += 1
+	#if GlobalVariables.ring_count_towards_extra_life >= 100:
+	#	one_up()
+	#	GlobalVariables.ring_count_towards_extra_life = 0
 
 
 ## scatter rings in a circular pattern
 func scatter_rings(amount = 1):
-	create_scattered_ring_timer()
+	#create_scattered_ring_timer()
 	
 	var number_of_rings_to_scatter
 	
@@ -554,8 +555,8 @@ func scatter_rings(amount = 1):
 
 
 ## create a timer to count how long the scaterred rings will remain on the scene
-func create_scattered_ring_timer():
-	GlobalVariables.scattered_ring_timer = get_tree().create_timer(GlobalVariables.SCATTERED_RINGS_TIME, false, true)
+#func create_scattered_ring_timer():
+#	GlobalVariables.scattered_ring_timer = get_tree().create_timer(GlobalVariables.SCATTERED_RINGS_TIME, false, true)
 
 
 ## This function mostly handles what animations play with what booleans.
@@ -719,17 +720,20 @@ func anim_end(anim_name):
 			$AnimationPlayer.play("fall")
 			$sonicrigged2/AnimationPlayer.play("FALL")
 
+
 ## Very simple signal state determining when the attack hitbox actually hits something.
 func _on_hitbox_body_entered(body):
 	#if !is_multiplayer_authority(): return
 	if body.is_in_group("CanHurt") && body != self and attacking:
 		# If the current attack is Sonic's "pow" move, the hitbox pays attention to immunities.
 		if !pow_move || body.immunity != "pow":
-			body.get_hurt.rpc_id(body.get_multiplayer_authority(), launch_power)
+			body.get_hurt.rpc_id(body.get_multiplayer_authority(), launch_power, self)
 
 
-func defeated():
-	GlobalVariables.current_character.increase_points()
+func defeated(who_owns_last_attack = null):
+	if who_owns_last_attack != null:
+		if who_owns_last_attack.has_method("increase_points"):
+			who_owns_last_attack.increase_points()
 	if GlobalVariables.game_ended == false:
 		Instantiables.spawn_bot()
 	queue_free()
@@ -738,21 +742,28 @@ func defeated():
 ## A function that handles Sonic getting hurt. Knockback is determined by the thing that initiates this
 # function, which is why you don't see it here.
 @rpc("any_peer","reliable","call_local")
-func get_hurt(launch_speed):
-	life_total -= 10
+func get_hurt(launch_speed, owner_of_the_attack):
+	life_total -= launch_speed.length()
 	#hud.change_life(life_total)
 	
 	# give a invunerability time
 	if !hurt:
 		# if had rings, scatter them
-		if rings > 0:
-			# you can add the amount of rings to be scattered as a parameter
-			scatter_rings()
+		#if rings > 0:
+		# you can add the amount of rings to be scattered as a parameter
+		if launch_speed.length() > 10:
+			scatter_rings(8)
 		else:
+			scatter_rings()
+		#else:
 			# if it was not in a stage where the character have life points,
 			# defeat the character for having no rings when hurt
-			if GlobalVariables.current_stage != null:
-				defeated()
+			#if GlobalVariables.current_stage != null:
+			#	defeated()
+	
+	if GlobalVariables.current_stage != null:
+		if (life_total <= 0 and GlobalVariables.game_ended == false):
+			defeated(owner_of_the_attack)
 	
 	# A bunch of states reset to make sure getting hurt cancels them out.
 	hurt = true

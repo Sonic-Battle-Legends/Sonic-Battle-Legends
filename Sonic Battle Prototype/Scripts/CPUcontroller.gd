@@ -21,6 +21,7 @@ var min_attack_distance: float = 0.5
 # the minimum offset towards a point in the stage to stop following such point
 var min_offset: float = 0.5
 
+var players_around: Array
 # store if there are rings around the stage
 var rings_around: Array
 # store possible targets like a player or a ring
@@ -52,7 +53,7 @@ func _physics_process(_delta):
 		if target and player_target:
 			var life_offset = 35
 			# if player have more life
-			if player_target.life_total + life_offset > cpu_character.life_total:
+			if is_instance_valid(player_target) and player_target.life_total + life_offset > cpu_character.life_total:
 				# go with defensive behaviour
 				aggressive_behaviour()
 			
@@ -75,12 +76,14 @@ func _physics_process(_delta):
 func select_target():
 	if target == null:
 		target = GlobalVariables.current_character
-	player_target = GlobalVariables.current_character
+		player_target = GlobalVariables.current_character
 	rings_around = get_tree().get_nodes_in_group("Ring").duplicate()
+	players_around = get_tree().get_nodes_in_group("Player").duplicate()
 	
 	# store variables for possible targets
 	possible_targets.clear()
 	possible_targets = rings_around.duplicate()
+	possible_targets += players_around.duplicate()
 	possible_targets.append(player_target)
 	
 	# if a ring is closer than the player, set the ring as target
@@ -89,7 +92,7 @@ func select_target():
 		for new_target in possible_targets:
 			if is_instance_valid(new_target):
 				new_target_distance = (new_target.position - position).length()
-				if new_target_distance < distance_to_target:
+				if new_target_distance < distance_to_target and new_target != get_parent():
 					target = new_target
 
 
@@ -98,7 +101,7 @@ func update_life_ui():
 	if get_viewport().get_camera_3d() != null:
 		look_at(-get_viewport().get_camera_3d().position)
 	# update lifetotal label text
-	text = str(cpu_character.life_total)
+	text = str(cpu_character.life_total) + "%\n" + cpu_character.name + " - " + str(cpu_character.points) + "Pt"
 
 
 ## if the target is far, move
