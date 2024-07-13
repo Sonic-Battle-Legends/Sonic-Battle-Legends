@@ -10,6 +10,11 @@ Development Topics
 
 		The bot might need different levels of difficulty and behaviours;
 			using spamming SET is quite easy to beat the bot
+			
+		need to delete all rings before creating a new scene
+		
+		check going on "host" then going back, click another connection setting or host again and see how the character is spawned on the stage
+			there was an error once
 
 		Need to figure out why more than two sonics appeared on the stage;
 			might be a race condition happening after deleting all bots and spawning another one after
