@@ -351,9 +351,9 @@ func handle_jump():
 			velocity = Vector3(direction.x * AIRDASH_SPEED, 4, direction.z * AIRDASH_SPEED)
 		else:
 			if facing_left:
-				velocity = Vector3(0, 4, 0) #-AIRDASH_SPEED, 4, 0)
+				velocity = Vector3(-AIRDASH_SPEED, 4, 0)
 			else:
-				velocity = Vector3(0, 4, 0) #AIRDASH_SPEED, 4, 0)
+				velocity = Vector3(AIRDASH_SPEED, 4, 0)
 
 
 ## help responsiveness feeling by forgiving the difference between the human response and the machine accuracy

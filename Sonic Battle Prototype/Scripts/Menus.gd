@@ -116,6 +116,8 @@ func _on_join_button_pressed():
 	
 	ServerJoin.enet_peer.create_client("localhost", ServerJoin.PORT)
 	ServerJoin.multiplayer.multiplayer_peer = ServerJoin.enet_peer
+	
+	after_online_setup()
 
 
 func _on_offline_button_pressed():

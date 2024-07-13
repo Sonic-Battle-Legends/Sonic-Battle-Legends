@@ -343,9 +343,9 @@ func handle_jump():
 			velocity = Vector3(direction.x * AIRDASH_SPEED, 4, direction.z * AIRDASH_SPEED)
 		else:
 			if facing_left:
-				velocity = Vector3(0, 4, 0) #-AIRDASH_SPEED, 4, 0)
+				velocity = Vector3(-AIRDASH_SPEED, 4, 0)
 			else:
-				velocity = Vector3(0, 4, 0) #AIRDASH_SPEED, 4, 0)
+				velocity = Vector3(AIRDASH_SPEED, 4, 0)
 
 
 ## help responsiveness feeling by forgiving the difference between the human response and the machine accuracy
@@ -722,7 +722,7 @@ func anim_end(anim_name):
 ## Very simple signal state determining when the attack hitbox actually hits something.
 func _on_hitbox_body_entered(body):
 	#if !is_multiplayer_authority(): return
-	if body.is_in_group("CanHurt") && body != self:
+	if body.is_in_group("CanHurt") && body != self and attacking:
 		# If the current attack is Sonic's "pow" move, the hitbox pays attention to immunities.
 		if !pow_move || body.immunity != "pow":
 			body.get_hurt.rpc_id(body.get_multiplayer_authority(), launch_power)
