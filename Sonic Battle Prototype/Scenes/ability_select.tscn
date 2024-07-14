@@ -30,6 +30,7 @@ default_font = SubResource("FontFile_bm8ry")
 default_font_size = 25
 
 [node name="AbilitySelect" type="Control" node_paths=PackedStringArray("menu_title", "shot_symbol", "pow_symbol", "set_symbol", "selector", "avatar", "time_left_text", "shot_slot", "pow_slot", "set_slot")]
+process_mode = 3
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

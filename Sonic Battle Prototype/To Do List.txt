@@ -10,7 +10,7 @@ Development Topics
 
 		The bot might need different levels of difficulty and behaviours;
 			spamming SET is quite easy to beat the bot
-		
+
 		check going on "host" then going back, click another connection setting or host again and see how the character is spawned on the stage
 			there was an error once
 
@@ -24,6 +24,8 @@ Development Topics
 		The character combo needs to work as intended, by pressing the button instead of holding;
 
 		Not sure if there are other animations or collisions that need fixing or to be made;
+		
+		the "launch_power" used when causing damage is considering the variable "facing_left" that was used when using sprites for the character. might need to change the instances of "facing_left" to make the "launch_power" face the 3d model's forward like done with the airdash_speed during double jump 
 
 		Visual effects needs to be done, probably using Godot's particle system;
 
@@ -31,4 +33,4 @@ Development Topics
 
 
 	Final Scope
-
+		to be specified

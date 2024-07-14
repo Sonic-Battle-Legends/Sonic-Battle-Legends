@@ -889,8 +889,9 @@ shape = SubResource("BoxShape3D_ij26k")
 transform = Transform3D(0.03, 0, 0, 0, 0.03, 0, 0, 0, 0.03, 0, -0.15, 0)
 
 [node name="CPUcontroller" parent="." instance=ExtResource("6_2mma4")]
-text = "100"
 
 [connection signal="animation_finished" from="AnimationPlayer" to="sonicrigged2" method="_on_animation_player_animation_finished"]
 [connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]
 [connection signal="area_entered" from="ring_collider" to="." method="_on_ring_collider_area_entered"]
+
+[editable path="sonicrigged2"]

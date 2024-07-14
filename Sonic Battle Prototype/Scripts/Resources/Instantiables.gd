@@ -201,7 +201,18 @@ func load_stage(new_stage):
 func spawn_bot():
 	# create a cpu character to fight
 	var new_enemy = ENEMY_BOT.instantiate()
-	var enemy_abilities = ["SET", "POW", "SHOT"]
+	#var enemy_abilities = ["SHOT", "POW", "SET"]
+	
+	# make the abilities random
+	# causing issues with colliders making loops
+	var possible_abilities = ["SHOT", "SET", "POW"]
+	var enemy_abilities = []
+	var abilities = []
+	for i in range(3):
+		var ability = randi_range(0, possible_abilities.size() - 1)
+		enemy_abilities.append(possible_abilities[ability])
+		possible_abilities.erase(possible_abilities[ability])
+	
 	new_enemy.set_abilities(enemy_abilities)
 	new_enemy.position = Vector3(0, 0.1, 0)
 	GlobalVariables.main_menu.get_parent().add_child(new_enemy)

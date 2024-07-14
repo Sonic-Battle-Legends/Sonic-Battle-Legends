@@ -31,6 +31,9 @@ const MAX_SPECIAL_AMOUNT = 100
 # max number of rings to be created when scattering rings
 const MAX_SCATTERED_RINGS_ALLOWED: int = 8
 
+# heal points per ring collected
+const HEAL_POINTS_PER_RING: int = 2
+
 # Boolean to check if Sonic is facing left or right
 var facing_left = false
 
@@ -516,7 +519,7 @@ func collect_ring():
 	# the rings total only after the battle is over
 	if GlobalVariables.current_stage != null:
 		rings += 1
-		heal(2)
+		heal(HEAL_POINTS_PER_RING)
 	else:
 		GlobalVariables.total_rings += 1
 		hud.update_rings(GlobalVariables.total_rings)
@@ -761,18 +764,21 @@ func defeated(who_owns_last_attack = null):
 # function, which is why you don't see it here.
 @rpc("any_peer","reliable","call_local")
 func get_hurt(launch_speed, owner_of_the_attack):
-	life_total -= launch_speed.length()
+	var damage = launch_speed.length()
+	life_total -= damage
 	hud.change_life(life_total)
 	
 	# give a invunerability time
 	if !hurt:
 		# if had rings, scatter them
 		#if rings > 0:
-			# you can add the amount of rings to be scattered as a parameter
-			if launch_speed.length() > 10:
-				scatter_rings(10)
-			else:
-				scatter_rings()
+		# you can add the amount of rings to be scattered as a parameter
+		
+		# rings should provided all life points back
+		if damage > MAX_SCATTERED_RINGS_ALLOWED * HEAL_POINTS_PER_RING:
+			scatter_rings(MAX_SCATTERED_RINGS_ALLOWED)
+		else:
+			scatter_rings()
 		#else:
 			# if it was not in a stage where the character have life points,
 			# defeat the character for having no rings when hurt
@@ -831,7 +837,9 @@ func ground_special(id, dir):
 		new_shot.user = self	# This makes sure Sonic can't hit himself with a projectile.
 		new_shot.set_meta("author", name)
 		new_shot.name = "wave" + str(id)
-		
+		var new_forward = $sonicrigged2.transform.basis.z.normalized()
+		new_forward.y = 0
+		new_shot.transform.basis.z = new_forward
 		new_shot.velocity = Vector3($sonicrigged2.basis.z.normalized().x * 3, 0, $sonicrigged2.basis.z.normalized().z * 3)
 		velocity = -$sonicrigged2.basis.z.normalized() * 5
 		velocity.y = 5
@@ -934,7 +942,7 @@ func air_special(id, dir):
 			get_tree().current_scene.add_child(new_mine, true)
 
 
-## use Area3D to detect collectables like rings
+## use Area3D to detect collectables like rings and hazards
 func _on_ring_collider_area_entered(area):
 	# store the parent of the Area3D the character collided
 	if area.get_parent() != null:
@@ -944,6 +952,11 @@ func _on_ring_collider_area_entered(area):
 			collect_ring()
 			if collided_object.has_method("delete_ring"):
 				collided_object.delete_ring()
+		if area.is_in_group("Hazard"):
+			var hazard_impulse = Vector3(0, 6, 0)
+			# make the character goes against it's forward (increasing damage too)
+			hazard_impulse -= $sonicrigged2.transform.basis.z.normalized() * 15
+			get_hurt(hazard_impulse, null)
 
 
 func rotate_model():

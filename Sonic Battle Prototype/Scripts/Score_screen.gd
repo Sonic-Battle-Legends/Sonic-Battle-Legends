@@ -33,6 +33,7 @@ func _on_back_to_hub_button_pressed():
 	# reset win conditions
 	GlobalVariables.game_ended = false
 	GlobalVariables.character_points = 0
+	GlobalVariables.bot_points = 0
 	if is_instance_valid(GlobalVariables.current_character) and is_instance_valid(GlobalVariables.current_character.hud):
 		GlobalVariables.current_character.hud.update_hud(GlobalVariables.current_character.life_total, GlobalVariables.current_character.special_amount, GlobalVariables.current_character.points)
 	
