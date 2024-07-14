@@ -4,10 +4,9 @@
 
 [node name="CPUcontroller" type="Label3D" node_paths=PackedStringArray("raycasts_container", "wall_detector", "platform_detector")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
-offset = Vector2(0, 37.735)
-text = "BOT4
-100%
-1Pt"
+offset = Vector2(0, 50)
+text = "100%
+BOT4 - 1Pt"
 font_size = 25
 script = ExtResource("1_vpug0")
 raycasts_container = NodePath("raycasts")

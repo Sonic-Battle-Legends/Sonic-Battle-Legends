@@ -1,15 +1,19 @@
-[gd_scene load_steps=7 format=3 uid="uid://c21jx54148kmv"]
+[gd_scene load_steps=8 format=3 uid="uid://c21jx54148kmv"]
 
 [ext_resource type="PackedScene" uid="uid://b4sfvdfh2ssee" path="res://Models/hub_test.blend" id="1_3cksg"]
 [ext_resource type="PackedScene" uid="uid://irlpgd8spuet" path="res://Scenes/stages/invisible_walls.tscn" id="2_1lcbb"]
+[ext_resource type="Material" uid="uid://bw718sqodxjnv" path="res://Materials/cityMaterial1.tres" id="2_m2au7"]
 [ext_resource type="PackedScene" uid="uid://dhcmo5dwjo44o" path="res://Scenes/stages/stage_marker.tscn" id="5_rj5n4"]
-[ext_resource type="PackedScene" uid="uid://bdcinxygd23dl" path="res://Models/lamp/lamp.tscn" id="6_p3ikg"]
+[ext_resource type="PackedScene" uid="uid://bdcinxygd23dl" path="res://Scenes/lamp.tscn" id="6_p3ikg"]
 [ext_resource type="PackedScene" uid="uid://bxjkjr27crbtr" path="res://Scenes/stages/test_2.tscn" id="6_ub5qx"]
 [ext_resource type="PackedScene" uid="uid://dqgtu3gjo0ymi" path="res://Scenes/collectables/ring.tscn" id="7_kmrjo"]
 
 [node name="City_Hub" type="Node3D"]
 
 [node name="hub_test" parent="." instance=ExtResource("1_3cksg")]
+
+[node name="hub" parent="hub_test" index="0"]
+surface_material_override/0 = ExtResource("2_m2au7")
 
 [node name="InvisibleWalls" parent="." instance=ExtResource("2_1lcbb")]
 transform = Transform3D(2.335, 0, 0, 0, 2.13, 0, 0, 0, 2.13, 1.06559, 0, 0)
@@ -21,20 +25,24 @@ new_place = ExtResource("6_ub5qx")
 [node name="Ring" parent="." instance=ExtResource("7_kmrjo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.28553, 6.54966e-07, 2.16711)
 
-[node name="lamp2" parent="." instance=ExtResource("6_p3ikg")]
+[node name="lamps" type="Marker3D" parent="."]
+
+[node name="lamp2" parent="lamps" instance=ExtResource("6_p3ikg")]
 transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0.605359, -3.27483e-07, -0.246579)
 
-[node name="lamp7" parent="." instance=ExtResource("6_p3ikg")]
+[node name="lamp7" parent="lamps" instance=ExtResource("6_p3ikg")]
 transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 7.47373, -3.27483e-07, -0.246579)
 
-[node name="lamp3" parent="." instance=ExtResource("6_p3ikg")]
+[node name="lamp3" parent="lamps" instance=ExtResource("6_p3ikg")]
 transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, -1.28896, -3.27483e-07, -0.246579)
 
-[node name="lamp4" parent="." instance=ExtResource("6_p3ikg")]
+[node name="lamp4" parent="lamps" instance=ExtResource("6_p3ikg")]
 transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0.605359, -3.27483e-07, 2.91571)
 
-[node name="lamp6" parent="." instance=ExtResource("6_p3ikg")]
+[node name="lamp6" parent="lamps" instance=ExtResource("6_p3ikg")]
 transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 4.8353, -3.27483e-07, 2.91571)
 
-[node name="lamp5" parent="." instance=ExtResource("6_p3ikg")]
+[node name="lamp5" parent="lamps" instance=ExtResource("6_p3ikg")]
 transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, -1.28896, -3.27483e-07, 2.91571)
+
+[editable path="hub_test"]

@@ -59,6 +59,9 @@ func _ready():
 
 
 func _process(_delta):
+	if GlobalVariables.game_ended:
+		queue_free()
+	
 	if not is_multiplayer_authority(): return
 	move_selector()
 	
