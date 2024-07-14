@@ -207,7 +207,6 @@ func spawn_bot():
 	# causing issues with colliders making loops
 	var possible_abilities = ["SHOT", "SET", "POW"]
 	var enemy_abilities = []
-	var abilities = []
 	for i in range(3):
 		var ability = randi_range(0, possible_abilities.size() - 1)
 		enemy_abilities.append(possible_abilities[ability])
