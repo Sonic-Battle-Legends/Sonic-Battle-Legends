@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://drlu8n40mygqk"]
+
+[ext_resource type="PackedScene" uid="uid://c7txsjs00wqjh" path="res://Models/Spikes/Spikes2.blend" id="1_3gjp5"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fwpw6"]
+size = Vector3(0.3, 0.2, 0.3)
+
+[node name="Spikes" type="Node3D"]
+
+[node name="SpikeAreaCollider" type="Area3D" parent="." groups=["Hazard"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.261462, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SpikeAreaCollider"]
+shape = SubResource("BoxShape3D_fwpw6")
+
+[node name="Spikes2" parent="." instance=ExtResource("1_3gjp5")]
+transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, 0)
+
+[node name="collider" parent="Spikes2" index="1"]
+visible = false
+
+[editable path="Spikes2"]

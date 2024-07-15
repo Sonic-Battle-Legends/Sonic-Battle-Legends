@@ -750,7 +750,7 @@ func get_hurt(launch_speed, owner_of_the_attack):
 	var damage = launch_speed.length()
 	life_total -= damage
 	#hud.change_life(life_total)
-	
+		 
 	# give a invunerability time
 	if !hurt:
 		# if had rings, scatter them
