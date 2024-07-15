@@ -12,7 +12,7 @@ Development Topics
 			spamming SET is quite easy to beat the bot
 
 		check going on "host" then going back, click another connection setting or host again and see how the character is spawned on the stage
-			there was an error once
+			there was an error once where the character was spawned off the stage
 
 		Need to figure out why more than two sonics appeared on the stage;
 			might be a race condition happening after deleting all bots and spawning another one after

@@ -1,10 +1,11 @@
-[gd_scene load_steps=37 format=3 uid="uid://dv837xc88bkne"]
+[gd_scene load_steps=40 format=3 uid="uid://dv837xc88bkne"]
 
 [ext_resource type="Script" path="res://Scripts/Enemy_bot.gd" id="1_8y1bu"]
 [ext_resource type="Texture2D" uid="uid://cnvca7d2mepgx" path="res://Sprites/Sonic.png" id="2_0t6ku"]
 [ext_resource type="Material" uid="uid://58e30ip8afyy" path="res://Materials/shadowMaterial.tres" id="3_6e8gf"]
 [ext_resource type="PackedScene" uid="uid://kiqyfxt7rwap" path="res://Scenes/hud.tscn" id="5_eamlw"]
 [ext_resource type="PackedScene" uid="uid://bj3nlqpe18bic" path="res://Scenes/enemies/cpu_controller.tscn" id="6_2mma4"]
+[ext_resource type="Texture2D" uid="uid://hht8n5ttfdkf" path="res://Models/Sonic/textures/sonic_model_text.png" id="6_80kdn"]
 [ext_resource type="PackedScene" uid="uid://cif8ar07vb2yr" path="res://Models/Sonic/sonicrigged_2.tscn" id="7_62g83"]
 
 [sub_resource type="Animation" id="Animation_spsdn"]
@@ -833,6 +834,18 @@ properties/5/replication_mode = 1
 [sub_resource type="BoxShape3D" id="BoxShape3D_ij26k"]
 size = Vector3(0.25, 0.25, 0.25)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nevym"]
+albedo_texture = ExtResource("6_80kdn")
+metallic = 0.65
+metallic_specular = 0.44
+roughness = 0.21
+emission_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kfvmv"]
+albedo_texture = ExtResource("6_80kdn")
+metallic = 0.98
+roughness = 0.03
+
 [node name="Sonic_BOT" type="CharacterBody3D" groups=["Bot", "CanHurt", "Player"]]
 collision_layer = 2
 floor_max_angle = 1.0472
@@ -887,6 +900,10 @@ shape = SubResource("BoxShape3D_ij26k")
 
 [node name="sonicrigged2" parent="." instance=ExtResource("7_62g83")]
 transform = Transform3D(0.03, 0, 0, 0, 0.03, 0, 0, 0, 0.03, 0, -0.15, 0)
+
+[node name="Sonic" parent="sonicrigged2/Armature/Skeleton3D" index="0"]
+surface_material_override/0 = SubResource("StandardMaterial3D_nevym")
+surface_material_override/1 = SubResource("StandardMaterial3D_kfvmv")
 
 [node name="CPUcontroller" parent="." instance=ExtResource("6_2mma4")]
 
