@@ -600,6 +600,20 @@ func handle_animation():
 					$AnimationPlayer.play("fall")
 					$sonicrigged2/AnimationPlayer.play("FALL")
 					falling = true
+	else:
+		if !is_on_floor() && "PGC" in $sonicrigged2/AnimationPlayer.current_animation:
+			if $sonicrigged2/AnimationPlayer.current_animation != "PGC 5":
+				attacking = false
+				current_punch = 0
+				if velocity.y > 0:
+					$AnimationPlayer.play("jump")
+					$sonicrigged2/AnimationPlayer.play("JUMP")
+					falling = false
+				elif velocity.y <= 0 && !falling:
+					# Because falling should only play once, this is tied to the falling state.
+					$AnimationPlayer.play("fall")
+					$sonicrigged2/AnimationPlayer.play("FALL")
+					falling = true
 	'''
 	elif $AnimationPlayer.current_animation == "punch1" || $AnimationPlayer.current_animation == "punch2" || $AnimationPlayer.current_animation == "punch3":
 		# The 3-hit combo. If the player is holding the attack button by the time a punch finishes,
