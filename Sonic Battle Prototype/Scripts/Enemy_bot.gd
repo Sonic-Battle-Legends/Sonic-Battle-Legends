@@ -347,10 +347,16 @@ func handle_jump():
 		if direction:
 			velocity = Vector3(direction.x * AIRDASH_SPEED, 4, direction.z * AIRDASH_SPEED)
 		else:
+			var new_velocity = $sonicrigged2.transform.basis.z.normalized() * AIRDASH_SPEED
+			new_velocity.y = 4
+			velocity = new_velocity
+			
+			'''
 			if facing_left:
 				velocity = Vector3(-AIRDASH_SPEED, 4, 0)
 			else:
 				velocity = Vector3(AIRDASH_SPEED, 4, 0)
+			'''
 
 
 ## help responsiveness feeling by forgiving the difference between the human response and the machine accuracy
@@ -423,7 +429,7 @@ func handle_attack():
 		can_airdash = false
 		attacking = true
 		$AnimationPlayer.play("dashAttack")
-		$sonicrigged2/AnimationPlayer.play("DASH ATK (LAZY)")
+		$sonicrigged2/AnimationPlayer.play("DASH ATK")
 		launch_power = Vector3(velocity.x, 2, velocity.z)
 		velocity.y = 3
 	elif attack_pressed && !dashing && !is_on_floor() && can_air_attack:
@@ -631,6 +637,8 @@ func anim_end(anim_name):
 		starting = false
 		walking = true
 	elif anim_name == "DJMP 1":
+		$sonicrigged2/AnimationPlayer.play("DJMP 3")
+	elif anim_name == "DJMP 3":
 		# Go back to falling state when airdash ends.
 		dashing = false
 		$AnimationPlayer.play("fall")
@@ -651,7 +659,7 @@ func anim_end(anim_name):
 		starting = false
 		can_air_attack = false
 		can_airdash = false
-	elif anim_name == "DASH ATK (LAZY)":
+	elif anim_name == "DASH ATK":
 		# Resets Sonic's attacking state when his dash attack ends.
 		attacking = false
 		dashing = false
@@ -705,7 +713,7 @@ func anim_end(anim_name):
 		else:
 			$AnimationPlayer.play("hurtStrong")
 			$sonicrigged2/AnimationPlayer.play("LAUNCHED")
-	elif anim_name in ["DJMP 2", "RING", "BOMB G (LAZY)", "BOMB A (LAZY)"]:
+	elif anim_name in ["DJMP 2", "RING", "BOMB G (LAZY)", "BOMB A"]:
 		# Handles Sonic's reset states for all of his special moves.
 		attacking = false
 		starting = false
@@ -820,7 +828,9 @@ func ground_special(id, _dir):
 		new_shot.user = self	# This makes sure Sonic can't hit himself with a projectile.
 		new_shot.set_meta("author", name)
 		new_shot.name = "wave" + str(id)
-		
+		var new_forward = $sonicrigged2.transform.basis.z.normalized()
+		new_forward.y = 0
+		new_shot.transform.basis.z = new_forward		
 		new_shot.velocity = Vector3($sonicrigged2.basis.z.normalized().x * 3, 0, $sonicrigged2.basis.z.normalized().z * 3)
 		velocity = -$sonicrigged2.basis.z.normalized() * 5
 		velocity.y = 5
@@ -911,7 +921,7 @@ func air_special(id, _dir):
 		# The mine explodes over time or on impact.
 		# In the air, Sonic also gets a slight bit of air stall.
 		$AnimationPlayer.play("setAir")
-		$sonicrigged2/AnimationPlayer.play("BOMB A (LAZY)")
+		$sonicrigged2/AnimationPlayer.play("BOMB A") # (LAZY)")
 		can_air_attack = false
 		if active_mine == null:	# Only works if there's no mine already active.
 			velocity.y = 3

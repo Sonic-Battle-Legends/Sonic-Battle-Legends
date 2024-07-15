@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://c7txsjs00wqjh" path="res://Models/Spikes/Spikes2.blend" id="1_3gjp5"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_fwpw6"]
-size = Vector3(0.3, 0.2, 0.3)
+size = Vector3(0.25, 0.2, 0.25)
 
 [node name="Spikes" type="Node3D"]
 

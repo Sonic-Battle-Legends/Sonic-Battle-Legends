@@ -126,12 +126,14 @@ func aggressive_behaviour():
 		
 		# check if player target is right above the bot
 		if planar_distance < min_attack_distance \
-		and distance_to_target > min_attack_distance:
-			if cpu_character.life_total < cpu_character.MAX_LIFE_TOTAL:
+		and distance_to_target > min_attack_distance \
+		and cpu_character.life_total < cpu_character.MAX_LIFE_TOTAL:
 				# if the player is trying to keep distance, keep guard on
 				# to heal
-				cpu_character.guard_pressed = true
+			cpu_character.guard_pressed = true
 			#else:
+			#	move_towards_target()
+			#	jump_check()
 				# jump towards a direction then double jump to reach the platform
 			#	cpu_character.direction = cpu_character.transform.basis.x * 2
 			#	if jump_timer == null or (jump_timer != null and jump_timer.time_left <= 0):
