@@ -28,7 +28,7 @@ func _physics_process(delta):
 		$Sprite3D.flip_h = true
 	
 	# If the wave hits a wall, it disappears.
-	if is_on_wall():
+	if $RayCast3D.is_colliding():
 		rpc("delete")
 		queue_free.call_deferred()
 	
