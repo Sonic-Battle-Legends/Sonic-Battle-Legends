@@ -1,5 +1,9 @@
 extends Node
 
+# it's autoloaded
+# this script will hold most of the audios and play them
+# the method is "play" and you can access it's possible sounds
+
 var ring = load("res://Audio/ring.wav")
 var ring_spread = load("res://Audio/ring_spread.wav")
 var jump = load("res://Audio/character/jump.wav")
