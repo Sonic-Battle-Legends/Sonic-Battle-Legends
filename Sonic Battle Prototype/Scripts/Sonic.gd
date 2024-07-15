@@ -333,12 +333,14 @@ func handle_dash():
 func handle_jump():
 	# If you're in the air, Sonic performs his midair action (as long as he hasn't used it yet.)
 	if jump_pressed && (is_on_floor() || coyote_time()):
+		Audio.play(Audio.jump, self)
 		velocity.y = JUMP_VELOCITY
 		jumping = true
 		jump_clicked = true
 		# remove current coyote timer form the variable
 		coyote_timer = null
 	elif jump_pressed && !is_on_floor() && can_airdash:
+		Audio.play(Audio.jump, self) #spin)
 		dashing = true
 		can_airdash = false
 		# remove current coyote timer form the variable
@@ -517,6 +519,7 @@ func collect_ring():
 	# increase the amount of rings
 	# rings collected in a stage should count towards
 	# the rings total only after the battle is over
+	Audio.play(Audio.ring, self)
 	if GlobalVariables.current_stage != null:
 		rings += 1
 		heal(HEAL_POINTS_PER_RING)
@@ -782,7 +785,7 @@ func get_hurt(launch_speed, owner_of_the_attack):
 		# rings should provided all life points back
 		if damage > MAX_SCATTERED_RINGS_ALLOWED * HEAL_POINTS_PER_RING:
 			scatter_rings(MAX_SCATTERED_RINGS_ALLOWED)
-			Audio.play(Audio.ring_spread)
+			Audio.play(Audio.ring_spread, self)
 		else:
 			scatter_rings()
 		#else:

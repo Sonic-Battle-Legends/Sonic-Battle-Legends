@@ -9,7 +9,7 @@ var step = load("res://Audio/step concrete.wav")
 const VOLUME: int = -16
 
 ## method to play audio
-func play(audio_to_play: AudioStream, object_to_add_sound: Node3D = get_tree().current_scene, new_volume = VOLUME, new_pitch = 1):
+func play(audio_to_play: AudioStream, object_to_add_sound: Node3D = get_tree().current_scene, new_volume = VOLUME, new_pitch = 1, return_the_player = false):
 	# check if audio track exists
 	if audio_to_play != null:
 		# create an instance of a AudioStreamPlayer3D
@@ -36,3 +36,6 @@ func play(audio_to_play: AudioStream, object_to_add_sound: Node3D = get_tree().c
 		object_to_add_sound.add_child(audio_player_object)
 		# play the audio
 		audio_player.play()
+		
+		if return_the_player:
+			return audio_player

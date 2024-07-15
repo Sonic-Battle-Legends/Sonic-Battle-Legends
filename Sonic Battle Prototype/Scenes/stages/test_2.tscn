@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://bxjkjr27crbtr"]
+[gd_scene load_steps=8 format=3 uid="uid://bxjkjr27crbtr"]
 
 [ext_resource type="PackedScene" uid="uid://bla4tnasvtn0v" path="res://Models/testmap.blend" id="1_w105v"]
 [ext_resource type="Material" uid="uid://30ca458wwm36" path="res://Materials/stageWallsMaterial.tres" id="2_4fywf"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://irlpgd8spuet" path="res://Scenes/stages/invisible_walls.tscn" id="2_nme6q"]
 [ext_resource type="Material" uid="uid://djxad1r3jnafs" path="res://Materials/stageTopMaterial.tres" id="3_ggwtq"]
 [ext_resource type="PackedScene" uid="uid://drlu8n40mygqk" path="res://Scenes/spikes.tscn" id="6_tmgow"]
+[ext_resource type="AudioStream" uid="uid://dy8q6nalu2qs7" path="res://Audio/Komiku_-_04_-_Skate.mp3" id="7_a3m55"]
 
 [node name="test2" type="Node3D"]
 
@@ -38,5 +39,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6642, 0, -1.11129)
 
 [node name="Spikes4" parent="." instance=ExtResource("6_tmgow")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.57528, 0, 3.33939)
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_a3m55")
+volume_db = -7.0
+autoplay = true
 
 [editable path="testmap"]
