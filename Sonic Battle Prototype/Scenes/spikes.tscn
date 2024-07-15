@@ -1,9 +1,13 @@
-[gd_scene load_steps=3 format=3 uid="uid://drlu8n40mygqk"]
+[gd_scene load_steps=5 format=3 uid="uid://drlu8n40mygqk"]
 
 [ext_resource type="PackedScene" uid="uid://c7txsjs00wqjh" path="res://Models/Spikes/Spikes2.blend" id="1_3gjp5"]
+[ext_resource type="Texture2D" uid="uid://8dy7nosexosb" path="res://Models/Spikes/Spikes.png" id="2_rm25g"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_fwpw6"]
 size = Vector3(0.25, 0.2, 0.25)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u5mf4"]
+albedo_texture = ExtResource("2_rm25g")
 
 [node name="Spikes" type="Node3D"]
 
@@ -15,6 +19,9 @@ shape = SubResource("BoxShape3D_fwpw6")
 
 [node name="Spikes2" parent="." instance=ExtResource("1_3gjp5")]
 transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, 0)
+
+[node name="Cone" parent="Spikes2" index="0"]
+surface_material_override/0 = SubResource("StandardMaterial3D_u5mf4")
 
 [node name="collider" parent="Spikes2" index="1"]
 visible = false

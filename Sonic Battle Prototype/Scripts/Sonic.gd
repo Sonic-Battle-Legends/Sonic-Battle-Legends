@@ -768,6 +768,11 @@ func get_hurt(launch_speed, owner_of_the_attack):
 	life_total -= damage
 	hud.change_life(life_total)
 	
+	var sparks = Instantiables.SPARKS.instantiate()
+	sparks.position = position + Vector3(0, 0.1, 0)
+	get_parent().add_child(sparks)
+	sparks.get_child(0).emitting = true
+	
 	# give a invunerability time
 	if !hurt:
 		# if had rings, scatter them

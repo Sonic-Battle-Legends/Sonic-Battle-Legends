@@ -5,6 +5,9 @@ extends Node
 # all script that requires a scene to be instantiate should
 # use this Instantiables script.
 
+
+var SPARKS = load("res://Scenes/effects/sparks.tscn")
+
 # The prefab for spawning Sonic's "shot" projectile.
 const SHOT_PROJECTILE = preload("res://Scenes/SonicWave.tscn")
 
