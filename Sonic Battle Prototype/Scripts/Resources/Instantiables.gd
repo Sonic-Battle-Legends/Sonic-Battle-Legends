@@ -5,7 +5,10 @@ extends Node
 # all script that requires a scene to be instantiate should
 # use this Instantiables script.
 
+# an audio instance that can be kept track off
+var AUDIO_INSTANCE = load("res://Scenes/audio_instance.tscn")
 
+# particle system
 var SPARKS = load("res://Scenes/effects/sparks.tscn")
 
 # The prefab for spawning Sonic's "shot" projectile.

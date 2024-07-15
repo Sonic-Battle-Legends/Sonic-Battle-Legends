@@ -774,6 +774,7 @@ func get_hurt(launch_speed, owner_of_the_attack):
 		
 		if damage > MAX_SCATTERED_RINGS_ALLOWED * HEAL_POINTS_PER_RING:
 			scatter_rings(MAX_SCATTERED_RINGS_ALLOWED)
+			Audio.play(Audio.ring_spread)
 		else:
 			scatter_rings()
 		#else:
