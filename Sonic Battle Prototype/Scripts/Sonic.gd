@@ -457,15 +457,35 @@ func handle_attack():
 		'''
 		
 		velocity.y = 4
-	elif attack_pressed && is_on_floor() && !starting:
-		# The code to initiate Sonic's 3-hit combo. The rest of the punches are in _on_animation_player_animation_finished().
+	elif Input.is_action_just_pressed("punch") && is_on_floor() && !starting:
 		create_punch_timer()
 		attacking = true
-		$AnimationPlayer.play("punch1")
-		$sonicrigged2/AnimationPlayer.play("PGC 1")
-		launch_power = Vector3(0, 2, 0)
-		current_punch = 1
-	
+		if current_punch == 0:
+			# The code to initiate Sonic's 3-hit combo. The rest of the punches are in _on_animation_player_animation_finished().
+			$AnimationPlayer.play("punch1")
+			$sonicrigged2/AnimationPlayer.play("PGC 1")
+			launch_power = Vector3(0, 2, 0)
+			current_punch = 1
+		elif current_punch == 1:
+			$AnimationPlayer.play("punch2")
+			$sonicrigged2/AnimationPlayer.play("PGC 2")
+			launch_power = Vector3(0, 2, 0)
+			current_punch = 2
+			
+		elif current_punch == 2:
+			$AnimationPlayer.play("punch3")
+			$sonicrigged2/AnimationPlayer.play("PGC 3")
+			launch_power = Vector3(0, 2, 0)
+			current_punch = 3
+		
+		elif current_punch == 3:
+			$AnimationPlayer.play("strong")
+			$sonicrigged2/AnimationPlayer.play("PGC 4")
+			if facing_left:
+				launch_power = Vector3(-20, 5, 0)
+			else:
+				launch_power = Vector3(20, 5, 0)
+			current_punch = 0
 	# The code for initiating Sonic's grounded and midair specials, which go to functions that check the selected skills.
 	# no abilities on the hub areas
 	if ground_skill != null and air_skill != null: #GlobalVariables.current_hub == null and GlobalVariables.current_area == null:
@@ -699,11 +719,8 @@ func anim_end(anim_name):
 		$AnimationPlayer.play("fall")
 		$sonicrigged2/AnimationPlayer.play("FALL")
 	elif anim_name == "PGC 1" || anim_name == "PGC 2" || anim_name == "PGC 3":
-		# The 3-hit combo. If the player is holding the attack button by the time a punch finishes,
-		# it moves on to the next punch.
-		# NOTE: I tried making it so that the punches execute with pressing the button instead of holding,
-		# but I couldn't get it working right so this will have to do for now.
-		if attack_pressed:# and punch_timer != null and punch_timer.time_left > 0:
+		# The 3-hit combo. Press the punch button again before punch_timer runs out to do the next attack
+		if Input.is_action_just_pressed("punch") and punch_timer != null and punch_timer.time_left > 0:
 			# create a new timer to give time for a possible combo sequence
 			create_punch_timer()
 			if current_punch == 1:
@@ -734,9 +751,8 @@ func anim_end(anim_name):
 				
 				current_punch = 0
 		else:
-			# If the player doesn't continue the combo, Sonic's states reset as usual.
 			attacking = false
-			current_punch = 0
+
 	elif anim_name == "HURT 1" || anim_name == "HURT 2":
 		# Reset's Sonic's "hurt" state when the animation ends.
 		hurt = false
@@ -767,6 +783,10 @@ func anim_end(anim_name):
 			falling = true
 			$AnimationPlayer.play("fall")
 			$sonicrigged2/AnimationPlayer.play("FALL")
+	
+	if punch_timer == null or punch_timer.time_left <= 0:
+		# If the player doesn't continue the combo, Sonic's states reset as usual.
+		current_punch = 0
 
 ## Very simple signal state determining when the attack hitbox actually hits something.
 func _on_hitbox_body_entered(body):
