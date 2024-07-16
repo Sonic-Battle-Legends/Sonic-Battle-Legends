@@ -34,6 +34,7 @@ Development Topics
 			attack sound
 			hit sound
 			healing sound
+			dash sound
 			shot ability sound
 			set ability sound
 			pow ability sound
