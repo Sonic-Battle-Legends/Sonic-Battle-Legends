@@ -759,8 +759,6 @@ func defeated(who_owns_last_attack = null):
 @rpc("any_peer","reliable","call_local")
 func get_hurt(launch_speed, owner_of_the_attack):
 	var damage = launch_speed.length()
-	life_total -= damage
-	#hud.change_life(life_total)
 	
 	var sparks = Instantiables.SPARKS.instantiate()
 	sparks.position = position + Vector3(0, 0.1, 0)
@@ -785,6 +783,9 @@ func get_hurt(launch_speed, owner_of_the_attack):
 			# defeat the character for having no rings when hurt
 			#if GlobalVariables.current_stage != null:
 			#	defeated()
+		
+	life_total -= damage
+	#hud.change_life(life_total)
 	
 	if GlobalVariables.current_stage != null:
 		if (life_total <= 0 and GlobalVariables.game_ended == false):

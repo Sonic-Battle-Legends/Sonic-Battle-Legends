@@ -53,12 +53,12 @@ func _physics_process(_delta):
 		if target and player_target:
 			var life_offset = 35
 			# if player have more life
-			if is_instance_valid(player_target) and player_target.life_total + life_offset > cpu_character.life_total:
+			if is_instance_valid(player_target) and is_instance_valid(life_offset) and player_target.life_total + life_offset > cpu_character.life_total:
 				# go with defensive behaviour
 				aggressive_behaviour()
 			
 			# else if bot have more life
-			elif cpu_character.life_total + life_offset > player_target.life_total:
+			elif is_instance_valid(player_target) and is_instance_valid(life_offset) and cpu_character.life_total + life_offset > player_target.life_total:
 				# go with aggressive behaviour
 				aggressive_behaviour()
 			
