@@ -37,8 +37,10 @@ var new_height: float = -10
 ## it will point towards the direction the bot is going
 @export var raycasts_container: Marker3D
 ## the raycast used to detect if there is a wall in front of the bot to jump
+## raycasts forward
 @export var wall_detector: RayCast3D
 ## the raycast used to detect if there is a platform for the bot to land after jumping
+## raycasts downwards
 @export var platform_detector: RayCast3D
 
 
@@ -53,12 +55,12 @@ func _physics_process(_delta):
 		if target and player_target:
 			var life_offset = 35
 			# if player have more life
-			if is_instance_valid(player_target) and player_target.life_total + life_offset > cpu_character.life_total:
+			if is_instance_valid(player_target) and is_instance_valid(life_offset) and player_target.life_total + life_offset > cpu_character.life_total:
 				# go with defensive behaviour
 				aggressive_behaviour()
 			
 			# else if bot have more life
-			elif cpu_character.life_total + life_offset > player_target.life_total:
+			elif is_instance_valid(player_target) and is_instance_valid(life_offset) and cpu_character.life_total + life_offset > player_target.life_total:
 				# go with aggressive behaviour
 				aggressive_behaviour()
 			
@@ -67,7 +69,6 @@ func _physics_process(_delta):
 				# go with tactics
 				aggressive_behaviour()
 			
-		
 	else:
 		if cpu_character == null and get_parent() != null:
 			cpu_character = get_parent()
@@ -104,29 +105,24 @@ func update_life_ui():
 	text = str(cpu_character.life_total) + "%\n" + cpu_character.name + " - " + str(cpu_character.points) + "Pt"
 
 
-## if the target is far, move
-## if the target is close, attack
-## if the target is hidding right above, heal
-func aggressive_behaviour():
-	# go closer to target
+## common responses to the ambient
+## like dodging attacks
+func common_behaviours():
 	# store the distance and direction
 	target_direction = (target.position - cpu_character.position).normalized()
 	distance_to_target = (target.position - cpu_character.position).length()
 	
-	# maybe reduce the distance if chasing a ring
-	if distance_to_target > min_attack_distance:
+	# store planar variables
+	# position with y axis at zero
+	var planar_position = target.position
+	planar_position.y = 0
+	var planar_distance = (planar_position - cpu_character.position).length()
+	
+	# check if player target is right above the bot
+	if planar_distance < min_attack_distance:
 		# prevent loops by reseting the properties
 		reset_properties()
-		
-		# store planar variables
-		# position with y axis at zero
-		var planar_position = target.position
-		planar_position.y = 0
-		var planar_distance = (planar_position - cpu_character.position).length()
-		
-		# check if player target is right above the bot
-		if planar_distance < min_attack_distance \
-		and distance_to_target > min_attack_distance \
+		if distance_to_target > min_attack_distance \
 		and cpu_character.life_total < cpu_character.MAX_LIFE_TOTAL:
 				# if the player is trying to keep distance, keep guard on
 				# to heal
@@ -145,26 +141,66 @@ func aggressive_behaviour():
 			if platform_detector.get_collision_point().y < cpu_character.position.y - min_offset:
 				jump()
 			
-			# move towards target when not trying to go up around a platform
-			move_towards_target()
+			# avoid mines and shots
+			# use get_tree().get_nodes_in_group("Mine").duplicate()
+			# and get_tree().get_nodes_in_group("PlayerAttack").duplicate()
+			# instead
+			'''
+			var new_object_collided = wall_detector.get_collider()
+			
+			if new_object_collided != null:
+				var new_object_parent = new_object_collided.get_parent()
+				
+				if new_object_parent != null \
+				and (new_object_parent.is_in_group("Mine") \
+				or new_object_parent.is_in_group("PlayerAttack")):
+					jump()
+					attack_target()
+			'''
+		
+		# if the player is running against it use special
+		# to prevent player passing through
+		if target.is_in_group("Player") \
+		and distance_to_target < 2 \
+		and target.direction != Vector3.ZERO \
+		and target_direction.dot(cpu_character.mesh_node.transform.basis.z) < 0.8:
+			cpu_character.special_pressed = true
+	
+	# guard/block/defend check
+	if target.is_in_group("Player") and target.attacking and distance_to_target <= min_attack_distance:
+		cpu_character.guard_pressed = true
+
+
+## if the target is far, move
+## if the target is close, attack
+## if the target is hidding right above, heal
+func aggressive_behaviour():
+	common_behaviours()
+	
+	# go closer to target
+	if distance_to_target > min_attack_distance:
+		# prevent loops by reseting the properties
+		reset_properties()
+		
+		# move towards target when not trying to go up around a platform
+		move_towards_target()
 		
 		# if there is an obstacle, jump
 		jump_check()
 		
 		# dash
-		#if distance_to_target > 3:
-		#	cpu_character.direction = target_direction
-		#	cpu_character.dash_triggered = true
+		'''
+		if distance_to_target > 3 \
+		and cpu_character.mesh_node.transform.basis.z.dot(target_direction) < 0.9:
+			cpu_character.direction = target_direction
+			cpu_character.dash_triggered = true
+		'''
 	
 	# if close enough to attack, attack target
 	else:
 		if target.is_in_group("Player"):
 			cpu_character.guard_pressed = false
 			attack_target()
-	
-	# guard/block/defend check
-	if target.is_in_group("Player") and target.attacking and distance_to_target <= min_attack_distance:
-		cpu_character.guard_pressed = true
 
 
 func move_towards_target():

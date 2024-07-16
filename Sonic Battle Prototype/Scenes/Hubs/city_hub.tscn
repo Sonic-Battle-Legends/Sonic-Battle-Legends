@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://bdcinxygd23dl" path="res://Scenes/lamp.tscn" id="6_p3ikg"]
 [ext_resource type="PackedScene" uid="uid://bxjkjr27crbtr" path="res://Scenes/stages/test_2.tscn" id="6_ub5qx"]
 [ext_resource type="PackedScene" uid="uid://dqgtu3gjo0ymi" path="res://Scenes/collectables/ring.tscn" id="7_kmrjo"]
-[ext_resource type="AudioStream" uid="uid://s74an734ajm3" path="res://Audio/CCTS - H - Full Mix.wav" id="8_y2437"]
+[ext_resource type="AudioStream" uid="uid://rxnwaj4vdd2d" path="res://Audio/Technopolis City Hub (v1).mp3" id="8_kdbtx"]
 
 [node name="City_Hub" type="Node3D"]
 
@@ -47,7 +47,7 @@ transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 4.8353, -3.27483e-07
 transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, -1.28896, -3.27483e-07, 2.91571)
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("8_y2437")
+stream = ExtResource("8_kdbtx")
 volume_db = -7.0
 autoplay = true
 
