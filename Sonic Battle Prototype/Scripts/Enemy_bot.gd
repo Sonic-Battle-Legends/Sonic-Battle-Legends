@@ -441,10 +441,17 @@ func handle_attack():
 		can_air_attack = false
 		$AnimationPlayer.play("airAttack")
 		$sonicrigged2/AnimationPlayer.play("AIR")
+		
+		var new_launch = $sonicrigged2.transform.basis.z.normalized() * 5
+		new_launch.y = -2
+		launch_power = new_launch
+		
+		'''
 		if facing_left:
 			launch_power = Vector3(-5, -2, 0)
 		else:
 			launch_power = Vector3(5, -2, 0)
+		'''
 		velocity.y = 4
 	elif attack_pressed && is_on_floor() && !starting:
 		# The code to initiate Sonic's 3-hit combo. The rest of the punches are in _on_animation_player_animation_finished().
@@ -695,10 +702,18 @@ func anim_end(anim_name):
 				# The final part of the combo does an immediate strong attack.
 				$AnimationPlayer.play("strong")
 				$sonicrigged2/AnimationPlayer.play("PGC 4")
+				
+				var new_launch = $sonicrigged2.transform.basis.z.normalized() * 20
+				new_launch.y = 5
+				launch_power = new_launch
+				
+				'''
 				if facing_left:
 					launch_power = Vector3(-20, 5, 0)
 				else:
 					launch_power = Vector3(20, 5, 0)
+				'''
+				
 				current_punch = 0
 		else:
 			# If the player doesn't continue the combo, Sonic's states reset as usual.

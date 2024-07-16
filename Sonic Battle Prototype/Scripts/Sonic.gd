@@ -444,10 +444,18 @@ func handle_attack():
 		can_air_attack = false
 		$AnimationPlayer.play("airAttack")
 		$sonicrigged2/AnimationPlayer.play("AIR")
+		
+		var new_launch = $sonicrigged2.transform.basis.z.normalized() * 5
+		new_launch.y = -2
+		launch_power = new_launch
+		
+		'''
 		if facing_left:
 			launch_power = Vector3(-5, -2, 0)
 		else:
 			launch_power = Vector3(5, -2, 0)
+		'''
+		
 		velocity.y = 4
 	elif attack_pressed && is_on_floor() && !starting:
 		# The code to initiate Sonic's 3-hit combo. The rest of the punches are in _on_animation_player_animation_finished().
@@ -712,10 +720,18 @@ func anim_end(anim_name):
 				# The final part of the combo does an immediate strong attack.
 				$AnimationPlayer.play("strong")
 				$sonicrigged2/AnimationPlayer.play("PGC 4")
+				
+				var new_launch = $sonicrigged2.transform.basis.z.normalized() * 20
+				new_launch.y = 5
+				launch_power = new_launch
+				
+				'''
 				if facing_left:
 					launch_power = Vector3(-20, 5, 0)
 				else:
 					launch_power = Vector3(20, 5, 0)
+				'''
+				
 				current_punch = 0
 		else:
 			# If the player doesn't continue the combo, Sonic's states reset as usual.
@@ -782,8 +798,6 @@ func defeated(who_owns_last_attack = null):
 @rpc("any_peer","reliable","call_local")
 func get_hurt(launch_speed, owner_of_the_attack):
 	var damage = launch_speed.length()
-	life_total -= damage
-	hud.change_life(life_total)
 	
 	var sparks = Instantiables.SPARKS.instantiate()
 	sparks.position = position + Vector3(0, 0.1, 0)
@@ -807,6 +821,9 @@ func get_hurt(launch_speed, owner_of_the_attack):
 			# defeat the character for having no rings when hurt
 		#	if GlobalVariables.current_stage != null:
 		#		defeated()
+	
+	life_total -= damage
+	hud.change_life(life_total)
 	
 	if GlobalVariables.current_stage != null:
 		if (life_total <= 0 and GlobalVariables.game_ended == false):

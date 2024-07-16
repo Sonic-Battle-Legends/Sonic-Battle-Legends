@@ -37,8 +37,10 @@ var new_height: float = -10
 ## it will point towards the direction the bot is going
 @export var raycasts_container: Marker3D
 ## the raycast used to detect if there is a wall in front of the bot to jump
+## raycasts forward
 @export var wall_detector: RayCast3D
 ## the raycast used to detect if there is a platform for the bot to land after jumping
+## raycasts downwards
 @export var platform_detector: RayCast3D
 
 
@@ -104,29 +106,24 @@ func update_life_ui():
 	text = str(cpu_character.life_total) + "%\n" + cpu_character.name + " - " + str(cpu_character.points) + "Pt"
 
 
-## if the target is far, move
-## if the target is close, attack
-## if the target is hidding right above, heal
-func aggressive_behaviour():
-	# go closer to target
+## common responses to the ambient
+## like dodging attacks
+func common_behaviours():
 	# store the distance and direction
 	target_direction = (target.position - cpu_character.position).normalized()
 	distance_to_target = (target.position - cpu_character.position).length()
 	
-	# maybe reduce the distance if chasing a ring
-	if distance_to_target > min_attack_distance:
+	# store planar variables
+	# position with y axis at zero
+	var planar_position = target.position
+	planar_position.y = 0
+	var planar_distance = (planar_position - cpu_character.position).length()
+	
+	# check if player target is right above the bot
+	if planar_distance < min_attack_distance:
 		# prevent loops by reseting the properties
 		reset_properties()
-		
-		# store planar variables
-		# position with y axis at zero
-		var planar_position = target.position
-		planar_position.y = 0
-		var planar_distance = (planar_position - cpu_character.position).length()
-		
-		# check if player target is right above the bot
-		if planar_distance < min_attack_distance \
-		and distance_to_target > min_attack_distance \
+		if distance_to_target > min_attack_distance \
 		and cpu_character.life_total < cpu_character.MAX_LIFE_TOTAL:
 				# if the player is trying to keep distance, keep guard on
 				# to heal
@@ -145,8 +142,40 @@ func aggressive_behaviour():
 			if platform_detector.get_collision_point().y < cpu_character.position.y - min_offset:
 				jump()
 			
-			# move towards target when not trying to go up around a platform
-			move_towards_target()
+			# avoid mines and shots
+			var new_object_collided = wall_detector.get_collider()
+			
+			if new_object_collided != null:
+				var new_object_parent = new_object_collided.get_parent()
+				
+				if new_object_parent != null \
+				and (new_object_parent.is_in_group("Mine") \
+				or new_object_parent.is_in_group("PlayerAttack")):
+					jump()
+		
+		# if the player is running against it use special
+		if target.is_in_group("Player") \
+		and target.direction != null and target.direction.dot(cpu_character.transform.basis.z) < -0.8:
+			cpu_character.special_pressed = true
+		
+	# guard/block/defend check
+	if target.is_in_group("Player") and target.attacking and distance_to_target <= min_attack_distance:
+		cpu_character.guard_pressed = true
+
+
+## if the target is far, move
+## if the target is close, attack
+## if the target is hidding right above, heal
+func aggressive_behaviour():
+	common_behaviours()
+	
+	# go closer to target
+	if distance_to_target > min_attack_distance:
+		# prevent loops by reseting the properties
+		reset_properties()
+		
+		# move towards target when not trying to go up around a platform
+		move_towards_target()
 		
 		# if there is an obstacle, jump
 		jump_check()
@@ -161,10 +190,6 @@ func aggressive_behaviour():
 		if target.is_in_group("Player"):
 			cpu_character.guard_pressed = false
 			attack_target()
-	
-	# guard/block/defend check
-	if target.is_in_group("Player") and target.attacking and distance_to_target <= min_attack_distance:
-		cpu_character.guard_pressed = true
 
 
 func move_towards_target():
