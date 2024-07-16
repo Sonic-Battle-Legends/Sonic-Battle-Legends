@@ -35,7 +35,7 @@ const HEAL_POINTS_PER_RING: int = 2
 var facing_left = false
 
 # input direction
-var direction
+var direction = Vector3.ZERO
 
 # Booleans for checking when Sonic is jumping or falling, used to make sure
 # that Sonic plays the correct animations.
@@ -140,6 +140,8 @@ var rings: int = MAX_SCATTERED_RINGS_ALLOWED
 # Head Up Display
 #@export_category("HUD")
 #@export var hud: Control
+
+@export var mesh_node: Node3D
 
 var camera = null
 

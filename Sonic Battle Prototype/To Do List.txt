@@ -20,14 +20,23 @@ Development Topics
 
 		Not sure if there are other animations or collisions that need fixing or to be made;
 
+		shouldn't move while healing	
+		
+		clicking online > join > back > host and going to battle, spawns the character outside the stage
+		
 		Visual effects needs to be done, probably using Godot's particle system;
 			healing effect
+			dash dust effect
+			dash fire effect for metal sonics
 
 		The sound effects, background music and ambient music along with it's controls need to be implemented.
 			new audio for the stage
 			attack sound
 			hit sound
 			healing sound
+			shot ability sound
+			set ability sound
+			pow ability sound
 
 
 	Final Scope

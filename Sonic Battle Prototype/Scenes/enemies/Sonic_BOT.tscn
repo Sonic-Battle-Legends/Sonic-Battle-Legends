@@ -846,11 +846,12 @@ albedo_texture = ExtResource("6_80kdn")
 metallic = 0.98
 roughness = 0.03
 
-[node name="Sonic_BOT" type="CharacterBody3D" groups=["Bot", "CanHurt", "Player"]]
+[node name="Sonic_BOT" type="CharacterBody3D" node_paths=PackedStringArray("mesh_node") groups=["Bot", "CanHurt", "Player"]]
 collision_layer = 2
 floor_max_angle = 1.0472
 floor_snap_length = 0.2
 script = ExtResource("1_8y1bu")
+mesh_node = NodePath("sonicrigged2")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

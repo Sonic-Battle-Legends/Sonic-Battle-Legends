@@ -69,7 +69,6 @@ func _physics_process(_delta):
 				# go with tactics
 				aggressive_behaviour()
 			
-		
 	else:
 		if cpu_character == null and get_parent() != null:
 			cpu_character = get_parent()
@@ -143,6 +142,10 @@ func common_behaviours():
 				jump()
 			
 			# avoid mines and shots
+			# use get_tree().get_nodes_in_group("Mine").duplicate()
+			# and get_tree().get_nodes_in_group("PlayerAttack").duplicate()
+			# instead
+			'''
 			var new_object_collided = wall_detector.get_collider()
 			
 			if new_object_collided != null:
@@ -152,12 +155,17 @@ func common_behaviours():
 				and (new_object_parent.is_in_group("Mine") \
 				or new_object_parent.is_in_group("PlayerAttack")):
 					jump()
+					attack_target()
+			'''
 		
 		# if the player is running against it use special
+		# to prevent player passing through
 		if target.is_in_group("Player") \
-		and target.direction != null and target.direction.dot(cpu_character.transform.basis.z) < -0.8:
+		and distance_to_target < 2 \
+		and target.direction != Vector3.ZERO \
+		and target_direction.dot(cpu_character.mesh_node.transform.basis.z) < 0.8:
 			cpu_character.special_pressed = true
-		
+	
 	# guard/block/defend check
 	if target.is_in_group("Player") and target.attacking and distance_to_target <= min_attack_distance:
 		cpu_character.guard_pressed = true
@@ -181,9 +189,12 @@ func aggressive_behaviour():
 		jump_check()
 		
 		# dash
-		#if distance_to_target > 3:
-		#	cpu_character.direction = target_direction
-		#	cpu_character.dash_triggered = true
+		'''
+		if distance_to_target > 3 \
+		and cpu_character.mesh_node.transform.basis.z.dot(target_direction) < 0.9:
+			cpu_character.direction = target_direction
+			cpu_character.dash_triggered = true
+		'''
 	
 	# if close enough to attack, attack target
 	else:
