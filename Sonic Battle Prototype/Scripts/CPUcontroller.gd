@@ -177,7 +177,7 @@ func common_behaviours():
 					jump()
 					attack_target()
 			'''
-		
+		'''
 		# if the player is running against it, react
 		# to prevent player passing through
 		if target.is_in_group("Player") \
@@ -189,6 +189,7 @@ func common_behaviours():
 			#jump()
 			#cpu_character.direction = target_direction
 			#cpu_character.dash_triggered = true
+	'''
 	
 	# guard/block/defend check
 	if target.is_in_group("Player") and target.attacking and distance_to_target <= min_attack_distance:

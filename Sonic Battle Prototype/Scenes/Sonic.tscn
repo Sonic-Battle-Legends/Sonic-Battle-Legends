@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=3 uid="uid://3vv715sdbbdw"]
+[gd_scene load_steps=39 format=3 uid="uid://3vv715sdbbdw"]
 
 [ext_resource type="Script" path="res://Scripts/Sonic.gd" id="1_0e6eq"]
 [ext_resource type="Texture2D" uid="uid://cnvca7d2mepgx" path="res://Sprites/Sonic.png" id="1_w8pxe"]
@@ -572,6 +572,7 @@ tracks/0/keys = {
 [sub_resource type="Animation" id="Animation_ey8f7"]
 resource_name = "strong"
 length = 0.5328
+step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -579,7 +580,7 @@ tracks/0/path = NodePath("Hitbox/CollisionShape3D2:disabled")
 tracks/0/interp = 0
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.4),
+"times": PackedFloat32Array(0, 0.35),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
 "values": [false, true]
@@ -627,7 +628,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_uxbmq"]
 resource_name = "upStrong"
-length = 0.666
+length = 0.4995
 step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -683,6 +684,46 @@ tracks/0/keys = {
 "values": [Rect2(81, 101, 30, 32), Rect2(116, 100, 23, 34), Rect2(144, 99, 28, 35), Rect2(177, 101, 30, 33), Rect2(212, 101, 28, 33), Rect2(245, 100, 23, 34), Rect2(273, 99, 28, 35), Rect2(45, 100, 31, 32)]
 }
 
+[sub_resource type="Animation" id="Animation_8e1k3"]
+resource_name = "pac"
+length = 0.6993
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Hitbox/CollisionShape3D2:disabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.63),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [true, false, true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Hitbox/CollisionShape3D2:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0.0386497, 0.0807597)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Hitbox/CollisionShape3D2:shape:radius")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.163867]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_soexl"]
 _data = {
 "RESET": SubResource("Animation_spsdn"),
@@ -696,6 +737,7 @@ _data = {
 "hurtStrong": SubResource("Animation_6udib"),
 "idle": SubResource("Animation_y4uy7"),
 "jump": SubResource("Animation_43k2l"),
+"pac": SubResource("Animation_8e1k3"),
 "powAir": SubResource("Animation_ft7un"),
 "powGround": SubResource("Animation_rvrgl"),
 "punch1": SubResource("Animation_7mawf"),
