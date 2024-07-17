@@ -1,4 +1,4 @@
-extends Node
+extends Control
 
 @export var pause_menu: Control
 @export var resume_button: Button
@@ -39,9 +39,11 @@ func toggle_pause():
 	# if game is paused, resume
 	if get_tree().is_paused():
 		get_tree().paused = false
+		hide()
 	else:
 	# if game is not paused, pause
 		get_tree().paused = true
+		show()
 
 
 func restart():
@@ -78,3 +80,8 @@ func _on_restart_button_pressed():
 # exit button
 func _on_go_to_previous_ambient_pressed():
 	go_back()
+
+
+func _on_options_button_pressed():
+	GlobalVariables.main_menu.hide_menus()
+	GlobalVariables.main_menu.options_menu.show()

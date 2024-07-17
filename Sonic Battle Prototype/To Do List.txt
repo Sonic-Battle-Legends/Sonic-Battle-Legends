@@ -18,11 +18,9 @@ Development Topics
 
 		The character combo needs to work as intended, by pressing the button instead of holding;
 
-		Not sure if there are other animations or collisions that need fixing or to be made;
-
-		shouldn't move while healing	
+		Not sure if there are other animations or collisions that need fixing or to be made; 
 		
-		clicking online > join > back > host and going to battle, spawns the character outside the stage
+		clicking online > join > back > host and going to battle, spawns the character outside the stage;
 		
 		Visual effects needs to be done, probably using Godot's particle system;
 			healing effect
@@ -34,6 +32,7 @@ Development Topics
 			attack sound
 			hit sound
 			healing sound
+			dash sound
 			shot ability sound
 			set ability sound
 			pow ability sound

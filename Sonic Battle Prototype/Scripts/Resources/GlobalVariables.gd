@@ -70,6 +70,14 @@ var bot_points: int = 0
 var total_rings: int = 0
 var extra_lives: int = 2
 
+# set difficulty level
+# can't simply select a dictionary key by index
+# so using a enumerator here for that
+# using this in the difficulty options menu
+enum difficulty_levels {easy, normal, hard}
+var difficulty: Dictionary = {"easy": 0.2, "normal": 0.1, "hard": 0.0}
+var current_difficulty = difficulty.hard
+
 # win condition
 var points_to_win: int = 2
 # store if someone won the game already

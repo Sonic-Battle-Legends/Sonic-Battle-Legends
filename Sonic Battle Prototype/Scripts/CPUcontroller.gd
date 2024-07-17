@@ -20,6 +20,10 @@ var distance_to_target: float
 var min_attack_distance: float = 0.5
 # the minimum offset towards a point in the stage to stop following such point
 var min_offset: float = 0.5
+# safe distance for the bot to stay away from the character
+var safe_distance: float = 1.0
+
+var life_offset = 35
 
 var players_around: Array
 # store if there are rings around the stage
@@ -33,6 +37,9 @@ var jump_timer: SceneTreeTimer
 # store the last height the player was
 var new_height: float = -10
 
+# set a delay on the bots response as difficulty level
+var delay: float = 0
+
 ## The container of the raycasts
 ## it will point towards the direction the bot is going
 @export var raycasts_container: Marker3D
@@ -44,30 +51,43 @@ var new_height: float = -10
 @export var platform_detector: RayCast3D
 
 
-func _physics_process(_delta):
+func _physics_process(delta):
 	select_target()
 	
 	# if this node has a parent
 	if cpu_character:
 		update_life_ui()
 		
-		# if there is a target and a player target
-		if target and player_target:
-			var life_offset = 35
-			# if player have more life
-			if is_instance_valid(player_target) and is_instance_valid(life_offset) and player_target.life_total + life_offset > cpu_character.life_total:
-				# go with defensive behaviour
-				aggressive_behaviour()
+		# delay as difficulty level
+		if delay <= 0:
+			# set delay based on difficulty level
+			delay = GlobalVariables.current_difficulty
 			
-			# else if bot have more life
-			elif is_instance_valid(player_target) and is_instance_valid(life_offset) and cpu_character.life_total + life_offset > player_target.life_total:
-				# go with aggressive behaviour
-				aggressive_behaviour()
-			
-			# else the bot and player have less than the offset between their life totals
-			else:
-				# go with tactics
-				aggressive_behaviour()
+			# if there is a target and a player target
+			if target:
+				if target.is_in_group("Player"):
+					# if player have more life
+					if is_instance_valid(target) and is_instance_valid(life_offset) and target.life_total + life_offset > cpu_character.life_total:
+						# go with defensive behaviour
+						aggressive_behaviour()
+						#cautious_behaviour()
+					
+					# else if bot have more life
+					elif is_instance_valid(target) and is_instance_valid(life_offset) and cpu_character.life_total + life_offset > target.life_total:
+						# go with aggressive behaviour
+						aggressive_behaviour()
+						#cautious_behaviour()
+					
+					# else the bot and player have less than the offset between their life totals
+					else:
+						# go with tactics
+						aggressive_behaviour()
+						#cautious_behaviour()
+				else:
+					# go towards rings
+					aggressive_behaviour()
+		else:
+			delay -= delta
 			
 	else:
 		if cpu_character == null and get_parent() != null:
@@ -158,13 +178,17 @@ func common_behaviours():
 					attack_target()
 			'''
 		
-		# if the player is running against it use special
+		# if the player is running against it, react
 		# to prevent player passing through
 		if target.is_in_group("Player") \
 		and distance_to_target < 2 \
 		and target.direction != Vector3.ZERO \
 		and target_direction.dot(cpu_character.mesh_node.transform.basis.z) < 0.8:
 			cpu_character.special_pressed = true
+			#attack_target()
+			#jump()
+			#cpu_character.direction = target_direction
+			#cpu_character.dash_triggered = true
 	
 	# guard/block/defend check
 	if target.is_in_group("Player") and target.attacking and distance_to_target <= min_attack_distance:
@@ -179,9 +203,6 @@ func aggressive_behaviour():
 	
 	# go closer to target
 	if distance_to_target > min_attack_distance:
-		# prevent loops by reseting the properties
-		reset_properties()
-		
 		# move towards target when not trying to go up around a platform
 		move_towards_target()
 		
@@ -203,9 +224,44 @@ func aggressive_behaviour():
 			attack_target()
 
 
-func move_towards_target():
+## keep distance from player
+## circulate the player
+## attack the player from behind
+func cautious_behaviour():
+	common_behaviours()
+	
+	# check is target is a character
+	if target.is_in_group("Player"):
+	# keep distance so the character can't hit
+		if distance_to_target < safe_distance:
+			# move away
+			move_towards_target(-1)
+		else:
+			# move near by
+			#move_towards_target()
+		
+			# check the target's input direction with direction to target
+			# and circulate until the bot is behind the character
+			if target_direction.dot(target.direction) > 0.6:
+				# circulate the character
+				var proxy_position = cpu_character.position + target_direction.normalized()
+				var angle = 120.0
+			# check if it's faster to get there by moving clockwise or counterclockwise
+				#var points_on_circle = 100
+				#angle = 360.0 / points_on_circle
+				proxy_position = proxy_position.rotated(Vector3.UP, deg_to_rad(angle))
+				cpu_character.direction = cpu_character.position + proxy_position.normalized()
+			else:
+				# attack from behind
+				move_towards_target()
+				if distance_to_target < min_attack_distance:
+					attack_target()
+
+## move towards target
+## or away from it if value is negative
+func move_towards_target(mode_value = 1):
 	# Set the input direction
-	cpu_character.direction = (cpu_character.transform.basis * Vector3(target_direction.x, 0, target_direction.z)).normalized()
+	cpu_character.direction = mode_value * (cpu_character.transform.basis * Vector3(target_direction.x, 0, target_direction.z)).normalized()
 
 
 func jump_check():
