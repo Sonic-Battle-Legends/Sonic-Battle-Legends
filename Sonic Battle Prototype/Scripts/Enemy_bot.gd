@@ -141,7 +141,7 @@ var rings: int = MAX_SCATTERED_RINGS_ALLOWED
 #@export_category("HUD")
 #@export var hud: Control
 
-@export var mesh_node: Node3D
+@export var model_node: Node3D
 
 var camera = null
 
@@ -151,7 +151,7 @@ func _enter_tree():
 	#set_multiplayer_authority(GlobalVariables.character_id)
 	
 	var bots_list = get_tree().get_nodes_in_group("Bot")
-	name = "BOT" + str(bots_list.size())
+	name = "BOT " + str(bots_list.size())
 
 
 func _ready():
@@ -521,7 +521,7 @@ func one_up():
 	#hud.update_extra_lives(GlobalVariables.extra_lives)
 
 
-func collect_ring():
+func collect_ring(ring):
 	# increase the amount of rings
 	# rings collected in a stage should count towards
 	# the rings total only after the battle is over
@@ -529,6 +529,10 @@ func collect_ring():
 	if GlobalVariables.current_stage != null:
 		rings += 1
 		heal(HEAL_POINTS_PER_RING)
+	
+	if ring.has_method("delete_ring"):
+		ring.delete_ring()
+	
 	#else:
 		#GlobalVariables.total_rings += 1
 		#hud.update_rings(GlobalVariables.total_rings)
@@ -970,14 +974,7 @@ func _on_ring_collider_area_entered(area):
 		var collided_object = area.get_parent()
 		# collect ring
 		if collided_object.is_in_group("Ring"):
-			collect_ring()
-			if collided_object.has_method("delete_ring"):
-				collided_object.delete_ring()
-		if area.is_in_group("Hazard"):
-			var hazard_impulse = Vector3(0, 6, 0)
-			# make the character goes against it's forward (increasing damage too)
-			hazard_impulse -= $sonicrigged2.transform.basis.z.normalized() * 15
-			get_hurt(hazard_impulse, null)
+			collect_ring(collided_object)
 
 
 func rotate_model():

@@ -148,6 +148,7 @@ var rings: int = MAX_SCATTERED_RINGS_ALLOWED
 @export_category("CAMERA")
 @export var camera: Camera3D
 
+@export var model_node: Node3D
 
 func _enter_tree():
 	
@@ -1051,16 +1052,12 @@ func _on_ring_collider_area_entered(area):
 	# store the parent of the Area3D the character collided
 	if area.get_parent() != null:
 		var collided_object = area.get_parent()
+		
 		# collect ring
 		if collided_object.is_in_group("Ring"):
 			collect_ring()
 			if collided_object.has_method("delete_ring"):
 				collided_object.delete_ring()
-		if area.is_in_group("Hazard"):
-			var hazard_impulse = Vector3(0, 6, 0)
-			# make the character goes against it's forward (increasing damage too)
-			hazard_impulse -= $sonicrigged2.transform.basis.z.normalized() * 15
-			get_hurt(hazard_impulse, null)
 
 
 func rotate_model():

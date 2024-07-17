@@ -142,7 +142,11 @@ func common_behaviours():
 	if target.is_in_group("Player"):
 		distance_to_keep_from_target = min_attack_distance
 	else:
-		distance_to_keep_from_target = 0.1
+		distance_to_keep_from_target = 0.2
+		
+		# if the target is a ring and this ring is too close to trigger, collect
+		if distance_to_target < 0.2 and target.is_in_group("Ring") and target.can_collect():
+			cpu_character.collect_ring(target)
 	
 	# store planar variables
 	# position with y axis at zero
@@ -232,7 +236,13 @@ func jump_check():
 	# direction the bot is going
 	raycasts_container.transform.basis.z = direction
 	
-	if wall_detector.is_colliding():
+	var object_collided = platform_detector.get_collider()
+	var hazard_ahead
+	if object_collided:
+		hazard_ahead = object_collided.get_parent().is_in_group("Hazard")
+		if hazard_ahead:
+			push_warning(hazard_ahead)
+	if wall_detector.is_colliding() or hazard_ahead:
 		if (jump_timer == null or (jump_timer != null and jump_timer.time_left <= 0)): #platform_detector.is_colliding()
 			jump()
 
