@@ -555,7 +555,7 @@ func scatter_rings(amount = 1):
 	# if on a hub or area scatter all rings
 	if GlobalVariables.current_stage == null:
 		amount = rings
-		
+	
 	number_of_rings_to_scatter = amount
 	rings -= amount
 	# clamp values

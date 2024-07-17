@@ -1,5 +1,7 @@
 extends Node
 
+signal camera_orientation_changed
+
 # right now everyone and everything should have a gravity of 20.
 var gravity: float = 20.0
 
@@ -71,12 +73,9 @@ var total_rings: int = 0
 var extra_lives: int = 2
 
 # set difficulty level
-# can't simply select a dictionary key by index
-# so using a enumerator here for that
-# using this in the difficulty options menu
-enum difficulty_levels {easy, normal, hard}
-var difficulty: Dictionary = {"easy": 0.2, "normal": 0.1, "hard": 0.0}
-var current_difficulty = difficulty.hard
+# 					 [easy, normal, hard] respectively
+var difficulty_levels = [0.2, 0.1, 0.0]
+var current_difficulty = difficulty_levels[2] #difficulty.hard
 
 # win condition
 var points_to_win: int = 2

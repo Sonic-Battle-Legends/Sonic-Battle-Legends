@@ -530,6 +530,7 @@ func collect_ring():
 	Audio.play(Audio.ring, self)
 	if GlobalVariables.current_stage != null:
 		rings += 1
+		GlobalVariables.total_rings += 1
 		heal(HEAL_POINTS_PER_RING)
 	else:
 		GlobalVariables.total_rings += 1
@@ -562,7 +563,16 @@ func scatter_rings(amount = 1):
 	rings -= amount
 	# clamp values
 	number_of_rings_to_scatter = clamp(number_of_rings_to_scatter, 0, MAX_SCATTERED_RINGS_ALLOWED)
-	rings = clamp(rings, 0, rings)
+	if rings > 0:
+		rings = clamp(rings, 0, rings)
+		
+		# if the character had rings and will scattered them
+		# then reduce that amount from the total stored
+		# outside the battle
+		# don't reduce from the total the player had before entering the battle
+		if number_of_rings_to_scatter > 0:
+			GlobalVariables.total_rings -= number_of_rings_to_scatter
+	
 	# update hud
 	hud.update_rings(rings)
 	
