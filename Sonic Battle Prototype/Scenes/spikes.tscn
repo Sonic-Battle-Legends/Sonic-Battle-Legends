@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://drlu8n40mygqk"]
+[gd_scene load_steps=11 format=3 uid="uid://drlu8n40mygqk"]
 
 [ext_resource type="PackedScene" uid="uid://c7txsjs00wqjh" path="res://Models/Spikes/Spikes2.blend" id="1_3gjp5"]
 [ext_resource type="Script" path="res://Scripts/hazard.gd" id="1_uos6y"]
 [ext_resource type="Texture2D" uid="uid://8dy7nosexosb" path="res://Models/Spikes/Spikes.png" id="2_rm25g"]
+[ext_resource type="Texture2D" uid="uid://w1640iis73bi" path="res://Textures/eggman_hazard.png" id="4_tmjtb"]
 
 [sub_resource type="Animation" id="Animation_t6eby"]
 length = 0.001
@@ -78,6 +79,10 @@ visible = false
 
 [node name="spikes" parent="Spikes2" index="2"]
 surface_material_override/0 = SubResource("StandardMaterial3D_dw7ma")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(0.18, 0, 0, 0, -7.86805e-09, 0.18, 0, -0.18, -7.86805e-09, 0.0015806, 0.0441108, 0)
+texture = ExtResource("4_tmjtb")
 
 [connection signal="area_entered" from="SpikeAreaCollider" to="." method="_on_spike_area_collider_area_entered"]
 
