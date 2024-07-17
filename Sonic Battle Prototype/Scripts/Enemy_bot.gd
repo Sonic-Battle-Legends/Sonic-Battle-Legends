@@ -725,6 +725,7 @@ func anim_end(anim_name):
 		# Reset's Sonic's "hurt" state when the animation ends.
 		hurt = false
 		starting = false
+		can_air_attack = false
 	elif anim_name == "LAUNCHED":
 		# For as long as Sonic is in the air, the animation loops. When he hits the ground, his state resets.
 		if is_on_floor():
@@ -827,12 +828,12 @@ func get_hurt(launch_speed, owner_of_the_attack):
 		$AnimationPlayer.play("hurtStrong")
 		$sonicrigged2/AnimationPlayer.play("LAUNCHED")
 	else:
-		if !is_on_floor():
-			$AnimationPlayer.play("hurtAir")
-			$sonicrigged2/AnimationPlayer.play("HURT 2")
-		else:
+		if launch_speed.y < 5:
 			$AnimationPlayer.play("hurt")
 			$sonicrigged2/AnimationPlayer.play("HURT 1")
+		else:
+			$AnimationPlayer.play("hurtAir")
+			$sonicrigged2/AnimationPlayer.play("HURT 2")
 	
 	# More state resets. Idk why these are placed at the end.
 	current_punch = 0
