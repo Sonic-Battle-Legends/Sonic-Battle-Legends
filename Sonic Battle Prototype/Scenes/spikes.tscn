@@ -49,7 +49,7 @@ albedo_texture = ExtResource("2_rm25g")
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dw7ma"]
 albedo_texture = ExtResource("2_rm25g")
 
-[node name="Spikes" type="Node3D" node_paths=PackedStringArray("anim") groups=["Hazard"]]
+[node name="Spikes" type="Node3D" node_paths=PackedStringArray("anim")]
 script = ExtResource("1_uos6y")
 anim = NodePath("AnimationPlayer")
 
@@ -73,6 +73,8 @@ surface_material_override/0 = SubResource("StandardMaterial3D_8g20u")
 
 [node name="collider" parent="Spikes2" index="1"]
 visible = false
+
+[node name="StaticBody3D" parent="Spikes2/collider" index="0" groups=["Hazard"]]
 
 [node name="spikes" parent="Spikes2" index="2"]
 surface_material_override/0 = SubResource("StandardMaterial3D_dw7ma")

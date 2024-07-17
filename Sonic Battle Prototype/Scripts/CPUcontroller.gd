@@ -175,9 +175,6 @@ func aggressive_behaviour():
 	if distance_to_target > distance_to_keep_from_target:
 		# move towards target when not trying to go up around a platform
 		move_towards_target()
-		
-		# if there is an obstacle, jump
-		#jump_check()
 	
 	# if close enough to attack, attack target
 	else:
@@ -229,6 +226,16 @@ func move_towards_target(mode_value = 1):
 	jump_check()
 
 
+## check for hazards
+func hazard_ahead():
+	var hazard_ahead = false
+	var object_collided = platform_detector.get_collider()
+	if object_collided:
+		# StaticBody3D is in the Hazard group
+		hazard_ahead = object_collided.is_in_group("Hazard")
+	return hazard_ahead
+
+
 func jump_check():
 	var direction = cpu_character.direction
 	direction.y = 0
@@ -236,13 +243,7 @@ func jump_check():
 	# direction the bot is going
 	raycasts_container.transform.basis.z = direction
 	
-	var object_collided = platform_detector.get_collider()
-	var hazard_ahead
-	if object_collided:
-		hazard_ahead = object_collided.get_parent().is_in_group("Hazard")
-		if hazard_ahead:
-			push_warning(hazard_ahead)
-	if wall_detector.is_colliding() or hazard_ahead:
+	if wall_detector.is_colliding() or hazard_ahead():
 		if (jump_timer == null or (jump_timer != null and jump_timer.time_left <= 0)): #platform_detector.is_colliding()
 			jump()
 
