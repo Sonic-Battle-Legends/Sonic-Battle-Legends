@@ -154,6 +154,9 @@ var camera = null
 # the last player who caused damage to this character
 var last_aggressor
 
+# to reposition if falling off a pit but still not defeated
+var last_spawn_position: Vector3 = Vector3.ZERO
+
 # defeated method should trigger only once
 var was_defeated: bool = false
 
@@ -178,6 +181,8 @@ func _ready():
 	if GlobalVariables.current_stage == null:
 		ground_skill = "POW"
 		air_skill = "POW"
+	
+	last_spawn_position = position
 
 
 # Setting a drop shadow is weird in _physics_process(), so the drop shadow code is in _process().
@@ -191,13 +196,15 @@ func _process(delta):
 		# coyote time to help responsiveness jump
 		if !is_on_floor():
 			coyote_ground_distance = position.y - ground_height
-			if coyote_timer == null:
-				create_coyote_timer()
-			
-			# call coyote light feet here so it can work with coyote edge by creating it's timer
-			coyote_light_feet()
 	else:
 		$DropShadow.visible = false
+		
+	# coyote time between gaps
+	if coyote_timer == null:
+		create_coyote_timer()
+	
+	# call coyote light feet here so it can work with coyote edge by creating it's timer
+	coyote_light_feet()
 	
 	# to check the time between key presses
 	# could create an actual timer instead
@@ -258,7 +265,15 @@ func _physics_process(delta):
 	# life total is less than or equal to zero
 	# or the character is not in a battle and don't have rings
 	if position.y < -5.0:
-		defeated()
+		#cause damage
+		life_total -= 10
+		#reposition or respawn
+		if life_total <= 0:
+			defeated()
+		else:
+			#hud.change_life(life_total)
+			velocity = Vector3.ZERO
+			position = last_spawn_position
 	
 	# If Sonic is currently chasing a ring he threw from his ground "pow" move, he accelerates to its position.
 	if chasing_ring and active_ring != null:
