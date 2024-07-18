@@ -23,11 +23,6 @@ Development Topics
 
 		characters should flash when their special is full
 			maybe a pulsing transparent sphere effect could do
-		
-		Visual effects needs to be done, probably using Godot's particle system;
-			healing effect
-			dash dust effect
-			dash fire effect for metal sonics
 
 		The sound effects, background music and ambient music along with it's controls need to be implemented.
 			new audio for the stage

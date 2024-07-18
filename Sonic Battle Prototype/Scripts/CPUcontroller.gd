@@ -160,10 +160,6 @@ func common_behaviours():
 			cpu_character.guard_pressed = true
 		else:
 			cpu_character.guard_pressed = false
-	
-	# check for hole
-	if platform_detector.get_collision_point().y + 0.5 < cpu_character.position.y:
-		jump()
 
 
 ## if the target is far, move
@@ -267,15 +263,19 @@ func jump_check():
 	# direction the bot is going
 	raycasts_container.transform.basis.z = direction
 	
-	if wall_detector.is_colliding() or hazard_ahead():
-		#if hazard_ahead() and distance_to_target < 1:
-		#	attack_target()
-		if (jump_timer == null or (jump_timer != null and jump_timer.time_left <= 0)): #platform_detector.is_colliding()
+	# check for obstacle, hazard and mind the gap
+	if wall_detector.is_colliding() or \
+	hazard_ahead() or \
+	platform_detector.is_colliding() == false or \
+	platform_detector.get_collision_point().y + 0.5 < cpu_character.position.y:
+		# wait to press double jump
+		if (jump_timer == null or (jump_timer != null and jump_timer.time_left <= 0)):
 			jump()
 
 
 func jump():
 	cpu_character.jump_pressed = true
+	# double jump timer
 	jump_timer = get_tree().create_timer(0.35, false, true)
 
 
