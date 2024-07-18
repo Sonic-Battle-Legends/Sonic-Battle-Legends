@@ -125,6 +125,9 @@ var healing_pace: float = 0.1
 # the amount of heling_time to trigger a heal call
 var healing_threshold: float = 3.0
 
+# prevent defeated() to be called more than once
+var was_defeated: bool = false
+
 var punch_timer: SceneTreeTimer
 
 # store the input state transmited by a input node or CPU node
@@ -839,6 +842,8 @@ func _on_hitbox_body_entered(body):
 
 
 func defeated(who_owns_last_attack = null):
+	if was_defeated == false:
+		was_defeated = true
 		# give a point for defeating the character
 		if who_owns_last_attack != null:
 			if who_owns_last_attack.has_method("increase_points"):
