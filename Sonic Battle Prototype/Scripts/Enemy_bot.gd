@@ -121,6 +121,8 @@ var healing_time: float = 0.0
 var healing_pace: float = 0.1
 # the amount of heling_time to trigger a heal call
 var healing_threshold: float = 3.0
+# where the heal effect scene that will be instantiated will be stored
+var heal_effect: Node3D
 
 var punch_timer: SceneTreeTimer
 
@@ -325,6 +327,14 @@ func handle_dash():
 		dashing = true
 		$AnimationPlayer.play("dash")
 		$sonicrigged2/AnimationPlayer.play("DASH")
+		
+		var dust_effect = Instantiables.DUST_PARTICLE.instantiate()
+		dust_effect.position = position
+		get_parent().add_child(dust_effect)
+		dust_effect.look_at(position - velocity.normalized())
+		dust_effect.get_child(0).emitting = true
+		dust_effect.get_child(1).emitting = true
+		
 		'''
 		if $AnimationPlayer.current_animation == "startWalk":
 			#velocity = direction * DASH_SPEED
@@ -512,10 +522,21 @@ func handle_healing():
 			healing_time = 0
 	else:
 		healing_time = 0
+		if heal_effect != null:
+			heal_effect.hide()
 
 
 ## method to heal the character's life total
 func heal(amount = 4):
+	if heal_effect == null:
+		heal_effect = Instantiables.HEALING_EFFECT.instantiate()
+		heal_effect.position = Vector3(0, -0.15, 0)
+		add_child(heal_effect)
+		heal_effect.get_child(0).emitting = true
+	else:
+		heal_effect.show()
+		heal_effect.get_child(0).emitting = true
+	
 	if life_total < MAX_LIFE_TOTAL:
 		life_total += amount
 	if life_total > MAX_LIFE_TOTAL:

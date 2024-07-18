@@ -13,6 +13,8 @@ var SPARKS = load("res://Scenes/effects/sparks.tscn")
 
 var DUST_PARTICLE = load("res://Scenes/effects/dust_particle.tscn")
 
+var HEALING_EFFECT = load("res://Scenes/effects/healing_effect.tscn")
+
 # The prefab for spawning Sonic's "shot" projectile.
 const SHOT_PROJECTILE = preload("res://Scenes/SonicWave.tscn")
 
