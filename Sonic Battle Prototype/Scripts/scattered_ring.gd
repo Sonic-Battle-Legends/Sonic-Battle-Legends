@@ -37,7 +37,7 @@ func _physics_process(delta):
 	move_and_slide()
 	
 	# enable the detection after it scattered
-	if current_time <= MIN_TIME:
+	if can_collect():
 		collision_area.monitorable = true
 	
 	if current_time <= 3.0:
@@ -56,10 +56,14 @@ func _physics_process(delta):
 			delete()
 
 
+func can_collect():
+	return current_time <= MIN_TIME
+
+
 ## add a method unique to the ring
 ## to prevent deleting another object
 func delete_ring():
-	if current_time <= MIN_TIME:
+	if can_collect():
 		delete()
 
 

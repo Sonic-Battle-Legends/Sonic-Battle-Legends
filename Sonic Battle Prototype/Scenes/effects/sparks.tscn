@@ -1,4 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://bdif0c3bt2ooe"]
+[gd_scene load_steps=7 format=3 uid="uid://bdif0c3bt2ooe"]
+
+[ext_resource type="Script" path="res://Scripts/Destroy.gd" id="1_hbdbv"]
 
 [sub_resource type="Curve" id="Curve_keoqw"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.284375, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -29,6 +31,7 @@ top_radius = 0.1
 bottom_radius = 0.0
 
 [node name="sparks" type="Node3D"]
+script = ExtResource("1_hbdbv")
 
 [node name="GPUParticles3D" type="GPUParticles3D" parent="."]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0)

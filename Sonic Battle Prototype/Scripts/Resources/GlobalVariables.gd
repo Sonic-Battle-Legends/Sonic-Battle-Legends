@@ -1,5 +1,7 @@
 extends Node
 
+signal camera_orientation_changed
+
 # right now everyone and everything should have a gravity of 20.
 var gravity: float = 20.0
 
@@ -71,12 +73,9 @@ var total_rings: int = 0
 var extra_lives: int = 2
 
 # set difficulty level
-# can't simply select a dictionary key by index
-# so using a enumerator here for that
-# using this in the difficulty options menu
-enum difficulty_levels {easy, normal, hard}
-var difficulty: Dictionary = {"easy": 0.2, "normal": 0.1, "hard": 0.0}
-var current_difficulty = difficulty.hard
+# 					 [easy, normal, hard] respectively
+var difficulty_levels = [0.5, 0.3, 0.0]
+var current_difficulty = difficulty_levels[2] #difficulty.hard
 
 # win condition
 var points_to_win: int = 2
@@ -90,3 +89,7 @@ func win(winner):
 	var score_menu = Instantiables.create(Instantiables.objects.SCORESCREEN)
 	score_menu.winner = winner.name
 	main_menu.get_parent().add_child(score_menu, true)
+	
+	# add rings stored to total amount
+	if current_character.rings > 0:
+		GlobalVariables.total_rings += current_character.rings

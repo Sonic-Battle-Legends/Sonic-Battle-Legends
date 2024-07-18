@@ -1,21 +1,14 @@
-[gd_scene load_steps=7 format=3 uid="uid://bxjkjr27crbtr"]
+[gd_scene load_steps=5 format=3 uid="uid://bxjkjr27crbtr"]
 
 [ext_resource type="PackedScene" uid="uid://bla4tnasvtn0v" path="res://Models/testmap.blend" id="1_w105v"]
-[ext_resource type="Material" uid="uid://30ca458wwm36" path="res://Materials/stageWallsMaterial.tres" id="2_4fywf"]
 [ext_resource type="Material" uid="uid://btlly68t46bq7" path="res://Materials/spikesMaterial.tres" id="2_7p4v7"]
 [ext_resource type="PackedScene" uid="uid://irlpgd8spuet" path="res://Scenes/stages/invisible_walls.tscn" id="2_nme6q"]
-[ext_resource type="Material" uid="uid://djxad1r3jnafs" path="res://Materials/stageTopMaterial.tres" id="3_ggwtq"]
 [ext_resource type="PackedScene" uid="uid://drlu8n40mygqk" path="res://Scenes/spikes.tscn" id="6_tmgow"]
 
 [node name="test2" type="Node3D"]
 
 [node name="testmap" parent="." instance=ExtResource("1_w105v")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
-
-[node name="obstacles" parent="testmap" index="0"]
-surface_material_override/0 = ExtResource("2_4fywf")
-surface_material_override/1 = ExtResource("3_ggwtq")
-surface_material_override/2 = ExtResource("2_4fywf")
 
 [node name="spikes" parent="testmap" index="1"]
 visible = false

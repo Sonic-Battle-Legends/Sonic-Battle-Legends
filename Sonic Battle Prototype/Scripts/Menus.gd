@@ -114,6 +114,7 @@ func _on_online_button_pressed():
 
 
 func _on_host_button_pressed():
+	# the server will call the after_online_setup() in here when it's done
 	ServerJoin.configure_player()
 
 
@@ -189,9 +190,5 @@ func _on_back_button_pressed():
 		character_selection_menu.show()
 
 
-
 func _on_difficulty_selection_list_item_selected(index):
-	# select the difficulty fro the enumerator
-	var difficulty_selected = GlobalVariables.difficulty_levels.find_key(index)
-	# set the current difficulty
-	GlobalVariables.current_difficulty = GlobalVariables.difficulty[str(difficulty_selected)]
+	GlobalVariables.current_difficulty = GlobalVariables.difficulty_levels[index]

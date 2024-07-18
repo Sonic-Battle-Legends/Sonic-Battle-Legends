@@ -125,6 +125,12 @@ var healing_pace: float = 0.1
 # the amount of heling_time to trigger a heal call
 var healing_threshold: float = 3.0
 
+# the last player who caused damage to this character
+var last_aggressor
+
+# prevent defeated() to be called more than once
+var was_defeated: bool = false
+
 var punch_timer: SceneTreeTimer
 
 # store the input state transmited by a input node or CPU node
@@ -145,9 +151,12 @@ var rings: int = MAX_SCATTERED_RINGS_ALLOWED
 @export_category("HUD")
 @export var hud: Control
 
+# camera
 @export_category("CAMERA")
 @export var camera: Camera3D
 
+## the character model which turns accordingly to the input direction
+@export var model_node: Node3D
 
 func _enter_tree():
 	
@@ -367,6 +376,10 @@ func handle_jump():
 			else:
 				velocity = Vector3(AIRDASH_SPEED, 4, 0)
 			'''
+	
+	# controlled height jump
+	#if jump_clicked and Input.is_action_just_released("jump") and velocity.y > 0:
+	#	velocity.y = 1
 
 
 ## help responsiveness feeling by forgiving the difference between the human response and the machine accuracy
@@ -572,6 +585,7 @@ func collect_ring():
 	Audio.play(Audio.ring, self)
 	if GlobalVariables.current_stage != null:
 		rings += 1
+		GlobalVariables.total_rings += 1
 		heal(HEAL_POINTS_PER_RING)
 	else:
 		GlobalVariables.total_rings += 1
@@ -589,22 +603,25 @@ func collect_ring():
 
 
 ## scatter rings in a circular pattern
-func scatter_rings(amount = 1):
-	#create_scattered_ring_timer()
-	
-	var number_of_rings_to_scatter
-	
+func scatter_rings(amount = 1):	
 	# inside a stage scatter one ring per hit
 	# and more rings if the hit was strong
 	# if on a hub or area scatter all rings
 	if GlobalVariables.current_stage == null:
 		amount = rings
 		
-	number_of_rings_to_scatter = amount
-	rings -= amount
-	# clamp values
+	var number_of_rings_to_scatter = amount
+	
+	# clamp the value
 	number_of_rings_to_scatter = clamp(number_of_rings_to_scatter, 0, MAX_SCATTERED_RINGS_ALLOWED)
-	rings = clamp(rings, 0, rings)
+	
+	if rings > 0:
+		rings -= amount
+		if rings < 0:
+			rings = 0
+		#if rings >= amount:
+		#	GlobalVariables.total_rings -= amount
+	
 	# update hud
 	hud.update_rings(rings)
 	
@@ -827,11 +844,19 @@ func _on_hitbox_body_entered(body):
 			body.get_hurt.rpc_id(body.get_multiplayer_authority(), launch_power, self)
 
 
-func defeated(who_owns_last_attack = null):
+func defeated(): #who_owns_last_attack = null):
+	if was_defeated == false:
+		# trigger once per instance
+		was_defeated = true
+		
 		# give a point for defeating the character
-		if who_owns_last_attack != null:
-			if who_owns_last_attack.has_method("increase_points"):
-				who_owns_last_attack.increase_points()
+		#if who_owns_last_attack != null:
+		#	if who_owns_last_attack.has_method("increase_points"):
+		#		who_owns_last_attack.increase_points()
+		
+		if last_aggressor != null:
+			if last_aggressor.has_method("increase_points"):
+				last_aggressor.increase_points()
 		
 		# player must get the ability selection screen again
 		# then select a location to spawn
@@ -847,6 +872,9 @@ func defeated(who_owns_last_attack = null):
 # function, which is why you don't see it here.
 @rpc("any_peer","reliable","call_local")
 func get_hurt(launch_speed, owner_of_the_attack):
+	# store the last player who damaged this character
+	last_aggressor = owner_of_the_attack
+	
 	var damage = launch_speed.length()
 	
 	var sparks = Instantiables.SPARKS.instantiate()
@@ -877,7 +905,7 @@ func get_hurt(launch_speed, owner_of_the_attack):
 	
 	if GlobalVariables.current_stage != null:
 		if (life_total <= 0 and GlobalVariables.game_ended == false):
-			defeated(owner_of_the_attack)
+			defeated() #owner_of_the_attack)
 	
 	
 	# A bunch of states reset to make sure getting hurt cancels them out.
@@ -1041,16 +1069,12 @@ func _on_ring_collider_area_entered(area):
 	# store the parent of the Area3D the character collided
 	if area.get_parent() != null:
 		var collided_object = area.get_parent()
+		
 		# collect ring
 		if collided_object.is_in_group("Ring"):
 			collect_ring()
 			if collided_object.has_method("delete_ring"):
 				collided_object.delete_ring()
-		if area.is_in_group("Hazard"):
-			var hazard_impulse = Vector3(0, 6, 0)
-			# make the character goes against it's forward (increasing damage too)
-			hazard_impulse -= $sonicrigged2.transform.basis.z.normalized() * 15
-			get_hurt(hazard_impulse, null)
 
 
 func rotate_model():
