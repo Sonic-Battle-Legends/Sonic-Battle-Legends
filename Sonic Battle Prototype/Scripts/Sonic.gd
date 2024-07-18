@@ -330,6 +330,14 @@ func handle_dash():
 		coyote_timer = null
 		$AnimationPlayer.play("dash")
 		$sonicrigged2/AnimationPlayer.play("DASH")
+		
+		var dust_effect = Instantiables.DUST_PARTICLE.instantiate()
+		dust_effect.position = position
+		get_parent().add_child(dust_effect)
+		dust_effect.look_at(position - velocity.normalized())
+		dust_effect.get_child(0).emitting = true
+		dust_effect.get_child(1).emitting = true
+		
 		'''
 		if $AnimationPlayer.current_animation == "startWalk":
 			#velocity = direction * DASH_SPEED

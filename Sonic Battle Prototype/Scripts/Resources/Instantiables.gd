@@ -8,8 +8,10 @@ extends Node
 # an audio instance that can be kept track off
 var AUDIO_INSTANCE = load("res://Scenes/audio_instance.tscn")
 
-# particle system
+# particle systems
 var SPARKS = load("res://Scenes/effects/sparks.tscn")
+
+var DUST_PARTICLE = load("res://Scenes/effects/dust_particle.tscn")
 
 # The prefab for spawning Sonic's "shot" projectile.
 const SHOT_PROJECTILE = preload("res://Scenes/SonicWave.tscn")
