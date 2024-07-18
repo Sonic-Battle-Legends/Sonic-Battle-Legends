@@ -89,3 +89,7 @@ func win(winner):
 	var score_menu = Instantiables.create(Instantiables.objects.SCORESCREEN)
 	score_menu.winner = winner.name
 	main_menu.get_parent().add_child(score_menu, true)
+	
+	# add rings stored to total amount
+	if current_character.rings > 0:
+		GlobalVariables.total_rings += current_character.rings

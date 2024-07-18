@@ -598,32 +598,24 @@ func collect_ring():
 
 
 ## scatter rings in a circular pattern
-func scatter_rings(amount = 1):
-	#create_scattered_ring_timer()
-	
-	var number_of_rings_to_scatter
-	
+func scatter_rings(amount = 1):	
 	# inside a stage scatter one ring per hit
 	# and more rings if the hit was strong
 	# if on a hub or area scatter all rings
 	if GlobalVariables.current_stage == null:
 		amount = rings
 		
-	number_of_rings_to_scatter = amount
-	rings -= amount
-	# clamp values
+	var number_of_rings_to_scatter = amount
+	
+	# clamp the value
 	number_of_rings_to_scatter = clamp(number_of_rings_to_scatter, 0, MAX_SCATTERED_RINGS_ALLOWED)
+	
 	if rings > 0:
-		rings = clamp(rings, 0, rings)
-		
-		# if the character had rings and will scattered them
-		# then reduce that amount from the total stored
-		# outside the battle
-		# don't reduce from the total the player had before entering the battle
-		if number_of_rings_to_scatter > 0:
-			var rings_to_subtract = number_of_rings_to_scatter
-			rings_to_subtract = clamp(rings_to_subtract, 0, rings)
-			GlobalVariables.total_rings -= rings_to_subtract
+		rings -= amount
+		if rings < 0:
+			rings = 0
+		#if rings >= amount:
+		#	GlobalVariables.total_rings -= amount
 	
 	# update hud
 	hud.update_rings(rings)
