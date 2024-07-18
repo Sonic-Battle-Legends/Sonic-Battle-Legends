@@ -145,6 +145,9 @@ var rings: int = MAX_SCATTERED_RINGS_ALLOWED
 
 var camera = null
 
+# defeated method should trigger only once
+var was_defeated: bool = false
+
 
 func _enter_tree():
 	set_multiplayer_authority(0) #str(name).to_int())
@@ -774,11 +777,13 @@ func _on_hitbox_body_entered(body):
 
 
 func defeated(who_owns_last_attack = null):
-	if who_owns_last_attack != null:
-		if who_owns_last_attack.has_method("increase_points"):
-			who_owns_last_attack.increase_points()
-	if GlobalVariables.game_ended == false:
-		Instantiables.spawn_bot()
+	if was_defeated == false:
+		was_defeated = true
+		if who_owns_last_attack != null:
+			if who_owns_last_attack.has_method("increase_points"):
+				who_owns_last_attack.increase_points()
+		if GlobalVariables.game_ended == false:
+			Instantiables.spawn_bot()
 	queue_free()
 
 
@@ -790,7 +795,7 @@ func get_hurt(launch_speed, owner_of_the_attack):
 	
 	# increase damage the bot takes if it's not on hard mode
 	if GlobalVariables.current_difficulty > 0:
-		damage * 15 * GlobalVariables.current_difficulty
+		damage *= 15 * GlobalVariables.current_difficulty
 	
 	var sparks = Instantiables.SPARKS.instantiate()
 	sparks.position = position + Vector3(0, 0.1, 0)

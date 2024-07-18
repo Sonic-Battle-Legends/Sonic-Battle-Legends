@@ -225,12 +225,12 @@ func move_towards_target(mode_value = 1):
 
 ## check for hazards
 func hazard_ahead():
-	var hazard_ahead = false
+	var new_hazard_ahead = false
 	var object_collided = platform_detector.get_collider()
 	if object_collided:
 		# StaticBody3D is in the Hazard group
-		hazard_ahead = object_collided.is_in_group("Hazard")
-	return hazard_ahead
+		new_hazard_ahead = object_collided.is_in_group("Hazard") || object_collided.is_in_group("PlayerAttack")
+	return new_hazard_ahead
 
 
 func jump_check():
@@ -241,6 +241,8 @@ func jump_check():
 	raycasts_container.transform.basis.z = direction
 	
 	if wall_detector.is_colliding() or hazard_ahead():
+		if hazard_ahead():
+			attack_target()
 		if (jump_timer == null or (jump_timer != null and jump_timer.time_left <= 0)): #platform_detector.is_colliding()
 			jump()
 
@@ -255,7 +257,7 @@ func attack_target():
 		# set delay based on difficulty level
 		delay = GlobalVariables.current_difficulty
 		
-		if target.is_in_group("Player") and target.hurt:
+		if (target.is_in_group("Player") and target.hurt) or hazard_ahead():
 			# special attack check
 			cpu_character.special_pressed = true
 		else:
