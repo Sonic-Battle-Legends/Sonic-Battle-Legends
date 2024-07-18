@@ -764,6 +764,12 @@ func _on_hitbox_body_entered(body):
 	if body.is_in_group("CanHurt") && body != self and attacking:
 		# If the current attack is Sonic's "pow" move, the hitbox pays attention to immunities.
 		if !pow_move || body.immunity != "pow":
+			
+			# reduce damage the bot causes if it's not on hard mode
+			if GlobalVariables.current_difficulty > 0:
+				var new_magnitude = launch_power.length() / 2
+				launch_power = launch_power.normalized() * new_magnitude
+			
 			body.get_hurt.rpc_id(body.get_multiplayer_authority(), launch_power, self)
 
 
@@ -781,6 +787,10 @@ func defeated(who_owns_last_attack = null):
 @rpc("any_peer","reliable","call_local")
 func get_hurt(launch_speed, owner_of_the_attack):
 	var damage = launch_speed.length()
+	
+	# increase damage the bot takes if it's not on hard mode
+	if GlobalVariables.current_difficulty > 0:
+		damage * 15 * GlobalVariables.current_difficulty
 	
 	var sparks = Instantiables.SPARKS.instantiate()
 	sparks.position = position + Vector3(0, 0.1, 0)

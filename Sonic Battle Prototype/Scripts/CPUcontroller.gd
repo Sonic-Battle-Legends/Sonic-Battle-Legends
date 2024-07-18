@@ -56,9 +56,6 @@ func _physics_process(delta):
 		
 		# delay as difficulty level
 		if delay <= 0:
-			# set delay based on difficulty level
-			delay = GlobalVariables.current_difficulty
-			
 			select_target()
 			
 			# if there is a target and a player target
@@ -254,12 +251,16 @@ func jump():
 
 
 func attack_target():
-	if target.is_in_group("Player") and target.hurt:
-		# special attack check
-		cpu_character.special_pressed = true
-	else:
-		# attack check
-		cpu_character.attack_pressed = true
+	if delay <= 0.0:
+		# set delay based on difficulty level
+		delay = GlobalVariables.current_difficulty
+		
+		if target.is_in_group("Player") and target.hurt:
+			# special attack check
+			cpu_character.special_pressed = true
+		else:
+			# attack check
+			cpu_character.attack_pressed = true
 
 
 func reset_properties():
