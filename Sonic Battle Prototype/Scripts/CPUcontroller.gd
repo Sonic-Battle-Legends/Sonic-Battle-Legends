@@ -225,12 +225,22 @@ func move_towards_target(mode_value = 1):
 
 ## check for hazards
 func hazard_ahead():
+	# check with platform_detector raycast
 	var new_hazard_ahead = false
 	var object_collided = platform_detector.get_collider()
 	if object_collided:
 		# StaticBody3D is in the Hazard group
 		new_hazard_ahead = object_collided.is_in_group("Hazard") || object_collided.is_in_group("PlayerAttack")
-	return new_hazard_ahead
+	
+	# check with wall_detector raycast
+	var new_hazard_ahead2 = false
+	var object_collided2 = wall_detector.get_collider()
+	if object_collided2:
+		# StaticBody3D is in the Hazard group
+		new_hazard_ahead2 = object_collided2.is_in_group("Hazard") || object_collided2.is_in_group("PlayerAttack")
+	
+	# return if either are true
+	return (new_hazard_ahead || new_hazard_ahead2)
 
 
 func jump_check():
@@ -241,8 +251,8 @@ func jump_check():
 	raycasts_container.transform.basis.z = direction
 	
 	if wall_detector.is_colliding() or hazard_ahead():
-		if hazard_ahead():
-			attack_target()
+		#if hazard_ahead() and distance_to_target < 1:
+		#	attack_target()
 		if (jump_timer == null or (jump_timer != null and jump_timer.time_left <= 0)): #platform_detector.is_colliding()
 			jump()
 

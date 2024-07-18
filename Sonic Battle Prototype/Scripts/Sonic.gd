@@ -371,6 +371,10 @@ func handle_jump():
 			else:
 				velocity = Vector3(AIRDASH_SPEED, 4, 0)
 			'''
+	
+	# controlled height jump
+	#if jump_clicked and Input.is_action_just_released("jump") and velocity.y > 0:
+	#	velocity.y = 1
 
 
 ## help responsiveness feeling by forgiving the difference between the human response and the machine accuracy
