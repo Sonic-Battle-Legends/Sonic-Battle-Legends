@@ -160,6 +160,10 @@ func common_behaviours():
 			cpu_character.guard_pressed = true
 		else:
 			cpu_character.guard_pressed = false
+	
+	# check for hole
+	if platform_detector.get_collision_point().y + 0.5 < cpu_character.position.y:
+		jump()
 
 
 ## if the target is far, move
@@ -217,7 +221,20 @@ func cautious_behaviour():
 ## or away from it if value is negative
 func move_towards_target(mode_value = 1):
 	# Set the input direction
-	cpu_character.direction = mode_value * (cpu_character.transform.basis * Vector3(target_direction.x, 0, target_direction.z)).normalized()
+	# use the navmesh of the stage and navigate with the nav agent
+	if cpu_character != null and target != null:
+		# check planar velocity to see if bot got stuck
+		var planar_velocity = cpu_character.velocity
+		planar_velocity.y = 0.0
+		
+		# if not stuck:
+		if planar_velocity.length() > 2 and distance_to_target > 1:
+			# use navmesh
+			cpu_character.nav.target_position = target.position
+			cpu_character.direction = (cpu_character.nav.get_next_path_position() - cpu_character.global_position).normalized()
+		else:
+			# walk
+			cpu_character.direction = mode_value * (cpu_character.transform.basis * Vector3(target_direction.x, 0, target_direction.z)).normalized()
 	
 	# if there is an obstacle, jump
 	jump_check()

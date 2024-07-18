@@ -114,6 +114,7 @@ func _on_online_button_pressed():
 
 
 func _on_host_button_pressed():
+	# the server will call the after_online_setup() in here when it's done
 	ServerJoin.configure_player()
 
 

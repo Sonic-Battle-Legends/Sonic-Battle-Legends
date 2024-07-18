@@ -817,12 +817,13 @@ _data = {
 "walk": SubResource("Animation_ccdw7")
 }
 
-[node name="Sonic_BOT" type="CharacterBody3D" node_paths=PackedStringArray("model_node") groups=["Bot", "CanHurt", "Player"]]
+[node name="Sonic_BOT" type="CharacterBody3D" node_paths=PackedStringArray("model_node", "nav") groups=["Bot", "CanHurt", "Player"]]
 collision_layer = 2
 floor_max_angle = 1.0472
 floor_snap_length = 0.2
 script = ExtResource("1_8y1bu")
 model_node = NodePath("sonicrigged2")
+nav = NodePath("NavigationAgent3D")
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
 visible = false
@@ -944,6 +945,11 @@ libraries = {
 }
 autoplay = "idle"
 speed_scale = 1.5
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+height = 0.31
+radius = 0.08
+debug_path_custom_point_size = 8.0
 
 [connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]
 [connection signal="area_entered" from="ring_collider" to="." method="_on_ring_collider_area_entered"]

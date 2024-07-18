@@ -621,7 +621,9 @@ func scatter_rings(amount = 1):
 		# outside the battle
 		# don't reduce from the total the player had before entering the battle
 		if number_of_rings_to_scatter > 0:
-			GlobalVariables.total_rings -= number_of_rings_to_scatter
+			var rings_to_subtract = number_of_rings_to_scatter
+			rings_to_subtract = clamp(rings_to_subtract, 0, rings)
+			GlobalVariables.total_rings -= rings_to_subtract
 	
 	# update hud
 	hud.update_rings(rings)

@@ -1,0 +1,60 @@
+[gd_scene load_steps=4 format=3 uid="uid://d1dv7tjtv0yse"]
+
+[ext_resource type="PackedScene" uid="uid://cqc8qqujbql3v" path="res://Models/navtest.blend" id="1_v0k8a"]
+[ext_resource type="Material" uid="uid://b2rgo2opot2ma" path="res://Materials/StageMaterial.tres" id="2_7y8iu"]
+[ext_resource type="Material" uid="uid://djxad1r3jnafs" path="res://Materials/stageTopMaterial.tres" id="3_nn6jo"]
+
+[node name="Navmesh_Test" type="Node3D"]
+
+[node name="navtest" parent="." instance=ExtResource("1_v0k8a")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, -1.0732, -4.3019)
+
+[node name="Plane" parent="navtest" index="0"]
+surface_material_override/0 = ExtResource("2_7y8iu")
+
+[node name="obstacles" parent="navtest" index="1"]
+surface_material_override/0 = ExtResource("3_nn6jo")
+
+[node name="NavigationLink3D" type="NavigationLink3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.43602, 0.0222656, -3.05408)
+start_position = Vector3(-0.44, 0, 0)
+end_position = Vector3(0.28, 0, 0)
+
+[node name="NavigationLink3D2" type="NavigationLink3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.33663, -0.177219, -4.48128)
+start_position = Vector3(-0.44, 0, -0.73)
+end_position = Vector3(0.28, 0, 0.935)
+
+[node name="NavigationLink3D4" type="NavigationLink3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.08142, -0.177219, -5.75992)
+enabled = false
+start_position = Vector3(-0.51, 0, -1.8)
+end_position = Vector3(0.28, 0, 0.935)
+
+[node name="NavigationLink3D5" type="NavigationLink3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.08142, -0.177219, -1.75052)
+enabled = false
+start_position = Vector3(0.11, 0, -2.195)
+end_position = Vector3(-0.685, 0, 0.935)
+
+[node name="NavigationLink3D6" type="NavigationLink3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.38994, -0.177219, -4.37964)
+start_position = Vector3(1.16, 0, -0.005)
+end_position = Vector3(-0.495, 0, 0.19)
+
+[node name="NavigationLink3D7" type="NavigationLink3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.295506, -0.177219, -4.37964)
+start_position = Vector3(0.3, 1.05, -0.005)
+end_position = Vector3(-0.495, 0, 0.19)
+
+[node name="NavigationLink3D8" type="NavigationLink3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.295506, -0.177219, -4.37964)
+start_position = Vector3(0.3, 1.05, -0.005)
+end_position = Vector3(1.125, 0, 0.19)
+
+[node name="NavigationLink3D3" type="NavigationLink3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.14081, -0.177219, -6.55551)
+start_position = Vector3(0.86, 0, -0.73)
+end_position = Vector3(0.28, 0, 0.935)
+
+[editable path="navtest"]

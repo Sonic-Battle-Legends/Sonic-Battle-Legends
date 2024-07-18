@@ -143,6 +143,8 @@ var rings: int = MAX_SCATTERED_RINGS_ALLOWED
 
 @export var model_node: Node3D
 
+@export var nav: NavigationAgent3D
+
 var camera = null
 
 # defeated method should trigger only once
