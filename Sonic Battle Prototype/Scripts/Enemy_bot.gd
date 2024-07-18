@@ -141,11 +141,18 @@ var rings: int = MAX_SCATTERED_RINGS_ALLOWED
 #@export_category("HUD")
 #@export var hud: Control
 
+## the character model which turns accordingly to the input direction
 @export var model_node: Node3D
 
+## navigation agent for navmesh
 @export var nav: NavigationAgent3D
 
+# was causing errors without this line
+# might have been some residual import settings
 var camera = null
+
+# the last player who caused damage to this character
+var last_aggressor
 
 # defeated method should trigger only once
 var was_defeated: bool = false
@@ -778,12 +785,20 @@ func _on_hitbox_body_entered(body):
 			body.get_hurt.rpc_id(body.get_multiplayer_authority(), launch_power, self)
 
 
-func defeated(who_owns_last_attack = null):
+func defeated(): #who_owns_last_attack = null):
 	if was_defeated == false:
+		# trigger once per instance
 		was_defeated = true
-		if who_owns_last_attack != null:
-			if who_owns_last_attack.has_method("increase_points"):
-				who_owns_last_attack.increase_points()
+		
+		#if who_owns_last_attack != null:
+		#	if who_owns_last_attack.has_method("increase_points"):
+		#		who_owns_last_attack.increase_points()
+		
+		# give a point for defeating the character
+		if last_aggressor != null:
+			if last_aggressor.has_method("increase_points"):
+				last_aggressor.increase_points()
+		
 		if GlobalVariables.game_ended == false:
 			Instantiables.spawn_bot()
 	queue_free()
@@ -793,6 +808,9 @@ func defeated(who_owns_last_attack = null):
 # function, which is why you don't see it here.
 @rpc("any_peer","reliable","call_local")
 func get_hurt(launch_speed, owner_of_the_attack):
+	# store the last player who damaged this character
+	last_aggressor = owner_of_the_attack
+	
 	var damage = launch_speed.length()
 	
 	# increase damage the bot takes if it's not on hard mode
@@ -828,7 +846,7 @@ func get_hurt(launch_speed, owner_of_the_attack):
 	
 	if GlobalVariables.current_stage != null:
 		if (life_total <= 0 and GlobalVariables.game_ended == false):
-			defeated(owner_of_the_attack)
+			defeated() #owner_of_the_attack)
 	
 	# A bunch of states reset to make sure getting hurt cancels them out.
 	hurt = true

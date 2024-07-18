@@ -125,6 +125,9 @@ var healing_pace: float = 0.1
 # the amount of heling_time to trigger a heal call
 var healing_threshold: float = 3.0
 
+# the last player who caused damage to this character
+var last_aggressor
+
 # prevent defeated() to be called more than once
 var was_defeated: bool = false
 
@@ -148,9 +151,11 @@ var rings: int = MAX_SCATTERED_RINGS_ALLOWED
 @export_category("HUD")
 @export var hud: Control
 
+# camera
 @export_category("CAMERA")
 @export var camera: Camera3D
 
+## the character model which turns accordingly to the input direction
 @export var model_node: Node3D
 
 func _enter_tree():
@@ -839,13 +844,19 @@ func _on_hitbox_body_entered(body):
 			body.get_hurt.rpc_id(body.get_multiplayer_authority(), launch_power, self)
 
 
-func defeated(who_owns_last_attack = null):
+func defeated(): #who_owns_last_attack = null):
 	if was_defeated == false:
+		# trigger once per instance
 		was_defeated = true
+		
 		# give a point for defeating the character
-		if who_owns_last_attack != null:
-			if who_owns_last_attack.has_method("increase_points"):
-				who_owns_last_attack.increase_points()
+		#if who_owns_last_attack != null:
+		#	if who_owns_last_attack.has_method("increase_points"):
+		#		who_owns_last_attack.increase_points()
+		
+		if last_aggressor != null:
+			if last_aggressor.has_method("increase_points"):
+				last_aggressor.increase_points()
 		
 		# player must get the ability selection screen again
 		# then select a location to spawn
@@ -861,6 +872,9 @@ func defeated(who_owns_last_attack = null):
 # function, which is why you don't see it here.
 @rpc("any_peer","reliable","call_local")
 func get_hurt(launch_speed, owner_of_the_attack):
+	# store the last player who damaged this character
+	last_aggressor = owner_of_the_attack
+	
 	var damage = launch_speed.length()
 	
 	var sparks = Instantiables.SPARKS.instantiate()
@@ -891,7 +905,7 @@ func get_hurt(launch_speed, owner_of_the_attack):
 	
 	if GlobalVariables.current_stage != null:
 		if (life_total <= 0 and GlobalVariables.game_ended == false):
-			defeated(owner_of_the_attack)
+			defeated() #owner_of_the_attack)
 	
 	
 	# A bunch of states reset to make sure getting hurt cancels them out.
