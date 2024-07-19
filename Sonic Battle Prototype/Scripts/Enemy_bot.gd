@@ -826,6 +826,11 @@ func defeated(): #who_owns_last_attack = null):
 		# trigger once per instance
 		was_defeated = true
 		
+		var ko_effect = Instantiables.KO_EFFECT.instantiate()
+		ko_effect.position = position
+		get_parent().add_child(ko_effect)
+		ko_effect.get_child(0).emitting = true
+		
 		#if who_owns_last_attack != null:
 		#	if who_owns_last_attack.has_method("increase_points"):
 		#		who_owns_last_attack.increase_points()

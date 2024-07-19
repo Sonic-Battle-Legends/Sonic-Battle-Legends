@@ -24,7 +24,6 @@ pause_menu = NodePath("Pause")
 canvas_server_menu = NodePath("OnlineMenu/canvas")
 
 [node name="IntroAnimation" type="VideoStreamPlayer" parent="."]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -149,6 +148,7 @@ text = "Quit"
 
 [node name="OptionsMenu" type="Control" parent="."]
 process_mode = 3
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
