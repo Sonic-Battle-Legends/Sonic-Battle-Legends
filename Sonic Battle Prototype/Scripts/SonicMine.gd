@@ -22,6 +22,7 @@ func _on_animation_player_animation_finished(anim_name):
 	# If the explosion animation ends, the mine is destroyed.
 	if anim_name == "idle":
 		$AnimationPlayer.play("explode")
+		Audio.play(Audio.setExplosion, self)
 	elif anim_name == "explode":
 		queue_free()
 
@@ -33,6 +34,8 @@ func _on_area_3d_body_entered(body):
 		# The mine automatically explodes on contact if it hasn't exploded already.
 		if $AnimationPlayer.current_animation == "idle":
 			$AnimationPlayer.play("explode")
+			Audio.play(Audio.setExplosion, self)
+			Audio.play(Audio.hitStrong, self)
 		if body.immunity != "set":
 			# If the collision body is immune to "set" moves, they will not be affected.
 			# body.get_hurt.rpc_id(body.get_multiplayer_authority(), Vector3(0, 7, 0))

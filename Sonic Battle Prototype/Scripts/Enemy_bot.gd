@@ -298,6 +298,18 @@ func handle_dash():
 		dashing = true
 		$AnimationPlayer.play("dash")
 		$sonicrigged2/AnimationPlayer.play("DASH")
+<<<<<<< Updated upstream
+=======
+		Audio.play(Audio.dash, self)
+		
+		var dust_effect = Instantiables.DUST_PARTICLE.instantiate()
+		dust_effect.position = position
+		get_parent().add_child(dust_effect)
+		dust_effect.look_at(position - velocity.normalized())
+		dust_effect.get_child(0).emitting = true
+		dust_effect.get_child(1).emitting = true
+		
+>>>>>>> Stashed changes
 		'''
 		if $AnimationPlayer.current_animation == "startWalk":
 			#velocity = direction * DASH_SPEED
@@ -346,6 +358,7 @@ func handle_jump():
 		coyote_timer = null
 		$AnimationPlayer.play("airdash")
 		$sonicrigged2/AnimationPlayer.play("DJMP 1")
+		Audio.play(Audio.airDash, self)
 		# If Sonic is inputting a direction, he airdashes in that direction.
 		# If no direction is held, he moves horizontally in the direction he's facing.
 		if direction:
@@ -426,6 +439,7 @@ func handle_attack():
 		# that sends the opponent in the direction he specifies.
 		$AnimationPlayer.play("strong")
 		$sonicrigged2/AnimationPlayer.play("PGC 4")
+		Audio.play(Audio.attackStrong, self)
 		launch_power = Vector3(direction.x * 20, 5, direction.z * 20)
 		attacking = true
 	elif attack_pressed && dashing && can_airdash:
@@ -434,6 +448,7 @@ func handle_attack():
 		attacking = true
 		$AnimationPlayer.play("dashAttack")
 		$sonicrigged2/AnimationPlayer.play("DASH ATK")
+		Audio.play(Audio.attack2, self)
 		launch_power = Vector3(velocity.x, 2, velocity.z)
 		velocity.y = 3
 	elif attack_pressed && !dashing && !is_on_floor() && can_air_attack:
@@ -443,6 +458,7 @@ func handle_attack():
 		can_air_attack = false
 		$AnimationPlayer.play("airAttack")
 		$sonicrigged2/AnimationPlayer.play("AIR")
+		Audio.play(Audio.attack2, self)
 		
 		var new_launch = $sonicrigged2.transform.basis.z.normalized() * 5
 		new_launch.y = -2
@@ -461,6 +477,7 @@ func handle_attack():
 		attacking = true
 		$AnimationPlayer.play("punch1")
 		$sonicrigged2/AnimationPlayer.play("PGC 1")
+		Audio.play(Audio.attack1, self)
 		launch_power = Vector3(0, 2, 0)
 		current_punch = 1
 	
@@ -482,6 +499,7 @@ func handle_healing():
 		healing_time += healing_pace
 		if healing_time >= healing_threshold:
 			heal()
+			Audio.play(Audio.heal, self)
 			healing_time = 0
 	else:
 		healing_time = 0
@@ -693,17 +711,20 @@ func anim_end(anim_name):
 			if current_punch == 1:
 				$AnimationPlayer.play("punch2")
 				$sonicrigged2/AnimationPlayer.play("PGC 2")
+				Audio.play(Audio.attack2, self)
 				launch_power = Vector3(0, 2, 0)
 				current_punch = 2
 			elif current_punch == 2:
 				$AnimationPlayer.play("punch3")
 				$sonicrigged2/AnimationPlayer.play("PGC 3")
+				Audio.play(Audio.attack2, self)
 				launch_power = Vector3(0, 2, 0)
 				current_punch = 3
 			elif current_punch == 3:
 				# The final part of the combo does an immediate strong attack.
 				$AnimationPlayer.play("strong")
 				$sonicrigged2/AnimationPlayer.play("PGC 4")
+				Audio.play(Audio.attackStrong, self)
 				
 				var new_launch = $sonicrigged2.transform.basis.z.normalized() * 20
 				new_launch.y = 5
@@ -757,6 +778,7 @@ func anim_end(anim_name):
 func _on_hitbox_body_entered(body):
 	#if !is_multiplayer_authority(): return
 	if body.is_in_group("CanHurt") && body != self and attacking:
+		Audio.play(Audio.hit, self)
 		# If the current attack is Sonic's "pow" move, the hitbox pays attention to immunities.
 		if !pow_move || body.immunity != "pow":
 			body.get_hurt.rpc_id(body.get_multiplayer_authority(), launch_power, self)
@@ -850,6 +872,7 @@ func ground_special(id, _dir):
 		can_air_attack = false
 		$AnimationPlayer.play("shotGround")
 		$sonicrigged2/AnimationPlayer.play("DJMP 2")
+		Audio.play(Audio.shot, self)
 		#Instantiates a new shot projectile.
 		var new_shot = Instantiables.create(Instantiables.objects.SHOT_PROJECTILE) #shot_projectile.instantiate()
 		new_shot.user = self	# This makes sure Sonic can't hit himself with a projectile.
@@ -874,6 +897,7 @@ func ground_special(id, _dir):
 		if !thrown_ring:	# When no ring is on the field.
 			$AnimationPlayer.play("powGround")
 			$sonicrigged2/AnimationPlayer.play("RING")
+			Audio.play(Audio.ring, self)
 			#Instantiates a new ring projectile
 			var new_ring = Instantiables.create(Instantiables.objects.TOSS_RING) #ring.instantiate()
 			new_ring.ring_owner = self
@@ -889,6 +913,7 @@ func ground_special(id, _dir):
 			pow_move = true
 			$AnimationPlayer.play("powAir")
 			$sonicrigged2/AnimationPlayer.play("DJMP 2")
+			Audio.play(Audio.spindashRelease, self)
 			chasing_ring = true
 	elif ground_skill == "SET":
 		# Sonic's grounded "set" move sets down a mine where he's standing, which explodes over time
@@ -916,6 +941,7 @@ func air_special(id, _dir):
 		# direction. He is also sent backwards away from the projectile.
 		$AnimationPlayer.play("shotAir")
 		$sonicrigged2/AnimationPlayer.play("DJMP 2")
+		Audio.play(Audio.shot, self)
 		#Instantiates a new shot projectile.
 		var new_shot = Instantiables.create(Instantiables.objects.SHOT_PROJECTILE) #shot_projectile.instantiate()
 		new_shot.user = self	# This makes sure Sonic can't hit himself with a projectile.
@@ -937,6 +963,7 @@ func air_special(id, _dir):
 		# If Sonic hits the ground, he bounces once.
 		$AnimationPlayer.play("powAir")
 		$sonicrigged2/AnimationPlayer.play("DJMP 2")
+		Audio.play(Audio.bounce, self)
 		pow_move = true
 		bouncing = true	# Initiates the "bouncing" state for bouncing off the ground.
 		launch_power = Vector3(0, 2, 0)
