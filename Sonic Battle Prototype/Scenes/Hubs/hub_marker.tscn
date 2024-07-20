@@ -44,10 +44,9 @@ _data = {
 "spin": SubResource("Animation_v3t1w")
 }
 
-[node name="hub_marker" type="Label3D"]
-offset = Vector2(0, 250)
-text = "Hub"
+[node name="hub_marker" type="Node3D" node_paths=PackedStringArray("label")]
 script = ExtResource("1_yyafq")
+label = NodePath("Label3D")
 place_type = 1
 
 [node name="prism2" parent="." instance=ExtResource("2_l68n1")]
@@ -73,6 +72,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0118467, 0)
 radius = 0.1
 height = 0.01
 material = ExtResource("4_mtv6u")
+
+[node name="Label3D" type="Label3D" parent="."]
+offset = Vector2(0, 250)
+text = "Hub"
 
 [connection signal="area_entered" from="Area3D" to="." method="_on_area_3d_area_entered"]
 

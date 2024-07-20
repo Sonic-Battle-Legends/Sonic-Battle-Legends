@@ -20,6 +20,9 @@ func _physics_process(_delta):
 		# attack check
 		character.attack_pressed = Input.is_action_pressed("punch")
 		
+		# upper check
+		character.upper_pressed = Input.is_action_just_pressed("upper")
+		
 		# special attack check
 		character.special_pressed = Input.is_action_just_pressed("special")
 		

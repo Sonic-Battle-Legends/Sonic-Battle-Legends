@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://dofyi4jiyto42" path="res://Textures/icon.svg" id="2_xj80o"]
 [ext_resource type="PackedScene" uid="uid://bvn1yjxoq8fdx" path="res://Scenes/pause.tscn" id="4_ns075"]
 
-[node name="Menus" type="Control" node_paths=PackedStringArray("intro_animation", "main_menu", "options_menu", "online_or_offline_menu", "online_menu", "mode_selection_menu", "character_selection_menu", "area_selection_menu", "canvas_server_menu")]
+[node name="Menus" type="Control" node_paths=PackedStringArray("intro_animation", "main_menu", "options_menu", "online_or_offline_menu", "online_menu", "mode_selection_menu", "character_selection_menu", "area_selection_menu", "pause_menu", "canvas_server_menu")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -20,9 +20,11 @@ online_menu = NodePath("OnlineMenu/canvas/MainOnlineMenu")
 mode_selection_menu = NodePath("ModeSelection")
 character_selection_menu = NodePath("CharacterSelection")
 area_selection_menu = NodePath("AreaSelect")
+pause_menu = NodePath("Pause")
 canvas_server_menu = NodePath("OnlineMenu/canvas")
 
 [node name="IntroAnimation" type="VideoStreamPlayer" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -146,7 +148,7 @@ grow_vertical = 2
 text = "Quit"
 
 [node name="OptionsMenu" type="Control" parent="."]
-visible = false
+process_mode = 3
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -159,9 +161,9 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -26.0
+offset_left = -33.0
 offset_top = 68.0
-offset_right = 150.0
+offset_right = 133.0
 offset_bottom = 169.0
 grow_horizontal = 2
 text = "OPTIONS"
@@ -180,6 +182,18 @@ offset_bottom = 29.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "Back"
+
+[node name="Difficulty_Selection_List" type="ItemList" parent="OptionsMenu"]
+layout_mode = 0
+offset_left = 526.0
+offset_top = 138.0
+offset_right = 627.0
+offset_bottom = 263.0
+allow_rmb_select = true
+item_count = 3
+item_0/text = "EASY"
+item_1/text = "NORMAL"
+item_2/text = "HARD"
 
 [node name="OnlineOrOffline" type="Control" parent="."]
 visible = false
@@ -506,11 +520,13 @@ grow_vertical = 2
 text = "Back"
 
 [node name="Pause" parent="." instance=ExtResource("4_ns075")]
+visible = false
 
 [connection signal="pressed" from="MainMenu/start button" to="." method="_on_start_button_pressed"]
 [connection signal="pressed" from="MainMenu/options button" to="." method="_on_options_button_pressed"]
 [connection signal="pressed" from="MainMenu/quit button" to="." method="_on_quit_button_pressed"]
 [connection signal="pressed" from="OptionsMenu/options back button" to="." method="_on_options_back_button_pressed"]
+[connection signal="item_selected" from="OptionsMenu/Difficulty_Selection_List" to="." method="_on_difficulty_selection_list_item_selected"]
 [connection signal="pressed" from="OnlineOrOffline/online button" to="." method="_on_online_button_pressed"]
 [connection signal="pressed" from="OnlineOrOffline/offline button" to="." method="_on_offline_button_pressed"]
 [connection signal="pressed" from="OnlineOrOffline/back button" to="." method="_on_back_button_pressed"]

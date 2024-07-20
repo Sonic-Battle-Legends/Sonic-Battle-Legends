@@ -43,10 +43,9 @@ _data = {
 "spin": SubResource("Animation_etoyf")
 }
 
-[node name="stage_marker" type="Label3D"]
-offset = Vector2(0, 250)
-text = "Stage"
+[node name="stage_marker" type="Node3D" node_paths=PackedStringArray("label")]
 script = ExtResource("1_cd3qu")
+label = NodePath("Label3D")
 place_type = 2
 
 [node name="prism2" parent="." instance=ExtResource("1_haeub")]
@@ -69,5 +68,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0118467, 0)
 radius = 0.1
 height = 0.01
 material = ExtResource("3_trse7")
+
+[node name="Label3D" type="Label3D" parent="."]
+offset = Vector2(0, 250)
+text = "Stage"
 
 [connection signal="area_entered" from="Area3D" to="." method="_on_area_3d_area_entered"]

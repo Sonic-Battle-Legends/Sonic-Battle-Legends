@@ -16,6 +16,7 @@ extends Control
 @export var mode_selection_menu: Control
 @export var character_selection_menu: Control
 @export var area_selection_menu: Control
+@export var pause_menu: Control
 
 @export_category("SERVER CANVAS MENU")
 @export var canvas_server_menu: Node3D
@@ -57,6 +58,7 @@ func hide_menus():
 	mode_selection_menu.hide()
 	character_selection_menu.hide()
 	area_selection_menu.hide()
+	pause_menu.hide()
 
 
 ## proceed with the normal screens sequence after online setup
@@ -98,7 +100,11 @@ func _on_quit_button_pressed():
 
 func _on_options_back_button_pressed():
 	hide_menus()
-	main_menu.show()
+	# return to pause menu if the game is was paused
+	if GlobalVariables.current_character != null:
+		pause_menu.show()
+	else:
+		main_menu.show()
 
 
 func _on_online_button_pressed():
@@ -108,6 +114,7 @@ func _on_online_button_pressed():
 
 
 func _on_host_button_pressed():
+	# the server will call the after_online_setup() in here when it's done
 	ServerJoin.configure_player()
 
 
@@ -182,3 +189,6 @@ func _on_back_button_pressed():
 		hide_menus()
 		character_selection_menu.show()
 
+
+func _on_difficulty_selection_list_item_selected(index):
+	GlobalVariables.current_difficulty = GlobalVariables.difficulty_levels[index]

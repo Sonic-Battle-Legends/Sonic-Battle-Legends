@@ -17,9 +17,14 @@ var target_direction: Vector3
 # the distance to the target
 var distance_to_target: float
 # the minimum distance to stop chasing the player and start attacking
-var min_attack_distance: float = 0.5
-# the minimum offset towards a point in the stage to stop following such point
-var min_offset: float = 0.5
+const min_attack_distance: float = 0.5
+
+var distance_to_keep_from_target = min_attack_distance
+
+# safe distance for the bot to stay away from the character
+const safe_distance: float = 1.0
+
+var life_offset = 35
 
 var players_around: Array
 # store if there are rings around the stage
@@ -30,8 +35,8 @@ var possible_targets: Array
 # timer between jumps
 var jump_timer: SceneTreeTimer
 
-# store the last height the player was
-var new_height: float = -10
+# set a delay on the bots response as difficulty level
+var delay: float = 0.0
 
 ## The container of the raycasts
 ## it will point towards the direction the bot is going
@@ -44,32 +49,47 @@ var new_height: float = -10
 @export var platform_detector: RayCast3D
 
 
-func _physics_process(_delta):
-	select_target()
-	
+func _physics_process(delta):
 	# if this node has a parent
 	if cpu_character:
 		update_life_ui()
 		
-		# if there is a target and a player target
-		if target and player_target:
-			var life_offset = 35
-			# if player have more life
-			if is_instance_valid(player_target) and is_instance_valid(life_offset) and player_target.life_total + life_offset > cpu_character.life_total:
-				# go with defensive behaviour
-				aggressive_behaviour()
+		# delay as difficulty level
+		if delay <= 0:
+			select_target()
 			
-			# else if bot have more life
-			elif is_instance_valid(player_target) and is_instance_valid(life_offset) and cpu_character.life_total + life_offset > player_target.life_total:
-				# go with aggressive behaviour
-				aggressive_behaviour()
-			
-			# else the bot and player have less than the offset between their life totals
-			else:
-				# go with tactics
-				aggressive_behaviour()
+			# if there is a target and a player target
+			if target:
+				if target.is_in_group("Player"):
+					# if player have more life
+					if is_instance_valid(target) and \
+					(target.life_total + life_offset) > cpu_character.life_total:
+						# go with defensive behaviour
+						aggressive_behaviour()
+						#cautious_behaviour()
+					
+					# else if bot have more life
+					elif is_instance_valid(target) and \
+					(cpu_character.life_total + life_offset) > target.life_total:
+						# go with aggressive behaviour
+						aggressive_behaviour()
+						#cautious_behaviour()
+					
+					# else the bot and player have less than the life_offset between their life totals
+					else:
+						# go with tactics
+						aggressive_behaviour()
+						#cautious_behaviour()
+				else:
+					# go towards rings
+					aggressive_behaviour()
+		else:
+			reset_properties()
+			# count down the delay
+			delay -= delta
 			
 	else:
+		# set the cpu_character as the bot that have this controller
 		if cpu_character == null and get_parent() != null:
 			cpu_character = get_parent()
 
@@ -85,14 +105,14 @@ func select_target():
 	possible_targets.clear()
 	possible_targets = rings_around.duplicate()
 	possible_targets += players_around.duplicate()
-	possible_targets.append(player_target)
 	
 	# if a ring is closer than the player, set the ring as target
-	if possible_targets.size() > 0:
+	if possible_targets.size() > 0 and cpu_character != null:
 		var new_target_distance
 		for new_target in possible_targets:
 			if is_instance_valid(new_target):
-				new_target_distance = (new_target.position - position).length()
+				new_target_distance = (new_target.position - cpu_character.position).length()
+				# if the new target is closer and is not this bot
 				if new_target_distance < distance_to_target and new_target != get_parent():
 					target = new_target
 
@@ -108,9 +128,22 @@ func update_life_ui():
 ## common responses to the ambient
 ## like dodging attacks
 func common_behaviours():
+	# prevent loops by reseting the properties
+	reset_properties()
+	
 	# store the distance and direction
 	target_direction = (target.position - cpu_character.position).normalized()
 	distance_to_target = (target.position - cpu_character.position).length()
+	
+	# set a closer distance to collect the rings
+	if target.is_in_group("Player"):
+		distance_to_keep_from_target = min_attack_distance
+	else:
+		distance_to_keep_from_target = 0.2
+		
+		# if the target is a ring and this ring is too close to trigger, collect
+		if distance_to_target < 0.2 and target.is_in_group("Ring") and target.can_collect():
+			cpu_character.collect_ring(target)
 	
 	# store planar variables
 	# position with y axis at zero
@@ -119,56 +152,14 @@ func common_behaviours():
 	var planar_distance = (planar_position - cpu_character.position).length()
 	
 	# check if player target is right above the bot
-	if planar_distance < min_attack_distance:
-		# prevent loops by reseting the properties
-		reset_properties()
-		if distance_to_target > min_attack_distance \
+	if planar_distance < distance_to_keep_from_target:
+		if distance_to_target > distance_to_keep_from_target \
 		and cpu_character.life_total < cpu_character.MAX_LIFE_TOTAL:
-				# if the player is trying to keep distance, keep guard on
-				# to heal
+			# if the player is trying to keep distance, keep guard on
+			# to heal
 			cpu_character.guard_pressed = true
-			#else:
-			#	move_towards_target()
-			#	jump_check()
-				# jump towards a direction then double jump to reach the platform
-			#	cpu_character.direction = cpu_character.transform.basis.x * 2
-			#	if jump_timer == null or (jump_timer != null and jump_timer.time_left <= 0):
-			#		jump()
 		else:
 			cpu_character.guard_pressed = false
-			
-			# if there is a hole right in front of the bot jump
-			if platform_detector.get_collision_point().y < cpu_character.position.y - min_offset:
-				jump()
-			
-			# avoid mines and shots
-			# use get_tree().get_nodes_in_group("Mine").duplicate()
-			# and get_tree().get_nodes_in_group("PlayerAttack").duplicate()
-			# instead
-			'''
-			var new_object_collided = wall_detector.get_collider()
-			
-			if new_object_collided != null:
-				var new_object_parent = new_object_collided.get_parent()
-				
-				if new_object_parent != null \
-				and (new_object_parent.is_in_group("Mine") \
-				or new_object_parent.is_in_group("PlayerAttack")):
-					jump()
-					attack_target()
-			'''
-		
-		# if the player is running against it use special
-		# to prevent player passing through
-		if target.is_in_group("Player") \
-		and distance_to_target < 2 \
-		and target.direction != Vector3.ZERO \
-		and target_direction.dot(cpu_character.mesh_node.transform.basis.z) < 0.8:
-			cpu_character.special_pressed = true
-	
-	# guard/block/defend check
-	if target.is_in_group("Player") and target.attacking and distance_to_target <= min_attack_distance:
-		cpu_character.guard_pressed = true
 
 
 ## if the target is far, move
@@ -178,57 +169,127 @@ func aggressive_behaviour():
 	common_behaviours()
 	
 	# go closer to target
-	if distance_to_target > min_attack_distance:
-		# prevent loops by reseting the properties
-		reset_properties()
-		
+	if distance_to_target > distance_to_keep_from_target:
 		# move towards target when not trying to go up around a platform
 		move_towards_target()
-		
-		# if there is an obstacle, jump
-		jump_check()
-		
-		# dash
-		'''
-		if distance_to_target > 3 \
-		and cpu_character.mesh_node.transform.basis.z.dot(target_direction) < 0.9:
-			cpu_character.direction = target_direction
-			cpu_character.dash_triggered = true
-		'''
 	
 	# if close enough to attack, attack target
 	else:
 		if target.is_in_group("Player"):
-			cpu_character.guard_pressed = false
 			attack_target()
 
 
-func move_towards_target():
+## keep distance from player
+## circulate the player
+## attack the player from behind
+func cautious_behaviour():
+	common_behaviours()
+	
+	# check is target is a character
+	if target.is_in_group("Player"):
+	# keep distance so the character can't hit
+		if distance_to_target < safe_distance:
+			# move away
+			move_towards_target(-1)
+		else:
+			# move near by
+			#move_towards_target()
+		
+			# check the target's input direction with direction to target
+			# and circulate until the bot is behind the character
+			if target_direction.dot(target.direction) > 0.6:
+				# circulate the character
+				var proxy_position = cpu_character.position + target_direction.normalized()
+				var angle = 120.0
+			# check if it's faster to get there by moving clockwise or counterclockwise
+				#var points_on_circle = 100
+				#angle = 360.0 / points_on_circle
+				proxy_position = proxy_position.rotated(Vector3.UP, deg_to_rad(angle))
+				cpu_character.direction = cpu_character.position + proxy_position.normalized()
+			else:
+				# attack from behind
+				move_towards_target()
+				if distance_to_target < distance_to_keep_from_target:
+					attack_target()
+
+
+## move towards target
+## or away from it if value is negative
+func move_towards_target(mode_value = 1):
 	# Set the input direction
-	cpu_character.direction = (cpu_character.transform.basis * Vector3(target_direction.x, 0, target_direction.z)).normalized()
+	# use the navmesh of the stage and navigate with the nav agent
+	if cpu_character != null and target != null:
+		# check planar velocity to see if bot got stuck
+		var planar_velocity = cpu_character.velocity
+		planar_velocity.y = 0.0
+		
+		# if not stuck:
+		if planar_velocity.length() > 2 and distance_to_target > 1:
+			# use navmesh
+			cpu_character.nav.target_position = target.position
+			cpu_character.direction = (cpu_character.nav.get_next_path_position() - cpu_character.global_position).normalized()
+		else:
+			# walk
+			cpu_character.direction = mode_value * (cpu_character.transform.basis * Vector3(target_direction.x, 0, target_direction.z)).normalized()
+	
+	# if there is an obstacle, jump
+	jump_check()
+
+
+## check for hazards
+func hazard_ahead():
+	# check with platform_detector raycast
+	var new_hazard_ahead = false
+	var object_collided = platform_detector.get_collider()
+	if object_collided:
+		# StaticBody3D is in the Hazard group
+		new_hazard_ahead = object_collided.is_in_group("Hazard") || object_collided.is_in_group("PlayerAttack")
+	
+	# check with wall_detector raycast
+	var new_hazard_ahead2 = false
+	var object_collided2 = wall_detector.get_collider()
+	if object_collided2:
+		# StaticBody3D is in the Hazard group
+		new_hazard_ahead2 = object_collided2.is_in_group("Hazard") || object_collided2.is_in_group("PlayerAttack")
+	
+	# return if either are true
+	return (new_hazard_ahead || new_hazard_ahead2)
 
 
 func jump_check():
 	var direction = cpu_character.direction
 	direction.y = 0
+	# change the direction of the raycast container's forward to match the
+	# direction the bot is going
 	raycasts_container.transform.basis.z = direction
-	if wall_detector.is_colliding():
-		if platform_detector.is_colliding() and (jump_timer == null or (jump_timer != null and jump_timer.time_left <= 0)):
+	
+	# check for obstacle, hazard and mind the gap
+	if wall_detector.is_colliding() or \
+	hazard_ahead() or \
+	platform_detector.is_colliding() == false or \
+	platform_detector.get_collision_point().y + 0.5 < cpu_character.position.y:
+		# wait to press double jump
+		if (jump_timer == null or (jump_timer != null and jump_timer.time_left <= 0)):
 			jump()
 
 
 func jump():
 	cpu_character.jump_pressed = true
+	# double jump timer
 	jump_timer = get_tree().create_timer(0.35, false, true)
 
 
 func attack_target():
-	if target.is_in_group("Player") and target.hurt:
-		# special attack check
-		cpu_character.special_pressed = true
-	else:
-		# attack check
-		cpu_character.attack_pressed = true
+	if delay <= 0.0:
+		# set delay based on difficulty level
+		delay = GlobalVariables.current_difficulty
+		
+		if (target.is_in_group("Player") and target.hurt) or hazard_ahead():
+			# special attack check
+			cpu_character.special_pressed = true
+		else:
+			# attack check
+			cpu_character.attack_pressed = true
 
 
 func reset_properties():
@@ -237,5 +298,7 @@ func reset_properties():
 	cpu_character.attack_pressed = false
 	cpu_character.dash_triggered = false
 	cpu_character.jump_pressed = false
+	
+	# can't heal if it keeps reseting
 	#cpu_character.guard_pressed = false
 	

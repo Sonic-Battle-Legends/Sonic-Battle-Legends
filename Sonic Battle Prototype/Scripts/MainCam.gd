@@ -30,8 +30,11 @@ func _physics_process(_delta):
 	var difference = abs(abs(target_z_value) - abs(global_position.z))
 	if difference > 1:
 		current_speed = FAST_SPEED
+		# make the place marker's label change orientation
+		GlobalVariables.camera_orientation_changed.emit()
 	else:
 		current_speed = NORMAL_SPEED
+	
 	
 	# The camera will always slowly accelerate to the player'slocation and look at them.
 	global_position = lerp(global_position, Vector3(player.position.x - player.velocity.x, player.position.y + 5 + difference - player.velocity.y, player.position.z + (15 * spin) - player.velocity.z), current_speed)

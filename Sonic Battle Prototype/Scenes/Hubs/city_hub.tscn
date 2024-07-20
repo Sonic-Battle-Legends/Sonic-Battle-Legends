@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://c21jx54148kmv"]
+[gd_scene load_steps=10 format=3 uid="uid://c21jx54148kmv"]
 
 [ext_resource type="PackedScene" uid="uid://b4sfvdfh2ssee" path="res://Models/hub_test.blend" id="1_3cksg"]
 [ext_resource type="PackedScene" uid="uid://irlpgd8spuet" path="res://Scenes/stages/invisible_walls.tscn" id="2_1lcbb"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://bxjkjr27crbtr" path="res://Scenes/stages/test_2.tscn" id="6_ub5qx"]
 [ext_resource type="PackedScene" uid="uid://dqgtu3gjo0ymi" path="res://Scenes/collectables/ring.tscn" id="7_kmrjo"]
 [ext_resource type="AudioStream" uid="uid://rxnwaj4vdd2d" path="res://Audio/Technopolis City Hub (v1).mp3" id="8_kdbtx"]
+[ext_resource type="PackedScene" uid="uid://d1dv7tjtv0yse" path="res://Scenes/stages/navmesh_test.tscn" id="9_wwrb0"]
 
 [node name="City_Hub" type="Node3D"]
 
@@ -50,5 +51,9 @@ transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, -1.28896, -3.27483e-
 stream = ExtResource("8_kdbtx")
 volume_db = -7.0
 autoplay = true
+
+[node name="stage_marker2" parent="." instance=ExtResource("5_rj5n4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.66375, 0, 8.85614)
+new_place = ExtResource("9_wwrb0")
 
 [editable path="hub_test"]

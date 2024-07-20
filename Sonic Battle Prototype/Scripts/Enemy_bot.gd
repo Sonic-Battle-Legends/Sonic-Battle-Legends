@@ -121,6 +121,8 @@ var healing_time: float = 0.0
 var healing_pace: float = 0.1
 # the amount of heling_time to trigger a heal call
 var healing_threshold: float = 3.0
+# where the heal effect scene that will be instantiated will be stored
+var heal_effect: Node3D
 
 var punch_timer: SceneTreeTimer
 
@@ -141,9 +143,24 @@ var rings: int = MAX_SCATTERED_RINGS_ALLOWED
 #@export_category("HUD")
 #@export var hud: Control
 
-@export var mesh_node: Node3D
+## the character model which turns accordingly to the input direction
+@export var model_node: Node3D
 
+## navigation agent for navmesh
+@export var nav: NavigationAgent3D
+
+# was causing errors without this line
+# might have been some residual import settings
 var camera = null
+
+# the last player who caused damage to this character
+var last_aggressor
+
+# to reposition if falling off a pit but still not defeated
+var last_spawn_position: Vector3 = Vector3.ZERO
+
+# defeated method should trigger only once
+var was_defeated: bool = false
 
 
 func _enter_tree():
@@ -151,7 +168,7 @@ func _enter_tree():
 	#set_multiplayer_authority(GlobalVariables.character_id)
 	
 	var bots_list = get_tree().get_nodes_in_group("Bot")
-	name = "BOT" + str(bots_list.size())
+	name = "BOT " + str(bots_list.size())
 
 
 func _ready():
@@ -166,6 +183,8 @@ func _ready():
 	if GlobalVariables.current_stage == null:
 		ground_skill = "POW"
 		air_skill = "POW"
+	
+	last_spawn_position = position
 
 
 # Setting a drop shadow is weird in _physics_process(), so the drop shadow code is in _process().
@@ -179,13 +198,15 @@ func _process(delta):
 		# coyote time to help responsiveness jump
 		if !is_on_floor():
 			coyote_ground_distance = position.y - ground_height
-			if coyote_timer == null:
-				create_coyote_timer()
-			
-			# call coyote light feet here so it can work with coyote edge by creating it's timer
-			coyote_light_feet()
 	else:
 		$DropShadow.visible = false
+		
+	# coyote time between gaps
+	if coyote_timer == null:
+		create_coyote_timer()
+	
+	# call coyote light feet here so it can work with coyote edge by creating it's timer
+	coyote_light_feet()
 	
 	# to check the time between key presses
 	# could create an actual timer instead
@@ -246,7 +267,15 @@ func _physics_process(delta):
 	# life total is less than or equal to zero
 	# or the character is not in a battle and don't have rings
 	if position.y < -5.0:
-		defeated()
+		#cause damage
+		life_total -= 10
+		#reposition or respawn
+		if life_total <= 0:
+			defeated()
+		else:
+			#hud.change_life(life_total)
+			velocity = Vector3.ZERO
+			position = last_spawn_position
 	
 	# If Sonic is currently chasing a ring he threw from his ground "pow" move, he accelerates to its position.
 	if chasing_ring and active_ring != null:
@@ -298,8 +327,6 @@ func handle_dash():
 		dashing = true
 		$AnimationPlayer.play("dash")
 		$sonicrigged2/AnimationPlayer.play("DASH")
-<<<<<<< Updated upstream
-=======
 		Audio.play(Audio.dash, self)
 		
 		var dust_effect = Instantiables.DUST_PARTICLE.instantiate()
@@ -309,7 +336,6 @@ func handle_dash():
 		dust_effect.get_child(0).emitting = true
 		dust_effect.get_child(1).emitting = true
 		
->>>>>>> Stashed changes
 		'''
 		if $AnimationPlayer.current_animation == "startWalk":
 			#velocity = direction * DASH_SPEED
@@ -503,10 +529,21 @@ func handle_healing():
 			healing_time = 0
 	else:
 		healing_time = 0
+		if heal_effect != null:
+			heal_effect.hide()
 
 
 ## method to heal the character's life total
 func heal(amount = 4):
+	if heal_effect == null:
+		heal_effect = Instantiables.HEALING_EFFECT.instantiate()
+		heal_effect.position = Vector3(0, -0.15, 0)
+		add_child(heal_effect)
+		heal_effect.get_child(0).emitting = true
+	else:
+		heal_effect.show()
+		heal_effect.get_child(0).emitting = true
+	
 	if life_total < MAX_LIFE_TOTAL:
 		life_total += amount
 	if life_total > MAX_LIFE_TOTAL:
@@ -539,7 +576,7 @@ func one_up():
 	#hud.update_extra_lives(GlobalVariables.extra_lives)
 
 
-func collect_ring():
+func collect_ring(ring):
 	# increase the amount of rings
 	# rings collected in a stage should count towards
 	# the rings total only after the battle is over
@@ -547,6 +584,10 @@ func collect_ring():
 	if GlobalVariables.current_stage != null:
 		rings += 1
 		heal(HEAL_POINTS_PER_RING)
+	
+	if ring.has_method("delete_ring"):
+		ring.delete_ring()
+	
 	#else:
 		#GlobalVariables.total_rings += 1
 		#hud.update_rings(GlobalVariables.total_rings)
@@ -573,7 +614,7 @@ func scatter_rings(amount = 1):
 	# if on a hub or area scatter all rings
 	if GlobalVariables.current_stage == null:
 		amount = rings
-		
+	
 	number_of_rings_to_scatter = amount
 	rings -= amount
 	# clamp values
@@ -746,6 +787,7 @@ func anim_end(anim_name):
 		# Reset's Sonic's "hurt" state when the animation ends.
 		hurt = false
 		starting = false
+		can_air_attack = false
 	elif anim_name == "LAUNCHED":
 		# For as long as Sonic is in the air, the animation loops. When he hits the ground, his state resets.
 		if is_on_floor():
@@ -781,15 +823,31 @@ func _on_hitbox_body_entered(body):
 		Audio.play(Audio.hit, self)
 		# If the current attack is Sonic's "pow" move, the hitbox pays attention to immunities.
 		if !pow_move || body.immunity != "pow":
+			
+			# reduce damage the bot causes if it's not on hard mode
+			if GlobalVariables.current_difficulty > 0:
+				var new_magnitude = launch_power.length() / 2
+				launch_power = launch_power.normalized() * new_magnitude
+			
 			body.get_hurt.rpc_id(body.get_multiplayer_authority(), launch_power, self)
 
 
-func defeated(who_owns_last_attack = null):
-	if who_owns_last_attack != null:
-		if who_owns_last_attack.has_method("increase_points"):
-			who_owns_last_attack.increase_points()
-	if GlobalVariables.game_ended == false:
-		Instantiables.spawn_bot()
+func defeated(): #who_owns_last_attack = null):
+	if was_defeated == false:
+		# trigger once per instance
+		was_defeated = true
+		
+		#if who_owns_last_attack != null:
+		#	if who_owns_last_attack.has_method("increase_points"):
+		#		who_owns_last_attack.increase_points()
+		
+		# give a point for defeating the character
+		if last_aggressor != null:
+			if last_aggressor.has_method("increase_points"):
+				last_aggressor.increase_points()
+		
+		if GlobalVariables.game_ended == false:
+			Instantiables.spawn_bot()
 	queue_free()
 
 
@@ -797,7 +855,14 @@ func defeated(who_owns_last_attack = null):
 # function, which is why you don't see it here.
 @rpc("any_peer","reliable","call_local")
 func get_hurt(launch_speed, owner_of_the_attack):
+	# store the last player who damaged this character
+	last_aggressor = owner_of_the_attack
+	
 	var damage = launch_speed.length()
+	
+	# increase damage the bot takes if it's not on hard mode
+	if GlobalVariables.current_difficulty > 0:
+		damage *= 15 * GlobalVariables.current_difficulty
 	
 	var sparks = Instantiables.SPARKS.instantiate()
 	sparks.position = position + Vector3(0, 0.1, 0)
@@ -828,7 +893,7 @@ func get_hurt(launch_speed, owner_of_the_attack):
 	
 	if GlobalVariables.current_stage != null:
 		if (life_total <= 0 and GlobalVariables.game_ended == false):
-			defeated(owner_of_the_attack)
+			defeated() #owner_of_the_attack)
 	
 	# A bunch of states reset to make sure getting hurt cancels them out.
 	hurt = true
@@ -849,12 +914,12 @@ func get_hurt(launch_speed, owner_of_the_attack):
 		$AnimationPlayer.play("hurtStrong")
 		$sonicrigged2/AnimationPlayer.play("LAUNCHED")
 	else:
-		if !is_on_floor():
-			$AnimationPlayer.play("hurtAir")
-			$sonicrigged2/AnimationPlayer.play("HURT 2")
-		else:
+		if launch_speed.y < 5:
 			$AnimationPlayer.play("hurt")
 			$sonicrigged2/AnimationPlayer.play("HURT 1")
+		else:
+			$AnimationPlayer.play("hurtAir")
+			$sonicrigged2/AnimationPlayer.play("HURT 2")
 	
 	# More state resets. Idk why these are placed at the end.
 	current_punch = 0
@@ -996,14 +1061,7 @@ func _on_ring_collider_area_entered(area):
 		var collided_object = area.get_parent()
 		# collect ring
 		if collided_object.is_in_group("Ring"):
-			collect_ring()
-			if collided_object.has_method("delete_ring"):
-				collided_object.delete_ring()
-		if area.is_in_group("Hazard"):
-			var hazard_impulse = Vector3(0, 6, 0)
-			# make the character goes against it's forward (increasing damage too)
-			hazard_impulse -= $sonicrigged2.transform.basis.z.normalized() * 15
-			get_hurt(hazard_impulse, null)
+			collect_ring(collided_object)
 
 
 func rotate_model():
