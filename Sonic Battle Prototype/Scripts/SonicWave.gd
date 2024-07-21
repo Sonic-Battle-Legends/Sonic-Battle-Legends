@@ -47,6 +47,7 @@ func _on_hitbox_body_entered(body):
 		if body.immunity != "shot":
 			# If the collision body is immune to "shot" moves, they will not be affected.
 			# body.get_hurt.rpc_id(body.get_multiplayer_authority(), Vector3(velocity.x, 3, velocity.z))
+			Audio.play(Audio.hitStrong, self)
 			body.get_hurt(Vector3(velocity.x, 3, velocity.z), user)
 
 @rpc("any_peer", "call_local")

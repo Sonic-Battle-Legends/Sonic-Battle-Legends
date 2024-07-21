@@ -332,6 +332,7 @@ func handle_dash():
 		coyote_timer = null
 		$AnimationPlayer.play("dash")
 		$sonicrigged2/AnimationPlayer.play("DASH")
+		Audio.play(Audio.dash, self)
 		
 		var dust_effect = Instantiables.DUST_PARTICLE.instantiate()
 		dust_effect.position = position
@@ -381,7 +382,7 @@ func handle_jump():
 		# remove current coyote timer form the variable
 		coyote_timer = null
 	elif jump_pressed && !is_on_floor() && can_airdash:
-		Audio.play(Audio.jump, self) #spin)
+		Audio.play(Audio.airDash, self) #spin)
 		dashing = true
 		can_airdash = false
 		# remove current coyote timer form the variable
@@ -444,12 +445,14 @@ func create_coyote_timer():
 func create_punch_timer():
 	punch_timer = get_tree().create_timer(0.5, false, true)
 
+
 ## method to handle when the updraft button is pressed
 func handle_upper():
 	if upper_pressed:
 		if is_on_floor():
 			$AnimationPlayer.play("upStrong")
 			$sonicrigged2/AnimationPlayer.play("UPPER")
+			Audio.play(Audio.attackStrong, self)
 			launch_power = Vector3(0, 7, 0)
 			attacking = true
 			velocity = -$sonicrigged2.basis.z.normalized() * 2
@@ -458,6 +461,7 @@ func handle_upper():
 				can_air_attack = false
 				$AnimationPlayer.play("pac")
 				$sonicrigged2/AnimationPlayer.play("PAC")
+				Audio.play(Audio.attackStrong, self)
 				launch_power = Vector3($sonicrigged2.basis.z.normalized().x * 5, 5, $sonicrigged2.basis.z.normalized().x * 5)
 				velocity.y = 3
 				attacking = true
@@ -489,6 +493,7 @@ func handle_attack():
 		# that sends the opponent in the direction he specifies.
 		$AnimationPlayer.play("strong")
 		$sonicrigged2/AnimationPlayer.play("PGC 4")
+		Audio.play(Audio.attackStrong, self)
 		launch_power = Vector3(direction.x * 20, 5, direction.z * 20)
 		attacking = true
 	elif attack_pressed && dashing && can_airdash:
@@ -497,6 +502,7 @@ func handle_attack():
 		attacking = true
 		$AnimationPlayer.play("dashAttack")
 		$sonicrigged2/AnimationPlayer.play("DASH ATK")
+		Audio.play(Audio.attack2, self)
 		launch_power = Vector3(velocity.x, 2, velocity.z)
 		velocity.y = 3
 	elif attack_pressed && !dashing && !is_on_floor() && can_air_attack:
@@ -506,6 +512,7 @@ func handle_attack():
 		can_air_attack = false
 		$AnimationPlayer.play("airAttack")
 		$sonicrigged2/AnimationPlayer.play("AIR")
+		Audio.play(Audio.attack2, self)
 		
 		var new_launch = $sonicrigged2.transform.basis.z.normalized() * 5
 		new_launch.y = -2
@@ -526,33 +533,35 @@ func handle_attack():
 			# The code to initiate Sonic's 3-hit combo. The rest of the punches are in _on_animation_player_animation_finished().
 			$AnimationPlayer.play("punch1")
 			$sonicrigged2/AnimationPlayer.play("PGC 1")
+			Audio.play(Audio.attack1, self) 
 			launch_power = Vector3(0, 2, 0)
 			current_punch = 1
 		elif current_punch == 1:
 			$AnimationPlayer.play("punch2")
 			$sonicrigged2/AnimationPlayer.play("PGC 2")
+			Audio.play(Audio.attack2, self)
 			launch_power = Vector3(0, 2, 0)
 			current_punch = 2
 			
 		elif current_punch == 2:
 			$AnimationPlayer.play("punch3")
 			$sonicrigged2/AnimationPlayer.play("PGC 3")
+			Audio.play(Audio.attack2, self)
 			launch_power = Vector3(0, 2, 0)
 			current_punch = 3
 		
 		elif current_punch == 3:
 			$AnimationPlayer.play("strong")
 			$sonicrigged2/AnimationPlayer.play("PGC 4")
-			
-			var new_launch = $sonicrigged2.transform.basis.z.normalized() * 20
-			new_launch.y = 5
-			launch_power = new_launch
-			
-			'''
+      
 			if facing_left:
 				launch_power = Vector3(-20, 5, 0)
 			else:
 				launch_power = Vector3(20, 5, 0)
+			Audio.play(Audio.attackStrong, self)
+			var new_launch = $sonicrigged2.transform.basis.z.normalized() * 20
+			new_launch.y = 5
+			launch_power = new_launch
 			'''
 			
 			current_punch = 0
@@ -574,6 +583,7 @@ func handle_healing():
 		healing_time += healing_pace
 		if healing_time >= healing_threshold:
 			heal()
+			Audio.play(Audio.heal, self)
 			healing_time = 0
 	else:
 		healing_time = 0
@@ -885,6 +895,7 @@ func anim_end(anim_name):
 func _on_hitbox_body_entered(body):
 	if !is_multiplayer_authority(): return
 	if body.is_in_group("CanHurt") && body != self and attacking:
+		Audio.play(Audio.hit, self)
 		# If the current attack is Sonic's "pow" move, the hitbox pays attention to immunities.
 		if !pow_move || body.immunity != "pow":
 			body.get_hurt.rpc_id(body.get_multiplayer_authority(), launch_power, self)
@@ -1002,6 +1013,7 @@ func ground_special(id, dir):
 		can_airdash = false
 		$AnimationPlayer.play("shotGround")
 		$sonicrigged2/AnimationPlayer.play("DJMP 2")
+		Audio.play(Audio.shot, self)
 		#Instantiates a new shot projectile.
 		var new_shot = Instantiables.create(Instantiables.objects.SHOT_PROJECTILE) #shot_projectile.instantiate()
 		new_shot.user = self	# This makes sure Sonic can't hit himself with a projectile.
@@ -1026,6 +1038,7 @@ func ground_special(id, dir):
 		if !thrown_ring:	# When no ring is on the field.
 			$AnimationPlayer.play("powGround")
 			$sonicrigged2/AnimationPlayer.play("RING")
+			Audio.play(Audio.ring, self)
 			#Instantiates a new ring projectile
 			var new_ring = Instantiables.create(Instantiables.objects.TOSS_RING) #ring.instantiate()
 			new_ring.ring_owner = self
@@ -1041,6 +1054,7 @@ func ground_special(id, dir):
 			pow_move = true
 			$AnimationPlayer.play("powAir")
 			$sonicrigged2/AnimationPlayer.play("DJMP 2")
+			Audio.play(Audio.bounce, self)
 			chasing_ring = true
 	elif ground_skill == "SET":
 		# Sonic's grounded "set" move sets down a mine where he's standing, which explodes over time
@@ -1068,6 +1082,9 @@ func air_special(id, dir):
 		# direction. He is also sent backwards away from the projectile.
 		$AnimationPlayer.play("shotAir")
 		$sonicrigged2/AnimationPlayer.play("DJMP 2")
+		Audio.play(Audio.shot, self)
+		can_air_attack = false
+		can_airdash = false
 		can_air_attack = false
 		can_airdash = false
 		#Instantiates a new shot projectile.
@@ -1089,6 +1106,7 @@ func air_special(id, dir):
 		# If Sonic hits the ground, he bounces once.
 		$AnimationPlayer.play("powAir")
 		$sonicrigged2/AnimationPlayer.play("DJMP 2")
+		Audio.play(Audio.bounce, self)
 		pow_move = true
 		bouncing = true	# Initiates the "bouncing" state for bouncing off the ground.
 		launch_power = Vector3(0, 2, 0)
