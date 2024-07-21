@@ -5,7 +5,7 @@
 [ext_resource type="Material" uid="uid://bw718sqodxjnv" path="res://Materials/cityMaterial1.tres" id="2_m2au7"]
 [ext_resource type="PackedScene" uid="uid://bxjkjr27crbtr" path="res://Scenes/stages/test_2.tscn" id="5_jbv1b"]
 [ext_resource type="PackedScene" uid="uid://dhcmo5dwjo44o" path="res://Scenes/stages/stage_marker.tscn" id="5_rj5n4"]
-[ext_resource type="PackedScene" uid="uid://g3x3jcmkcxsp" path="res://Scenes/stages/sand_ocean.tscn" id="5_u8xes"]
+[ext_resource type="PackedScene" uid="uid://cy3gglb7xdb12" path="res://Scenes/stages/sand_ocean.tscn" id="5_u8xes"]
 [ext_resource type="PackedScene" uid="uid://bdcinxygd23dl" path="res://Scenes/lamp.tscn" id="6_p3ikg"]
 [ext_resource type="PackedScene" uid="uid://dqgtu3gjo0ymi" path="res://Scenes/collectables/ring.tscn" id="7_kmrjo"]
 [ext_resource type="AudioStream" uid="uid://rxnwaj4vdd2d" path="res://Audio/Technopolis City Hub (v1).mp3" id="8_kdbtx"]

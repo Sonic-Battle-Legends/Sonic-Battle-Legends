@@ -142,7 +142,7 @@ func common_behaviours():
 		distance_to_keep_from_target = 0.2
 		
 		# if the target is a ring and this ring is too close to trigger, collect
-		if distance_to_target < 0.2 and target.is_in_group("Ring") and target.can_collect():
+		if distance_to_target < 0.2 and target.is_in_group("Ring") and target.has_method("can_collect") and target.can_collect():
 			cpu_character.collect_ring(target)
 	
 	# store planar variables
