@@ -295,7 +295,11 @@ func _physics_process(delta):
 		else:
 			#hud.change_life(life_total)
 			velocity = Vector3.ZERO
-			position = last_spawn_position
+			#spawn next to the player
+			if GlobalVariables.current_character != null:
+				position = GlobalVariables.current_character.position +  Vector3(randf_range(-0.5, 0), 1.1, randf_range(-1, 1))#last_spawn_position
+			else:
+				position = last_spawn_position
 	
 	# If Sonic is currently chasing a ring he threw from his ground "pow" move, he accelerates to its position.
 	if chasing_ring and active_ring != null:

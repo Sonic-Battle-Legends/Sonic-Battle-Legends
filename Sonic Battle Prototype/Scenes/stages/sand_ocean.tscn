@@ -1,0 +1,415 @@
+[gd_scene load_steps=9 format=3 uid="uid://g3x3jcmkcxsp"]
+
+[ext_resource type="PackedScene" uid="uid://dsoiandycgbg4" path="res://Models/SandOcean.blend" id="1_xmp68"]
+[ext_resource type="PackedScene" uid="uid://cxa38uke40v17" path="res://Scenes/SandOceanRotatingPlatform.tscn" id="2_2xkdc"]
+[ext_resource type="Script" path="res://Scripts/MovingPlatform.gd" id="3_h3k1c"]
+[ext_resource type="PackedScene" uid="uid://bxdf84eie0h0a" path="res://Scenes/SandOceanMovingPlatform.tscn" id="4_w0toy"]
+[ext_resource type="AudioStream" uid="uid://1d37k4ogmek2" path="res://Audio/Sand Ocean.ogg" id="5_d3wih"]
+[ext_resource type="PackedScene" uid="uid://dqgtu3gjo0ymi" path="res://Scenes/collectables/ring.tscn" id="6_1o2yc"]
+[ext_resource type="PackedScene" uid="uid://drlu8n40mygqk" path="res://Scenes/spikes.tscn" id="8_0dxp5"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_p3gkg"]
+size = Vector3(8.22914, 11.1969, 16.6649)
+
+[node name="SandOcean" type="Node3D"]
+transform = Transform3D(-1.09278e-08, 0, -0.25, 0, 0.25, 0, 0.25, 0, -1.09278e-08, 0, 0, 0)
+
+[node name="SandOcean" parent="." instance=ExtResource("1_xmp68")]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
+
+[node name="Cube_008" parent="SandOcean" index="1"]
+transform = Transform3D(29.9985, 0, 0.98435, 0, 15, 0, -0.295305, 0, 99.9952, -168.385, 25, 100.09)
+
+[node name="SandOceanRotatingPlatform" parent="SandOcean" instance=ExtResource("2_2xkdc")]
+script = ExtResource("3_h3k1c")
+move_speed = 0.0
+
+[node name="AnimatableBody3D" parent="SandOcean/SandOceanRotatingPlatform" index="0"]
+constant_angular_velocity = Vector3(0, 8.72665e-05, 0)
+sync_to_physics = false
+
+[node name="SandOceanMovingPlatform" parent="SandOcean" instance=ExtResource("4_w0toy")]
+transform = Transform3D(10, 0, 0, 0, 7.5, 0, 0, 0, 10, 53.876, 6.00165, 80.721)
+script = ExtResource("3_h3k1c")
+rotation_speed = 0.0
+move_speed = 0.1
+start_pos = Vector3(53.876, -3.882, 80.721)
+end_pos = Vector3(53.876, 6.002, 80.721)
+move_wait = 30
+
+[node name="SandOceanMovingPlatform2" parent="SandOcean" instance=ExtResource("4_w0toy")]
+transform = Transform3D(10, 0, 0, 0, 7.5, 0, 0, 0, 10, -63.94, -3.882, 80.721)
+script = ExtResource("3_h3k1c")
+rotation_speed = 0.0
+move_speed = 0.1
+start_pos = Vector3(-63.94, -3.882, 80.721)
+end_pos = Vector3(-63.94, 6.002, 80.721)
+move_wait = 30
+
+[node name="CollisionShape3D" parent="SandOcean/SandOceanMovingPlatform2/AnimatableBody3D" index="0"]
+transform = Transform3D(1, 0, -3.55271e-15, 0, 1, 0, 3.55271e-15, 0, 1, 0, 0, 0)
+
+[node name="SandOceanMovingPlatform3" parent="SandOcean" instance=ExtResource("4_w0toy")]
+transform = Transform3D(10, 0, 0, 0, 7.5, 0, 0, 0, 10, -87.571, 2.5, 150)
+script = ExtResource("3_h3k1c")
+rotation_speed = 0.0
+move_speed = 0.2
+start_pos = Vector3(-45.617, 2.5, 150)
+end_pos = Vector3(-87.571, 2.5, 150)
+move_wait = 30
+
+[node name="CollisionShape3D" parent="SandOcean/SandOceanMovingPlatform3/AnimatableBody3D" index="0"]
+transform = Transform3D(1, 0, -3.55271e-15, 0, 1, 0, 3.55271e-15, 0, 1, 0, 0, 0)
+
+[node name="SandOceanMovingPlatform4" parent="SandOcean" instance=ExtResource("4_w0toy")]
+transform = Transform3D(10, 0, 0, 0, 7.5, 0, 0, 0, 10, 125.604, 2.5, -152.397)
+script = ExtResource("3_h3k1c")
+rotation_speed = 0.0
+move_speed = 0.2
+start_pos = Vector3(81, 2.5, -152.397)
+end_pos = Vector3(125, 2.5, -152.397)
+move_wait = 30
+
+[node name="CollisionShape3D" parent="SandOcean/SandOceanMovingPlatform4/AnimatableBody3D" index="0"]
+transform = Transform3D(1, 0, -3.55271e-15, 0, 1, 0, 3.55271e-15, 0, 1, 0, 0, 0)
+
+[node name="SandOceanMovingPlatform5" parent="SandOcean" instance=ExtResource("4_w0toy")]
+transform = Transform3D(10, 0, 0, 0, 7.5, 0, 0, 0, 10, 147.803, 2.5, -152)
+script = ExtResource("3_h3k1c")
+rotation_speed = 0.0
+move_speed = 0.2
+start_pos = Vector3(147.803, 2.5, -152)
+end_pos = Vector3(147.803, 2.5, -95)
+move_wait = 30
+
+[node name="CollisionShape3D" parent="SandOcean/SandOceanMovingPlatform5/AnimatableBody3D" index="0"]
+transform = Transform3D(1, 0, -3.55271e-15, 0, 1, 0, 3.55271e-15, 0, 1, 0, 0, 0)
+
+[node name="SandOceanMovingPlatform6" parent="SandOcean" instance=ExtResource("4_w0toy")]
+transform = Transform3D(10, 0, 0, 0, 7.5, 0, 0, 0, 10, 125.775, 2.5, -50.9192)
+script = ExtResource("3_h3k1c")
+rotation_speed = 0.0
+move_speed = 0.2
+start_pos = Vector3(125.775, 2.5, -107)
+end_pos = Vector3(125.775, 2.5, -50)
+move_wait = 30
+
+[node name="CollisionShape3D" parent="SandOcean/SandOceanMovingPlatform6/AnimatableBody3D" index="0"]
+transform = Transform3D(1, 0, -3.55271e-15, 0, 1, 0, 3.55271e-15, 0, 1, 0, 0, 0)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="SandOcean"]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SandOcean/StaticBody3D"]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, -33.5522, 3.84937, 29.6706)
+shape = SubResource("BoxShape3D_p3gkg")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_d3wih")
+volume_db = -15.0
+autoplay = true
+
+[node name="Rings" type="Node3D" parent="."]
+
+[node name="Ring" parent="Rings" instance=ExtResource("6_1o2yc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.0317, 3.44294, 21.5001)
+
+[node name="CollisionShape3D" parent="Rings/Ring/Area3D" index="0"]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0.321873, 0)
+
+[node name="Ring2" parent="Rings/Ring" index="4"]
+transform = Transform3D(0.176777, 0, 0.176777, 0, 0.25, 0, -0.176777, 0, 0.176777, 0, 0.125, 0)
+
+[node name="Ring2" parent="Rings" instance=ExtResource("6_1o2yc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.8057, 3.44294, 21.5001)
+
+[node name="CollisionShape3D" parent="Rings/Ring2/Area3D" index="0"]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0.321873, 0)
+
+[node name="Ring2" parent="Rings/Ring2" index="4"]
+transform = Transform3D(0.176777, 0, 0.176777, 0, 0.25, 0, -0.176777, 0, 0.176777, 0, 0.125, 0)
+
+[node name="Ring5" parent="Rings" instance=ExtResource("6_1o2yc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.8858, 3.44294, 21.5001)
+
+[node name="CollisionShape3D" parent="Rings/Ring5/Area3D" index="0"]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0.321873, 0)
+
+[node name="Ring2" parent="Rings/Ring5" index="4"]
+transform = Transform3D(0.176777, 0, 0.176777, 0, 0.25, 0, -0.176777, 0, 0.176777, 0, 0.125, 0)
+
+[node name="Ring6" parent="Rings" instance=ExtResource("6_1o2yc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.1271, 3.44294, 21.5001)
+
+[node name="CollisionShape3D" parent="Rings/Ring6/Area3D" index="0"]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0.321873, 0)
+
+[node name="Ring2" parent="Rings/Ring6" index="4"]
+transform = Transform3D(0.176777, 0, 0.176777, 0, 0.25, 0, -0.176777, 0, 0.176777, 0, 0.125, 0)
+
+[node name="Ring7" parent="Rings" instance=ExtResource("6_1o2yc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -17.1271, 3.44294, 19.2146)
+
+[node name="CollisionShape3D" parent="Rings/Ring7/Area3D" index="0"]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0.321873, 0)
+
+[node name="Ring2" parent="Rings/Ring7" index="4"]
+transform = Transform3D(0.176777, 0, 0.176777, 0, 0.25, 0, -0.176777, 0, 0.176777, 0, 0.125, 0)
+
+[node name="Ring8" parent="Rings" instance=ExtResource("6_1o2yc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.0435, 3.44294, 19.2146)
+
+[node name="CollisionShape3D" parent="Rings/Ring8/Area3D" index="0"]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0.321873, 0)
+
+[node name="Ring2" parent="Rings/Ring8" index="4"]
+transform = Transform3D(0.176777, 0, 0.176777, 0, 0.25, 0, -0.176777, 0, 0.176777, 0, 0.125, 0)
+
+[node name="Ring17" parent="Rings" instance=ExtResource("6_1o2yc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38.8327, 6.35844, 37.1865)
+
+[node name="CollisionShape3D" parent="Rings/Ring17/Area3D" index="0"]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0.321873, 0)
+
+[node name="Ring2" parent="Rings/Ring17" index="4"]
+transform = Transform3D(0.176777, 0, 0.176777, 0, 0.25, 0, -0.176777, 0, 0.176777, 0, 0.125, 0)
+
+[node name="Ring21" parent="Rings" instance=ExtResource("6_1o2yc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 37.1404, 2.65599, -34.9739)
+
+[node name="CollisionShape3D" parent="Rings/Ring21/Area3D" index="0"]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0.321873, 0)
+
+[node name="Ring2" parent="Rings/Ring21" index="4"]
+transform = Transform3D(0.176777, 0, 0.176777, 0, 0.25, 0, -0.176777, 0, 0.176777, 0, 0.125, 0)
+
+[node name="Ring22" parent="Rings" instance=ExtResource("6_1o2yc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 37.14, 2.656, -31.974)
+
+[node name="CollisionShape3D" parent="Rings/Ring22/Area3D" index="0"]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0.321873, 0)
+
+[node name="Ring2" parent="Rings/Ring22" index="4"]
+transform = Transform3D(0.176777, 0, 0.176777, 0, 0.25, 0, -0.176777, 0, 0.176777, 0, 0.125, 0)
+
+[node name="Ring23" parent="Rings" instance=ExtResource("6_1o2yc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 37.14, 2.656, -28.974)
+
+[node name="CollisionShape3D" parent="Rings/Ring23/Area3D" index="0"]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0.321873, 0)
+
+[node name="Ring2" parent="Rings/Ring23" index="4"]
+transform = Transform3D(0.176777, 0, 0.176777, 0, 0.25, 0, -0.176777, 0, 0.176777, 0, 0.125, 0)
+
+[node name="Ring24" parent="Rings" instance=ExtResource("6_1o2yc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 37.14, 2.656, -25.974)
+
+[node name="CollisionShape3D" parent="Rings/Ring24/Area3D" index="0"]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0.321873, 0)
+
+[node name="Ring2" parent="Rings/Ring24" index="4"]
+transform = Transform3D(0.176777, 0, 0.176777, 0, 0.25, 0, -0.176777, 0, 0.176777, 0, 0.125, 0)
+
+[node name="Ring25" parent="Rings" instance=ExtResource("6_1o2yc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14551, 2.656, -26.8649)
+
+[node name="CollisionShape3D" parent="Rings/Ring25/Area3D" index="0"]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0.321873, 0)
+
+[node name="Ring2" parent="Rings/Ring25" index="4"]
+transform = Transform3D(0.176777, 0, 0.176777, 0, 0.25, 0, -0.176777, 0, 0.176777, 0, 0.125, 0)
+
+[node name="Ring26" parent="Rings" instance=ExtResource("6_1o2yc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.646, 2.656, -21.865)
+
+[node name="CollisionShape3D" parent="Rings/Ring26/Area3D" index="0"]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0.321873, 0)
+
+[node name="Ring2" parent="Rings/Ring26" index="4"]
+transform = Transform3D(0.176777, 0, 0.176777, 0, 0.25, 0, -0.176777, 0, 0.176777, 0, 0.125, 0)
+
+[node name="Ring27" parent="Rings" instance=ExtResource("6_1o2yc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.354, 2.656, -21.865)
+
+[node name="CollisionShape3D" parent="Rings/Ring27/Area3D" index="0"]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0.321873, 0)
+
+[node name="Ring2" parent="Rings/Ring27" index="4"]
+transform = Transform3D(0.176777, 0, 0.176777, 0, 0.25, 0, -0.176777, 0, 0.176777, 0, 0.125, 0)
+
+[node name="Ring18" parent="Rings" instance=ExtResource("6_1o2yc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36.5914, 6.35844, 37.1865)
+
+[node name="CollisionShape3D" parent="Rings/Ring18/Area3D" index="0"]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0.321873, 0)
+
+[node name="Ring2" parent="Rings/Ring18" index="4"]
+transform = Transform3D(0.176777, 0, 0.176777, 0, 0.25, 0, -0.176777, 0, 0.176777, 0, 0.125, 0)
+
+[node name="Ring19" parent="Rings" instance=ExtResource("6_1o2yc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36.5914, 6.35844, 34.9011)
+
+[node name="CollisionShape3D" parent="Rings/Ring19/Area3D" index="0"]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0.321873, 0)
+
+[node name="Ring2" parent="Rings/Ring19" index="4"]
+transform = Transform3D(0.176777, 0, 0.176777, 0, 0.25, 0, -0.176777, 0, 0.176777, 0, 0.125, 0)
+
+[node name="Ring20" parent="Rings" instance=ExtResource("6_1o2yc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 38.6751, 6.35844, 34.9011)
+
+[node name="CollisionShape3D" parent="Rings/Ring20/Area3D" index="0"]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0.321873, 0)
+
+[node name="Ring2" parent="Rings/Ring20" index="4"]
+transform = Transform3D(0.176777, 0, 0.176777, 0, 0.25, 0, -0.176777, 0, 0.176777, 0, 0.125, 0)
+
+[node name="Ring9" parent="Rings" instance=ExtResource("6_1o2yc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -38.1619, 9.807, 41.7461)
+
+[node name="CollisionShape3D" parent="Rings/Ring9/Area3D" index="0"]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0.321873, 0)
+
+[node name="Ring2" parent="Rings/Ring9" index="4"]
+transform = Transform3D(0.176777, 0, 0.176777, 0, 0.25, 0, -0.176777, 0, 0.176777, 0, 0.125, 0)
+
+[node name="Ring10" parent="Rings" instance=ExtResource("6_1o2yc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -46.1619, 9.807, 41.7461)
+
+[node name="CollisionShape3D" parent="Rings/Ring10/Area3D" index="0"]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0.321873, 0)
+
+[node name="Ring2" parent="Rings/Ring10" index="4"]
+transform = Transform3D(0.176777, 0, 0.176777, 0, 0.25, 0, -0.176777, 0, 0.176777, 0, 0.125, 0)
+
+[node name="Ring11" parent="Rings" instance=ExtResource("6_1o2yc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -42.1619, 9.807, 45.7461)
+
+[node name="CollisionShape3D" parent="Rings/Ring11/Area3D" index="0"]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0.321873, 0)
+
+[node name="Ring2" parent="Rings/Ring11" index="4"]
+transform = Transform3D(0.176777, 0, 0.176777, 0, 0.25, 0, -0.176777, 0, 0.176777, 0, 0.125, 0)
+
+[node name="Ring12" parent="Rings" instance=ExtResource("6_1o2yc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -42.1619, 9.807, 37.7461)
+
+[node name="CollisionShape3D" parent="Rings/Ring12/Area3D" index="0"]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0.321873, 0)
+
+[node name="Ring2" parent="Rings/Ring12" index="4"]
+transform = Transform3D(0.176777, 0, 0.176777, 0, 0.25, 0, -0.176777, 0, 0.176777, 0, 0.125, 0)
+
+[node name="Ring13" parent="Rings" instance=ExtResource("6_1o2yc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -39.6619, 9.807, 44.2461)
+
+[node name="CollisionShape3D" parent="Rings/Ring13/Area3D" index="0"]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0.321873, 0)
+
+[node name="Ring2" parent="Rings/Ring13" index="4"]
+transform = Transform3D(0.176777, 0, 0.176777, 0, 0.25, 0, -0.176777, 0, 0.176777, 0, 0.125, 0)
+
+[node name="Ring14" parent="Rings" instance=ExtResource("6_1o2yc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -44.6619, 9.807, 44.2461)
+
+[node name="CollisionShape3D" parent="Rings/Ring14/Area3D" index="0"]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0.321873, 0)
+
+[node name="Ring2" parent="Rings/Ring14" index="4"]
+transform = Transform3D(0.176777, 0, 0.176777, 0, 0.25, 0, -0.176777, 0, 0.176777, 0, 0.125, 0)
+
+[node name="Ring15" parent="Rings" instance=ExtResource("6_1o2yc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -44.6619, 9.807, 39.2461)
+
+[node name="CollisionShape3D" parent="Rings/Ring15/Area3D" index="0"]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0.321873, 0)
+
+[node name="Ring2" parent="Rings/Ring15" index="4"]
+transform = Transform3D(0.176777, 0, 0.176777, 0, 0.25, 0, -0.176777, 0, 0.176777, 0, 0.125, 0)
+
+[node name="Ring16" parent="Rings" instance=ExtResource("6_1o2yc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -39.6619, 9.807, 39.2461)
+
+[node name="CollisionShape3D" parent="Rings/Ring16/Area3D" index="0"]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0.321873, 0)
+
+[node name="Ring2" parent="Rings/Ring16" index="4"]
+transform = Transform3D(0.176777, 0, 0.176777, 0, 0.25, 0, -0.176777, 0, 0.176777, 0, 0.125, 0)
+
+[node name="Ring3" parent="Rings" instance=ExtResource("6_1o2yc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.8057, 3.44294, 18.6953)
+
+[node name="CollisionShape3D" parent="Rings/Ring3/Area3D" index="0"]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0.321873, 0)
+
+[node name="Ring2" parent="Rings/Ring3" index="4"]
+transform = Transform3D(0.176777, 0, 0.176777, 0, 0.25, 0, -0.176777, 0, 0.176777, 0, 0.125, 0)
+
+[node name="Ring4" parent="Rings" instance=ExtResource("6_1o2yc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.0382, 3.44294, 18.6953)
+
+[node name="CollisionShape3D" parent="Rings/Ring4/Area3D" index="0"]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0.321873, 0)
+
+[node name="Ring2" parent="Rings/Ring4" index="4"]
+transform = Transform3D(0.176777, 0, 0.176777, 0, 0.25, 0, -0.176777, 0, 0.176777, 0, 0.125, 0)
+
+[node name="Hazards" type="Node3D" parent="."]
+
+[node name="Spikes" parent="Hazards" instance=ExtResource("8_0dxp5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -33.6444, 2.4445, 26.4889)
+
+[node name="CollisionShape3D" parent="Hazards/Spikes/SpikeAreaCollider" index="0"]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
+
+[node name="Spikes2" parent="Hazards/Spikes" index="2"]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
+
+[node name="Spikes2" parent="Hazards" instance=ExtResource("8_0dxp5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -33.4187, 2.48606, 32.8027)
+
+[node name="SpikeAreaCollider" parent="Hazards/Spikes2" index="1"]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0.0891699, 0)
+
+[node name="Spikes2" parent="Hazards/Spikes2" index="2"]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
+
+[editable path="SandOcean"]
+[editable path="SandOcean/SandOceanRotatingPlatform"]
+[editable path="SandOcean/SandOceanMovingPlatform"]
+[editable path="SandOcean/SandOceanMovingPlatform2"]
+[editable path="SandOcean/SandOceanMovingPlatform3"]
+[editable path="SandOcean/SandOceanMovingPlatform4"]
+[editable path="SandOcean/SandOceanMovingPlatform5"]
+[editable path="SandOcean/SandOceanMovingPlatform6"]
+[editable path="Rings/Ring"]
+[editable path="Rings/Ring2"]
+[editable path="Rings/Ring5"]
+[editable path="Rings/Ring6"]
+[editable path="Rings/Ring7"]
+[editable path="Rings/Ring8"]
+[editable path="Rings/Ring17"]
+[editable path="Rings/Ring21"]
+[editable path="Rings/Ring22"]
+[editable path="Rings/Ring23"]
+[editable path="Rings/Ring24"]
+[editable path="Rings/Ring25"]
+[editable path="Rings/Ring26"]
+[editable path="Rings/Ring27"]
+[editable path="Rings/Ring18"]
+[editable path="Rings/Ring19"]
+[editable path="Rings/Ring20"]
+[editable path="Rings/Ring9"]
+[editable path="Rings/Ring10"]
+[editable path="Rings/Ring11"]
+[editable path="Rings/Ring12"]
+[editable path="Rings/Ring13"]
+[editable path="Rings/Ring14"]
+[editable path="Rings/Ring15"]
+[editable path="Rings/Ring16"]
+[editable path="Rings/Ring3"]
+[editable path="Rings/Ring4"]
+[editable path="Hazards/Spikes"]
+[editable path="Hazards/Spikes/Spikes2"]
+[editable path="Hazards/Spikes2"]
+[editable path="Hazards/Spikes2/Spikes2"]
