@@ -35,7 +35,7 @@ const MAX_SCATTERED_RINGS_ALLOWED: int = 8
 const HEAL_POINTS_PER_RING: int = 2
 
 # Boolean to check if Sonic is facing left or right
-var facing_left = false
+#var facing_left = false
 
 # input direction
 var direction = Vector3.ZERO
@@ -553,16 +553,16 @@ func handle_attack():
 		elif current_punch == 3:
 			$AnimationPlayer.play("strong")
 			$sonicrigged2/AnimationPlayer.play("PGC 4")
-      
+			'''
 			if facing_left:
 				launch_power = Vector3(-20, 5, 0)
 			else:
 				launch_power = Vector3(20, 5, 0)
+			'''
 			Audio.play(Audio.attackStrong, self)
 			var new_launch = $sonicrigged2.transform.basis.z.normalized() * 20
 			new_launch.y = 5
 			launch_power = new_launch
-			'''
 			
 			current_punch = 0
 	# The code for initiating Sonic's grounded and midair specials, which go to functions that check the selected skills.
@@ -750,22 +750,22 @@ func handle_animation():
 			create_punch_timer()
 			
 			match current_punch:
-			1:
-				$AnimationPlayer.play("punch2")
-				launch_power = Vector3(0, 2, 0)
-				current_punch = 2
-			2:
-				$AnimationPlayer.play("punch3")
-				launch_power = Vector3(0, 2, 0)
-				current_punch = 3
-			3:
-				# The final part of the combo does an immediate strong attack.
-				$AnimationPlayer.play("strong")
-				if facing_left:
-					launch_power = Vector3(-20, 5, 0)
-				else:
-					launch_power = Vector3(20, 5, 0)
-				current_punch = 0
+				1:
+					$AnimationPlayer.play("punch2")
+					launch_power = Vector3(0, 2, 0)
+					current_punch = 2
+				2:
+					$AnimationPlayer.play("punch3")
+					launch_power = Vector3(0, 2, 0)
+					current_punch = 3
+				3:
+					# The final part of the combo does an immediate strong attack.
+					$AnimationPlayer.play("strong")
+					if facing_left:
+						launch_power = Vector3(-20, 5, 0)
+					else:
+						launch_power = Vector3(20, 5, 0)
+					current_punch = 0
 	'''
 
 
