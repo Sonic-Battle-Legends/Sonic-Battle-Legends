@@ -226,7 +226,7 @@ func spawn_bot():
 	
 	new_enemy.set_abilities(enemy_abilities)
 	# randomize position a bit
-	new_enemy.position = Vector3(randf_range(-0.5, 0), 0.1, randf_range(-1, 1))
+	new_enemy.position = Vector3(randf_range(-0.5, 0), 1.1, randf_range(-1, 1))
 	GlobalVariables.main_menu.get_parent().add_child(new_enemy)
 
 
