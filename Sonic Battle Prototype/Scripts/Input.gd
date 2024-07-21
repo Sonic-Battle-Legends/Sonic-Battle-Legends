@@ -51,12 +51,12 @@ func _input(event):
 	character = GlobalVariables.current_character
 	if character:
 		if event is InputEventKey and event.is_pressed() and character.is_on_floor():
-			if character.last_keycode == event.keycode and character.doubletap_timer >= 0:
+			if last_keycode == event.keycode and character.doubletap_timer >= 0:
 				if directional_just_pressed():
 					character.dash_triggered = true
 				if Input.is_action_just_pressed("guard"):
 					character.camera.rotate_camera()
-				character.last_keycode = 0
+				last_keycode = 0
 			else:
-				character.last_keycode = event.keycode
+				last_keycode = event.keycode
 			character.doubletap_timer = character.DOUBLETAP_DELAY

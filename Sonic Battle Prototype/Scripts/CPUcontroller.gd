@@ -284,7 +284,9 @@ func attack_target():
 		# set delay based on difficulty level
 		delay = GlobalVariables.current_difficulty
 		
-		if (target.is_in_group("Player") and target.hurt) or hazard_ahead():
+		# use special move if the bot finished the combo and player is hurt or 
+		# if player is cloe and there is a hazard between the player and the bot
+		if (target.is_in_group("Player") and target.hurt and cpu_character.model_node.get_node("AnimationPlayer").current_animation == "PGC 4") or (hazard_ahead() and distance_to_target < 1):
 			# special attack check
 			cpu_character.special_pressed = true
 		else:

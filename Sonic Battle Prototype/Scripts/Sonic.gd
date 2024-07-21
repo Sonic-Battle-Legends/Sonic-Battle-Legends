@@ -342,10 +342,10 @@ func handle_movement_input():
 func handle_sprite_orientation():
 	$Hitbox.rotation = $sonicrigged2.rotation
 	# Since some moves hold backwards without turning.
-	var flip_threshold = 2
+	#var flip_threshold = 2
 	# if the character is on idle or walk animation, flip the sprite with the input
-	if walking or starting:
-		flip_threshold = 2
+	#if walking or starting:
+	#	flip_threshold = 2
 
 
 ## method to check and perform the dash movement
@@ -969,7 +969,7 @@ func get_hurt(launch_speed, owner_of_the_attack):
 
 ## The function for determining what happens with each selected grounded special move.
 @rpc("any_peer", "reliable", "call_local")
-func ground_special(id, dir):
+func ground_special(id, _dir):
 	if ground_skill == "SHOT":
 		# Sonic's ground "shot" move sends a shockwave in the direction specified by the player.
 		# Sonic is also launched back away from the direction of the projectile.
@@ -1043,7 +1043,7 @@ func ground_special(id, dir):
 
 ## The function for determining what happens with each selected air special move.
 @rpc("authority","call_local")
-func air_special(id, dir):
+func air_special(id, _dir):
 	if air_skill == "SHOT":
 		# This works almost exactly the same as the grounded version,
 		# Sonic sends a wave projectile that falls to the ground, which moves based on a specified
