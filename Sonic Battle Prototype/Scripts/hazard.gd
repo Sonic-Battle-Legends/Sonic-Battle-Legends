@@ -4,6 +4,7 @@ extends Node3D
 
 @export var push_player_backwards: bool = true
 @export var new_direction: Vector3 = Vector3.RIGHT
+@export var damage_caused: int = 15
 
 
 func _on_spike_area_collider_area_entered(area):
@@ -17,4 +18,4 @@ func _on_spike_area_collider_area_entered(area):
 		else:
 			# use spike's UP direction instead
 			hazard_impulse -= new_direction * 15
-		col.get_hurt.rpc_id(col.get_multiplayer_authority(), hazard_impulse, self)
+		col.get_hurt.rpc_id(col.get_multiplayer_authority(), hazard_impulse, self, damage_caused)

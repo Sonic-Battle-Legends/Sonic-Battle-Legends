@@ -6,6 +6,9 @@ extends CharacterBody3D
 # Movement speed
 const SPEED = 5.0
 
+# damage caused
+var damage = 10
+
 var constant_vel : Vector3
 
 # The active player that spawned this projectile. Hitboxes will not interact with the user.
@@ -48,7 +51,7 @@ func _on_hitbox_body_entered(body):
 			# If the collision body is immune to "shot" moves, they will not be affected.
 			# body.get_hurt.rpc_id(body.get_multiplayer_authority(), Vector3(velocity.x, 3, velocity.z))
 			Audio.play(Audio.hitStrong, self)
-			body.get_hurt(Vector3(velocity.x, 3, velocity.z), user)
+			body.get_hurt(Vector3(velocity.x, 3, velocity.z), user, damage)
 
 @rpc("any_peer", "call_local")
 func delete():

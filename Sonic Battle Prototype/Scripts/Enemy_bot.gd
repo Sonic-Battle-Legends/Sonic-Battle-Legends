@@ -68,6 +68,10 @@ var current_punch = 0
 # Each move changes the launch power when necessary and the animation handles the hitbox position.
 var launch_power : Vector3
 
+# this variable determines the amount of damage that the character will cause
+# each move changes the damage caused accordingly
+var damage_caused: int
+
 # States for when Sonic is hurt, locking his actions.
 var hurt = false
 var launched = false
@@ -418,6 +422,7 @@ func handle_attack():
 		$sonicrigged2/AnimationPlayer.play("PGC 4")
 		Audio.play(Audio.attackStrong, self)
 		launch_power = Vector3(direction.x * 20, 5, direction.z * 20)
+		damage_caused = 7
 		attacking = true
 	elif attack_pressed && dashing && can_airdash:
 		# The code for Sonic's dash attack. His dash attack stalls him in the air for a short time.
@@ -427,6 +432,7 @@ func handle_attack():
 		$sonicrigged2/AnimationPlayer.play("DASH ATK")
 		Audio.play(Audio.attack2, self)
 		launch_power = Vector3(velocity.x, 2, velocity.z)
+		damage_caused = 7
 		velocity.y = 3
 	elif attack_pressed && !dashing && !is_on_floor() && can_air_attack:
 		# The code for Sonic's midair attack. He can only use this once before landing, and it
@@ -440,7 +446,7 @@ func handle_attack():
 		var new_launch = $sonicrigged2.transform.basis.z.normalized() * 5
 		new_launch.y = -2
 		launch_power = new_launch
-		
+		damage_caused = 7
 		velocity.y = 4
 	elif attack_pressed && is_on_floor() && !starting:
 		# The code to initiate Sonic's 3-hit combo. The rest of the punches are in _on_animation_player_animation_finished().
@@ -450,6 +456,7 @@ func handle_attack():
 		$sonicrigged2/AnimationPlayer.play("PGC 1")
 		Audio.play(Audio.attack1, self)
 		launch_power = Vector3(0, 0, 0)
+		damage_caused = 7
 		current_punch = 1
 	
 	# The code for initiating Sonic's grounded and midair specials, which go to functions that check the selected skills.
@@ -648,12 +655,14 @@ func anim_end(anim_name):
 				$sonicrigged2/AnimationPlayer.play("PGC 2")
 				Audio.play(Audio.attack2, self)
 				launch_power = Vector3(0, 0, 0)
+				damage_caused = 7
 				current_punch = 2
 			elif current_punch == 2:
 				$AnimationPlayer.play("punch3")
 				$sonicrigged2/AnimationPlayer.play("PGC 3")
 				Audio.play(Audio.attack2, self)
 				launch_power = Vector3(0, 0, 0)
+				damage_caused = 7
 				current_punch = 3
 			elif current_punch == 3:
 				# The final part of the combo does an immediate strong attack.
@@ -664,7 +673,7 @@ func anim_end(anim_name):
 				var new_launch = $sonicrigged2.transform.basis.z.normalized() * 20
 				new_launch.y = 5
 				launch_power = new_launch
-
+				damage_caused = 7
 				current_punch = 0
 		else:
 			# If the player doesn't continue the combo, Sonic's states reset as usual.
@@ -720,11 +729,22 @@ func _on_hitbox_body_entered(body):
 		if !pow_move || body.immunity != "pow":
 			
 			# reduce damage the bot causes if it's not on hard mode
-			if GlobalVariables.current_difficulty > 0:
-				var new_magnitude = launch_power.length() / 2
-				launch_power = launch_power.normalized() * new_magnitude
+			if GlobalVariables.current_difficulty == GlobalVariables.difficulty_levels[2]:
+				var new_magnitude
+				# if it's on normal mode
+				if GlobalVariables.current_difficulty == GlobalVariables.difficulty_levels[1]:
+					new_magnitude = launch_power.length() / 2
+					launch_power = launch_power.normalized() * new_magnitude
+					# verbose to avoid warnings
+					damage_caused = int(float(damage_caused) / 2)
+				else:
+				# if it's on easy mode
+					new_magnitude = launch_power.length() / 3
+					launch_power = launch_power.normalized() * new_magnitude
+					# verbose to avoid warnings
+					damage_caused = int(float(damage_caused) / 3)
 			
-			body.get_hurt.rpc_id(body.get_multiplayer_authority(), launch_power, self)
+			body.get_hurt.rpc_id(body.get_multiplayer_authority(), launch_power, self, damage_caused)
 
 
 func defeated():
@@ -750,16 +770,19 @@ func defeated():
 ## A function that handles Sonic getting hurt. Knockback is determined by the thing that initiates this
 # function, which is why you don't see it here.
 @rpc("any_peer","reliable","call_local")
-func get_hurt(launch_speed, owner_of_the_attack):
+func get_hurt(launch_speed, owner_of_the_attack, damage_taken = 1):
 	# store the last player who damaged this character
 	last_aggressor = owner_of_the_attack
 	
-	var damage = launch_speed.length()
-	
 	# increase damage the bot takes if it's not on hard mode
-	if GlobalVariables.current_difficulty > 0:
-		damage *= 15 * GlobalVariables.current_difficulty
-	
+	if GlobalVariables.current_difficulty == GlobalVariables.difficulty_levels[2]:
+		# if it's on normal mode
+		if GlobalVariables.current_difficulty == GlobalVariables.difficulty_levels[1]:
+			damage_taken *= int(1.5 * GlobalVariables.current_difficulty)
+		else:
+		# if it's on easy mode
+			damage_taken *= 3 * GlobalVariables.current_difficulty
+		
 	var sparks = Instantiables.SPARKS.instantiate()
 	sparks.position = position + Vector3(0, 0.1, 0)
 	get_parent().add_child(sparks)
@@ -769,13 +792,13 @@ func get_hurt(launch_speed, owner_of_the_attack):
 	
 	if !hurt:
 		# rings shouldn't provid all life points back
-		if damage > MAX_SCATTERED_RINGS_ALLOWED * HEAL_POINTS_PER_RING:
+		if damage_taken > MAX_SCATTERED_RINGS_ALLOWED * HEAL_POINTS_PER_RING:
 			scatter_rings(MAX_SCATTERED_RINGS_ALLOWED)
 			Audio.play(Audio.ring_spread, self)
 		else:
 			scatter_rings()
 		
-	life_total -= damage
+	life_total -= damage_taken
 	
 	if GlobalVariables.current_stage != null:
 		if (life_total <= 0 and GlobalVariables.game_ended == false):
@@ -867,6 +890,7 @@ func ground_special(id, _dir):
 			get_tree().current_scene.add_child(new_ring, true)
 		else:	# When a ring is on the field.
 			launch_power = Vector3(0, 2, 0)
+			damage_caused = 7
 			pow_move = true
 			$AnimationPlayer.play("powAir")
 			$sonicrigged2/AnimationPlayer.play("DJMP 2")
@@ -924,7 +948,7 @@ func air_special(id, _dir):
 		pow_move = true
 		bouncing = true	# Initiates the "bouncing" state for bouncing off the ground.
 		launch_power = Vector3(0, 2, 0)
-		
+		damage_caused = 7
 		velocity = $sonicrigged2.basis.z.normalized() * 10
 		velocity.y = -5
 	elif air_skill == "SET":
