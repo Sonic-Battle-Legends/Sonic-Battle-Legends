@@ -36,3 +36,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.57528, 0, 3.33939)
 volume_db = -7.0
 
 [editable path="testmap"]
+[editable path="Spikes4"]
+[editable path="Spikes4/Spikes2"]

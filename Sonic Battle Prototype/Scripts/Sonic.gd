@@ -34,9 +34,6 @@ const MAX_SCATTERED_RINGS_ALLOWED: int = 8
 # heal points per ring collected
 const HEAL_POINTS_PER_RING: int = 2
 
-# Boolean to check if Sonic is facing left or right
-var facing_left = false
-
 # input direction
 var direction = Vector3.ZERO
 
@@ -106,9 +103,6 @@ var coyote_timer: SceneTreeTimer
 # distance from ground when on air
 var coyote_ground_distance: float = 0.0
 
-# store the keycode of the last button pressed for double tap check
-var last_keycode: int = 0
-
 # store the time left for double tap check
 var doubletap_timer = DOUBLETAP_DELAY
 # to allow dash only after a double tap
@@ -128,7 +122,7 @@ var healing_threshold: float = 3.0
 # where the heal effect scene that will be instantiated will be stored
 var heal_effect: Node3D
 # boolean to check when Sonic is healing
-var healing : bool
+var healing: bool
 
 # the last player who caused damage to this character
 var last_aggressor
@@ -145,7 +139,7 @@ var punch_timer: SceneTreeTimer
 # store the input state transmited by a input node or CPU node
 # this allows to separate the inputs from the character script
 # which helps creating CPU characters
-var punch_pressed: bool = false
+#var punch_pressed: bool = false
 var special_pressed: bool = false
 var jump_pressed: bool = false
 var attack_pressed: bool = false
@@ -168,11 +162,11 @@ var last_spawn_position: Vector3 = Vector3.ZERO
 @export var camera: Camera3D
 
 ## the character model which turns accordingly to the input direction
+## this is used as reference direction for the Bots
 @export var model_node: Node3D
 
 
 func _enter_tree():
-	
 	#set_multiplayer_authority(str(name).to_int())
 	set_multiplayer_authority(GlobalVariables.character_id)
 
@@ -225,7 +219,6 @@ func _process(delta):
 func _physics_process(delta):
 	if !is_multiplayer_authority(): return
 	
-	
 	if !is_on_floor():
 		# add the gravity.
 		# The speed at which Sonic falls
@@ -259,7 +252,6 @@ func _physics_process(delta):
 			chasing_ring = false
 			starting = false
 			pow_move = false
-		
 		
 		if spiked:
 			spiked = false
@@ -350,10 +342,10 @@ func handle_movement_input():
 func handle_sprite_orientation():
 	$Hitbox.rotation = $sonicrigged2.rotation
 	# Since some moves hold backwards without turning.
-	var flip_threshold = 2
+	#var flip_threshold = 2
 	# if the character is on idle or walk animation, flip the sprite with the input
-	if walking or starting:
-		flip_threshold = 2
+	#if walking or starting:
+	#	flip_threshold = 2
 
 
 ## method to check and perform the dash movement
@@ -380,33 +372,6 @@ func handle_dash():
 		dust_effect.get_child(0).emitting = true
 		dust_effect.get_child(1).emitting = true
 		
-		'''
-		if $AnimationPlayer.current_animation == "startWalk":
-			#velocity = direction * DASH_SPEED
-			#velocity.y = 4
-			$AnimationPlayer.play("dash")
-			dashing = true
-		if velocity.x < 0 and Input.is_action_just_pressed("left"):
-			velocity = Vector3(-DASH_SPEED, 4, velocity.z)
-			$AnimationPlayer.play("dash")
-			$sonicrigged2/AnimationPlayer.play("DASH")
-			dashing = true
-		elif velocity.x > 0 and Input.is_action_just_pressed("right"):
-			velocity = Vector3(DASH_SPEED, 4, velocity.z)
-			$AnimationPlayer.play("dash")
-			$sonicrigged2/AnimationPlayer.play("DASH")
-			dashing = true
-		elif velocity.z < 0 and Input.is_action_just_pressed("up"):
-			velocity = Vector3(velocity.x, 4, -DASH_SPEED)
-			$AnimationPlayer.play("dash")
-			$sonicrigged2/AnimationPlayer.play("DASH")
-			dashing = true
-		elif velocity.z > 0 and Input.is_action_just_pressed("down"):
-			velocity = Vector3(velocity.x, 4, DASH_SPEED)
-			$AnimationPlayer.play("dash")
-			$sonicrigged2/AnimationPlayer.play("DASH")
-			dashing = true
-		'''
 	dash_triggered = false
 
 
@@ -436,15 +401,8 @@ func handle_jump():
 			var new_velocity = $sonicrigged2.transform.basis.z.normalized() * AIRDASH_SPEED
 			new_velocity.y = 4
 			velocity = new_velocity
-			
-			'''
-			if facing_left:
-				velocity = Vector3(-AIRDASH_SPEED, 4, 0)
-			else:
-				velocity = Vector3(AIRDASH_SPEED, 4, 0)
-			'''
 	
-	# controlled height jump
+	# controlled height jump test
 	#if jump_clicked and Input.is_action_just_released("jump") and velocity.y > 0:
 	#	velocity.y = 1
 
@@ -526,23 +484,7 @@ func handle_attack():
 	if attack_pressed && starting:
 		# The code for Sonic's strong attacks. If he's holding the opposite direction,
 		# he executes an up strong attack which slightly bumps him backwards.
-		'''
-		if (facing_left && direction.x > 0) || (!facing_left && direction.x < 0):
-			$AnimationPlayer.play("upStrong")
-			launch_power = Vector3(0, 7, 0)
-			if facing_left:
-				velocity.x = 1
-			else:
-				velocity.x = -1
-			attacking = true
-		else:
-			# If sonic holds any other direction, he executes a normal strong attack
-			# that sends the opponent in the direction he specifies.
-			$AnimationPlayer.play("strong")
-			$sonicrigged2/AnimationPlayer.play("PGC 4")
-			launch_power = Vector3(direction.x * 20, 5, direction.z * 20)
-			attacking = true
-		'''
+		
 		# If sonic holds any other direction, he executes a normal strong attack
 		# that sends the opponent in the direction he specifies.
 		$AnimationPlayer.play("strong")
@@ -572,13 +514,6 @@ func handle_attack():
 		new_launch.y = -2
 		launch_power = new_launch
 		
-		'''
-		if facing_left:
-			launch_power = Vector3(-5, -2, 0)
-		else:
-			launch_power = Vector3(5, -2, 0)
-		'''
-		
 		velocity.y = 4
 	elif Input.is_action_just_pressed("punch") && is_on_floor() && !starting:
 		create_punch_timer()
@@ -607,18 +542,14 @@ func handle_attack():
 		elif current_punch == 3:
 			$AnimationPlayer.play("strong")
 			$sonicrigged2/AnimationPlayer.play("PGC 4")
-	  
-			if facing_left:
-				launch_power = Vector3(-20, 5, 0)
-			else:
-				launch_power = Vector3(20, 5, 0)
+			
 			Audio.play(Audio.attackStrong, self)
 			var new_launch = $sonicrigged2.transform.basis.z.normalized() * 20
 			new_launch.y = 5
 			launch_power = new_launch
 			
-			
 			current_punch = 0
+	
 	# The code for initiating Sonic's grounded and midair specials, which go to functions that check the selected skills.
 	# no abilities on the hub areas
 	if ground_skill != null and air_skill != null: #GlobalVariables.current_hub == null and GlobalVariables.current_area == null:
@@ -681,7 +612,7 @@ func increase_points():
 	hud.change_points(points)
 	GlobalVariables.character_points = points
 	if points >= GlobalVariables.points_to_win:
-			GlobalVariables.win(self)
+		GlobalVariables.win(self)
 
 
 ## gain one extra life
@@ -731,8 +662,6 @@ func scatter_rings(amount = 1):
 		rings -= amount
 		if rings < 0:
 			rings = 0
-		#if rings >= amount:
-		#	GlobalVariables.total_rings -= amount
 	
 	# update hud
 	hud.update_rings(rings)
@@ -747,11 +676,6 @@ func scatter_rings(amount = 1):
 		proxy_position = proxy_position.rotated(Vector3.UP, deg_to_rad(angle * i))
 		var new_ring_position = position + proxy_position.normalized()
 		Instantiables.create_scattered_ring(new_ring_position, position)
-
-
-## create a timer to count how long the scaterred rings will remain on the scene
-#func create_scattered_ring_timer():
-#	GlobalVariables.scattered_ring_timer = get_tree().create_timer(GlobalVariables.SCATTERED_RINGS_TIME, false, true)
 
 
 ## This function mostly handles what animations play with what booleans.
@@ -803,32 +727,6 @@ func handle_animation():
 		elif chasing_aggressor || can_spike:
 			$AnimationPlayer.play("idle")
 			$sonicrigged2/AnimationPlayer.play("TARGET")
-	'''
-	elif $AnimationPlayer.current_animation == "punch1" || $AnimationPlayer.current_animation == "punch2" || $AnimationPlayer.current_animation == "punch3":
-		# The 3-hit combo. If the player is holding the attack button by the time a punch finishes,
-		# it moves on to the next punch.
-		if Input.is_action_just_pressed("punch") and punch_timer != null and punch_timer.time_left > 0:
-			# create a new timer to give time for a possible combo sequence
-			create_punch_timer()
-			
-			match current_punch:
-			1:
-				$AnimationPlayer.play("punch2")
-				launch_power = Vector3(0, 2, 0)
-				current_punch = 2
-			2:
-				$AnimationPlayer.play("punch3")
-				launch_power = Vector3(0, 2, 0)
-				current_punch = 3
-			3:
-				# The final part of the combo does an immediate strong attack.
-				$AnimationPlayer.play("strong")
-				if facing_left:
-					launch_power = Vector3(-20, 5, 0)
-				else:
-					launch_power = Vector3(20, 5, 0)
-				current_punch = 0
-	'''
 
 
 ## method to set the abilities and immunity of the character
@@ -909,13 +807,6 @@ func anim_end(anim_name):
 				new_launch.y = 5
 				launch_power = new_launch
 				
-				'''
-				if facing_left:
-					launch_power = Vector3(-20, 5, 0)
-				else:
-					launch_power = Vector3(20, 5, 0)
-				'''
-				
 				current_punch = 0
 		else:
 			attacking = false
@@ -988,10 +879,10 @@ func defeated(): #who_owns_last_attack = null):
 		# trigger once per instance
 		was_defeated = true
 		
-		# give a point for defeating the character
-		#if who_owns_last_attack != null:
-		#	if who_owns_last_attack.has_method("increase_points"):
-		#		who_owns_last_attack.increase_points()
+		var ko_effect = Instantiables.KO_EFFECT.instantiate()
+		ko_effect.position = position
+		get_parent().add_child(ko_effect)
+		ko_effect.get_child(0).emitting = true
 		
 		if last_aggressor != null:
 			if last_aggressor.has_method("increase_points"):
@@ -1022,30 +913,21 @@ func get_hurt(launch_speed, owner_of_the_attack):
 	sparks.get_child(0).emitting = true
 	
 	# give a invunerability time
+	
 	if !hurt:
-		# if had rings, scatter them
-		#if rings > 0:
-		# you can add the amount of rings to be scattered as a parameter
-		
-		# rings should provided all life points back
+		# rings shouldn't provid all life points back
 		if damage > MAX_SCATTERED_RINGS_ALLOWED * HEAL_POINTS_PER_RING:
 			scatter_rings(MAX_SCATTERED_RINGS_ALLOWED)
 			Audio.play(Audio.ring_spread, self)
 		else:
 			scatter_rings()
-		#else:
-			# if it was not in a stage where the character have life points,
-			# defeat the character for having no rings when hurt
-		#	if GlobalVariables.current_stage != null:
-		#		defeated()
 	
 	life_total -= damage
 	hud.change_life(life_total)
 	
 	if GlobalVariables.current_stage != null:
 		if (life_total <= 0 and GlobalVariables.game_ended == false):
-			defeated() #owner_of_the_attack)
-	
+			defeated()
 	
 	# A bunch of states reset to make sure getting hurt cancels them out.
 	hurt = true
@@ -1086,18 +968,17 @@ func get_hurt(launch_speed, owner_of_the_attack):
 
 ## The function for determining what happens with each selected grounded special move.
 @rpc("any_peer", "reliable", "call_local")
-func ground_special(id, dir):
+func ground_special(id, _dir):
 	if ground_skill == "SHOT":
 		# Sonic's ground "shot" move sends a shockwave in the direction specified by the player.
 		# Sonic is also launched back away from the direction of the projectile.
-		# If no direction is held, the direction is determined by facing_left.
 		can_air_attack = false
 		can_airdash = false
 		$AnimationPlayer.play("shotGround")
 		$sonicrigged2/AnimationPlayer.play("DJMP 2")
 		Audio.play(Audio.shot, self)
 		#Instantiates a new shot projectile.
-		var new_shot = Instantiables.create(Instantiables.objects.SHOT_PROJECTILE) #shot_projectile.instantiate()
+		var new_shot = Instantiables.create(Instantiables.objects.SHOT_PROJECTILE)
 		new_shot.user = self	# This makes sure Sonic can't hit himself with a projectile.
 		new_shot.set_meta("author", name)
 		new_shot.name = "wave" + str(id)
@@ -1111,18 +992,17 @@ func ground_special(id, dir):
 		new_shot.position = position
 		# Creates the projectile.
 		new_shot.set_multiplayer_authority(get_multiplayer_authority())
-		# get_tree().current_scene.add_child(new_shot, true)
 		get_tree().current_scene.add_child(new_shot, true)
 	elif ground_skill == "POW":
 		# Sonic's ground "pow" move first throws a ring. If the player inputs the move again,
 		# Sonic will accelerate in the direction of the ring.
-		# The ring is sent in a specified direciton, if there is no direction it is sent based on facing_left.
+		# The ring is sent in a specified direciton.
 		if !thrown_ring:	# When no ring is on the field.
 			$AnimationPlayer.play("powGround")
 			$sonicrigged2/AnimationPlayer.play("RING")
 			Audio.play(Audio.ring, self)
 			#Instantiates a new ring projectile
-			var new_ring = Instantiables.create(Instantiables.objects.TOSS_RING) #ring.instantiate()
+			var new_ring = Instantiables.create(Instantiables.objects.TOSS_RING)
 			new_ring.ring_owner = self
 			active_ring = new_ring
 			new_ring.name = "ring" + str(id)
@@ -1162,7 +1042,7 @@ func ground_special(id, dir):
 
 ## The function for determining what happens with each selected air special move.
 @rpc("authority","call_local")
-func air_special(id, dir):
+func air_special(id, _dir):
 	if air_skill == "SHOT":
 		# This works almost exactly the same as the grounded version,
 		# Sonic sends a wave projectile that falls to the ground, which moves based on a specified
@@ -1189,7 +1069,6 @@ func air_special(id, dir):
 		get_tree().current_scene.add_child(new_shot, true)
 	elif air_skill == "POW":
 		# Sonic's midair "pow" move causes him to curl into a ball and launch himself towards the ground
-		# and foward slightly depending on held direction/facing_left.
 		# If Sonic hits the ground, he bounces once.
 		$AnimationPlayer.play("powAir")
 		$sonicrigged2/AnimationPlayer.play("DJMP 2")
