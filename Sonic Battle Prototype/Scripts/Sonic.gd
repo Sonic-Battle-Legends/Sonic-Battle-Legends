@@ -929,7 +929,6 @@ func get_hurt(launch_speed, owner_of_the_attack):
 		if (life_total <= 0 and GlobalVariables.game_ended == false):
 			defeated()
 	
-	
 	# A bunch of states reset to make sure getting hurt cancels them out.
 	hurt = true
 	falling = false
