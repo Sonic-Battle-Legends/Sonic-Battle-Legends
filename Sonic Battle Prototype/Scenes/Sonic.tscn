@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=3 uid="uid://3vv715sdbbdw"]
+[gd_scene load_steps=40 format=3 uid="uid://3vv715sdbbdw"]
 
 [ext_resource type="Script" path="res://Scripts/Sonic.gd" id="1_0e6eq"]
 [ext_resource type="Texture2D" uid="uid://cnvca7d2mepgx" path="res://Sprites/Sonic.png" id="1_w8pxe"]
@@ -61,7 +61,7 @@ tracks/3/keys = {
 
 [sub_resource type="Animation" id="Animation_0pbkp"]
 resource_name = "airAttack"
-length = 0.4662
+length = 0.4496
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -69,7 +69,7 @@ tracks/0/path = NodePath("Hitbox/CollisionShape3D2:disabled")
 tracks/0/interp = 0
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.3, 0.5),
+"times": PackedFloat32Array(0, 0.26, 0.4662),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [true, false, true]
@@ -84,7 +84,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [0.158911]
+"values": [0.179784]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -96,7 +96,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector3(0, -0.0912145, 0.0719795)]
+"values": [Vector3(0, -0.117817, 0.0719795)]
 }
 
 [sub_resource type="Animation" id="Animation_1ehhq"]
@@ -168,7 +168,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [0.155064]
+"values": [0.218943]
 }
 
 [sub_resource type="Animation" id="Animation_kh45i"]
@@ -314,28 +314,28 @@ tracks/0/path = NodePath("Hitbox/CollisionShape3D2:disabled")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.4, 0.63),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0, 0.23, 0.32, 0.63),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
-"values": [true, false, true]
+"values": [false, true, false, true]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/path = NodePath("Hitbox/CollisionShape3D2:position")
-tracks/1/interp = 1
+tracks/1/interp = 0
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0, 0.34),
+"transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector3(0, 0.0386497, 0.0807597)]
+"values": [Vector3(0, 0.0127703, 0.0489526), Vector3(0, 0.0272295, 0.0733799)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/path = NodePath("Hitbox/CollisionShape3D2:shape:radius")
-tracks/2/interp = 1
+tracks/2/interp = 0
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "times": PackedFloat32Array(0),
@@ -382,7 +382,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [0.128081]
+"values": [0.187378]
 }
 
 [sub_resource type="Animation" id="Animation_rvrgl"]
@@ -404,7 +404,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_7mawf"]
 resource_name = "punch1"
-length = 0.3996
+length = 0.4995
 step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -413,7 +413,7 @@ tracks/0/path = NodePath("Hitbox/CollisionShape3D2:disabled")
 tracks/0/interp = 0
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.15, 0.3),
+"times": PackedFloat32Array(0, 0.28, 0.46),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [true, false, true]
@@ -428,7 +428,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector3(0, -0.026314, 0.161431)]
+"values": [Vector3(0, -0.026314, 0.123125)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -440,12 +440,12 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [0.112339]
+"values": [0.151919]
 }
 
 [sub_resource type="Animation" id="Animation_bwkoe"]
 resource_name = "punch2"
-length = 0.1998
+length = 0.2498
 step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -481,12 +481,12 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [0.142548]
+"values": [0.170393]
 }
 
 [sub_resource type="Animation" id="Animation_xo7hq"]
 resource_name = "punch3"
-length = 0.2664
+length = 0.2997
 step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -495,7 +495,7 @@ tracks/0/path = NodePath("Hitbox/CollisionShape3D2:disabled")
 tracks/0/interp = 0
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.15, 0.254133),
+"times": PackedFloat32Array(0, 0.13, 0.254133),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [true, false, true]
@@ -510,7 +510,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector3(0, 0.0124009, 0.0652926)]
+"values": [Vector3(0, 0.028139, 0.0687705)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -611,7 +611,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_ey8f7"]
 resource_name = "strong"
-length = 0.5328
+length = 0.5495
 step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -620,10 +620,10 @@ tracks/0/path = NodePath("Hitbox/CollisionShape3D2:disabled")
 tracks/0/interp = 0
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.35),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0, 0.14, 0.35),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
-"values": [false, true]
+"values": [true, false, true]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -635,7 +635,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [0.194074]
+"values": [0.233666]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -692,7 +692,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector3(0.032849, 0, 0)]
+"values": [Vector3(0.032849, 0, 0.0472785)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -704,7 +704,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [0.172449]
+"values": [0.206574]
 }
 
 [sub_resource type="Animation" id="Animation_ccdw7"]
@@ -724,9 +724,50 @@ tracks/0/keys = {
 "values": [Rect2(81, 101, 30, 32), Rect2(116, 100, 23, 34), Rect2(144, 99, 28, 35), Rect2(177, 101, 30, 33), Rect2(212, 101, 28, 33), Rect2(245, 100, 23, 34), Rect2(273, 99, 28, 35), Rect2(45, 100, 31, 32)]
 }
 
+[sub_resource type="Animation" id="Animation_likoo"]
+resource_name = "aim"
+length = 0.4995
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Hitbox/CollisionShape3D2:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, -0.00366874, 0.0541974)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Hitbox/CollisionShape3D2:shape:radius")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.189129]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Hitbox/CollisionShape3D2:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.48),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [true, false, true]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_soexl"]
 _data = {
 "RESET": SubResource("Animation_spsdn"),
+"aim": SubResource("Animation_likoo"),
 "airAttack": SubResource("Animation_0pbkp"),
 "airdash": SubResource("Animation_1ehhq"),
 "dash": SubResource("Animation_ta7g8"),

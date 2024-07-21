@@ -74,6 +74,7 @@ var launch_power : Vector3
 # States for when Sonic is hurt, locking his actions.
 var hurt = false
 var launched = false
+var spiked = false
 
 # Skills! These strings determine what Sonic's grounded and midair special type are.
 # Immunity determines which category of special move Sonic is immune to.
@@ -126,9 +127,15 @@ var healing_pace: float = 0.1
 var healing_threshold: float = 3.0
 # where the heal effect scene that will be instantiated will be stored
 var heal_effect: Node3D
+# boolean to check when Sonic is healing
+var healing : bool
 
 # the last player who caused damage to this character
 var last_aggressor
+# boolean to check when the player is chasing after a successful wall jump
+var chasing_aggressor : bool
+# boolean to check when the player can do the AIM attack
+var can_spike : bool
 
 # prevent defeated() to be called more than once
 var was_defeated: bool = false
@@ -239,33 +246,57 @@ func _physics_process(delta):
 		# Midair moves can only be used after a jump once, and they can be used again after touching the ground.
 		can_airdash = true
 		can_air_attack = true
+		chasing_aggressor = false
+		can_spike = false
 		# If Sonic is in his midair "pow" bouncing state, his velocity sends him upwards off the ground.
 		if bouncing:
 			velocity.y = 5
 			can_airdash = false
 			can_air_attack = false	# As funny as it would be to have the SA2 bounce spam, it would be too OP here.
 		
+		if chasing_ring:
+			attacking = false
+			chasing_ring = false
+			starting = false
+			pow_move = false
+		
+		
+		if spiked:
+			spiked = false
+			$sonicrigged2/AnimationPlayer.play("KO")
+		
 		handle_dash()
-		
-	if !attacking && !hurt:
-		handle_jump()
-		
-		handle_movement_input()
-		
-		handle_sprite_orientation()
-		
-		handle_attack()
-		
-		handle_upper()
-		
+	
+	if is_on_wall() && $sonicrigged2/AnimationPlayer.current_animation == "LAUNCHED":
+		velocity.y = 0
+		$sonicrigged2/AnimationPlayer.play("WALL")
+	
+	if !attacking && !hurt && !chasing_aggressor && !can_spike:
+		if !healing:
+			handle_jump()
+			
+			handle_movement_input()
+			
+			handle_sprite_orientation()
+			
+			handle_attack()
+			
+			handle_upper()
+			
+			rotate_model()
+		else:
+			# if Sonic is in his healing state, he slows to a halt.
+			velocity.x = lerp(velocity.x, 0.0, 0.1)
+			velocity.z = lerp(velocity.z, 0.0, 0.1)
 		handle_healing()
 		
-		rotate_model()
-		
 	else:
-		# if Sonic is in his attacking or hurt state, he slows to a halt.
-		velocity.x = lerp(velocity.x, 0.0, 0.1)
-		velocity.z = lerp(velocity.z, 0.0, 0.1)
+		if !chasing_ring && !bouncing && !chasing_aggressor:
+			# if Sonic is in his attacking or hurt state, he slows to a halt.
+			velocity.x = lerp(velocity.x, 0.0, 0.1)
+			velocity.z = lerp(velocity.z, 0.0, 0.1)
+		if $sonicrigged2/AnimationPlayer.current_animation == "WALL":
+			handle_walljump()
 	
 	# defeated if going lower than the lower limit of the map or
 	# life total is less than or equal to zero
@@ -281,9 +312,17 @@ func _physics_process(delta):
 			velocity = Vector3.ZERO
 			position = last_spawn_position
 	
-	# If Sonic is currently chasing a ring he threw from his ground "pow" move, he accelerates to its position.
-	if chasing_ring and active_ring != null:
-		velocity = lerp(velocity, (active_ring.transform.origin - transform.origin) * 20, 0.5)
+	# If Sonic is currently chasing an aggressor after successfully executing a wall jump, he accelerates to above its position.
+	if chasing_aggressor:
+		velocity.x = lerp(velocity.x, (last_aggressor.transform.origin - transform.origin).normalized().x * 20, 0.25)
+		velocity.z = lerp(velocity.z, (last_aggressor.transform.origin - transform.origin).normalized().z * 20, 0.25)
+		
+		if velocity.y <= 0:
+			chasing_aggressor = false
+			can_spike = true
+	
+	if can_spike:
+		handle_spike()
 	
 	# Automatically handle the animation and character controller physics.
 	handle_animation()
@@ -409,6 +448,11 @@ func handle_jump():
 	#if jump_clicked and Input.is_action_just_released("jump") and velocity.y > 0:
 	#	velocity.y = 1
 
+func handle_walljump():
+	if jump_pressed && $sonicrigged2/AnimationPlayer.current_animation == "WALL":
+		hurt = false
+		velocity.y = 7
+		chasing_aggressor = true
 
 ## help responsiveness feeling by forgiving the difference between the human response and the machine accuracy
 func coyote_time() -> bool:
@@ -465,6 +509,16 @@ func handle_upper():
 				launch_power = Vector3($sonicrigged2.basis.z.normalized().x * 5, 5, $sonicrigged2.basis.z.normalized().x * 5)
 				velocity.y = 3
 				attacking = true
+
+## method to execute the AIM attack
+func handle_spike():
+	if attack_pressed:
+		can_spike = false
+		$AnimationPlayer.play("aim")
+		$sonicrigged2/AnimationPlayer.play("AIM")
+		Audio.play(Audio.attackStrong, self)
+		launch_power = Vector3(0, -5, 0)
+		attacking = true
 
 ## method to determine what happens when punch attack is pressed, grounded or not
 ## ALL the basic attacks are handled in this chain of if statements.
@@ -534,26 +588,26 @@ func handle_attack():
 			$AnimationPlayer.play("punch1")
 			$sonicrigged2/AnimationPlayer.play("PGC 1")
 			Audio.play(Audio.attack1, self) 
-			launch_power = Vector3(0, 2, 0)
+			launch_power = Vector3(0, 0, 0)
 			current_punch = 1
 		elif current_punch == 1:
 			$AnimationPlayer.play("punch2")
 			$sonicrigged2/AnimationPlayer.play("PGC 2")
 			Audio.play(Audio.attack2, self)
-			launch_power = Vector3(0, 2, 0)
+			launch_power = Vector3(0, 0, 0)
 			current_punch = 2
 			
 		elif current_punch == 2:
 			$AnimationPlayer.play("punch3")
 			$sonicrigged2/AnimationPlayer.play("PGC 3")
 			Audio.play(Audio.attack2, self)
-			launch_power = Vector3(0, 2, 0)
+			launch_power = Vector3(0, 0, 0)
 			current_punch = 3
 		
 		elif current_punch == 3:
 			$AnimationPlayer.play("strong")
 			$sonicrigged2/AnimationPlayer.play("PGC 4")
-      
+	  
 			if facing_left:
 				launch_power = Vector3(-20, 5, 0)
 			else:
@@ -562,7 +616,7 @@ func handle_attack():
 			var new_launch = $sonicrigged2.transform.basis.z.normalized() * 20
 			new_launch.y = 5
 			launch_power = new_launch
-			'''
+			
 			
 			current_punch = 0
 	# The code for initiating Sonic's grounded and midair specials, which go to functions that check the selected skills.
@@ -579,13 +633,15 @@ func handle_attack():
 
 ## method to pace the healing of the character given an input
 func handle_healing():	
-	if guard_pressed:
+	if guard_pressed && is_on_floor():
 		healing_time += healing_pace
 		if healing_time >= healing_threshold:
+			healing = true
 			heal()
 			Audio.play(Audio.heal, self)
 			healing_time = 0
 	else:
+		healing = false
 		healing_time = 0
 		if heal_effect != null:
 			heal_effect.hide()
@@ -701,7 +757,7 @@ func scatter_rings(amount = 1):
 ## This function mostly handles what animations play with what booleans.
 func handle_animation():
 	# None of these animations play when Sonic is in his hurt or attacking state.
-	if !attacking && !hurt:
+	if !attacking && !hurt && !healing && !chasing_aggressor && !can_spike:
 		if is_on_floor():
 			# Animations that play when Sonic is on the ground. If he's not starting movement, at least.
 			if !starting && !dashing:
@@ -741,6 +797,12 @@ func handle_animation():
 				attacking = false
 				$AnimationPlayer.play("idle")
 				$sonicrigged2/AnimationPlayer.play("IDLE")
+		elif healing:
+			$AnimationPlayer.play("idle")
+			$sonicrigged2/AnimationPlayer.play("HEAL")
+		elif chasing_aggressor || can_spike:
+			$AnimationPlayer.play("idle")
+			$sonicrigged2/AnimationPlayer.play("TARGET")
 	'''
 	elif $AnimationPlayer.current_animation == "punch1" || $AnimationPlayer.current_animation == "punch2" || $AnimationPlayer.current_animation == "punch3":
 		# The 3-hit combo. If the player is holding the attack button by the time a punch finishes,
@@ -813,6 +875,9 @@ func anim_end(anim_name):
 		# Resets Sonic's attacking state when his dash attack ends.
 		attacking = false
 		dashing = false
+	elif anim_name == "AIM":
+		attacking = false
+		can_air_attack = false
 	elif anim_name == "AIR" || anim_name == "PAC":
 		# Resets Sonic's attacking state when his air attack ends. Also sets him to falling state.
 		attacking = false
@@ -828,12 +893,12 @@ func anim_end(anim_name):
 			if current_punch == 1:
 				$AnimationPlayer.play("punch2")
 				$sonicrigged2/AnimationPlayer.play("PGC 2")
-				launch_power = Vector3(0, 2, 0)
+				launch_power = Vector3(0, 0, 0)
 				current_punch = 2
 			elif current_punch == 2:
 				$AnimationPlayer.play("punch3")
 				$sonicrigged2/AnimationPlayer.play("PGC 3")
-				launch_power = Vector3(0, 2, 0)
+				launch_power = Vector3(0, 0, 0)
 				current_punch = 3
 			elif current_punch == 3:
 				# The final part of the combo does an immediate strong attack.
@@ -860,32 +925,49 @@ func anim_end(anim_name):
 		hurt = false
 		starting = false
 		can_air_attack = false
+	elif anim_name == "KO":
+		$sonicrigged2/AnimationPlayer.play("GET UP FULL")
+	elif anim_name == "GET UP FULL":
+		hurt = false
+		starting = false
+		can_air_attack = false
+	elif anim_name == "WALL":
+		hurt = false
+		starting = false
+		can_air_attack = false
 	elif anim_name == "LAUNCHED":
 		# For as long as Sonic is in the air, the animation loops. When he hits the ground, his state resets.
 		if is_on_floor():
-			hurt = false
-			starting = false
+			$sonicrigged2/AnimationPlayer.play("KO")
 		else:
 			$AnimationPlayer.play("hurtStrong")
 			$sonicrigged2/AnimationPlayer.play("LAUNCHED")
-	elif anim_name in ["DJMP 2", "RING", "BOMB G (LAZY)", "BOMB A"]:
+	elif anim_name in ["RING", "BOMB G (LAZY)", "BOMB A"]:
 		# Handles Sonic's reset states for all of his special moves.
 		attacking = false
 		starting = false
 		bouncing = false
 		pow_move = false
-		# If the animation is used for chasing the ring, the ring disappears and more states reset.
-		if chasing_ring:
-			chasing_ring = false
-			thrown_ring = false
-			if active_ring != null:
-				active_ring.queue_free()
 		if !is_on_floor():
 			# Sets Sonic's falling state if he's in the air.
 			jumping = false
 			falling = true
 			$AnimationPlayer.play("fall")
 			$sonicrigged2/AnimationPlayer.play("FALL")
+	elif anim_name == "DJMP 2":
+		if !is_on_floor() && chasing_ring:
+			$sonicrigged2/AnimationPlayer.play("DJMP 2")
+		else:
+			attacking = false
+			starting = false
+			bouncing = false
+			pow_move = false
+			if !is_on_floor():
+				# Sets Sonic's falling state if he's in the air.
+				jumping = false
+				falling = true
+				$AnimationPlayer.play("fall")
+				$sonicrigged2/AnimationPlayer.play("FALL")
 	
 	if punch_timer == null or punch_timer.time_left <= 0:
 		# If the player doesn't continue the combo, Sonic's states reset as usual.
@@ -970,6 +1052,7 @@ func get_hurt(launch_speed, owner_of_the_attack):
 	falling = false
 	jumping = false
 	bouncing = false
+	healing = false
 	
 	velocity = launch_speed
 	# If Sonic was chasing a ring, the ring is deleted.
@@ -984,12 +1067,16 @@ func get_hurt(launch_speed, owner_of_the_attack):
 		$AnimationPlayer.play("hurtStrong")
 		$sonicrigged2/AnimationPlayer.play("LAUNCHED")
 	else:
-		if launch_speed.y < 5:
-			$AnimationPlayer.play("hurt")
-			$sonicrigged2/AnimationPlayer.play("HURT 1")
-		else:
+		if launch_speed.y > 5:
 			$AnimationPlayer.play("hurtAir")
 			$sonicrigged2/AnimationPlayer.play("HURT 2")
+		elif launch_speed.y < 0 && !is_on_floor():
+			$AnimationPlayer.play("hurtAir")
+			$sonicrigged2/AnimationPlayer.play("SPIKED")
+			spiked = true
+		else:
+			$AnimationPlayer.play("hurt")
+			$sonicrigged2/AnimationPlayer.play("HURT 1")
 	
 	# More state resets. Idk why these are placed at the end.
 	current_punch = 0
@@ -1045,12 +1132,17 @@ func ground_special(id, dir):
 			# Creates the ring projectile.
 			get_tree().current_scene.add_child(new_ring, true)
 		else:	# When a ring is on the field.
-			launch_power = Vector3(0, 2, 0)
+			launch_power = Vector3(0, 6, 0)
+			velocity = (active_ring.transform.origin - transform.origin).normalized() * 7
+			velocity.y = 5
 			pow_move = true
 			$AnimationPlayer.play("powAir")
 			$sonicrigged2/AnimationPlayer.play("DJMP 2")
 			Audio.play(Audio.bounce, self)
+			thrown_ring = false
 			chasing_ring = true
+			if active_ring != null:
+				active_ring.queue_free()
 	elif ground_skill == "SET":
 		# Sonic's grounded "set" move sets down a mine where he's standing, which explodes over time
 		# or on contact.
@@ -1104,9 +1196,7 @@ func air_special(id, dir):
 		Audio.play(Audio.bounce, self)
 		pow_move = true
 		bouncing = true	# Initiates the "bouncing" state for bouncing off the ground.
-		launch_power = Vector3(0, 2, 0)
-		
-		velocity = $sonicrigged2.basis.z.normalized() * 10
+		launch_power = Vector3(0, 6, 0)
 		velocity.y = -5
 	elif air_skill == "SET":
 		# Works exactly like the grounded variant, Sonic places a mine that falls to the ground.
@@ -1142,5 +1232,5 @@ func _on_ring_collider_area_entered(area):
 
 
 func rotate_model():
-	if direction && !attacking:
+	if direction && !attacking && !healing:
 		$sonicrigged2.rotation.y = Vector2(velocity.z, velocity.x).angle()
