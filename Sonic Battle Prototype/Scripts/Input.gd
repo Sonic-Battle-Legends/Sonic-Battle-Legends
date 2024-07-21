@@ -3,6 +3,9 @@ extends Node
 # the character that have this node as input
 var character
 
+# store the keycode of the last button pressed for double tap check
+var last_keycode: int = 0
+
 
 func _physics_process(_delta):
 	character = GlobalVariables.current_character
