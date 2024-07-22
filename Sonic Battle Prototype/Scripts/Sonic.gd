@@ -1100,7 +1100,11 @@ func air_special(id, _dir):
 		new_shot.name = "wave" + str(id)
 		new_shot.set_multiplayer_authority(get_multiplayer_authority())
 		new_shot.position = position
-		
+
+		var new_forward = $sonicrigged2.transform.basis.z.normalized()
+		new_forward.y = 0
+		new_shot.transform.basis.z = new_forward
+				
 		new_shot.velocity = Vector3($sonicrigged2.basis.z.normalized().x * 3, 0, $sonicrigged2.basis.z.normalized().z * 3)
 		velocity = -$sonicrigged2.basis.z.normalized() * 5
 		velocity.y = 2

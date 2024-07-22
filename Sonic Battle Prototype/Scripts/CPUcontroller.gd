@@ -287,12 +287,30 @@ func attack_target():
 		
 		# use special move if the bot finished the combo and player is hurt or 
 		# if player is close and there is a hazard between the player and the bot
-		if (target.is_in_group("Player") and (target.hurt or target.launched or target.spiked) and cpu_character.model_node.get_node("AnimationPlayer").current_animation == "PGC 4") or (hazard_ahead() and distance_to_target < 2):
+		#if (target.is_in_group("Player") and (target.hurt or target.launched or target.spiked) and cpu_character.model_node.get_node("AnimationPlayer").current_animation == "PGC 4") or (hazard_ahead() and distance_to_target < 2):
+		if cpu_character.ground_skill == "SHOT" and (target.is_in_group("Player") and distance_to_target > min_attack_distance) or (hazard_ahead() and distance_to_target < 2):
 			# special attack check
 			cpu_character.special_pressed = true
 		else:
-			# attack check
-			cpu_character.attack_pressed = true
+			if cpu_character.ground_skill != "SHOT":
+				# select an attack at random
+				var random_move = randi_range(0, 100)
+				
+				# 10 % chance of special SET or POW move
+				if random_move <= 10:
+					cpu_character.special_pressed = true
+				
+				# 10 % change of updraft
+				elif random_move > 10 and random_move <= 20:
+					#cpu_character.model_node.get_node("AnimationPlayer").play("UPPER")
+					cpu_character.upper_pressed = true
+				
+				# 80 % change of punch combo
+				elif random_move > 20:
+					cpu_character.attack_pressed = true
+			else:
+				# attack check
+				cpu_character.attack_pressed = true
 
 
 func reset_properties():
@@ -301,7 +319,7 @@ func reset_properties():
 	cpu_character.attack_pressed = false
 	cpu_character.dash_triggered = false
 	cpu_character.jump_pressed = false
-	
+	cpu_character.upper_pressed = false
 	# can't heal if it keeps reseting
 	#cpu_character.guard_pressed = false
 	
