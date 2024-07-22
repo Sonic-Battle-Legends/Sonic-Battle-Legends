@@ -74,79 +74,67 @@ new_place = ExtResource("5_u8xes")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.66375, 0, 8.85614)
 new_place = ExtResource("9_wwrb0")
 
-[node name="stage_marker4" parent="Markers" instance=ExtResource("5_rj5n4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, -1.575)
+[node name="amys_room" parent="Markers" instance=ExtResource("5_rj5n4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, -2)
 new_place = ExtResource("11_6g2bb")
 
-[node name="Label3D" parent="Markers/stage_marker4" index="4"]
+[node name="Label3D" parent="Markers/amys_room" index="4"]
 text = "Amy's Room"
 
-[node name="stage_marker5" parent="Markers" instance=ExtResource("5_rj5n4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.50895, 0, -3.23617)
+[node name="chao_ruin" parent="Markers" instance=ExtResource("5_rj5n4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)
 new_place = ExtResource("12_76uj7")
 
-[node name="AnimationPlayer" parent="Markers/stage_marker5" index="2"]
-root_node = NodePath("../../stage_marker5")
-
-[node name="Label3D" parent="Markers/stage_marker5" index="4"]
+[node name="Label3D" parent="Markers/chao_ruin" index="4"]
 text = "Chao Ruin"
 
-[node name="stage_marker6" parent="Markers" instance=ExtResource("5_rj5n4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.40149, 0, -5.09064)
+[node name="colosseum" parent="Markers" instance=ExtResource("5_rj5n4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, -2)
 new_place = ExtResource("13_qhgwm")
 
-[node name="AnimationPlayer" parent="Markers/stage_marker6" index="2"]
-root_node = NodePath("../../stage_marker6")
-
-[node name="Label3D" parent="Markers/stage_marker6" index="4"]
+[node name="Label3D" parent="Markers/colosseum" index="4"]
 text = "Colosseum"
 
-[node name="stage_marker7" parent="Markers" instance=ExtResource("5_rj5n4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.3, 0, -6.328)
+[node name="emerald_beach" parent="Markers" instance=ExtResource("5_rj5n4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, -7)
 new_place = ExtResource("14_relyy")
 
-[node name="AnimationPlayer" parent="Markers/stage_marker7" index="2"]
-root_node = NodePath("../../stage_marker6")
+[node name="AnimationPlayer" parent="Markers/emerald_beach" index="2"]
+root_node = NodePath("../../colosseum")
 
-[node name="Label3D" parent="Markers/stage_marker7" index="4"]
+[node name="Label3D" parent="Markers/emerald_beach" index="4"]
 text = "Emerald Beach"
 
-[node name="stage_marker8" parent="Markers" instance=ExtResource("5_rj5n4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.3, 0, -4.608)
+[node name="holy_summit" parent="Markers" instance=ExtResource("5_rj5n4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -7)
 new_place = ExtResource("15_j0pwr")
 
-[node name="AnimationPlayer" parent="Markers/stage_marker8" index="2"]
-root_node = NodePath("../../stage_marker6")
+[node name="AnimationPlayer" parent="Markers/holy_summit" index="2"]
+root_node = NodePath("../../colosseum")
 
-[node name="Label3D" parent="Markers/stage_marker8" index="4"]
+[node name="Label3D" parent="Markers/holy_summit" index="4"]
 text = "Holy Summit"
 
-[node name="stage_marker9" parent="Markers" instance=ExtResource("5_rj5n4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.3, 0, -3.088)
+[node name="library" parent="Markers" instance=ExtResource("5_rj5n4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, -7)
 new_place = ExtResource("16_i02og")
 
-[node name="AnimationPlayer" parent="Markers/stage_marker9" index="2"]
-root_node = NodePath("../../stage_marker9")
-
-[node name="Label3D" parent="Markers/stage_marker9" index="4"]
+[node name="Label3D" parent="Markers/library" index="4"]
 text = "Library"
 
-[node name="stage_marker10" parent="Markers" instance=ExtResource("5_rj5n4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.3, 0, -1.849)
+[node name="metal_depot" parent="Markers" instance=ExtResource("5_rj5n4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -7)
 new_place = ExtResource("17_40nqy")
 
-[node name="AnimationPlayer" parent="Markers/stage_marker10" index="2"]
-root_node = NodePath("../../stage_marker10")
-
-[node name="Label3D" parent="Markers/stage_marker10" index="4"]
+[node name="Label3D" parent="Markers/metal_depot" index="4"]
 text = "Metal Depot"
 
 [editable path="hub_test"]
 [editable path="Ring"]
-[editable path="Markers/stage_marker4"]
-[editable path="Markers/stage_marker5"]
-[editable path="Markers/stage_marker6"]
-[editable path="Markers/stage_marker7"]
-[editable path="Markers/stage_marker8"]
-[editable path="Markers/stage_marker9"]
-[editable path="Markers/stage_marker10"]
+[editable path="Markers/amys_room"]
+[editable path="Markers/chao_ruin"]
+[editable path="Markers/colosseum"]
+[editable path="Markers/emerald_beach"]
+[editable path="Markers/holy_summit"]
+[editable path="Markers/library"]
+[editable path="Markers/metal_depot"]
