@@ -177,6 +177,10 @@ func aggressive_behaviour():
 	else:
 		if target.is_in_group("Player"):
 			attack_target()
+	
+	# if can chase or against the wall after a launch, use the chase mechanic
+	if cpu_character.can_chase or cpu_character.model_node.get_node("AnimationPlayer").current_animation == "WALL":
+		cpu_character.jump_pressed = true
 
 
 ## keep distance from player
