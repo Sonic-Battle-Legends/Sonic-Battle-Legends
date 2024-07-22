@@ -12,12 +12,12 @@ texture_filter = 2
 [node name="Library" type="Node3D"]
 
 [node name="library" parent="." instance=ExtResource("1_y5ugd")]
-transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
+transform = Transform3D(0.19, 0, 0, 0, 0.2, 0, 0, 0, 0.19, 0, 0, 0)
 
 [node name="library" parent="library" index="0"]
 surface_material_override/0 = SubResource("StandardMaterial3D_1pmel")
 
 [node name="InvisibleWalls" parent="." instance=ExtResource("2_45erm")]
-transform = Transform3D(0.51, 0, 0, 0, 0.51, 0, 0, 0, 0.51, 0, -0.883603, 0)
+transform = Transform3D(0.485, 0, 0, 0, 0.485, 0, 0, 0, 0.485, 0, -0.883603, 0)
 
 [editable path="library"]

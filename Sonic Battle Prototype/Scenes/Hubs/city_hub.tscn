@@ -28,6 +28,11 @@ surface_material_override/0 = ExtResource("2_m2au7")
 [node name="InvisibleWalls" parent="." instance=ExtResource("2_1lcbb")]
 transform = Transform3D(2.335, 0, 0, 0, 2.13, 0, 0, 0, 2.13, 1.06559, 0, 0)
 
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_kdbtx")
+volume_db = -7.0
+autoplay = true
+
 [node name="Ring" parent="." instance=ExtResource("7_kmrjo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.28553, 6.54966e-07, 2.16711)
 
@@ -53,11 +58,6 @@ transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 4.8353, -3.27483e-07
 
 [node name="lamp5" parent="lamps" instance=ExtResource("6_p3ikg")]
 transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, -1.28896, -3.27483e-07, 2.91571)
-
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("8_kdbtx")
-volume_db = -7.0
-autoplay = true
 
 [node name="Markers" type="Marker3D" parent="."]
 

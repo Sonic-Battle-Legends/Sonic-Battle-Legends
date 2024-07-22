@@ -12,12 +12,12 @@ texture_filter = 2
 [node name="Metal_Depot" type="Node3D"]
 
 [node name="metal_depot" parent="." instance=ExtResource("1_ot6s5")]
-transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
+transform = Transform3D(0.15, 0, 0, 0, 0.2, 0, 0, 0, 0.15, 0.84088, 0, 0)
 
 [node name="metal_depot" parent="metal_depot" index="0"]
 surface_material_override/0 = SubResource("StandardMaterial3D_osdox")
 
 [node name="InvisibleWalls" parent="." instance=ExtResource("2_bbgni")]
-transform = Transform3D(1.365, 0, 0, 0, 1, 0, 0, 0, 0.335, 0, -0.986975, 0)
+transform = Transform3D(1.025, 0, 0, 0, 0.751, 0, 0, 0, 0.252, 0.84088, -0.986975, 0)
 
 [editable path="metal_depot"]
