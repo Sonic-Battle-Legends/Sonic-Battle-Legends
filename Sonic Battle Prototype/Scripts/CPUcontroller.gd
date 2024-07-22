@@ -211,7 +211,7 @@ func cautious_behaviour():
 				move_towards_target()
 				if distance_to_target < distance_to_keep_from_target:
 					attack_target()
-
+	
 
 ## move towards target
 ## or away from it if value is negative
@@ -234,6 +234,7 @@ func move_towards_target(mode_value = 1):
 	
 	# if there is an obstacle, jump
 	jump_check()
+	
 
 
 ## check for hazards
@@ -285,8 +286,8 @@ func attack_target():
 		delay = GlobalVariables.current_difficulty
 		
 		# use special move if the bot finished the combo and player is hurt or 
-		# if player is cloe and there is a hazard between the player and the bot
-		if (target.is_in_group("Player") and target.hurt and cpu_character.model_node.get_node("AnimationPlayer").current_animation == "PGC 4") or (hazard_ahead() and distance_to_target < 1):
+		# if player is close and there is a hazard between the player and the bot
+		if (target.is_in_group("Player") and (target.hurt or target.launched or target.spiked) and cpu_character.model_node.get_node("AnimationPlayer").current_animation == "PGC 4") or (hazard_ahead() and distance_to_target < 2):
 			# special attack check
 			cpu_character.special_pressed = true
 		else:

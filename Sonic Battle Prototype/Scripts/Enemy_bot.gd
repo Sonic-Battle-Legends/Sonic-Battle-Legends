@@ -655,7 +655,7 @@ func anim_end(anim_name):
 		# it moves on to the next punch.
 		# NOTE: I tried making it so that the punches execute with pressing the button instead of holding,
 		# but I couldn't get it working right so this will have to do for now.
-		if attack_pressed:# and punch_timer != null and punch_timer.time_left > 0:
+		if attack_pressed and punch_timer != null and punch_timer.time_left > 0:
 			# create a new timer to give time for a possible combo sequence
 			create_punch_timer()
 			if current_punch == 1:
