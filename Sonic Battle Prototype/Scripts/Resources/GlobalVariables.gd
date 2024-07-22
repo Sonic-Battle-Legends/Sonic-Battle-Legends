@@ -74,7 +74,7 @@ var extra_lives: int = 2
 
 # set difficulty level
 # 					 [easy, normal, hard] respectively
-var difficulty_levels = [0.5, 0.3, 0.0]
+var difficulty_levels = [0.2, 0.1, 0.0]
 var current_difficulty = difficulty_levels[2] #difficulty.hard
 
 # win condition
