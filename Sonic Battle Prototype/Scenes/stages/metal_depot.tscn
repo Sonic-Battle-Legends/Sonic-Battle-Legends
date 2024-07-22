@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://ojg3xdti5ja0"]
+
+[ext_resource type="PackedScene" uid="uid://k7cekhacuvw3" path="res://Models/original maps/metal_depot.blend" id="1_ot6s5"]
+[ext_resource type="PackedScene" uid="uid://irlpgd8spuet" path="res://Scenes/stages/invisible_walls.tscn" id="2_bbgni"]
+
+[node name="Metal_Depot" type="Node3D"]
+
+[node name="metal_depot" parent="." instance=ExtResource("1_ot6s5")]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
+
+[node name="InvisibleWalls" parent="." instance=ExtResource("2_bbgni")]
+transform = Transform3D(1.365, 0, 0, 0, 1, 0, 0, 0, 0.335, 0, -0.986975, 0)

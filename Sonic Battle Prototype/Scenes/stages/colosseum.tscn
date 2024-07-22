@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://bpx3nhqf2ywry"]
+
+[ext_resource type="PackedScene" uid="uid://b3vtggnm48mfa" path="res://Models/original maps/colosseum.blend" id="1_sk5p8"]
+[ext_resource type="PackedScene" uid="uid://irlpgd8spuet" path="res://Scenes/stages/invisible_walls.tscn" id="2_rgyl8"]
+
+[node name="Colosseum" type="Node3D"]
+
+[node name="colosseum" parent="." instance=ExtResource("1_sk5p8")]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
+
+[node name="InvisibleWalls" parent="." instance=ExtResource("2_rgyl8")]
+transform = Transform3D(0.335, 0, 0, 0, 0.335, 0, 0, 0, 0.335, 0, -0.43347, 0)

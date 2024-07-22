@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://c21jx54148kmv"]
+[gd_scene load_steps=18 format=3 uid="uid://c21jx54148kmv"]
 
 [ext_resource type="PackedScene" uid="uid://b4sfvdfh2ssee" path="res://Models/hub_test.blend" id="1_3cksg"]
 [ext_resource type="PackedScene" uid="uid://irlpgd8spuet" path="res://Scenes/stages/invisible_walls.tscn" id="2_1lcbb"]
@@ -10,6 +10,13 @@
 [ext_resource type="PackedScene" uid="uid://dqgtu3gjo0ymi" path="res://Scenes/collectables/ring.tscn" id="7_kmrjo"]
 [ext_resource type="AudioStream" uid="uid://rxnwaj4vdd2d" path="res://Audio/Technopolis City Hub (v1).mp3" id="8_kdbtx"]
 [ext_resource type="PackedScene" uid="uid://d1dv7tjtv0yse" path="res://Scenes/stages/navmesh_test.tscn" id="9_wwrb0"]
+[ext_resource type="PackedScene" uid="uid://wxx6u7khm23x" path="res://Scenes/stages/amys_room.tscn" id="11_6g2bb"]
+[ext_resource type="PackedScene" uid="uid://xpmbdjllqylg" path="res://Scenes/stages/chao_ruin.tscn" id="12_76uj7"]
+[ext_resource type="PackedScene" uid="uid://bpx3nhqf2ywry" path="res://Scenes/stages/colosseum.tscn" id="13_qhgwm"]
+[ext_resource type="PackedScene" uid="uid://dtxl551hu306c" path="res://Scenes/stages/emerald_beach.tscn" id="14_relyy"]
+[ext_resource type="PackedScene" uid="uid://bvfu1l4yt5c3m" path="res://Scenes/stages/holy_summit.tscn" id="15_j0pwr"]
+[ext_resource type="PackedScene" uid="uid://r8qucpkf16m" path="res://Scenes/stages/library.tscn" id="16_i02og"]
+[ext_resource type="PackedScene" uid="uid://ojg3xdti5ja0" path="res://Scenes/stages/metal_depot.tscn" id="17_40nqy"]
 
 [node name="City_Hub" type="Node3D"]
 
@@ -20,15 +27,6 @@ surface_material_override/0 = ExtResource("2_m2au7")
 
 [node name="InvisibleWalls" parent="." instance=ExtResource("2_1lcbb")]
 transform = Transform3D(2.335, 0, 0, 0, 2.13, 0, 0, 0, 2.13, 1.06559, 0, 0)
-
-[node name="stage_marker" parent="." instance=ExtResource("5_rj5n4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.04248, 0, 5.86447)
-new_place = ExtResource("5_jbv1b")
-
-[node name="stage_marker3" parent="." node_paths=PackedStringArray("label") instance=ExtResource("5_rj5n4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.89487, 0, 1.09668)
-label = NodePath("../stage_marker/Label3D")
-new_place = ExtResource("5_u8xes")
 
 [node name="Ring" parent="." instance=ExtResource("7_kmrjo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.28553, 6.54966e-07, 2.16711)
@@ -61,9 +59,94 @@ stream = ExtResource("8_kdbtx")
 volume_db = -7.0
 autoplay = true
 
-[node name="stage_marker2" parent="." instance=ExtResource("5_rj5n4")]
+[node name="Markers" type="Marker3D" parent="."]
+
+[node name="stage_marker" parent="Markers" instance=ExtResource("5_rj5n4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.04248, 0, 5.86447)
+new_place = ExtResource("5_jbv1b")
+
+[node name="stage_marker3" parent="Markers" node_paths=PackedStringArray("label") instance=ExtResource("5_rj5n4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.89487, 0, 1.09668)
+label = NodePath("../stage_marker/Label3D")
+new_place = ExtResource("5_u8xes")
+
+[node name="stage_marker2" parent="Markers" instance=ExtResource("5_rj5n4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.66375, 0, 8.85614)
 new_place = ExtResource("9_wwrb0")
 
+[node name="stage_marker4" parent="Markers" instance=ExtResource("5_rj5n4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, -1.575)
+new_place = ExtResource("11_6g2bb")
+
+[node name="Label3D" parent="Markers/stage_marker4" index="4"]
+text = "Amy's Room"
+
+[node name="stage_marker5" parent="Markers" instance=ExtResource("5_rj5n4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.50895, 0, -3.23617)
+new_place = ExtResource("12_76uj7")
+
+[node name="AnimationPlayer" parent="Markers/stage_marker5" index="2"]
+root_node = NodePath("../../stage_marker5")
+
+[node name="Label3D" parent="Markers/stage_marker5" index="4"]
+text = "Chao Ruin"
+
+[node name="stage_marker6" parent="Markers" instance=ExtResource("5_rj5n4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.40149, 0, -5.09064)
+new_place = ExtResource("13_qhgwm")
+
+[node name="AnimationPlayer" parent="Markers/stage_marker6" index="2"]
+root_node = NodePath("../../stage_marker6")
+
+[node name="Label3D" parent="Markers/stage_marker6" index="4"]
+text = "Colosseum"
+
+[node name="stage_marker7" parent="Markers" instance=ExtResource("5_rj5n4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.3, 0, -6.328)
+new_place = ExtResource("14_relyy")
+
+[node name="AnimationPlayer" parent="Markers/stage_marker7" index="2"]
+root_node = NodePath("../../stage_marker6")
+
+[node name="Label3D" parent="Markers/stage_marker7" index="4"]
+text = "Emerald Beach"
+
+[node name="stage_marker8" parent="Markers" instance=ExtResource("5_rj5n4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.3, 0, -4.608)
+new_place = ExtResource("15_j0pwr")
+
+[node name="AnimationPlayer" parent="Markers/stage_marker8" index="2"]
+root_node = NodePath("../../stage_marker6")
+
+[node name="Label3D" parent="Markers/stage_marker8" index="4"]
+text = "Holy Summit"
+
+[node name="stage_marker9" parent="Markers" instance=ExtResource("5_rj5n4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.3, 0, -3.088)
+new_place = ExtResource("16_i02og")
+
+[node name="AnimationPlayer" parent="Markers/stage_marker9" index="2"]
+root_node = NodePath("../../stage_marker9")
+
+[node name="Label3D" parent="Markers/stage_marker9" index="4"]
+text = "Library"
+
+[node name="stage_marker10" parent="Markers" instance=ExtResource("5_rj5n4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.3, 0, -1.849)
+new_place = ExtResource("17_40nqy")
+
+[node name="AnimationPlayer" parent="Markers/stage_marker10" index="2"]
+root_node = NodePath("../../stage_marker10")
+
+[node name="Label3D" parent="Markers/stage_marker10" index="4"]
+text = "Metal Depot"
+
 [editable path="hub_test"]
 [editable path="Ring"]
+[editable path="Markers/stage_marker4"]
+[editable path="Markers/stage_marker5"]
+[editable path="Markers/stage_marker6"]
+[editable path="Markers/stage_marker7"]
+[editable path="Markers/stage_marker8"]
+[editable path="Markers/stage_marker9"]
+[editable path="Markers/stage_marker10"]

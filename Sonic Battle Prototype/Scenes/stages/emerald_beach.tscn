@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://dtxl551hu306c"]
+
+[ext_resource type="PackedScene" uid="uid://bch77a14y64of" path="res://Models/original maps/emerald_beach.blend" id="1_mjnpd"]
+[ext_resource type="PackedScene" uid="uid://irlpgd8spuet" path="res://Scenes/stages/invisible_walls.tscn" id="2_26vho"]
+
+[node name="Emerald_Beach" type="Node3D"]
+
+[node name="emerald_beach" parent="." instance=ExtResource("1_mjnpd")]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
+
+[node name="InvisibleWalls" parent="." instance=ExtResource("2_26vho")]
+transform = Transform3D(0.855, 0, 0, 0, 0.855, 0, 0, 0, 0.855, 0, -0.931761, 0)

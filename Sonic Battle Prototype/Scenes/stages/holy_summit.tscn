@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://bvfu1l4yt5c3m"]
+
+[ext_resource type="PackedScene" uid="uid://e3bf0aeb76kc" path="res://Models/original maps/holy_summit.blend" id="1_8u2r0"]
+[ext_resource type="PackedScene" uid="uid://irlpgd8spuet" path="res://Scenes/stages/invisible_walls.tscn" id="2_kbfp6"]
+
+[node name="Holy_Summit" type="Node3D"]
+
+[node name="holy_summit" parent="." instance=ExtResource("1_8u2r0")]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
+
+[node name="InvisibleWalls" parent="." instance=ExtResource("2_kbfp6")]
+transform = Transform3D(0.635, 0, 0, 0, 0.635, 0, 0, 0, 0.635, 0, -0.578437, 0)

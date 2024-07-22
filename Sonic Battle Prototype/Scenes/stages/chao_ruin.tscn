@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://xpmbdjllqylg"]
+
+[ext_resource type="PackedScene" uid="uid://cx4044jdmta4d" path="res://Models/original maps/chao_ruin.blend" id="1_lja5g"]
+[ext_resource type="PackedScene" uid="uid://irlpgd8spuet" path="res://Scenes/stages/invisible_walls.tscn" id="2_fcckd"]
+
+[node name="Chao_Ruin" type="Node3D"]
+
+[node name="chao_ruin" parent="." instance=ExtResource("1_lja5g")]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
+
+[node name="InvisibleWalls" parent="." instance=ExtResource("2_fcckd")]
+transform = Transform3D(0.7, 0, 0, 0, 1, 0, 0, 0, 0.695, 0, -0.857985, 0)
