@@ -1,12 +1,23 @@
-[gd_scene load_steps=3 format=3 uid="uid://xpmbdjllqylg"]
+[gd_scene load_steps=5 format=3 uid="uid://xpmbdjllqylg"]
 
 [ext_resource type="PackedScene" uid="uid://cx4044jdmta4d" path="res://Models/original maps/chao_ruin.blend" id="1_lja5g"]
+[ext_resource type="Texture2D" uid="uid://cfenbdjcebs3h" path="res://Models/original maps/textures/Chao_Ruins.png" id="2_e3imh"]
 [ext_resource type="PackedScene" uid="uid://irlpgd8spuet" path="res://Scenes/stages/invisible_walls.tscn" id="2_fcckd"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7cxbx"]
+shading_mode = 0
+albedo_texture = ExtResource("2_e3imh")
+texture_filter = 2
 
 [node name="Chao_Ruin" type="Node3D"]
 
 [node name="chao_ruin" parent="." instance=ExtResource("1_lja5g")]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
 
+[node name="chao_ruin" parent="chao_ruin" index="0"]
+surface_material_override/0 = SubResource("StandardMaterial3D_7cxbx")
+
 [node name="InvisibleWalls" parent="." instance=ExtResource("2_fcckd")]
 transform = Transform3D(0.7, 0, 0, 0, 1, 0, 0, 0, 0.695, 0, -0.857985, 0)
+
+[editable path="chao_ruin"]

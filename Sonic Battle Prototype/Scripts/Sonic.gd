@@ -497,7 +497,9 @@ func handle_attack():
 		$AnimationPlayer.play("strong")
 		$sonicrigged2/AnimationPlayer.play("PGC 4")
 		Audio.play(Audio.attackStrong, self)
-		launch_power = Vector3(direction.x * 20, 5, direction.z * 20)
+		var new_launch = $sonicrigged2.transform.basis.z.normalized() * 20
+		new_launch.y = 5
+		launch_power = new_launch
 		damage_caused = 7
 		attacking = true
 	elif attack_pressed && dashing && can_airdash:
@@ -832,7 +834,10 @@ func anim_end(anim_name):
 		starting = false
 		can_air_attack = false
 	elif anim_name == "KO":
-		$sonicrigged2/AnimationPlayer.play("GET UP FULL")
+		if life_total > 0:
+			$sonicrigged2/AnimationPlayer.play("GET UP FULL")
+		else:
+			defeated()
 	elif anim_name == "GET UP FULL":
 		hurt = false
 		starting = false
@@ -917,67 +922,71 @@ func defeated(): #who_owns_last_attack = null):
 # function, which is why you don't see it here.
 @rpc("any_peer","reliable","call_local")
 func get_hurt(launch_speed, owner_of_the_attack, damage_taken = 1):
-	# store the last player who damaged this character
-	last_aggressor = owner_of_the_attack
-	
-	var sparks = Instantiables.SPARKS.instantiate()
-	sparks.position = position + Vector3(0, 0.1, 0)
-	get_parent().add_child(sparks)
-	sparks.get_child(0).emitting = true
-	
-	# give a invunerability time
-	
-	if !hurt:
-		# rings shouldn't provid all life points back
-		if damage_taken > MAX_SCATTERED_RINGS_ALLOWED * HEAL_POINTS_PER_RING:
-			scatter_rings(MAX_SCATTERED_RINGS_ALLOWED)
-			Audio.play(Audio.ring_spread, self)
+	if $sonicrigged2/AnimationPlayer.current_animation != "KO" || $sonicrigged2/AnimationPlayer.current_animation != "SPIKED":
+		# store the last player who damaged this character
+		last_aggressor = owner_of_the_attack
+		
+		var sparks = Instantiables.SPARKS.instantiate()
+		sparks.position = position + Vector3(0, 0.1, 0)
+		get_parent().add_child(sparks)
+		sparks.get_child(0).emitting = true
+		
+		# give a invunerability time
+		
+		if !hurt:
+			# rings shouldn't provid all life points back
+			if damage_taken > MAX_SCATTERED_RINGS_ALLOWED * HEAL_POINTS_PER_RING:
+				scatter_rings(MAX_SCATTERED_RINGS_ALLOWED)
+				Audio.play(Audio.ring_spread, self)
+			else:
+				scatter_rings()
+		
+		life_total -= damage_taken
+		hud.change_life(life_total)
+		#push_warning("life: ", life_total, ", damage_taken: ", damage_taken, ", launch: ", launch_speed )
+		
+		# A bunch of states reset to make sure getting hurt cancels them out.
+		hurt = true
+		falling = false
+		jumping = false
+		bouncing = false
+		healing = false
+		
+		velocity = launch_speed
+		# If Sonic was chasing a ring, the ring is deleted.
+		if chasing_ring:
+			chasing_ring = false
+			thrown_ring = false
+			if active_ring != null:
+				active_ring.queue_free()
+		
+		# Depending on where Sonic is and what his velocity is, the animation is different.
+		if abs(velocity.x) > 8 || abs(velocity.z) > 8:
+			$AnimationPlayer.play("hurtStrong")
+			$sonicrigged2/AnimationPlayer.play("LAUNCHED")
 		else:
-			scatter_rings()
-	
-	life_total -= damage_taken
-	hud.change_life(life_total)
-	#push_warning("life: ", life_total, ", damage_taken: ", damage_taken, ", launch: ", launch_speed )
-	
-	if GlobalVariables.current_stage != null:
-		if (life_total <= 0 and GlobalVariables.game_ended == false):
-			defeated()
-	
-	# A bunch of states reset to make sure getting hurt cancels them out.
-	hurt = true
-	falling = false
-	jumping = false
-	bouncing = false
-	healing = false
-	
-	velocity = launch_speed
-	# If Sonic was chasing a ring, the ring is deleted.
-	if chasing_ring:
-		chasing_ring = false
-		thrown_ring = false
-		if active_ring != null:
-			active_ring.queue_free()
-	
-	# Depending on where Sonic is and what his velocity is, the animation is different.
-	if abs(velocity.x) > 8 || abs(velocity.z) > 8:
-		$AnimationPlayer.play("hurtStrong")
-		$sonicrigged2/AnimationPlayer.play("LAUNCHED")
-	else:
-		if launch_speed.y > 5:
-			$AnimationPlayer.play("hurtAir")
-			$sonicrigged2/AnimationPlayer.play("HURT 2")
-		elif launch_speed.y < 0 && !is_on_floor():
-			$AnimationPlayer.play("hurtAir")
-			$sonicrigged2/AnimationPlayer.play("SPIKED")
-			spiked = true
-		else:
-			$AnimationPlayer.play("hurt")
-			$sonicrigged2/AnimationPlayer.play("HURT 1")
-	
-	# More state resets. Idk why these are placed at the end.
-	current_punch = 0
-	dashing = false
-	attacking = false
+			if launch_speed.y > 5:
+				$AnimationPlayer.play("hurtAir")
+				$sonicrigged2/AnimationPlayer.play("HURT 2")
+			elif launch_speed.y < 0 && !is_on_floor():
+				$AnimationPlayer.play("hurtAir")
+				$sonicrigged2/AnimationPlayer.play("SPIKED")
+				spiked = true
+			else:
+				$AnimationPlayer.play("hurt")
+				$sonicrigged2/AnimationPlayer.play("HURT 1")
+		
+		# More state resets. Idk why these are placed at the end.
+		current_punch = 0
+		dashing = false
+		attacking = false
+		
+		if GlobalVariables.current_stage != null:
+			if (life_total <= 0 and GlobalVariables.game_ended == false):
+				if !is_on_floor():
+					$sonicrigged2/AnimationPlayer.play("SPIKED")
+				else:
+					$sonicrigged2/AnimationPlayer.play("KO")
 
 
 ## The function for determining what happens with each selected grounded special move.

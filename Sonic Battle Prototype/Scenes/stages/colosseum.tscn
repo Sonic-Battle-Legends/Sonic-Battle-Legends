@@ -1,12 +1,23 @@
-[gd_scene load_steps=3 format=3 uid="uid://bpx3nhqf2ywry"]
+[gd_scene load_steps=5 format=3 uid="uid://bpx3nhqf2ywry"]
 
 [ext_resource type="PackedScene" uid="uid://b3vtggnm48mfa" path="res://Models/original maps/colosseum.blend" id="1_sk5p8"]
+[ext_resource type="Texture2D" uid="uid://b8ho6a57g046g" path="res://Models/original maps/textures/Colosseum.png" id="2_mxvgf"]
 [ext_resource type="PackedScene" uid="uid://irlpgd8spuet" path="res://Scenes/stages/invisible_walls.tscn" id="2_rgyl8"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vl8se"]
+shading_mode = 0
+albedo_texture = ExtResource("2_mxvgf")
+texture_filter = 2
 
 [node name="Colosseum" type="Node3D"]
 
 [node name="colosseum" parent="." instance=ExtResource("1_sk5p8")]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
 
+[node name="colosseum" parent="colosseum" index="0"]
+surface_material_override/0 = SubResource("StandardMaterial3D_vl8se")
+
 [node name="InvisibleWalls" parent="." instance=ExtResource("2_rgyl8")]
 transform = Transform3D(0.335, 0, 0, 0, 0.335, 0, 0, 0, 0.335, 0, -0.43347, 0)
+
+[editable path="colosseum"]

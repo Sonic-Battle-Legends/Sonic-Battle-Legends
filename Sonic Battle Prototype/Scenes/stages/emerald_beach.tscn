@@ -1,12 +1,23 @@
-[gd_scene load_steps=3 format=3 uid="uid://dtxl551hu306c"]
+[gd_scene load_steps=5 format=3 uid="uid://dtxl551hu306c"]
 
 [ext_resource type="PackedScene" uid="uid://bch77a14y64of" path="res://Models/original maps/emerald_beach.blend" id="1_mjnpd"]
 [ext_resource type="PackedScene" uid="uid://irlpgd8spuet" path="res://Scenes/stages/invisible_walls.tscn" id="2_26vho"]
+[ext_resource type="Texture2D" uid="uid://brcy41ybcki7g" path="res://Models/original maps/textures/Emerald_Beach.png" id="2_c3lp1"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_038v5"]
+shading_mode = 0
+albedo_texture = ExtResource("2_c3lp1")
+texture_filter = 2
 
 [node name="Emerald_Beach" type="Node3D"]
 
 [node name="emerald_beach" parent="." instance=ExtResource("1_mjnpd")]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
 
+[node name="emerald_beach" parent="emerald_beach" index="0"]
+surface_material_override/0 = SubResource("StandardMaterial3D_038v5")
+
 [node name="InvisibleWalls" parent="." instance=ExtResource("2_26vho")]
 transform = Transform3D(0.855, 0, 0, 0, 0.855, 0, 0, 0, 0.855, 0, -0.931761, 0)
+
+[editable path="emerald_beach"]
