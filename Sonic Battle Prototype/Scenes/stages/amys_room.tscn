@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://wxx6u7khm23x"]
+
+[ext_resource type="PackedScene" uid="uid://cf0poq4j72sml" path="res://Models/original maps/amy_s_room.blend" id="1_w46to"]
+[ext_resource type="PackedScene" uid="uid://irlpgd8spuet" path="res://Scenes/stages/invisible_walls.tscn" id="2_nh2sa"]
+
+[node name="Amys_Room" type="Node3D"]
+
+[node name="amy_s_room" parent="." instance=ExtResource("1_w46to")]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
+
+[node name="InvisibleWalls" parent="." instance=ExtResource("2_nh2sa")]
+transform = Transform3D(1.005, 0, 0, 0, 1, 0, 0, 0, 0.495, 0, -0.762953, 0)
+
+[editable path="amy_s_room"]

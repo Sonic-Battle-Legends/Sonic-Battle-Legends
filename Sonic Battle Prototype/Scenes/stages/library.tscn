@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://r8qucpkf16m"]
+
+[ext_resource type="PackedScene" uid="uid://mggwff68a6q8" path="res://Models/original maps/library.blend" id="1_y5ugd"]
+[ext_resource type="PackedScene" uid="uid://irlpgd8spuet" path="res://Scenes/stages/invisible_walls.tscn" id="2_45erm"]
+
+[node name="Library" type="Node3D"]
+
+[node name="library" parent="." instance=ExtResource("1_y5ugd")]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
+
+[node name="InvisibleWalls" parent="." instance=ExtResource("2_45erm")]
+transform = Transform3D(0.51, 0, 0, 0, 0.51, 0, 0, 0, 0.51, 0, -0.883603, 0)

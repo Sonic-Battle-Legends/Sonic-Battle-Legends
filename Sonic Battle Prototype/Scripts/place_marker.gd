@@ -2,6 +2,7 @@ extends Node3D
 
 @export_category("Label")
 @export var label: Label3D
+#@export var stage_title: String
 
 @export_category("Type of Place to Go")
 enum place {area, hub, stage}
@@ -25,6 +26,9 @@ enum place {area, hub, stage}
 
 func _ready():
 	GlobalVariables.camera_orientation_changed.connect(correct_label_orientation)
+	
+	#if stage_title != "":
+	#	label.text = stage_title
 	
 	if rings_to_enter > 0 and GlobalVariables.total_rings < rings_to_enter:
 		var old_text = label.text

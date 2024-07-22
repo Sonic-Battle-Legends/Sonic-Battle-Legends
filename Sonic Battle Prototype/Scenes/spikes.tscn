@@ -66,6 +66,7 @@ transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, 0)
 visible = false
 
 [node name="StaticBody3D" parent="Spikes2/collider" index="0" groups=["Hazard"]]
+collision_layer = 8
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
 transform = Transform3D(0.18, 0, 0, 0, -7.86805e-09, 0.18, 0, -0.18, -7.86805e-09, 0.0015806, 0.0441108, 0)

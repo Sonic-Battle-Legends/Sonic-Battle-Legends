@@ -8,6 +8,8 @@ extends CharacterBody3D
 # The active player that spawned this projectile. Hitboxes will not interact with the user.
 var user
 
+var damage = 10
+
 func _physics_process(delta):
 	# Add the gravity.
 	if !is_on_floor():
@@ -39,4 +41,4 @@ func _on_area_3d_body_entered(body):
 		if body.immunity != "set":
 			# If the collision body is immune to "set" moves, they will not be affected.
 			# body.get_hurt.rpc_id(body.get_multiplayer_authority(), Vector3(0, 7, 0))
-			body.get_hurt(Vector3(0, 7, 0), user)
+			body.get_hurt(Vector3(0, 7, 0), user, damage)

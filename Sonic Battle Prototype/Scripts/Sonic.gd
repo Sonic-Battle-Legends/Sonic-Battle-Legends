@@ -66,7 +66,11 @@ var current_punch = 0
 
 # This vector determines the strength and direction the hitbox object sends opponents.
 # Each move changes the launch power when necessary and the animation handles the hitbox position.
-var launch_power : Vector3
+var launch_power: Vector3
+
+# this variable determines the amount of damage that the character will cause
+# each move changes the damage caused accordingly
+var damage_caused: int
 
 # States for when Sonic is hurt, locking his actions.
 var hurt = false
@@ -456,6 +460,7 @@ func handle_upper():
 			$sonicrigged2/AnimationPlayer.play("UPPER")
 			Audio.play(Audio.attackStrong, self)
 			launch_power = Vector3(0, 7, 0)
+			damage_caused = 7
 			attacking = true
 			velocity = -$sonicrigged2.basis.z.normalized() * 2
 		else:
@@ -466,6 +471,7 @@ func handle_upper():
 				Audio.play(Audio.attackStrong, self)
 				launch_power = Vector3($sonicrigged2.basis.z.normalized().x * 5, 5, $sonicrigged2.basis.z.normalized().x * 5)
 				velocity.y = 3
+				damage_caused = 7
 				attacking = true
 
 ## method to execute the AIM attack
@@ -476,6 +482,7 @@ func handle_spike():
 		$sonicrigged2/AnimationPlayer.play("AIM")
 		Audio.play(Audio.attackStrong, self)
 		launch_power = Vector3(0, -5, 0)
+		damage_caused = 7
 		attacking = true
 
 ## method to determine what happens when punch attack is pressed, grounded or not
@@ -491,6 +498,7 @@ func handle_attack():
 		$sonicrigged2/AnimationPlayer.play("PGC 4")
 		Audio.play(Audio.attackStrong, self)
 		launch_power = Vector3(direction.x * 20, 5, direction.z * 20)
+		damage_caused = 7
 		attacking = true
 	elif attack_pressed && dashing && can_airdash:
 		# The code for Sonic's dash attack. His dash attack stalls him in the air for a short time.
@@ -500,6 +508,7 @@ func handle_attack():
 		$sonicrigged2/AnimationPlayer.play("DASH ATK")
 		Audio.play(Audio.attack2, self)
 		launch_power = Vector3(velocity.x, 2, velocity.z)
+		damage_caused = 7
 		velocity.y = 3
 	elif attack_pressed && !dashing && !is_on_floor() && can_air_attack:
 		# The code for Sonic's midair attack. He can only use this once before landing, and it
@@ -513,6 +522,7 @@ func handle_attack():
 		var new_launch = $sonicrigged2.transform.basis.z.normalized() * 5
 		new_launch.y = -2
 		launch_power = new_launch
+		damage_caused = 7
 		
 		velocity.y = 4
 	elif Input.is_action_just_pressed("punch") && is_on_floor() && !starting:
@@ -524,12 +534,14 @@ func handle_attack():
 			$sonicrigged2/AnimationPlayer.play("PGC 1")
 			Audio.play(Audio.attack1, self) 
 			launch_power = Vector3(0, 0, 0)
+			damage_caused = 7
 			current_punch = 1
 		elif current_punch == 1:
 			$AnimationPlayer.play("punch2")
 			$sonicrigged2/AnimationPlayer.play("PGC 2")
 			Audio.play(Audio.attack2, self)
 			launch_power = Vector3(0, 0, 0)
+			damage_caused = 7
 			current_punch = 2
 			
 		elif current_punch == 2:
@@ -537,6 +549,7 @@ func handle_attack():
 			$sonicrigged2/AnimationPlayer.play("PGC 3")
 			Audio.play(Audio.attack2, self)
 			launch_power = Vector3(0, 0, 0)
+			damage_caused = 7
 			current_punch = 3
 		
 		elif current_punch == 3:
@@ -547,7 +560,7 @@ func handle_attack():
 			var new_launch = $sonicrigged2.transform.basis.z.normalized() * 20
 			new_launch.y = 5
 			launch_power = new_launch
-			
+			damage_caused = 7
 			current_punch = 0
 	
 	# The code for initiating Sonic's grounded and midair specials, which go to functions that check the selected skills.
@@ -792,11 +805,13 @@ func anim_end(anim_name):
 				$AnimationPlayer.play("punch2")
 				$sonicrigged2/AnimationPlayer.play("PGC 2")
 				launch_power = Vector3(0, 0, 0)
+				damage_caused = 7
 				current_punch = 2
 			elif current_punch == 2:
 				$AnimationPlayer.play("punch3")
 				$sonicrigged2/AnimationPlayer.play("PGC 3")
 				launch_power = Vector3(0, 0, 0)
+				damage_caused = 7
 				current_punch = 3
 			elif current_punch == 3:
 				# The final part of the combo does an immediate strong attack.
@@ -806,7 +821,7 @@ func anim_end(anim_name):
 				var new_launch = $sonicrigged2.transform.basis.z.normalized() * 20
 				new_launch.y = 5
 				launch_power = new_launch
-				
+				damage_caused = 7
 				current_punch = 0
 		else:
 			attacking = false
@@ -871,7 +886,7 @@ func _on_hitbox_body_entered(body):
 		Audio.play(Audio.hit, self)
 		# If the current attack is Sonic's "pow" move, the hitbox pays attention to immunities.
 		if !pow_move || body.immunity != "pow":
-			body.get_hurt.rpc_id(body.get_multiplayer_authority(), launch_power, self)
+			body.get_hurt.rpc_id(body.get_multiplayer_authority(), launch_power, self, damage_caused)
 
 
 func defeated(): #who_owns_last_attack = null):
@@ -901,11 +916,9 @@ func defeated(): #who_owns_last_attack = null):
 ## A function that handles Sonic getting hurt. Knockback is determined by the thing that initiates this
 # function, which is why you don't see it here.
 @rpc("any_peer","reliable","call_local")
-func get_hurt(launch_speed, owner_of_the_attack):
+func get_hurt(launch_speed, owner_of_the_attack, damage_taken = 1):
 	# store the last player who damaged this character
 	last_aggressor = owner_of_the_attack
-	
-	var damage = launch_speed.length()
 	
 	var sparks = Instantiables.SPARKS.instantiate()
 	sparks.position = position + Vector3(0, 0.1, 0)
@@ -916,14 +929,15 @@ func get_hurt(launch_speed, owner_of_the_attack):
 	
 	if !hurt:
 		# rings shouldn't provid all life points back
-		if damage > MAX_SCATTERED_RINGS_ALLOWED * HEAL_POINTS_PER_RING:
+		if damage_taken > MAX_SCATTERED_RINGS_ALLOWED * HEAL_POINTS_PER_RING:
 			scatter_rings(MAX_SCATTERED_RINGS_ALLOWED)
 			Audio.play(Audio.ring_spread, self)
 		else:
 			scatter_rings()
 	
-	life_total -= damage
+	life_total -= damage_taken
 	hud.change_life(life_total)
+	#push_warning("life: ", life_total, ", damage_taken: ", damage_taken, ", launch: ", launch_speed )
 	
 	if GlobalVariables.current_stage != null:
 		if (life_total <= 0 and GlobalVariables.game_ended == false):
@@ -1013,6 +1027,7 @@ func ground_special(id, _dir):
 			get_tree().current_scene.add_child(new_ring, true)
 		else:	# When a ring is on the field.
 			launch_power = Vector3(0, 6, 0)
+			damage_caused = 7
 			velocity = (active_ring.transform.origin - transform.origin).normalized() * 7
 			velocity.y = 5
 			pow_move = true
@@ -1077,6 +1092,7 @@ func air_special(id, _dir):
 		bouncing = true	# Initiates the "bouncing" state for bouncing off the ground.
 		launch_power = Vector3(0, 6, 0)
 		velocity.y = -5
+		damage_caused = 7
 	elif air_skill == "SET":
 		# Works exactly like the grounded variant, Sonic places a mine that falls to the ground.
 		# The mine explodes over time or on impact.

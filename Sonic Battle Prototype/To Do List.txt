@@ -33,6 +33,8 @@ Development Topics
 		healing should not be allowed when walking
 			or lock direction while healing
 		
+		camera shake and short pause per hit to emphasize it
+		
 		stages and hubs need textures
 
 		characters should flash when their special is full
