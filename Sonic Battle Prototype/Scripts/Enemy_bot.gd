@@ -280,6 +280,8 @@ func _physics_process(delta):
 	if position.y < -5.0:
 		#cause damage
 		life_total -= 10
+		if life_total < 0:
+			life_total = 0
 		#reposition or respawn
 		if life_total <= 0:
 			defeated()
@@ -783,7 +785,8 @@ func get_hurt(launch_speed, owner_of_the_attack, damage_taken = 1):
 				scatter_rings()
 		
 		life_total -= damage_taken
-		
+		if life_total < 0:
+			life_total = 0
 		# A bunch of states reset to make sure getting hurt cancels them out.
 		hurt = true
 		falling = false

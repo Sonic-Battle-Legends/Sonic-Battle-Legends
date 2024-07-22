@@ -83,6 +83,12 @@ var points_to_win: int = 2
 var game_ended: bool = false
 
 
+func reset_win_conditions():
+	game_ended = false
+	character_points = 0
+	bot_points = 0
+
+
 ## the character that triggers this method is the winner of the battle
 func win(winner):
 	game_ended = true

@@ -53,40 +53,40 @@ func _physics_process(delta):
 	# if this node has a parent
 	if cpu_character:
 		update_life_ui()
+		select_target()
 		
-		# delay as difficulty level
-		if delay <= 0:
-			select_target()
-			
-			# if there is a target and a player target
-			if target:
-				if target.is_in_group("Player"):
-					# if player have more life
-					if is_instance_valid(target) and \
-					(target.life_total + life_offset) > cpu_character.life_total:
-						# go with defensive behaviour
-						aggressive_behaviour()
-						#cautious_behaviour()
-					
-					# else if bot have more life
-					elif is_instance_valid(target) and \
-					(cpu_character.life_total + life_offset) > target.life_total:
-						# go with aggressive behaviour
-						aggressive_behaviour()
-						#cautious_behaviour()
-					
-					# else the bot and player have less than the life_offset between their life totals
-					else:
-						# go with tactics
-						aggressive_behaviour()
-						#cautious_behaviour()
-				else:
-					# go towards rings
-					aggressive_behaviour()
-		else:
-			reset_properties()
+		if delay > 0:
 			# count down the delay
 			delay -= delta
+		
+		# if there is a target and a player target
+		if target:
+			if target.is_in_group("Player"):
+				# if player have more life
+				if is_instance_valid(target) and \
+				(target.life_total + life_offset) > cpu_character.life_total:
+					# go with defensive behaviour
+					aggressive_behaviour()
+					#cautious_behaviour()
+				
+				# else if bot have more life
+				elif is_instance_valid(target) and \
+				(cpu_character.life_total + life_offset) > target.life_total:
+					# go with aggressive behaviour
+					aggressive_behaviour()
+					#cautious_behaviour()
+				
+				# else the bot and player have less than the life_offset between their life totals
+				else:
+					# go with tactics
+					aggressive_behaviour()
+					#cautious_behaviour()
+			else:
+				# go towards rings
+				aggressive_behaviour()
+		else:
+			# no targets
+			reset_properties()
 			
 	else:
 		# set the cpu_character as the bot that have this controller
