@@ -74,13 +74,19 @@ var extra_lives: int = 2
 
 # set difficulty level
 # 					 [easy, normal, hard] respectively
-var difficulty_levels = [0.5, 0.3, 0.0]
+var difficulty_levels = [0.2, 0.1, 0.0]
 var current_difficulty = difficulty_levels[2] #difficulty.hard
 
 # win condition
 var points_to_win: int = 2
 # store if someone won the game already
 var game_ended: bool = false
+
+
+func reset_win_conditions():
+	game_ended = false
+	character_points = 0
+	bot_points = 0
 
 
 ## the character that triggers this method is the winner of the battle

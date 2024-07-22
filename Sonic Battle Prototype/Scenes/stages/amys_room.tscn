@@ -12,12 +12,12 @@ texture_filter = 2
 [node name="Amys_Room" type="Node3D"]
 
 [node name="amy_s_room" parent="." instance=ExtResource("1_w46to")]
-transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
+transform = Transform3D(0.15, 0, 0, 0, 0.2, 0, 0, 0, 0.15, 0, 0, 0)
 
 [node name="amy_s_room" parent="amy_s_room" index="0"]
 surface_material_override/0 = SubResource("StandardMaterial3D_oh7il")
 
 [node name="InvisibleWalls" parent="." instance=ExtResource("2_nh2sa")]
-transform = Transform3D(1.005, 0, 0, 0, 1, 0, 0, 0, 0.495, 0, -0.762953, 0)
+transform = Transform3D(0.755, 0, 0, 0, 0.751, 0, 0, 0, 0.372, 0, -0.762953, 0)
 
 [editable path="amy_s_room"]

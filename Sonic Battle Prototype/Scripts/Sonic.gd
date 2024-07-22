@@ -300,6 +300,8 @@ func _physics_process(delta):
 	if position.y < -5.0:
 		#cause damage
 		life_total -= 10
+		if life_total < 0:
+			life_total = 0
 		#reposition or respawn
 		if life_total <= 0:
 			defeated()
@@ -922,7 +924,7 @@ func defeated(): #who_owns_last_attack = null):
 # function, which is why you don't see it here.
 @rpc("any_peer","reliable","call_local")
 func get_hurt(launch_speed, owner_of_the_attack, damage_taken = 1):
-	if $sonicrigged2/AnimationPlayer.current_animation != "KO" || $sonicrigged2/AnimationPlayer.current_animation != "SPIKED":
+	if $sonicrigged2/AnimationPlayer.current_animation != "KO" and $sonicrigged2/AnimationPlayer.current_animation != "SPIKED":
 		# store the last player who damaged this character
 		last_aggressor = owner_of_the_attack
 		
@@ -942,6 +944,8 @@ func get_hurt(launch_speed, owner_of_the_attack, damage_taken = 1):
 				scatter_rings()
 		
 		life_total -= damage_taken
+		if life_total < 0:
+			life_total = 0
 		hud.change_life(life_total)
 		#push_warning("life: ", life_total, ", damage_taken: ", damage_taken, ", launch: ", launch_speed )
 		

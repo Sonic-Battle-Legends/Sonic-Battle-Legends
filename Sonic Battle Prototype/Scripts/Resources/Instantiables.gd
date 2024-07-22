@@ -181,8 +181,7 @@ func go_to_stage(new_stage: PackedScene):
 	get_tree().paused = false
 	
 	# reset win condition variables
-	GlobalVariables.game_ended = false
-	GlobalVariables.character_points = 0
+	GlobalVariables.reset_win_conditions()
 	
 	delete_places()
 	

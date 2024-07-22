@@ -12,12 +12,12 @@ texture_filter = 2
 [node name="Emerald_Beach" type="Node3D"]
 
 [node name="emerald_beach" parent="." instance=ExtResource("1_mjnpd")]
-transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
+transform = Transform3D(0.15, 0, 0, 0, 0.2, 0, 0, 0, 0.15, 0, 0, 0)
 
 [node name="emerald_beach" parent="emerald_beach" index="0"]
 surface_material_override/0 = SubResource("StandardMaterial3D_038v5")
 
 [node name="InvisibleWalls" parent="." instance=ExtResource("2_26vho")]
-transform = Transform3D(0.855, 0, 0, 0, 0.855, 0, 0, 0, 0.855, 0, -0.931761, 0)
+transform = Transform3D(0.64, 0, 0, 0, 0.64, 0, 0, 0, 0.64, 0, -0.931761, 0)
 
 [editable path="emerald_beach"]
