@@ -924,7 +924,7 @@ func defeated(): #who_owns_last_attack = null):
 # function, which is why you don't see it here.
 @rpc("any_peer","reliable","call_local")
 func get_hurt(launch_speed, owner_of_the_attack, damage_taken = 1):
-	if $sonicrigged2/AnimationPlayer.current_animation != "KO" || $sonicrigged2/AnimationPlayer.current_animation != "SPIKED":
+	if $sonicrigged2/AnimationPlayer.current_animation != "KO" and $sonicrigged2/AnimationPlayer.current_animation != "SPIKED":
 		# store the last player who damaged this character
 		last_aggressor = owner_of_the_attack
 		

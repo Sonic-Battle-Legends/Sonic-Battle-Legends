@@ -736,24 +736,6 @@ func _on_hitbox_body_entered(body):
 		Audio.play(Audio.hit, self)
 		# If the current attack is Sonic's "pow" move, the hitbox pays attention to immunities.
 		if !pow_move || body.immunity != "pow":
-			'''
-			# reduce damage the bot causes if it's not on hard mode
-			if GlobalVariables.current_difficulty == GlobalVariables.difficulty_levels[2]:
-				var new_magnitude
-				# if it's on normal mode
-				if GlobalVariables.current_difficulty == GlobalVariables.difficulty_levels[1]:
-					new_magnitude = launch_power.length() / 2
-					launch_power = launch_power.normalized() * new_magnitude
-					# verbose to avoid warnings
-					damage_caused = int(float(damage_caused) / 2)
-				else:
-				# if it's on easy mode
-					new_magnitude = launch_power.length() / 3
-					launch_power = launch_power.normalized() * new_magnitude
-					# verbose to avoid warnings
-					damage_caused = int(float(damage_caused) / 3)
-			'''
-			
 			body.get_hurt.rpc_id(body.get_multiplayer_authority(), launch_power, self, damage_caused)
 
 
@@ -781,10 +763,10 @@ func defeated():
 # function, which is why you don't see it here.
 @rpc("any_peer","reliable","call_local")
 func get_hurt(launch_speed, owner_of_the_attack, damage_taken = 1):
-	if $sonicrigged2/AnimationPlayer.current_animation != "KO" || $sonicrigged2/AnimationPlayer.current_animation != "SPIKED":
+	if $sonicrigged2/AnimationPlayer.current_animation != "KO" and $sonicrigged2/AnimationPlayer.current_animation != "SPIKED":
 		# store the last player who damaged this character
 		last_aggressor = owner_of_the_attack
-			
+		
 		var sparks = Instantiables.SPARKS.instantiate()
 		sparks.position = position + Vector3(0, 0.1, 0)
 		get_parent().add_child(sparks)
@@ -799,7 +781,7 @@ func get_hurt(launch_speed, owner_of_the_attack, damage_taken = 1):
 				Audio.play(Audio.ring_spread, self)
 			else:
 				scatter_rings()
-			
+		
 		life_total -= damage_taken
 		
 		# A bunch of states reset to make sure getting hurt cancels them out.
