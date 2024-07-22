@@ -134,6 +134,8 @@ var last_aggressor
 var chasing_aggressor : bool
 # boolean to check when the player can do the AIM attack
 var can_spike : bool
+# boolean to check when the player can chase after a strong hit
+var can_chase : bool
 
 # prevent defeated() to be called more than once
 var was_defeated: bool = false
@@ -261,7 +263,6 @@ func _physics_process(delta):
 			spiked = false
 			$sonicrigged2/AnimationPlayer.play("KO")
 		
-		handle_dash()
 	
 	if is_on_wall() && $sonicrigged2/AnimationPlayer.current_animation == "LAUNCHED":
 		velocity.y = 0
@@ -270,6 +271,8 @@ func _physics_process(delta):
 	if !attacking && !hurt && !chasing_aggressor && !can_spike:
 		if !healing:
 			handle_jump()
+			
+			handle_dash()
 			
 			handle_movement_input()
 			
@@ -291,7 +294,7 @@ func _physics_process(delta):
 			# if Sonic is in his attacking or hurt state, he slows to a halt.
 			velocity.x = lerp(velocity.x, 0.0, 0.1)
 			velocity.z = lerp(velocity.z, 0.0, 0.1)
-		if $sonicrigged2/AnimationPlayer.current_animation == "WALL":
+		if $sonicrigged2/AnimationPlayer.current_animation == "WALL" || can_chase:
 			handle_walljump()
 	
 	# defeated if going lower than the lower limit of the map or
@@ -311,7 +314,7 @@ func _physics_process(delta):
 			position = last_spawn_position
 	
 	# If Sonic is currently chasing an aggressor after successfully executing a wall jump, he accelerates to above its position.
-	if chasing_aggressor:
+	if chasing_aggressor && last_aggressor != null:
 		velocity.x = lerp(velocity.x, (last_aggressor.transform.origin - transform.origin).normalized().x * 20, 0.25)
 		velocity.z = lerp(velocity.z, (last_aggressor.transform.origin - transform.origin).normalized().z * 20, 0.25)
 		
@@ -413,8 +416,10 @@ func handle_jump():
 	#	velocity.y = 1
 
 func handle_walljump():
-	if jump_pressed && $sonicrigged2/AnimationPlayer.current_animation == "WALL":
+	if jump_pressed:
 		hurt = false
+		can_chase = false
+		attacking = false
 		velocity.y = 7
 		chasing_aggressor = true
 
@@ -589,6 +594,8 @@ func handle_healing():
 			Audio.play(Audio.heal, self)
 			healing_time = 0
 	else:
+		if healing:
+			$sonicrigged2/AnimationPlayer.play("IDLE")
 		healing = false
 		healing_time = 0
 		if heal_effect != null:
@@ -786,6 +793,7 @@ func anim_end(anim_name):
 		starting = false
 		can_air_attack = false
 		can_airdash = false
+		can_chase = false
 	elif anim_name == "DASH ATK":
 		# Resets Sonic's attacking state when his dash attack ends.
 		attacking = false
@@ -891,6 +899,9 @@ func _on_hitbox_body_entered(body):
 	if !is_multiplayer_authority(): return
 	if body.is_in_group("CanHurt") && body != self and attacking:
 		Audio.play(Audio.hit, self)
+		if $sonicrigged2/AnimationPlayer.current_animation == "PGC 4":
+			last_aggressor = body
+			can_chase = true
 		# If the current attack is Sonic's "pow" move, the hitbox pays attention to immunities.
 		if !pow_move || body.immunity != "pow":
 			body.get_hurt.rpc_id(body.get_multiplayer_authority(), launch_power, self, damage_caused)
@@ -955,6 +966,7 @@ func get_hurt(launch_speed, owner_of_the_attack, damage_taken = 1):
 		jumping = false
 		bouncing = false
 		healing = false
+		can_chase = false
 		
 		velocity = launch_speed
 		# If Sonic was chasing a ring, the ring is deleted.
