@@ -1,8 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://wthuqkgsrxvy"]
+[gd_scene load_steps=16 format=3 uid="uid://wthuqkgsrxvy"]
 
 [ext_resource type="Texture2D" uid="uid://cnvca7d2mepgx" path="res://Sprites/Sonic.png" id="1_raevc"]
 [ext_resource type="Script" path="res://Scripts/SonicMine.gd" id="1_uumn5"]
 [ext_resource type="Texture2D" uid="uid://b4kv34vmtfr1j" path="res://Sprites/Effects.png" id="2_4i3k0"]
+[ext_resource type="PackedScene" uid="uid://cyeq44831s3ux" path="res://Models/SONIC_set/Sonic_set.blend" id="4_jhwxt"]
+[ext_resource type="Texture2D" uid="uid://gh6mf2ttbngg" path="res://Models/SONIC_set/SONIC_set.png" id="5_bg8vm"]
+[ext_resource type="Texture2D" uid="uid://baydkjyu8hdlk" path="res://Models/SONIC_set/SONIC_set_glow.png" id="6_ea4dh"]
 
 [sub_resource type="Animation" id="Animation_ssyxw"]
 length = 0.001
@@ -184,9 +187,18 @@ properties/2/path = NodePath("Area3D/CollisionShape3D:disabled")
 properties/2/spawn = true
 properties/2/replication_mode = 1
 
-[node name="SonicMine" type="CharacterBody3D" groups=["Mine", "PlayerAttack"]]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6job1"]
+albedo_texture = ExtResource("5_bg8vm")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c2q5e"]
+albedo_texture = ExtResource("6_ea4dh")
+emission_enabled = true
+emission = Color(0.988235, 1, 0.733333, 1)
+
+[node name="SonicMine" type="CharacterBody3D" node_paths=PackedStringArray("model_node") groups=["Mine", "PlayerAttack"]]
 collision_layer = 0
 script = ExtResource("1_uumn5")
+model_node = NodePath("Sonic_set")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -212,5 +224,14 @@ shape = SubResource("SphereShape3D_fdm11")
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_ifyqv")
 
+[node name="Sonic_set" parent="." instance=ExtResource("4_jhwxt")]
+transform = Transform3D(0.075, 0, 0, 0, 0.075, 0, 0, 0, 0.075, 0, -0.0684668, 0)
+
+[node name="Plane" parent="Sonic_set" index="0"]
+surface_material_override/0 = SubResource("StandardMaterial3D_6job1")
+surface_material_override/1 = SubResource("StandardMaterial3D_c2q5e")
+
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+
+[editable path="Sonic_set"]

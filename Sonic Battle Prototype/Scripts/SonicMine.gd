@@ -10,6 +10,9 @@ var user
 
 var damage = 10
 
+@export var model_node: Node3D
+
+
 func _physics_process(delta):
 	# Add the gravity.
 	if !is_on_floor():
@@ -19,14 +22,20 @@ func _physics_process(delta):
 	move_and_slide()
 
 
+func blast():
+	$AnimationPlayer.play("explode")
+	model_node.hide()
+	Audio.play(Audio.setExplosion, self)
+
+
 func _on_animation_player_animation_finished(anim_name):
 	# If the idle animation ends, the mine automatically explodes.
 	# If the explosion animation ends, the mine is destroyed.
 	if anim_name == "idle":
-		$AnimationPlayer.play("explode")
-		Audio.play(Audio.setExplosion, self)
+		blast()
 	elif anim_name == "explode":
 		queue_free()
+
 
 @rpc("any_peer", "reliable")
 func _on_area_3d_body_entered(body):
@@ -35,8 +44,7 @@ func _on_area_3d_body_entered(body):
 	if body.is_in_group("CanHurt") && body != user:
 		# The mine automatically explodes on contact if it hasn't exploded already.
 		if $AnimationPlayer.current_animation == "idle":
-			$AnimationPlayer.play("explode")
-			Audio.play(Audio.setExplosion, self)
+			blast()
 			Audio.play(Audio.hitStrong, self)
 		if body.immunity != "set":
 			# If the collision body is immune to "set" moves, they will not be affected.

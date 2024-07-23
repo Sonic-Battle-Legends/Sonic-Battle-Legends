@@ -1078,6 +1078,8 @@ func ground_special(id, _dir):
 			active_mine = new_mine
 			# Creates the mine
 			get_tree().current_scene.add_child(new_mine, true)
+		else:
+			active_mine.blast()
 
 
 ## The function for determining what happens with each selected air special move.
