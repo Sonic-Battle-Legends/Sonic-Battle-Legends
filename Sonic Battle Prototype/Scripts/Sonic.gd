@@ -1078,6 +1078,8 @@ func ground_special(id, _dir):
 			active_mine = new_mine
 			# Creates the mine
 			get_tree().current_scene.add_child(new_mine, true)
+		else:
+			active_mine.blast()
 
 
 ## The function for determining what happens with each selected air special move.
@@ -1100,7 +1102,11 @@ func air_special(id, _dir):
 		new_shot.name = "wave" + str(id)
 		new_shot.set_multiplayer_authority(get_multiplayer_authority())
 		new_shot.position = position
-		
+
+		var new_forward = $sonicrigged2.transform.basis.z.normalized()
+		new_forward.y = 0
+		new_shot.transform.basis.z = new_forward
+				
 		new_shot.velocity = Vector3($sonicrigged2.basis.z.normalized().x * 3, 0, $sonicrigged2.basis.z.normalized().z * 3)
 		velocity = -$sonicrigged2.basis.z.normalized() * 5
 		velocity.y = 2
