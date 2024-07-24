@@ -1,8 +1,7 @@
-[gd_scene load_steps=11 format=3 uid="uid://drlu8n40mygqk"]
+[gd_scene load_steps=8 format=3 uid="uid://drlu8n40mygqk"]
 
 [ext_resource type="PackedScene" uid="uid://c7txsjs00wqjh" path="res://Models/Spikes/Spikes2.blend" id="1_3gjp5"]
 [ext_resource type="Script" path="res://Scripts/hazard.gd" id="1_uos6y"]
-[ext_resource type="Texture2D" uid="uid://8dy7nosexosb" path="res://Models/Spikes/Spikes.png" id="2_rm25g"]
 [ext_resource type="Texture2D" uid="uid://w1640iis73bi" path="res://Textures/eggman_hazard.png" id="4_tmjtb"]
 
 [sub_resource type="Animation" id="Animation_t6eby"]
@@ -44,12 +43,6 @@ _data = {
 [sub_resource type="BoxShape3D" id="BoxShape3D_fwpw6"]
 size = Vector3(0.15, 0.2, 0.15)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8g20u"]
-albedo_texture = ExtResource("2_rm25g")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dw7ma"]
-albedo_texture = ExtResource("2_rm25g")
-
 [node name="Spikes" type="Node3D" node_paths=PackedStringArray("anim")]
 script = ExtResource("1_uos6y")
 anim = NodePath("AnimationPlayer")
@@ -69,16 +62,11 @@ shape = SubResource("BoxShape3D_fwpw6")
 [node name="Spikes2" parent="." instance=ExtResource("1_3gjp5")]
 transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, 0)
 
-[node name="base" parent="Spikes2" index="0"]
-surface_material_override/0 = SubResource("StandardMaterial3D_8g20u")
-
 [node name="collider" parent="Spikes2" index="1"]
 visible = false
 
 [node name="StaticBody3D" parent="Spikes2/collider" index="0" groups=["Hazard"]]
-
-[node name="spikes" parent="Spikes2" index="2"]
-surface_material_override/0 = SubResource("StandardMaterial3D_dw7ma")
+collision_layer = 8
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
 transform = Transform3D(0.18, 0, 0, 0, -7.86805e-09, 0.18, 0, -0.18, -7.86805e-09, 0.0015806, 0.0441108, 0)

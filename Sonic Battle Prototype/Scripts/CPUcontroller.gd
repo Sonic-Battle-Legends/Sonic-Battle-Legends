@@ -53,40 +53,40 @@ func _physics_process(delta):
 	# if this node has a parent
 	if cpu_character:
 		update_life_ui()
+		select_target()
 		
-		# delay as difficulty level
-		if delay <= 0:
-			select_target()
-			
-			# if there is a target and a player target
-			if target:
-				if target.is_in_group("Player"):
-					# if player have more life
-					if is_instance_valid(target) and \
-					(target.life_total + life_offset) > cpu_character.life_total:
-						# go with defensive behaviour
-						aggressive_behaviour()
-						#cautious_behaviour()
-					
-					# else if bot have more life
-					elif is_instance_valid(target) and \
-					(cpu_character.life_total + life_offset) > target.life_total:
-						# go with aggressive behaviour
-						aggressive_behaviour()
-						#cautious_behaviour()
-					
-					# else the bot and player have less than the life_offset between their life totals
-					else:
-						# go with tactics
-						aggressive_behaviour()
-						#cautious_behaviour()
-				else:
-					# go towards rings
-					aggressive_behaviour()
-		else:
-			reset_properties()
+		if delay > 0:
 			# count down the delay
 			delay -= delta
+		
+		# if there is a target and a player target
+		if target:
+			if target.is_in_group("Player"):
+				# if player have more life
+				if is_instance_valid(target) and \
+				(target.life_total + life_offset) > cpu_character.life_total:
+					# go with defensive behaviour
+					aggressive_behaviour()
+					#cautious_behaviour()
+				
+				# else if bot have more life
+				elif is_instance_valid(target) and \
+				(cpu_character.life_total + life_offset) > target.life_total:
+					# go with aggressive behaviour
+					aggressive_behaviour()
+					#cautious_behaviour()
+				
+				# else the bot and player have less than the life_offset between their life totals
+				else:
+					# go with tactics
+					aggressive_behaviour()
+					#cautious_behaviour()
+			else:
+				# go towards rings
+				aggressive_behaviour()
+		else:
+			# no targets
+			reset_properties()
 			
 	else:
 		# set the cpu_character as the bot that have this controller
@@ -142,7 +142,7 @@ func common_behaviours():
 		distance_to_keep_from_target = 0.2
 		
 		# if the target is a ring and this ring is too close to trigger, collect
-		if distance_to_target < 0.2 and target.is_in_group("Ring") and target.can_collect():
+		if distance_to_target < 0.2 and target.is_in_group("Ring") and target.has_method("can_collect") and target.can_collect():
 			cpu_character.collect_ring(target)
 	
 	# store planar variables
@@ -177,6 +177,10 @@ func aggressive_behaviour():
 	else:
 		if target.is_in_group("Player"):
 			attack_target()
+	
+	# if can chase or against the wall after a launch, use the chase mechanic
+	if cpu_character.can_chase or cpu_character.model_node.get_node("AnimationPlayer").current_animation == "WALL":
+		cpu_character.jump_pressed = true
 
 
 ## keep distance from player
@@ -211,7 +215,7 @@ func cautious_behaviour():
 				move_towards_target()
 				if distance_to_target < distance_to_keep_from_target:
 					attack_target()
-
+	
 
 ## move towards target
 ## or away from it if value is negative
@@ -234,6 +238,7 @@ func move_towards_target(mode_value = 1):
 	
 	# if there is an obstacle, jump
 	jump_check()
+	
 
 
 ## check for hazards
@@ -284,12 +289,32 @@ func attack_target():
 		# set delay based on difficulty level
 		delay = GlobalVariables.current_difficulty
 		
-		if (target.is_in_group("Player") and target.hurt) or hazard_ahead():
+		# use special move if the bot finished the combo and player is hurt or 
+		# if player is close and there is a hazard between the player and the bot
+		#if (target.is_in_group("Player") and (target.hurt or target.launched or target.spiked) and cpu_character.model_node.get_node("AnimationPlayer").current_animation == "PGC 4") or (hazard_ahead() and distance_to_target < 2):
+		if cpu_character.ground_skill == "SHOT" and (target.is_in_group("Player") and distance_to_target > min_attack_distance) or (hazard_ahead() and distance_to_target < 2):
 			# special attack check
 			cpu_character.special_pressed = true
 		else:
-			# attack check
-			cpu_character.attack_pressed = true
+			if cpu_character.ground_skill != "SHOT":
+				# select an attack at random
+				var random_move = randi_range(0, 100)
+				
+				# 10 % chance of special SET or POW move
+				if random_move <= 10:
+					cpu_character.special_pressed = true
+				
+				# 10 % change of updraft
+				elif random_move > 10 and random_move <= 20:
+					#cpu_character.model_node.get_node("AnimationPlayer").play("UPPER")
+					cpu_character.upper_pressed = true
+				
+				# 80 % change of punch combo
+				elif random_move > 20:
+					cpu_character.attack_pressed = true
+			else:
+				# attack check
+				cpu_character.attack_pressed = true
 
 
 func reset_properties():
@@ -298,7 +323,7 @@ func reset_properties():
 	cpu_character.attack_pressed = false
 	cpu_character.dash_triggered = false
 	cpu_character.jump_pressed = false
-	
+	cpu_character.upper_pressed = false
 	# can't heal if it keeps reseting
 	#cpu_character.guard_pressed = false
 	

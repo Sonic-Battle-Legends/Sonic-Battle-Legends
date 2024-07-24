@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=3 uid="uid://dv837xc88bkne"]
+[gd_scene load_steps=43 format=3 uid="uid://dv837xc88bkne"]
 
 [ext_resource type="Script" path="res://Scripts/Enemy_bot.gd" id="1_8y1bu"]
 [ext_resource type="Texture2D" uid="uid://cnvca7d2mepgx" path="res://Sprites/Sonic.png" id="2_0t6ku"]
@@ -122,9 +122,49 @@ tracks/3/keys = {
 "values": [0.0880643]
 }
 
+[sub_resource type="Animation" id="Animation_likoo"]
+resource_name = "aim"
+length = 0.4995
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Hitbox/CollisionShape3D2:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, -0.00366874, 0.0541974)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Hitbox/CollisionShape3D2:shape:radius")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.189129]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Hitbox/CollisionShape3D2:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.48),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [true, false, true]
+}
+
 [sub_resource type="Animation" id="Animation_0pbkp"]
 resource_name = "airAttack"
-length = 0.4662
+length = 0.4496
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -132,7 +172,7 @@ tracks/0/path = NodePath("Hitbox/CollisionShape3D2:disabled")
 tracks/0/interp = 0
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.3, 0.5),
+"times": PackedFloat32Array(0, 0.26, 0.4662),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [true, false, true]
@@ -147,7 +187,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [0.158911]
+"values": [0.179784]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -159,7 +199,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector3(0, -0.0912145, 0.0719795)]
+"values": [Vector3(0, -0.117817, 0.0719795)]
 }
 
 [sub_resource type="Animation" id="Animation_1ehhq"]
@@ -231,7 +271,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [0.155064]
+"values": [0.218943]
 }
 
 [sub_resource type="Animation" id="Animation_kh45i"]
@@ -377,28 +417,28 @@ tracks/0/path = NodePath("Hitbox/CollisionShape3D2:disabled")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.4, 0.63),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0, 0.23, 0.32, 0.63),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
-"values": [true, false, true]
+"values": [false, true, false, true]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/path = NodePath("Hitbox/CollisionShape3D2:position")
-tracks/1/interp = 1
+tracks/1/interp = 0
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0, 0.34),
+"transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector3(0, 0.0386497, 0.0807597)]
+"values": [Vector3(0, 0.0127703, 0.0489526), Vector3(0, 0.0272295, 0.0733799)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/path = NodePath("Hitbox/CollisionShape3D2:shape:radius")
-tracks/2/interp = 1
+tracks/2/interp = 0
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "times": PackedFloat32Array(0),
@@ -445,7 +485,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [0.128081]
+"values": [0.187378]
 }
 
 [sub_resource type="Animation" id="Animation_rvrgl"]
@@ -467,7 +507,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_7mawf"]
 resource_name = "punch1"
-length = 0.3996
+length = 0.4995
 step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -476,7 +516,7 @@ tracks/0/path = NodePath("Hitbox/CollisionShape3D2:disabled")
 tracks/0/interp = 0
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.15, 0.3),
+"times": PackedFloat32Array(0, 0.28, 0.46),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [true, false, true]
@@ -491,7 +531,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector3(0, -0.026314, 0.161431)]
+"values": [Vector3(0, -0.026314, 0.123125)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -503,12 +543,12 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [0.112339]
+"values": [0.151919]
 }
 
 [sub_resource type="Animation" id="Animation_bwkoe"]
 resource_name = "punch2"
-length = 0.1998
+length = 0.2498
 step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -544,12 +584,12 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [0.142548]
+"values": [0.170393]
 }
 
 [sub_resource type="Animation" id="Animation_xo7hq"]
 resource_name = "punch3"
-length = 0.2664
+length = 0.2997
 step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -558,7 +598,7 @@ tracks/0/path = NodePath("Hitbox/CollisionShape3D2:disabled")
 tracks/0/interp = 0
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.15, 0.254133),
+"times": PackedFloat32Array(0, 0.13, 0.254133),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [true, false, true]
@@ -573,7 +613,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector3(0, 0.0124009, 0.0652926)]
+"values": [Vector3(0, 0.028139, 0.0687705)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -674,7 +714,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_ey8f7"]
 resource_name = "strong"
-length = 0.5328
+length = 0.5495
 step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -683,10 +723,10 @@ tracks/0/path = NodePath("Hitbox/CollisionShape3D2:disabled")
 tracks/0/interp = 0
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.35),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0, 0.14, 0.35),
+"transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
-"values": [false, true]
+"values": [true, false, true]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -698,7 +738,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [0.194074]
+"values": [0.233666]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -755,7 +795,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector3(0.032849, 0, 0)]
+"values": [Vector3(0.032849, 0, 0.0472785)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -767,7 +807,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [0.172449]
+"values": [0.206574]
 }
 
 [sub_resource type="Animation" id="Animation_ccdw7"]
@@ -790,6 +830,7 @@ tracks/0/keys = {
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_soexl"]
 _data = {
 "RESET": SubResource("Animation_spsdn"),
+"aim": SubResource("Animation_likoo"),
 "airAttack": SubResource("Animation_0pbkp"),
 "airdash": SubResource("Animation_1ehhq"),
 "dash": SubResource("Animation_ta7g8"),
@@ -868,76 +909,16 @@ shape = SubResource("BoxShape3D_ij26k")
 [node name="sonicrigged2" parent="." instance=ExtResource("7_62g83")]
 transform = Transform3D(0.03, 0, 0, 0, 0.03, 0, 0, 0, 0.03, 0, -0.15, 0)
 
-[node name="Skeleton3D" parent="sonicrigged2/Armature" index="0"]
-bones/2/position = Vector3(0.218935, 3.026, 1.16972)
-bones/2/rotation = Quaternion(-5.33851e-08, 0.707107, 0.707107, -5.33851e-08)
-bones/3/position = Vector3(0.218935, 2.17562, 0.109578)
-bones/3/rotation = Quaternion(-1.37679e-07, 0.707107, -0.707107, 1.37679e-07)
-bones/4/position = Vector3(9.56126e-08, 0.00135874, 0.00283375)
-bones/5/rotation = Quaternion(0.433548, -7.69072e-07, -5.31844e-07, 0.901131)
-bones/6/position = Vector3(1.91252, 4.59827, -2.20158e-08)
-bones/6/rotation = Quaternion(0.5, -0.5, 0.5, -0.5)
-bones/7/position = Vector3(1.44238e-07, -5.96046e-08, -0.00203584)
-bones/8/rotation = Quaternion(-5.23591e-08, 5.00812e-08, -0.0886855, 0.99606)
-bones/9/rotation = Quaternion(9.46156e-08, 5.297e-09, -0.0488559, 0.998806)
-bones/10/rotation = Quaternion(-5.60883e-08, 4.01238e-08, -0.0934228, 0.995627)
-bones/11/rotation = Quaternion(1.01626e-07, 1.1394e-07, -0.0514709, 0.998675)
-bones/12/rotation = Quaternion(-8.16039e-08, 1.45605e-08, -0.097194, 0.995265)
-bones/13/rotation = Quaternion(1.19195e-07, 7.65666e-08, -0.0598765, 0.998206)
-bones/14/rotation = Quaternion(-7.93246e-08, 8.28751e-08, -0.102897, 0.994692)
-bones/15/rotation = Quaternion(1.4274e-07, 3.00703e-07, -0.0533342, 0.998577)
-bones/17/rotation = Quaternion(0.00540494, 2.22221e-05, -0.0839766, 0.996453)
-bones/18/position = Vector3(1.33331, 4.59827, -1.1739)
-bones/19/position = Vector3(-0.218935, 3.026, 1.16972)
-bones/20/position = Vector3(-0.218935, 2.17562, 0.109578)
-bones/20/rotation = Quaternion(1.37679e-07, 0.707107, -0.707107, -1.37679e-07)
-bones/21/position = Vector3(-9.56126e-08, 0.00135874, 0.00283375)
-bones/22/rotation = Quaternion(0.433548, 7.69072e-07, 5.31844e-07, 0.901131)
-bones/23/position = Vector3(-1.91252, 4.59827, -2.20158e-08)
-bones/23/rotation = Quaternion(0.5, 0.5, -0.5, -0.5)
-bones/24/position = Vector3(-1.44238e-07, -5.96046e-08, -0.00203584)
-bones/25/rotation = Quaternion(-5.23591e-08, -5.00812e-08, 0.0886855, 0.99606)
-bones/26/rotation = Quaternion(9.46156e-08, -5.297e-09, 0.0488559, 0.998806)
-bones/27/rotation = Quaternion(-5.60883e-08, -4.01238e-08, 0.0934228, 0.995627)
-bones/28/rotation = Quaternion(1.01626e-07, -1.1394e-07, 0.0514709, 0.998675)
-bones/29/rotation = Quaternion(-8.16039e-08, -1.45605e-08, 0.097194, 0.995265)
-bones/31/rotation = Quaternion(-7.93246e-08, -8.28751e-08, 0.102897, 0.994692)
-bones/32/rotation = Quaternion(1.4274e-07, -3.00703e-07, 0.0533342, 0.998577)
-bones/33/rotation = Quaternion(0.660928, -0.0498635, 0.0551857, 0.746755)
-bones/34/rotation = Quaternion(0.00540494, -2.22221e-05, 0.0839766, 0.996453)
-bones/35/position = Vector3(-1.33331, 4.59827, -1.1739)
-bones/36/position = Vector3(0, 3.70451, 0)
-bones/36/rotation = Quaternion(0, 0, 0, 1)
-bones/37/rotation = Quaternion(-6.43579e-09, 0.0143694, 0.999897, -4.39091e-08)
-bones/38/rotation = Quaternion(-0.0143694, -6.15058e-09, 3.08042e-08, 0.999897)
-bones/39/rotation = Quaternion(-0.0116413, -2.70495e-08, -2.70312e-08, 0.999932)
-bones/40/rotation = Quaternion(6.43579e-09, 0.0143694, 0.999897, 4.39091e-08)
-bones/41/rotation = Quaternion(-0.0143694, 6.15058e-09, -3.08042e-08, 0.999897)
-bones/42/rotation = Quaternion(-0.0116413, 2.70495e-08, 2.70312e-08, 0.999932)
-bones/43/rotation = Quaternion(0, 0, 0, 1)
-bones/45/rotation = Quaternion(-0.851103, -0.0292776, -0.0179934, 0.523872)
-bones/46/rotation = Quaternion(-0.1806, -0.0109089, 0.0082741, 0.983461)
-bones/47/rotation = Quaternion(-0.862723, 6.02813e-08, -1.02845e-07, 0.505677)
-bones/48/rotation = Quaternion(-0.128748, 3.80644e-15, -3.0696e-08, 0.991677)
-bones/50/rotation = Quaternion(-0.248731, 0.0118263, -0.0550679, 0.966934)
-bones/51/rotation = Quaternion(0.89162, 0.079607, 0.0526242, -0.442615)
-bones/52/rotation = Quaternion(-0.0929891, -0.0228969, 0.0674164, 0.993118)
-bones/54/rotation = Quaternion(-0.851103, 0.0292776, 0.0179934, 0.523872)
-bones/55/rotation = Quaternion(-0.1806, 0.0109089, -0.0082741, 0.983461)
-bones/56/rotation = Quaternion(0.89162, -0.079607, -0.0526242, -0.442615)
-bones/57/rotation = Quaternion(-0.0929891, 0.0228969, -0.0674164, 0.993118)
-bones/58/rotation = Quaternion(-0.014771, 0.0147709, -0.706953, 0.706953)
-bones/59/rotation = Quaternion(0.0208892, 5.96764e-08, -6.41882e-08, 0.999782)
-bones/60/rotation = Quaternion(0.0162818, -1.51409e-14, -1.22924e-09, 0.999867)
-bones/61/rotation = Quaternion(-0.014771, -0.0147709, 0.706953, 0.706953)
-bones/62/rotation = Quaternion(0.0208892, -5.96764e-08, 6.41882e-08, 0.999782)
-bones/63/rotation = Quaternion(0.0162818, 1.51409e-14, 1.22924e-09, 0.999867)
-
 [node name="Sonic" parent="sonicrigged2/Armature/Skeleton3D" index="0"]
 surface_material_override/0 = SubResource("StandardMaterial3D_nevym")
 surface_material_override/1 = SubResource("StandardMaterial3D_tr0ri")
 
 [node name="CPUcontroller" parent="." instance=ExtResource("6_2mma4")]
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+height = 0.31
+radius = 0.08
+debug_path_custom_point_size = 8.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -945,11 +926,6 @@ libraries = {
 }
 autoplay = "idle"
 speed_scale = 1.5
-
-[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
-height = 0.31
-radius = 0.08
-debug_path_custom_point_size = 8.0
 
 [connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]
 [connection signal="area_entered" from="ring_collider" to="." method="_on_ring_collider_area_entered"]

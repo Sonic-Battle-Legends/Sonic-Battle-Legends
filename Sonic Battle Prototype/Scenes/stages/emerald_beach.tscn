@@ -25,5 +25,4 @@ transform = Transform3D(0.64, 0, 0, 0, 0.64, 0, 0, 0, 0.64, 0, -0.931761, 0)
 stream = ExtResource("4_7piad")
 volume_db = -15.0
 autoplay = true
-
 [editable path="emerald_beach"]

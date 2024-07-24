@@ -7,31 +7,44 @@ extends Control
 
 
 func _process(_delta):
+	# don't show the restart button on online play
+	# because anyone could restart everyone else's match
 	if GlobalVariables.play_online:
 		restart_button.hide()
 	else:
 		restart_button.show()
-		
+	
+	# if the game is not paused, hide pause menu
+	if get_tree().is_paused() == false:
+		hide()
+	# if the pause menu is visible pause the game
+	if is_visible_in_tree():
+		get_tree().paused = true
+	
 	# allow to pause on a stage or hub while the game has not being won yet
 	if GlobalVariables.game_ended == false and GlobalVariables.current_character != null and (GlobalVariables.current_area != null or GlobalVariables.current_hub != null or GlobalVariables.current_stage != null):
 		# pause / resume the game when pressing "pause" button
-		if Input.is_action_just_pressed("pause"):
+		# prevent it when options menu is visible
+		if Input.is_action_just_pressed("pause") and GlobalVariables.main_menu.options_menu.is_visible_in_tree() == false:
 			toggle_pause()
 		
 		if get_tree().is_paused():
 			# show the mouse the confine it within the screen while paused
-			pause_menu.show()
+			#pause_menu.show()
+			#show()
 			Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED)
 		else:
 			# hide the mouse and hold it in place while not paused
-			pause_menu.hide()
+			#pause_menu.hide()
+			hide()
 			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	else:
 		# game ended, score screen appeared
 		get_tree().paused = GlobalVariables.game_ended
 		# else it's on main menu
 		
-		pause_menu.hide()
+		#pause_menu.hide()
+		hide()
 		Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED)
 
 
@@ -47,6 +60,7 @@ func toggle_pause():
 
 
 func restart():
+	# prevent anyone from restarting everyone else's match
 	if GlobalVariables.play_online == false:
 		get_tree().paused = false
 		

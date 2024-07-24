@@ -40,7 +40,7 @@ var selected_abilites: Array = []
 var possible_positions: Array
 
 # the current position of the selector of the abilities
-var current_position: abilities = abilities.SHOT
+var current_position: int = 0 #: abilities = abilities.SHOT
 
 # there is probably a better way to snap into the correct position
 var selector_position_correction: Vector2 = Vector2(-112, -20)
