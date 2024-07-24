@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://d1dv7tjtv0yse"]
+[gd_scene load_steps=5 format=3 uid="uid://d1dv7tjtv0yse"]
 
 [ext_resource type="PackedScene" uid="uid://cqc8qqujbql3v" path="res://Models/navtest.blend" id="1_v0k8a"]
 [ext_resource type="Material" uid="uid://djxad1r3jnafs" path="res://Materials/stageTopMaterial.tres" id="3_nn6jo"]
+[ext_resource type="AudioStream" uid="uid://d1wqnoxynwjlp" path="res://Audio/Sonic Battle Project Tracks/Stage themes/SBLM - Resort Wip 6.wav" id="4_7j6l1"]
 [ext_resource type="PackedScene" uid="uid://drlu8n40mygqk" path="res://Scenes/spikes.tscn" id="4_sbo7i"]
 
 [node name="Navmesh_Test" type="Node3D"]
@@ -89,6 +90,11 @@ root_node = NodePath("../../Spikes7")
 
 [node name="CollisionShape3D" parent="hazards/Spikes7/SpikeAreaCollider" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.129406, 0)
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_7j6l1")
+volume_db = -15.0
+autoplay = true
 
 [editable path="navtest"]
 [editable path="hazards/Spikes7"]

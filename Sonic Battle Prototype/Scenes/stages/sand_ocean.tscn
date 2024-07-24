@@ -1,13 +1,22 @@
 [gd_scene load_steps=14 format=3 uid="uid://cy3gglb7xdb12"]
 
 [ext_resource type="PackedScene" uid="uid://dsoiandycgbg4" path="res://Models/SandOcean.blend" id="1_xmp68"]
-[ext_resource type="PackedScene" path="res://Scenes/SandOceanRotatingPlatform.tscn" id="2_2xkdc"]
+
+[ext_resource type="PackedScene" uid="uid://cxa38uke40v17" path="res://Scenes/SandOceanRotatingPlatform.tscn" id="2_2xkdc"]
 [ext_resource type="Material" uid="uid://b2rgo2opot2ma" path="res://Materials/StageMaterial.tres" id="2_lrgqc"]
+
 [ext_resource type="Script" path="res://Scripts/MovingPlatform.gd" id="3_h3k1c"]
 [ext_resource type="Material" uid="uid://degceny20audx" path="res://Materials/StageMaterial2.tres" id="4_b2fl0"]
 [ext_resource type="PackedScene" path="res://Scenes/SandOceanMovingPlatform.tscn" id="4_w0toy"]
 [ext_resource type="AudioStream" uid="uid://1d37k4ogmek2" path="res://Audio/Sand Ocean.ogg" id="5_d3wih"]
+
+[ext_resource type="Material" uid="uid://b2rgo2opot2ma" path="res://Materials/StageMaterial.tres" id="2_lrgqc"]
+[ext_resource type="Script" path="res://Scripts/MovingPlatform.gd" id="3_h3k1c"]
+[ext_resource type="Material" uid="uid://degceny20audx" path="res://Materials/StageMaterial2.tres" id="4_b2fl0"]
+[ext_resource type="PackedScene" uid="uid://bxdf84eie0h0a" path="res://Scenes/SandOceanMovingPlatform.tscn" id="4_w0toy"]
+
 [ext_resource type="PackedScene" uid="uid://dqgtu3gjo0ymi" path="res://Scenes/collectables/ring.tscn" id="6_1o2yc"]
+[ext_resource type="AudioStream" uid="uid://db3x4e2lljgvs" path="res://Audio/Sonic Battle Project Tracks/Stage themes/SBC - Sandopolis Champion Mix Wip 2.mp3" id="7_3cvjf"]
 [ext_resource type="PackedScene" uid="uid://drlu8n40mygqk" path="res://Scenes/spikes.tscn" id="8_0dxp5"]
 [ext_resource type="Material" uid="uid://dkpe0puib4321" path="res://Materials/sandMaterial.tres" id="10_j7yvq"]
 
@@ -181,7 +190,7 @@ transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, -33.5522, 3.84937, 2
 shape = SubResource("BoxShape3D_p3gkg")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("5_d3wih")
+stream = ExtResource("7_3cvjf")
 volume_db = -15.0
 autoplay = true
 

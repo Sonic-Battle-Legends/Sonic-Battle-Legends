@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://bvfu1l4yt5c3m"]
+[gd_scene load_steps=6 format=3 uid="uid://bvfu1l4yt5c3m"]
 
 [ext_resource type="PackedScene" uid="uid://e3bf0aeb76kc" path="res://Models/original maps/holy_summit.blend" id="1_8u2r0"]
 [ext_resource type="Texture2D" uid="uid://cd0864pgo4x46" path="res://Models/original maps/textures/Holly_Summit.png" id="2_aa0xh"]
 [ext_resource type="PackedScene" uid="uid://irlpgd8spuet" path="res://Scenes/stages/invisible_walls.tscn" id="2_kbfp6"]
+[ext_resource type="AudioStream" uid="uid://hgg1r0g8aep0" path="res://Audio/Sonic Battle Project Tracks/Stage themes/Techno Tundra Zone Final Mix.mp3" id="4_eq12r"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_85cqm"]
 shading_mode = 0
@@ -19,5 +20,10 @@ surface_material_override/0 = SubResource("StandardMaterial3D_85cqm")
 
 [node name="InvisibleWalls" parent="." instance=ExtResource("2_kbfp6")]
 transform = Transform3D(0.635, 0, 0, 0, 0.635, 0, 0, 0, 0.635, -0.242938, -0.578437, -0.283362)
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_eq12r")
+volume_db = -15.0
+autoplay = true
 
 [editable path="holy_summit"]

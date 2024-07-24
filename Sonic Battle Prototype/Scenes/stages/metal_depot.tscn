@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://ojg3xdti5ja0"]
+[gd_scene load_steps=6 format=3 uid="uid://ojg3xdti5ja0"]
 
 [ext_resource type="PackedScene" uid="uid://k7cekhacuvw3" path="res://Models/original maps/metal_depot.blend" id="1_ot6s5"]
 [ext_resource type="PackedScene" uid="uid://irlpgd8spuet" path="res://Scenes/stages/invisible_walls.tscn" id="2_bbgni"]
 [ext_resource type="Texture2D" uid="uid://c37ouso0m616m" path="res://Models/original maps/textures/Metal_Depot.png" id="2_refgs"]
+[ext_resource type="AudioStream" uid="uid://bajvv24k5sm3e" path="res://Audio/Sonic Battle Project Tracks/Stage themes/SBLM - Junkyard Wasteland Zone Wip 6.wav" id="4_v1joa"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_osdox"]
 shading_mode = 0
@@ -19,5 +20,10 @@ surface_material_override/0 = SubResource("StandardMaterial3D_osdox")
 
 [node name="InvisibleWalls" parent="." instance=ExtResource("2_bbgni")]
 transform = Transform3D(1.025, 0, 0, 0, 0.751, 0, 0, 0, 0.252, 0.84088, -0.986975, 0)
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_v1joa")
+volume_db = -15.0
+autoplay = true
 
 [editable path="metal_depot"]

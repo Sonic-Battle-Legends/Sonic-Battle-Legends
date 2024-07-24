@@ -167,6 +167,7 @@ func _on_area_1_button_pressed():
 	GlobalVariables.hub_selected = Instantiables.match_place(Instantiables.worlds_and_hubs.city_hub)
 	#GlobalVariables.area_selected = Instantiables.match_place(Instantiables.worlds_and_hubs.city_hub) #Instantiables.match_place(Instantiables.worlds_and_hubs.first_world)
 	hide_menus()
+	$AudioStreamPlayer.stop()
 	go_to_area_scene()
 
 
