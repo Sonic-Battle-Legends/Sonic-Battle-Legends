@@ -260,8 +260,8 @@ func _physics_process(delta):
 			pow_move = false
 		
 		if spiked:
-			spiked = false
 			$sonicrigged2/AnimationPlayer.play("KO")
+			spiked = false
 		
 	
 	if is_on_wall() && $sonicrigged2/AnimationPlayer.current_animation == "LAUNCHED":
@@ -863,6 +863,12 @@ func anim_end(anim_name):
 		else:
 			$AnimationPlayer.play("hurtStrong")
 			$sonicrigged2/AnimationPlayer.play("LAUNCHED")
+	elif anim_name == "SPIKED":
+		if !is_on_floor():
+			$sonicrigged2/AnimationPlayer.play("SPIKED")
+		else:
+			$sonicrigged2/AnimationPlayer.play("KO")
+			spiked = false
 	elif anim_name in ["RING", "BOMB G (LAZY)", "BOMB A"]:
 		# Handles Sonic's reset states for all of his special moves.
 		attacking = false
@@ -1151,7 +1157,7 @@ func _on_ring_collider_area_entered(area):
 		var collided_object = area.get_parent()
 		
 		# collect ring
-		if collided_object.is_in_group("Ring"):
+		if collided_object.is_in_group("Ring") && life_total > 0:
 			collect_ring()
 			if collided_object.has_method("delete_ring"):
 				collided_object.delete_ring()
