@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://d1wqnoxynwjlp"
+path="res://.godot/imported/SBLM - Resort Wip 6.wav-818da430e96699909673558b7b78dcef.sample"
+
+[deps]
+
+source_file="res://Audio/Sonic Battle Project Tracks/Stage themes/SBLM - Resort Wip 6.wav"
+dest_files=["res://.godot/imported/SBLM - Resort Wip 6.wav-818da430e96699909673558b7b78dcef.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=2
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0
