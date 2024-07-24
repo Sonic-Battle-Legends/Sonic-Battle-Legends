@@ -1119,11 +1119,11 @@ func air_special(id, _dir):
 ## use Area3D to detect collectables like rings and hazards
 func _on_ring_collider_area_entered(area):
 	# store the parent of the Area3D the character collided
-	if area.get_parent() != null:
+	if area.get_parent() != null && life_total > 0:
 		var collided_object = area.get_parent()
 		
 		# collect ring
-		if collided_object.is_in_group("Ring") && life_total > 0:
+		if collided_object.is_in_group("Ring"):
 			collect_ring(collided_object)
 
 

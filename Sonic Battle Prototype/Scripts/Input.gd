@@ -21,7 +21,7 @@ func _physics_process(_delta):
 		character.jump_pressed = Input.is_action_just_pressed("jump")
 		
 		# attack check
-		character.attack_pressed = Input.is_action_pressed("punch")
+		character.attack_pressed = Input.is_action_just_pressed("punch")
 		
 		# upper check
 		character.upper_pressed = Input.is_action_just_pressed("upper")
