@@ -14,7 +14,7 @@ func _on_host_button_pressed():
 
 
 func configure_player():
-	GlobalVariables.main_menu.online_menu.hide()
+	#GlobalVariables.main_menu.online_menu.hide()
 	
 	if GlobalVariables.character_id == null:
 		# need to check if enet already exists

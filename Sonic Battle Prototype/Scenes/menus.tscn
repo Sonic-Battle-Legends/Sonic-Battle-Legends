@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://dasd2d602fnvh"]
+[gd_scene load_steps=6 format=3 uid="uid://dasd2d602fnvh"]
 
 [ext_resource type="Script" path="res://Scripts/Menus.gd" id="1_v57px"]
 [ext_resource type="Texture2D" uid="uid://dofyi4jiyto42" path="res://Textures/icon.svg" id="2_xj80o"]
+[ext_resource type="Script" path="res://Scripts/OptionsMenu.gd" id="3_btg1a"]
 [ext_resource type="AudioStream" uid="uid://da210klr6jhu0" path="res://Audio/Sonic Battle Project Tracks/Menus/Menu final version maybe.mp3" id="4_8atxw"]
 [ext_resource type="PackedScene" uid="uid://bvn1yjxoq8fdx" path="res://Scenes/pause.tscn" id="4_ns075"]
 
@@ -25,6 +26,7 @@ pause_menu = NodePath("Pause")
 canvas_server_menu = NodePath("OnlineMenu/canvas")
 
 [node name="IntroAnimation" type="VideoStreamPlayer" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -147,27 +149,232 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "Quit"
 
-[node name="OptionsMenu" type="Control" parent="."]
+[node name="OptionsMenu" type="Control" parent="." node_paths=PackedStringArray("up_button", "left_button", "down_button", "right_button", "punch_button", "special_button", "jump_button", "guard_button")]
 process_mode = 3
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("3_btg1a")
+up_button = NodePath("TabContainer/Input Map/directionals/up/upButton")
+left_button = NodePath("TabContainer/Input Map/directionals/left/leftButton")
+down_button = NodePath("TabContainer/Input Map/directionals/down/downButton")
+right_button = NodePath("TabContainer/Input Map/directionals/right/rightButton")
+punch_button = NodePath("TabContainer/Input Map/Attacks/punch/punchButton")
+special_button = NodePath("TabContainer/Input Map/Attacks/special/specialButton")
+jump_button = NodePath("TabContainer/Input Map/Other/jump/jumpButton")
+guard_button = NodePath("TabContainer/Input Map/Other/guard/guardButton")
 
 [node name="title" type="RichTextLabel" parent="OptionsMenu"]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -33.0
-offset_top = 68.0
-offset_right = 133.0
-offset_bottom = 169.0
+offset_left = -40.0
+offset_top = 24.0
+offset_right = 126.0
+offset_bottom = 125.0
 grow_horizontal = 2
 text = "OPTIONS"
+
+[node name="TabContainer" type="TabContainer" parent="OptionsMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 62.0
+offset_bottom = -92.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Difficulty" type="TabBar" parent="OptionsMenu/TabContainer"]
+layout_mode = 2
+
+[node name="Difficulty_Selection_List" type="ItemList" parent="OptionsMenu/TabContainer/Difficulty"]
+layout_mode = 0
+offset_left = 526.0
+offset_top = 45.0
+offset_right = 627.0
+offset_bottom = 170.0
+allow_rmb_select = true
+item_count = 3
+item_0/text = "EASY"
+item_1/text = "NORMAL"
+item_2/text = "HARD"
+
+[node name="Input Map" type="TabBar" parent="OptionsMenu/TabContainer"]
+visible = false
+layout_mode = 2
+
+[node name="description" type="RichTextLabel" parent="OptionsMenu/TabContainer/Input Map"]
+layout_mode = 1
+offset_left = 256.0
+offset_top = 50.0
+offset_right = 937.0
+offset_bottom = 83.0
+text = "Click the input you want to change,  then press a  button to set it as the new input"
+
+[node name="directionals" type="RichTextLabel" parent="OptionsMenu/TabContainer/Input Map"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 98.0
+offset_right = 290.0
+offset_bottom = 290.0
+text = "DIRECTIONALS"
+
+[node name="up" type="RichTextLabel" parent="OptionsMenu/TabContainer/Input Map/directionals"]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 30.0
+offset_right = 252.0
+offset_bottom = 65.0
+text = "up"
+
+[node name="upButton" type="Button" parent="OptionsMenu/TabContainer/Input Map/directionals/up"]
+layout_mode = 0
+offset_left = 68.0
+offset_top = -1.0
+offset_right = 235.0
+offset_bottom = 30.0
+text = "W"
+
+[node name="left" type="RichTextLabel" parent="OptionsMenu/TabContainer/Input Map/directionals"]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 70.0
+offset_right = 252.0
+offset_bottom = 105.0
+text = "left"
+
+[node name="leftButton" type="Button" parent="OptionsMenu/TabContainer/Input Map/directionals/left"]
+layout_mode = 0
+offset_left = 68.0
+offset_top = -1.0
+offset_right = 235.0
+offset_bottom = 30.0
+text = "A"
+
+[node name="down" type="RichTextLabel" parent="OptionsMenu/TabContainer/Input Map/directionals"]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 110.0
+offset_right = 252.0
+offset_bottom = 145.0
+text = "down"
+
+[node name="downButton" type="Button" parent="OptionsMenu/TabContainer/Input Map/directionals/down"]
+layout_mode = 0
+offset_left = 68.0
+offset_top = -1.0
+offset_right = 235.0
+offset_bottom = 30.0
+text = "S"
+
+[node name="right" type="RichTextLabel" parent="OptionsMenu/TabContainer/Input Map/directionals"]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 150.0
+offset_right = 252.0
+offset_bottom = 185.0
+text = "right"
+
+[node name="rightButton" type="Button" parent="OptionsMenu/TabContainer/Input Map/directionals/right"]
+layout_mode = 0
+offset_left = 68.0
+offset_top = -1.0
+offset_right = 235.0
+offset_bottom = 30.0
+text = "D"
+
+[node name="Attacks" type="RichTextLabel" parent="OptionsMenu/TabContainer/Input Map"]
+layout_mode = 0
+offset_left = 444.0
+offset_top = 98.0
+offset_right = 718.0
+offset_bottom = 290.0
+text = "Attacks"
+
+[node name="punch" type="RichTextLabel" parent="OptionsMenu/TabContainer/Input Map/Attacks"]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 30.0
+offset_right = 252.0
+offset_bottom = 65.0
+text = "punch"
+
+[node name="punchButton" type="Button" parent="OptionsMenu/TabContainer/Input Map/Attacks/punch"]
+layout_mode = 0
+offset_left = 68.0
+offset_top = -1.0
+offset_right = 235.0
+offset_bottom = 30.0
+text = "ENTER"
+
+[node name="special" type="RichTextLabel" parent="OptionsMenu/TabContainer/Input Map/Attacks"]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 70.0
+offset_right = 252.0
+offset_bottom = 105.0
+text = "special"
+
+[node name="specialButton" type="Button" parent="OptionsMenu/TabContainer/Input Map/Attacks/special"]
+layout_mode = 0
+offset_left = 68.0
+offset_top = -1.0
+offset_right = 235.0
+offset_bottom = 30.0
+text = "SHIFT"
+
+[node name="Other" type="RichTextLabel" parent="OptionsMenu/TabContainer/Input Map"]
+layout_mode = 0
+offset_left = 844.0
+offset_top = 98.0
+offset_right = 1118.0
+offset_bottom = 290.0
+text = "Other"
+
+[node name="jump" type="RichTextLabel" parent="OptionsMenu/TabContainer/Input Map/Other"]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 30.0
+offset_right = 252.0
+offset_bottom = 65.0
+text = "jump"
+
+[node name="jumpButton" type="Button" parent="OptionsMenu/TabContainer/Input Map/Other/jump"]
+layout_mode = 0
+offset_left = 68.0
+offset_top = -1.0
+offset_right = 235.0
+offset_bottom = 30.0
+text = "SPACE"
+
+[node name="guard" type="RichTextLabel" parent="OptionsMenu/TabContainer/Input Map/Other"]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 70.0
+offset_right = 252.0
+offset_bottom = 105.0
+text = "guard"
+
+[node name="guardButton" type="Button" parent="OptionsMenu/TabContainer/Input Map/Other/guard"]
+layout_mode = 0
+offset_left = 68.0
+offset_top = -1.0
+offset_right = 235.0
+offset_bottom = 30.0
+text = "CTRL"
+
+[node name="restoreDefaultButton" type="Button" parent="OptionsMenu/TabContainer/Input Map"]
+layout_mode = 0
+offset_left = 872.0
+offset_top = 386.0
+offset_right = 1088.0
+offset_bottom = 436.0
+text = "Restore Default"
 
 [node name="options back button" type="Button" parent="OptionsMenu"]
 layout_mode = 1
@@ -176,25 +383,13 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -89.0
-offset_top = -29.0
-offset_right = 89.0
-offset_bottom = 29.0
+offset_left = -84.0
+offset_top = 245.0
+offset_right = 94.0
+offset_bottom = 303.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "Back"
-
-[node name="Difficulty_Selection_List" type="ItemList" parent="OptionsMenu"]
-layout_mode = 0
-offset_left = 526.0
-offset_top = 138.0
-offset_right = 627.0
-offset_bottom = 263.0
-allow_rmb_select = true
-item_count = 3
-item_0/text = "EASY"
-item_1/text = "NORMAL"
-item_2/text = "HARD"
 
 [node name="OnlineOrOffline" type="Control" parent="."]
 visible = false
@@ -531,8 +726,17 @@ autoplay = true
 [connection signal="pressed" from="MainMenu/start button" to="." method="_on_start_button_pressed"]
 [connection signal="pressed" from="MainMenu/options button" to="." method="_on_options_button_pressed"]
 [connection signal="pressed" from="MainMenu/quit button" to="." method="_on_quit_button_pressed"]
+[connection signal="item_selected" from="OptionsMenu/TabContainer/Difficulty/Difficulty_Selection_List" to="." method="_on_difficulty_selection_list_item_selected"]
+[connection signal="pressed" from="OptionsMenu/TabContainer/Input Map/directionals/up/upButton" to="OptionsMenu" method="_on_up_button_pressed"]
+[connection signal="pressed" from="OptionsMenu/TabContainer/Input Map/directionals/left/leftButton" to="OptionsMenu" method="_on_left_button_pressed"]
+[connection signal="pressed" from="OptionsMenu/TabContainer/Input Map/directionals/down/downButton" to="OptionsMenu" method="_on_down_button_pressed"]
+[connection signal="pressed" from="OptionsMenu/TabContainer/Input Map/directionals/right/rightButton" to="OptionsMenu" method="_on_right_button_pressed"]
+[connection signal="pressed" from="OptionsMenu/TabContainer/Input Map/Attacks/punch/punchButton" to="OptionsMenu" method="_on_punch_button_pressed"]
+[connection signal="pressed" from="OptionsMenu/TabContainer/Input Map/Attacks/special/specialButton" to="OptionsMenu" method="_on_special_button_pressed"]
+[connection signal="pressed" from="OptionsMenu/TabContainer/Input Map/Other/jump/jumpButton" to="OptionsMenu" method="_on_jump_button_pressed"]
+[connection signal="pressed" from="OptionsMenu/TabContainer/Input Map/Other/guard/guardButton" to="OptionsMenu" method="_on_guard_button_pressed"]
+[connection signal="pressed" from="OptionsMenu/TabContainer/Input Map/restoreDefaultButton" to="OptionsMenu" method="_on_restore_default_button_pressed"]
 [connection signal="pressed" from="OptionsMenu/options back button" to="." method="_on_options_back_button_pressed"]
-[connection signal="item_selected" from="OptionsMenu/Difficulty_Selection_List" to="." method="_on_difficulty_selection_list_item_selected"]
 [connection signal="pressed" from="OnlineOrOffline/online button" to="." method="_on_online_button_pressed"]
 [connection signal="pressed" from="OnlineOrOffline/offline button" to="." method="_on_offline_button_pressed"]
 [connection signal="pressed" from="OnlineOrOffline/back button" to="." method="_on_back_button_pressed"]
