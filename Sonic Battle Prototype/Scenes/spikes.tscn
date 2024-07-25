@@ -46,6 +46,7 @@ size = Vector3(0.15, 0.2, 0.15)
 [node name="Spikes" type="Node3D" node_paths=PackedStringArray("anim")]
 script = ExtResource("1_uos6y")
 anim = NodePath("AnimationPlayer")
+damage_caused = 17
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
