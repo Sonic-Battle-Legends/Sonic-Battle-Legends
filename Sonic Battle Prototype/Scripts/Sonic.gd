@@ -159,6 +159,9 @@ var rings: int = MAX_SCATTERED_RINGS_ALLOWED
 # to reposition if falling off a pit but still not defeated
 var last_spawn_position: Vector3 = Vector3.ZERO
 
+var after_image_time: float = 0.0
+
+
 # Head Up Display
 @export_category("HUD")
 @export var hud: Control
@@ -220,6 +223,10 @@ func _process(delta):
 	# could create an actual timer instead
 	if doubletap_timer > 0:
 		doubletap_timer -= delta
+	
+	# control how often an after image will appear
+	if after_image_time > 0:
+		after_image_time -= delta
 
 
 func _physics_process(delta):
@@ -324,6 +331,8 @@ func _physics_process(delta):
 	
 	if can_spike:
 		handle_spike()
+	
+	handle_after_image()
 	
 	# Automatically handle the animation and character controller physics.
 	handle_animation()
@@ -762,6 +771,25 @@ func set_abilities(new_abilities: Array):
 		immunity = new_abilities[2]
 
 
+func handle_after_image():
+	if $sonicrigged2/AnimationPlayer.current_animation == "DASH" \
+	or "DJMP" in $sonicrigged2/AnimationPlayer.current_animation \
+	or chasing_ring or bouncing  or chasing_aggressor:
+		create_after_image()
+
+
+func create_after_image():
+	if after_image_time <= 0:
+		after_image_time = 0.05
+		var new_after_image = Instantiables.AFTER_IMAGE.instantiate()
+		new_after_image.position = position
+		new_after_image.get_child(0).transform.basis.z = $sonicrigged2.transform.basis.z
+		new_after_image.current_animation_name = $sonicrigged2/AnimationPlayer.current_animation
+		new_after_image.current_animation_time = $sonicrigged2/AnimationPlayer.current_animation_position
+
+		get_parent().add_child(new_after_image)
+
+
 func anim_end(anim_name):
 	if anim_name == "WALK START":
 		# End the "starting" state when the starting animation ends.
@@ -957,8 +985,12 @@ func get_hurt(launch_speed, owner_of_the_attack, damage_taken = 1):
 			if damage_taken > MAX_SCATTERED_RINGS_ALLOWED * HEAL_POINTS_PER_RING:
 				scatter_rings(MAX_SCATTERED_RINGS_ALLOWED)
 				Audio.play(Audio.ring_spread, self)
+				# shake camera
+				GlobalVariables.camera.shake(0.5, 2.0)
 			else:
 				scatter_rings()
+				# shake camera
+				GlobalVariables.camera.shake()
 		
 		life_total -= damage_taken
 		if life_total < 0:

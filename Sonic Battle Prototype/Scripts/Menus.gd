@@ -21,6 +21,7 @@ extends Control
 @export_category("SERVER CANVAS MENU")
 @export var canvas_server_menu: Node3D
 
+var focused = false
 
 func _ready():
 	GlobalVariables.main_menu = self
@@ -41,6 +42,16 @@ func _process(_delta):
 	if intro_animation.is_visible_in_tree() and Input.is_anything_pressed():
 		intro_animation.hide()
 		main_menu.show()
+	
+	if focused == false:
+		for i in range(get_children().size()):
+			if get_child(i).name != "AudioStreamPlayer" and get_child(i).is_visible_in_tree():
+				#set_focus_mode(Control.FOCUS_ALL)
+				for j in range(get_child(i).get_children().size()):
+					if get_child(i).get_child(j) is Button:
+						get_child(i).get_child(j).grab_focus()
+						focused = true
+						return
 
 
 func start_menu():
@@ -50,6 +61,7 @@ func start_menu():
 
 ## hide all menu screens so they won't overlap each other
 func hide_menus():
+	focused = false
 	intro_animation.hide()
 	main_menu.hide()
 	options_menu.hide()
@@ -114,13 +126,14 @@ func _on_online_button_pressed():
 
 
 func _on_host_button_pressed():
+	hide_menus()
 	# the server will call the after_online_setup() in here when it's done
 	ServerJoin.configure_player()
 
 
 func _on_join_button_pressed():
-	GlobalVariables.main_menu.online_menu.hide()
-	
+	#GlobalVariables.main_menu.online_menu.hide()
+	hide_menus()
 	ServerJoin.enet_peer.create_client("localhost", ServerJoin.PORT)
 	ServerJoin.multiplayer.multiplayer_peer = ServerJoin.enet_peer
 	

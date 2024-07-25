@@ -17,6 +17,9 @@ var HEALING_EFFECT = load("res://Scenes/effects/healing_effect.tscn")
 
 var KO_EFFECT = load("res://Scenes/effects/ko_effect.tscn")
 
+# sonic after image
+var AFTER_IMAGE = load("res://Scenes/effects/after_image.tscn")
+
 # The prefab for spawning Sonic's "shot" projectile.
 const SHOT_PROJECTILE = preload("res://Scenes/SonicWave.tscn")
 

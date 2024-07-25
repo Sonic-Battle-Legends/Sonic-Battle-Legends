@@ -2,6 +2,10 @@ extends Node
 
 signal camera_orientation_changed
 
+var camera: Camera3D
+
+var can_shake_camera = true
+
 # right now everyone and everything should have a gravity of 20.
 var gravity: float = 20.0
 
@@ -76,6 +80,8 @@ var extra_lives: int = 2
 # 					 [easy, normal, hard] respectively
 var difficulty_levels = [0.2, 0.1, 0.0]
 var current_difficulty = difficulty_levels[2] #difficulty.hard
+
+const DEFAULT_INPUTS = { "up": "W", "left": "A", "down": "S", "right": "D", "punch": "Kp Enter", "special": "Shift", "jump": "Space", "guard": "Ctrl" }
 
 # win condition
 var points_to_win: int = 2
