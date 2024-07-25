@@ -14,6 +14,8 @@ var damage = 10
 @export var sprite_node: Node3D
 @export var particle_node: Node3D
 
+var exploded = false
+
 
 func _ready():
 	model_node.show()
@@ -30,11 +32,13 @@ func _physics_process(delta):
 
 
 func blast():
-	$AnimationPlayer.play("explode")
-	sprite_node.show()
-	model_node.hide()
-	particle_node.get_child(0).emitting = true
-	Audio.play(Audio.setExplosion, self)
+	if !exploded:
+		exploded = true
+		$AnimationPlayer.play("explode")
+		sprite_node.show()
+		model_node.hide()
+		particle_node.get_child(0).emitting = true
+		Audio.play(Audio.setExplosion, self)
 
 
 func _on_animation_player_animation_finished(anim_name):

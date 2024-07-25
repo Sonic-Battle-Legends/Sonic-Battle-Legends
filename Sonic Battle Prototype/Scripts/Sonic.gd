@@ -260,8 +260,8 @@ func _physics_process(delta):
 			pow_move = false
 		
 		if spiked:
-			spiked = false
 			$sonicrigged2/AnimationPlayer.play("KO")
+			spiked = false
 		
 	
 	if is_on_wall() && $sonicrigged2/AnimationPlayer.current_animation == "LAUNCHED":
@@ -863,6 +863,12 @@ func anim_end(anim_name):
 		else:
 			$AnimationPlayer.play("hurtStrong")
 			$sonicrigged2/AnimationPlayer.play("LAUNCHED")
+	elif anim_name == "SPIKED":
+		if !is_on_floor():
+			$sonicrigged2/AnimationPlayer.play("SPIKED")
+		else:
+			$sonicrigged2/AnimationPlayer.play("KO")
+			spiked = false
 	elif anim_name in ["RING", "BOMB G (LAZY)", "BOMB A"]:
 		# Handles Sonic's reset states for all of his special moves.
 		attacking = false
@@ -1147,7 +1153,7 @@ func air_special(id, _dir):
 ## use Area3D to detect collectables like rings and hazards
 func _on_ring_collider_area_entered(area):
 	# store the parent of the Area3D the character collided
-	if area.get_parent() != null:
+	if area.get_parent() != null && life_total > 0:
 		var collided_object = area.get_parent()
 		
 		# collect ring
