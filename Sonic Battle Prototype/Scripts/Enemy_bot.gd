@@ -175,6 +175,10 @@ var after_image_time: float = 0.0
 # defeated method should trigger only once
 var was_defeated: bool = false
 
+#for checking valid location to spawn
+var range: int
+var respawning: bool = false 
+
 
 func _enter_tree():
 	set_multiplayer_authority(0) #str(name).to_int())
@@ -224,6 +228,12 @@ func _process(delta):
 	# control how often an after image will appear
 	if after_image_time > 0:
 		after_image_time -= delta
+	if !$DropShadowRange.is_colliding() and respawning == true:
+		range -= 0.1
+		respawn(range)
+	else:
+		respawning = false
+		range = 2.5
 
 
 func _physics_process(delta):
@@ -264,6 +274,7 @@ func _physics_process(delta):
 			starting = false
 			pow_move = false
 		
+	
 	
 	if is_on_wall() && $sonicrigged2/AnimationPlayer.current_animation == "LAUNCHED":
 		velocity.y = 0
@@ -311,13 +322,9 @@ func _physics_process(delta):
 		if life_total <= 0:
 			defeated()
 		else:
-			velocity = Vector3.ZERO
-			#spawn next to the player
-			if GlobalVariables.current_character != null:
-				position = GlobalVariables.current_character.position +  Vector3(randf_range(-0.5, 0), 1.1, randf_range(-1, 1))#last_spawn_position
-			else:
-				position = last_spawn_position
-	
+			respawning = true
+			respawn(range)
+		
 	# If Sonic is currently chasing an aggressor after successfully executing a wall jump, he accelerates to above its position.
 	if chasing_aggressor && last_aggressor != null:
 		velocity.x = lerp(velocity.x, (last_aggressor.transform.origin - transform.origin).normalized().x * 20, 0.25)
@@ -335,6 +342,16 @@ func _physics_process(delta):
 	# Automatically handle the animation and character controller physics.
 	handle_animation()
 	move_and_slide()
+
+func respawn(range):
+	velocity = Vector3.ZERO
+	if range <= 0.1:
+		range = 0.1
+	#spawn next to the player
+	if GlobalVariables.current_character != null:
+		position = GlobalVariables.current_character.position +  Vector3(randf_range(-range, range), 1.1, randf_range(-range, range))#last_spawn_position
+	else:
+		position = last_spawn_position
 
 
 ## handle the movement of the character given an input
