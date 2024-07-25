@@ -36,23 +36,23 @@ transform = Transform3D(0.0353553, 0, 0.0353553, 0, 0.05, 0, -0.0353553, 0, 0.03
 
 [node name="lamps" type="Marker3D" parent="."]
 
-[node name="lamp2" parent="lamps" instance=ExtResource("6_p3ikg")]
-transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0.605359, -3.27483e-07, -0.246579)
+[node name="Lamp" parent="lamps" instance=ExtResource("6_p3ikg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.32241, 0, 2.91024)
 
-[node name="lamp7" parent="lamps" instance=ExtResource("6_p3ikg")]
-transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 7.47373, -3.27483e-07, -0.246579)
+[node name="Lamp2" parent="lamps" instance=ExtResource("6_p3ikg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.604729, -1.63742e-07, 2.92801)
 
-[node name="lamp3" parent="lamps" instance=ExtResource("6_p3ikg")]
-transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, -1.28896, -3.27483e-07, -0.246579)
+[node name="Lamp3" parent="lamps" instance=ExtResource("6_p3ikg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.30776, 0, -0.29448)
 
-[node name="lamp4" parent="lamps" instance=ExtResource("6_p3ikg")]
-transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0.605359, -3.27483e-07, 2.91571)
+[node name="Lamp4" parent="lamps" instance=ExtResource("6_p3ikg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.632815, -1.63742e-07, -0.305665)
 
-[node name="lamp6" parent="lamps" instance=ExtResource("6_p3ikg")]
-transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 4.8353, -3.27483e-07, 2.91571)
+[node name="Lamp5" parent="lamps" instance=ExtResource("6_p3ikg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.81595, -1.63742e-07, 2.89652)
 
-[node name="lamp5" parent="lamps" instance=ExtResource("6_p3ikg")]
-transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, -1.28896, -3.27483e-07, 2.91571)
+[node name="Lamp6" parent="lamps" instance=ExtResource("6_p3ikg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5556, 0, -0.388995)
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("8_kdbtx")
