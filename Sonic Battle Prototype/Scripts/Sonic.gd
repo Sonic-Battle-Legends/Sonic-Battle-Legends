@@ -224,6 +224,7 @@ func _process(delta):
 	if doubletap_timer > 0:
 		doubletap_timer -= delta
 	
+	# control how often an after image will appear
 	if after_image_time > 0:
 		after_image_time -= delta
 

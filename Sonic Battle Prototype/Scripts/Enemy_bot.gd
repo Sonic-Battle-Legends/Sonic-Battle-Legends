@@ -170,6 +170,8 @@ var last_aggressor
 # to reposition if falling off a pit but still not defeated
 var last_spawn_position: Vector3 = Vector3.ZERO
 
+var after_image_time: float = 0.0
+
 # defeated method should trigger only once
 var was_defeated: bool = false
 
@@ -218,6 +220,10 @@ func _process(delta):
 	# could create an actual timer instead
 	if doubletap_timer > 0:
 		doubletap_timer -= delta
+	
+	# control how often an after image will appear
+	if after_image_time > 0:
+		after_image_time -= delta
 
 
 func _physics_process(delta):
@@ -323,6 +329,8 @@ func _physics_process(delta):
 	
 	if can_spike:
 		handle_spike()
+
+	handle_after_image()
 
 	# Automatically handle the animation and character controller physics.
 	handle_animation()
@@ -729,6 +737,24 @@ func set_abilities(new_abilities: Array):
 		ground_skill = new_abilities[0]
 		air_skill = new_abilities[1]
 		immunity = new_abilities[2]
+
+
+func handle_after_image():
+	if $sonicrigged2/AnimationPlayer.current_animation == "DASH" or \
+	"DJMP" in $sonicrigged2/AnimationPlayer.current_animation:
+		create_after_image()
+
+
+func create_after_image():
+	if after_image_time <= 0:
+		after_image_time = 0.05
+		var new_after_image = Instantiables.AFTER_IMAGE.instantiate()
+		new_after_image.position = position
+		new_after_image.get_child(0).transform.basis.z = $sonicrigged2.transform.basis.z
+		new_after_image.current_animation_name = $sonicrigged2/AnimationPlayer.current_animation
+		new_after_image.current_animation_time = $sonicrigged2/AnimationPlayer.current_animation_position
+
+		get_parent().add_child(new_after_image)
 
 
 func anim_end(anim_name):
