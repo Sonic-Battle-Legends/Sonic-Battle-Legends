@@ -31,10 +31,8 @@ Development Topics
 			check what happens when the player is close to the ring when moving
 			make an arc movement like in the original
 			create after images like in the original
-			
-		dash could leave after images behind
 
-		attack needs some visual effect to show there are working
+		attack needs some visual effect to show they are working
 			and a stronger effect to emphasize it
 		
 		short pause per hit to emphasize it

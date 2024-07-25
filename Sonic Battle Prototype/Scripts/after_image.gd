@@ -26,7 +26,7 @@ func _ready():
 	# set the afterimage pose
 	if animation_node.has_animation(current_animation_name):
 		# play that animation, set speed to zero
-		animation_node.play(current_animation_name, -1, 0.0)
+		animation_node.play(current_animation_name, -1, 0.0) #2)
 		# seek the animation timeline to the correct one
 		animation_node.seek(current_animation_time, true)
 

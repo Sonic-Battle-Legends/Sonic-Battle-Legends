@@ -772,8 +772,9 @@ func set_abilities(new_abilities: Array):
 
 
 func handle_after_image():
-	if $sonicrigged2/AnimationPlayer.current_animation == "DASH" or \
-	"DJMP" in $sonicrigged2/AnimationPlayer.current_animation:
+	if $sonicrigged2/AnimationPlayer.current_animation == "DASH" \
+	or "DJMP" in $sonicrigged2/AnimationPlayer.current_animation \
+	or chasing_ring or bouncing  or chasing_aggressor:
 		create_after_image()
 
 
