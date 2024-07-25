@@ -190,7 +190,6 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Difficulty" type="TabBar" parent="OptionsMenu/TabContainer"]
-visible = false
 layout_mode = 2
 
 [node name="Difficulty_Selection_List" type="ItemList" parent="OptionsMenu/TabContainer/Difficulty"]
@@ -386,6 +385,7 @@ visible = false
 layout_mode = 2
 
 [node name="Other" type="TabBar" parent="OptionsMenu/TabContainer"]
+visible = false
 layout_mode = 2
 
 [node name="ShakeCameraCheckBox" type="CheckBox" parent="OptionsMenu/TabContainer/Other"]

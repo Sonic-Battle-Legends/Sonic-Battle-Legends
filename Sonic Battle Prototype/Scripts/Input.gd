@@ -32,9 +32,6 @@ func _physics_process(_delta):
 		# guard/block/defend check
 		character.guard_pressed = Input.is_action_pressed("guard")
 		
-		if Input.is_action_just_pressed("guard"):
-			GlobalVariables.camera.shake()
-		
 		# check to rotate camera
 		# also checked on _input(event) for double tap guard as the original
 		if Input.is_action_just_pressed("change_cam_position"):
