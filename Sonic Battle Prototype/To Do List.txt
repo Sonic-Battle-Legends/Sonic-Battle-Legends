@@ -37,7 +37,7 @@ Development Topics
 		attack needs some visual effect to show there are working
 			and a stronger effect to emphasize it
 		
-		camera shake and short pause per hit to emphasize it
+		short pause per hit to emphasize it
 		
 	✅️	create a input remap tab on the options menu
 	✅️		create tabs on options menu
@@ -46,6 +46,7 @@ Development Topics
 			create a save system
 				check if save system will work as webgl
 			save new remaped inputs
+			load new inputs map
 	✅️		keep the default inputs as a button option
 		
 		create a solution to move the player out of the "infinite lifting camera lock"

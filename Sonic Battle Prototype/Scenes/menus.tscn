@@ -190,6 +190,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Difficulty" type="TabBar" parent="OptionsMenu/TabContainer"]
+visible = false
 layout_mode = 2
 
 [node name="Difficulty_Selection_List" type="ItemList" parent="OptionsMenu/TabContainer/Difficulty"]
@@ -375,6 +376,26 @@ offset_top = 386.0
 offset_right = 1088.0
 offset_bottom = 436.0
 text = "Restore Default"
+
+[node name="Audio" type="TabBar" parent="OptionsMenu/TabContainer"]
+visible = false
+layout_mode = 2
+
+[node name="Screen" type="TabBar" parent="OptionsMenu/TabContainer"]
+visible = false
+layout_mode = 2
+
+[node name="Other" type="TabBar" parent="OptionsMenu/TabContainer"]
+layout_mode = 2
+
+[node name="ShakeCameraCheckBox" type="CheckBox" parent="OptionsMenu/TabContainer/Other"]
+layout_mode = 0
+offset_left = 104.0
+offset_top = 98.0
+offset_right = 128.0
+offset_bottom = 122.0
+button_pressed = true
+text = "Shake Camera"
 
 [node name="options back button" type="Button" parent="OptionsMenu"]
 layout_mode = 1
@@ -736,6 +757,7 @@ autoplay = true
 [connection signal="pressed" from="OptionsMenu/TabContainer/Input Map/Other/jump/jumpButton" to="OptionsMenu" method="_on_jump_button_pressed"]
 [connection signal="pressed" from="OptionsMenu/TabContainer/Input Map/Other/guard/guardButton" to="OptionsMenu" method="_on_guard_button_pressed"]
 [connection signal="pressed" from="OptionsMenu/TabContainer/Input Map/restoreDefaultButton" to="OptionsMenu" method="_on_restore_default_button_pressed"]
+[connection signal="pressed" from="OptionsMenu/TabContainer/Other/ShakeCameraCheckBox" to="OptionsMenu" method="_on_shake_camera_check_box_pressed"]
 [connection signal="pressed" from="OptionsMenu/options back button" to="." method="_on_options_back_button_pressed"]
 [connection signal="pressed" from="OnlineOrOffline/online button" to="." method="_on_online_button_pressed"]
 [connection signal="pressed" from="OnlineOrOffline/offline button" to="." method="_on_offline_button_pressed"]

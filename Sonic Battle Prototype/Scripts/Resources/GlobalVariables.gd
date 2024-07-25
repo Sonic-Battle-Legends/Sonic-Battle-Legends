@@ -2,6 +2,10 @@ extends Node
 
 signal camera_orientation_changed
 
+var camera: Camera3D
+
+var can_shake_camera = true
+
 # right now everyone and everything should have a gravity of 20.
 var gravity: float = 20.0
 

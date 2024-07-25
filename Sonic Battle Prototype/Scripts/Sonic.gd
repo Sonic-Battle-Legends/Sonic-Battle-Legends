@@ -957,8 +957,12 @@ func get_hurt(launch_speed, owner_of_the_attack, damage_taken = 1):
 			if damage_taken > MAX_SCATTERED_RINGS_ALLOWED * HEAL_POINTS_PER_RING:
 				scatter_rings(MAX_SCATTERED_RINGS_ALLOWED)
 				Audio.play(Audio.ring_spread, self)
+				# shake camera
+				GlobalVariables.camera.shake(0.5, 2.0)
 			else:
 				scatter_rings()
+				# shake camera
+				GlobalVariables.camera.shake()
 		
 		life_total -= damage_taken
 		if life_total < 0:

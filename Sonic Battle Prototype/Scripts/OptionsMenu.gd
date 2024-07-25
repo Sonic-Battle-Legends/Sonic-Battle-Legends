@@ -29,9 +29,13 @@ var actions_list = ["up", "left", "down", "right", "punch", "special", "jump", "
 var default_inputs = {"up": null, "left": null, "down": null, "right": null, "punch": null, "special": null, "jump": null, "guard": null}
 var current_inputs = {}
 
+
 func _ready():
+	# add the button nodes to the list
 	buttons = [up_button, left_button, down_button, right_button, punch_button, special_button, jump_button, guard_button]
+	# store the default inputs from global variables
 	current_inputs = GlobalVariables.DEFAULT_INPUTS.duplicate()
+	# load the default inputs
 	load_input_values()
 
 
@@ -106,6 +110,7 @@ func _on_guard_button_pressed():
 		# grey out the button
 		current_button.disabled = true
 
+
 # load the values in the project settings and store
 func load_input_values():
 	for i in range(buttons.size()):
@@ -118,6 +123,8 @@ func load_input_values():
 		default_inputs[actions_list[i]] = key
 		# write the text in the respective button
 		buttons[i].text = key
+		
+		# need to load the inputs from a save file
 		
 		# make the buttons actually work accordingly to the give inputs
 		#InputMap.action_erase_events(input)
@@ -178,3 +185,10 @@ func _input(event):
 		current_button.disabled = false
 		# reset current button
 		current_button = null
+
+
+func _on_shake_camera_check_box_pressed():
+	if GlobalVariables.can_shake_camera:
+		GlobalVariables.can_shake_camera = false
+	else:
+		GlobalVariables.can_shake_camera = true
