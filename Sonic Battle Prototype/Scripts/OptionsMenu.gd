@@ -142,12 +142,12 @@ func set_default_values():
 	#var default_inputs = {"up": null, "left": null, "down": null, "right": null, "punch": null, "special": null, "jump": null, "guard": null}
 	
 	for i in range(buttons.size()):
-		var input = InputMap.action_get_events(default_inputs[i][0])[0]
+		var input = InputMap.action_get_events(actions_list[i])[0]
 		
-		InputMap.action_erase_events(default_inputs[i][0])
-		InputMap.action_add_event(default_inputs[i][0], input)
+		InputMap.action_erase_events(actions_list[i])
+		InputMap.action_add_event(actions_list[i], input)
 		
-		buttons[i].text = str(input)
+		buttons[i].text = current_inputs[actions_list[i]]
 		
 	current_action = ""
 	current_button = null
