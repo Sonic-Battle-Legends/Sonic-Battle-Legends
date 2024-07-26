@@ -28,10 +28,11 @@ func _physics_process(_delta):
 		# check ground height using raycast and place the target shadow there
 		ground_height = raycaster.get_collision_point().y
 		target_spot.global_position.y = ground_height
-		
+		##For some reason the raycast does not get the height correctly unless the pointer starts over a pit
 		# press attack to place the character
 		if Input.is_action_just_pressed("punch"):
-			place_character()
+			if target_spot.global_position.y != 0:
+				place_character()
 		
 		# show time left
 		timer_text.text = str(int(GlobalVariables.select_ability_timer.time_left))

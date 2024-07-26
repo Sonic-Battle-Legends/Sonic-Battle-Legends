@@ -318,8 +318,16 @@ func _physics_process(delta):
 		else:
 			hud.change_life(life_total)
 			velocity = Vector3.ZERO
-			position = last_spawn_position
-	
+			GlobalVariables.respawnLife = life_total
+			if GlobalVariables.current_character != null:
+				GlobalVariables.current_character.queue_free()
+				GlobalVariables.current_character = null
+			GlobalVariables.select_ability_timer = get_tree().create_timer(2.0, false, true)
+			var spawner = Instantiables.create(Instantiables.objects.POINTERSPAWNER)
+			spawner.position = last_spawn_position
+			get_parent().add_child(spawner)
+
+
 	# If Sonic is currently chasing an aggressor after successfully executing a wall jump, he accelerates to above its position.
 	if chasing_aggressor && last_aggressor != null:
 		velocity.x = lerp(velocity.x, (last_aggressor.transform.origin - transform.origin).normalized().x * 20, 0.25)
@@ -958,6 +966,7 @@ func defeated(): #who_owns_last_attack = null):
 		# player must get the ability selection screen again
 		# then select a location to spawn
 		if GlobalVariables.current_stage != null:
+			GlobalVariables.respawnLife = -99 #-99 cus I cant set it to null for some reason
 			Instantiables.respawn()
 		elif GlobalVariables.current_hub != null:
 			Instantiables.go_to_hub(GlobalVariables.hub_selected)
