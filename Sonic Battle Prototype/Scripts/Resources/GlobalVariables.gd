@@ -81,7 +81,7 @@ var extra_lives: int = 2
 var difficulty_levels = [0.2, 0.1, 0.0]
 var current_difficulty = difficulty_levels[2] #difficulty.hard
 
-const DEFAULT_INPUTS = { "up": "W", "left": "A", "down": "S", "right": "D", "punch": "Kp Enter", "special": "Shift", "jump": "Space", "guard": "Ctrl" }
+const DEFAULT_INPUTS = { "up": "W", "left": "A", "down": "S", "right": "D", "punch": "Kp Enter", "special": "Shift", "jump": "Space", "guard": "Ctrl", "upper_button": "E", "flip_camera_button": "Tab" }
 
 # win condition
 var points_to_win: int = 2

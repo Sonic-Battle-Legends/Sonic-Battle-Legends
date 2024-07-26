@@ -34,9 +34,7 @@ Development Topics
 
 		attack needs some visual effect to show they are working
 			and a stronger effect to emphasize it
-		
-		short pause per hit to emphasize it
-		
+
 	✅️	create a input remap tab on the options menu
 	✅️		create tabs on options menu
 	✅️		create the input remap tab

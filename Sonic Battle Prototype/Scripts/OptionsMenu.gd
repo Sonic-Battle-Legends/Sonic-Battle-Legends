@@ -20,19 +20,21 @@ var current_action = ""
 @export var special_button: Button
 @export var jump_button: Button
 @export var guard_button: Button
+@export var upper_button: Button
+@export var flip_camera_button: Button
 
 var current_button = null
 
 var buttons: Array
 
-var actions_list = ["up", "left", "down", "right", "punch", "special", "jump", "guard"]
-var default_inputs = {"up": null, "left": null, "down": null, "right": null, "punch": null, "special": null, "jump": null, "guard": null}
+var actions_list = ["up", "left", "down", "right", "punch", "special", "jump", "guard", "upper_button", "flip_camera_button"]
+var default_inputs = {"up": null, "left": null, "down": null, "right": null, "punch": null, "special": null, "jump": null, "guard": null, "upper_button": null, "flip_camera_button": null}
 var current_inputs = {}
 
 
 func _ready():
 	# add the button nodes to the list
-	buttons = [up_button, left_button, down_button, right_button, punch_button, special_button, jump_button, guard_button]
+	buttons = [up_button, left_button, down_button, right_button, punch_button, special_button, jump_button, guard_button, upper_button, flip_camera_button]
 	# store the default inputs from global variables
 	current_inputs = GlobalVariables.DEFAULT_INPUTS.duplicate()
 	# load the default inputs
@@ -192,3 +194,19 @@ func _on_shake_camera_check_box_pressed():
 		GlobalVariables.can_shake_camera = false
 	else:
 		GlobalVariables.can_shake_camera = true
+
+
+func _on_upper_button_pressed():
+	if current_action == "":
+		current_action = "upper"
+		current_button = upper_button
+		# grey out the button
+		current_button.disabled = true
+
+
+func _on_flip_camera_button_pressed():
+	if current_action == "":
+		current_action = "change_cam_position"
+		current_button = flip_camera_button
+		# grey out the button
+		current_button.disabled = true
