@@ -176,7 +176,7 @@ var after_image_time: float = 0.0
 var was_defeated: bool = false
 
 #for checking valid location to spawn
-var range: int
+var spawn_range: float #int
 var respawning: bool = false 
 
 
@@ -229,11 +229,11 @@ func _process(delta):
 	if after_image_time > 0:
 		after_image_time -= delta
 	if !$DropShadowRange.is_colliding() and respawning == true:
-		range -= 0.1
-		respawn(range)
+		spawn_range -= 0.1
+		respawn(spawn_range)
 	else:
 		respawning = false
-		range = 2.5
+		spawn_range = 2.5
 
 
 func _physics_process(delta):
@@ -323,7 +323,7 @@ func _physics_process(delta):
 			defeated()
 		else:
 			respawning = true
-			respawn(range)
+			respawn(spawn_range)
 		
 	# If Sonic is currently chasing an aggressor after successfully executing a wall jump, he accelerates to above its position.
 	if chasing_aggressor && last_aggressor != null:
@@ -343,13 +343,13 @@ func _physics_process(delta):
 	handle_animation()
 	move_and_slide()
 
-func respawn(range):
+func respawn(new_range):
 	velocity = Vector3.ZERO
-	if range <= 0.1:
-		range = 0.1
+	if new_range <= 0.1:
+		new_range = 0.1
 	#spawn next to the player
 	if GlobalVariables.current_character != null:
-		position = GlobalVariables.current_character.position +  Vector3(randf_range(-range, range), 1.1, randf_range(-range, range))#last_spawn_position
+		position = GlobalVariables.current_character.position +  Vector3(randf_range(-spawn_range, spawn_range), 1.1, randf_range(-spawn_range, spawn_range))#last_spawn_position
 	else:
 		position = last_spawn_position
 
@@ -950,9 +950,7 @@ func defeated():
 
 func freeze_frame(new_timescale, freeze_duration):
 	Engine.time_scale = new_timescale
-	push_warning("here1 ")
 	await get_tree().create_timer(freeze_duration * new_timescale).timeout
-	push_warning("here2")
 	Engine.time_scale = 1.0
 
 

@@ -965,6 +965,7 @@ func defeated(): #who_owns_last_attack = null):
 			Instantiables.go_to_area(GlobalVariables.area_selected)
 
 
+## to give a bit more impact on strong attacks, freeze the screen a bit
 func freeze_frame(new_timescale, freeze_duration):
 	Engine.time_scale = new_timescale
 	await get_tree().create_timer(freeze_duration * new_timescale).timeout

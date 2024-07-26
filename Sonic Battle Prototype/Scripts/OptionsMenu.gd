@@ -42,11 +42,8 @@ func _ready():
 
 
 func _on_restore_default_button_pressed():
-	#print(InputMap.get_actions())
 	InputMap.load_from_project_settings()
 	set_default_values()
-	#print("after")
-	#print(InputMap.get_actions())
 
 
 func _on_up_button_pressed():
@@ -157,12 +154,8 @@ func set_default_values():
 
 func _input(event):
 	if current_action != "" and not event is InputEventMouseMotion:
-		# erase previous input registered for that move
-		InputMap.action_erase_events(current_action)
-		# make the button pressed the new input for that move
-		InputMap.action_add_event(current_action, event)
-		# reset the current action
-		current_action = ""
+		var new_event = event
+		
 		# change the input text in the button
 		if event is InputEventKey:
 			print(OS.get_keycode_string(event.keycode))
@@ -187,22 +180,29 @@ func _input(event):
 			print(event.axis_value)
 			# L Horizontal
 			if event.axis == 0:
+				#new_event.axis = 0
 				# Right
 				if event.axis_value > 0:
 					current_button.text = "L H R"
+					#new_event.axis_value = 1.0
 				# Left
 				if event.axis_value < 0:
 					current_button.text = "L H L"
+					#new_event.axis_value = -1.0
 			# L Vertical
 			if event.axis == 1:
+				#new_event.axis = 1
 				# Down
 				if event.axis_value > 0:
 					current_button.text = "L V D"
+					#new_event.axis_value = 1.0
 				# Up
 				if event.axis_value < 0:
 					current_button.text = "L V U"
+					#new_event.axis_value = -1.0
 			# R Horizontal
 			if event.axis == 2:
+				#new_event.axis = 2
 				# Right
 				if event.axis_value > 0:
 					current_button.text = "R H R"
@@ -211,6 +211,7 @@ func _input(event):
 					current_button.text = "R H L"
 			# R Vertical
 			if event.axis == 3:
+				#new_event.axis = 3
 				# Down
 				if event.axis_value > 0:
 					current_button.text = "R V D"
@@ -220,6 +221,13 @@ func _input(event):
 		
 		# check joystick
 		print(event)
+		
+		# erase previous input registered for that move
+		InputMap.action_erase_events(current_action)
+		# make the button pressed the new input for that move
+		InputMap.action_add_event(current_action, new_event)
+		# reset the current action
+		current_action = ""
 		
 		# enable it
 		current_button.disabled = false

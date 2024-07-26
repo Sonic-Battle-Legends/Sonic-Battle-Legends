@@ -39,6 +39,7 @@ Development Topics
 	✅️		create tabs on options menu
 	✅️		create the input remap tab
 	✅️		implement the input repmap
+			allow joystick input or movement
 			create a save system
 				check if save system will work as webgl
 			save new remaped inputs

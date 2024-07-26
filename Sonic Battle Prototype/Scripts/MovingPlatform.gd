@@ -10,7 +10,7 @@ var get_pos = end_pos
 var move_timer = move_wait
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _physics_process(delta):
+func _physics_process(_delta):
 	if rotation_speed != 0:
 		rotation.y += rotation_speed
 
