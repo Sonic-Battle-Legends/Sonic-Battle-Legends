@@ -284,8 +284,22 @@ func jump():
 	jump_timer = get_tree().create_timer(0.35, false, true)
 
 
+# don't attack player if it's on the ground or getting up
+func can_attack_player() -> bool:
+	var can_attack
+	
+	if target.is_in_group("Player") and target.life_total > 0 and \
+	not target.model_node.get_node("AnimationPlayer").current_animation == "KO" \
+	and not target.model_node.get_node("AnimationPlayer").current_animation == "GET UP FULL":
+		can_attack = true
+	else:
+		can_attack = false
+	
+	return can_attack
+
+
 func attack_target():
-	if delay <= 0.0:
+	if delay <= 0.0 and can_attack_player():
 		# set delay based on difficulty level
 		delay = GlobalVariables.current_difficulty
 		

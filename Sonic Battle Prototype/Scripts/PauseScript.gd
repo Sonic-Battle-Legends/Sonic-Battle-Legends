@@ -57,6 +57,8 @@ func toggle_pause():
 	# if game is not paused, pause
 		get_tree().paused = true
 		show()
+		# grab focus on resume button
+		resume_button.grab_focus()
 
 
 func restart():
@@ -99,3 +101,5 @@ func _on_go_to_previous_ambient_pressed():
 func _on_options_button_pressed():
 	GlobalVariables.main_menu.hide_menus()
 	GlobalVariables.main_menu.options_menu.show()
+	# grab focus on the back button
+	GlobalVariables.main_menu.options_menu.get_child(2).grab_focus()

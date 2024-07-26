@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://cm2hjo0hbid4s"]
 
 [ext_resource type="Script" path="res://Scripts/ServerJoinTest.gd" id="1_ee4jk"]
-[ext_resource type="PackedScene" uid="uid://bsprksm8mhbae" path="res://Scenes/Hubs/city_hub.tscn" id="2_bbavi"]
+[ext_resource type="PackedScene" uid="uid://c21jx54148kmv" path="res://Scenes/Hubs/city_hub.tscn" id="2_bbavi"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gg5gf"]
 albedo_color = Color(0, 0.384314, 0.160784, 1)

@@ -49,14 +49,14 @@ const SHADOW = preload("res://Scenes/Shadow.tscn")
 
 var ENEMY_BOT = load("res://Scenes/enemies/Sonic_BOT.tscn")
 
-var first_world = load("res://Scenes/Areas/world1.tscn")
+#var first_world = load("res://Scenes/Areas/world1.tscn")
 
 # the hub area with the hub markers that lead to stages
 var city_hub = load("res://Scenes/Hubs/city_hub.tscn")
-var ruins1 = load("res://Scenes/Hubs/ruins_1.tscn")
-var puzzle_map = load("res://Scenes/isometric_map_1.tscn")
-var puzzle_map_2 = load("res://Scenes/isometric_map_2.tscn")
-var puzzle_map_3 = load("res://Scenes/isometric_map_3.tscn")
+#var ruins1 = load("res://Scenes/Hubs/ruins_1.tscn")
+#var puzzle_map = load("res://Scenes/isometric_map_1.tscn")
+#var puzzle_map_2 = load("res://Scenes/isometric_map_2.tscn")
+#var puzzle_map_3 = load("res://Scenes/isometric_map_3.tscn")
 
 # to match-case block
 # should get a variable with the name of a string instead
@@ -238,18 +238,18 @@ func match_place(place_to_match: int):
 	var place_to_go
 	
 	match place_to_match:
-		worlds_and_hubs.first_world:
-			place_to_go = first_world
+		#worlds_and_hubs.first_world:
+		#	place_to_go = first_world
 		worlds_and_hubs.city_hub:
 			place_to_go = city_hub
-		worlds_and_hubs.ruins1:
-			place_to_go = ruins1
-		worlds_and_hubs.puzzle_map:
-			place_to_go = puzzle_map
-		worlds_and_hubs.puzzle_map_2:
-			place_to_go = puzzle_map_2
-		worlds_and_hubs.puzzle_map_3:
-			place_to_go = puzzle_map_3
+		#worlds_and_hubs.ruins1:
+		#	place_to_go = ruins1
+		#worlds_and_hubs.puzzle_map:
+		#	place_to_go = puzzle_map
+		#worlds_and_hubs.puzzle_map_2:
+		#	place_to_go = puzzle_map_2
+		#worlds_and_hubs.puzzle_map_3:
+		#	place_to_go = puzzle_map_3
 	return place_to_go
 
 

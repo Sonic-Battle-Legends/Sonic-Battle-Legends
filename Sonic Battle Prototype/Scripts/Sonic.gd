@@ -476,7 +476,7 @@ func handle_upper():
 			$sonicrigged2/AnimationPlayer.play("UPPER")
 			Audio.play(Audio.attackStrong, self)
 			launch_power = Vector3(0, 7, 0)
-			damage_caused = 7
+			damage_caused = 17
 			attacking = true
 			velocity = -$sonicrigged2.basis.z.normalized() * 2
 		else:
@@ -487,7 +487,7 @@ func handle_upper():
 				Audio.play(Audio.attackStrong, self)
 				launch_power = Vector3($sonicrigged2.basis.z.normalized().x * 5, 5, $sonicrigged2.basis.z.normalized().x * 5)
 				velocity.y = 3
-				damage_caused = 7
+				damage_caused = 17
 				attacking = true
 
 ## method to execute the AIM attack
@@ -498,7 +498,7 @@ func handle_spike():
 		$sonicrigged2/AnimationPlayer.play("AIM")
 		Audio.play(Audio.attackStrong, self)
 		launch_power = Vector3(0, -5, 0)
-		damage_caused = 7
+		damage_caused = 17
 		attacking = true
 
 ## method to determine what happens when punch attack is pressed, grounded or not
@@ -516,7 +516,7 @@ func handle_attack():
 		var new_launch = $sonicrigged2.transform.basis.z.normalized() * 20
 		new_launch.y = 5
 		launch_power = new_launch
-		damage_caused = 7
+		damage_caused = 17
 		attacking = true
 	elif attack_pressed && dashing && can_airdash:
 		# The code for Sonic's dash attack. His dash attack stalls him in the air for a short time.
@@ -965,6 +965,13 @@ func defeated(): #who_owns_last_attack = null):
 			Instantiables.go_to_area(GlobalVariables.area_selected)
 
 
+## to give a bit more impact on strong attacks, freeze the screen a bit
+func freeze_frame(new_timescale, freeze_duration):
+	Engine.time_scale = new_timescale
+	await get_tree().create_timer(freeze_duration * new_timescale).timeout
+	Engine.time_scale = 1.0
+
+
 ## A function that handles Sonic getting hurt. Knockback is determined by the thing that initiates this
 # function, which is why you don't see it here.
 @rpc("any_peer","reliable","call_local")
@@ -983,14 +990,30 @@ func get_hurt(launch_speed, owner_of_the_attack, damage_taken = 1):
 		if !hurt:
 			# rings shouldn't provid all life points back
 			if damage_taken > MAX_SCATTERED_RINGS_ALLOWED * HEAL_POINTS_PER_RING:
-				scatter_rings(MAX_SCATTERED_RINGS_ALLOWED)
+				#scatter_rings(MAX_SCATTERED_RINGS_ALLOWED)
 				Audio.play(Audio.ring_spread, self)
+				
+				# freeze frame
+				freeze_frame(0.1, 0.3) #(0.05, 1.0)
+				
 				# shake camera
-				GlobalVariables.camera.shake(0.5, 2.0)
+				GlobalVariables.camera.shake(0.5, 1.0)
+				
 			else:
-				scatter_rings()
+				#scatter_rings()
 				# shake camera
 				GlobalVariables.camera.shake()
+			
+			# mutantsonic formula
+			var rings_to_scatter = int((damage_taken / 2.0) -1)
+			
+			if rings_to_scatter > MAX_SCATTERED_RINGS_ALLOWED:
+				rings_to_scatter = MAX_SCATTERED_RINGS_ALLOWED
+			if rings_to_scatter < 1:
+				rings_to_scatter = 1
+			
+			scatter_rings(rings_to_scatter)
+				
 		
 		life_total -= damage_taken
 		if life_total < 0:

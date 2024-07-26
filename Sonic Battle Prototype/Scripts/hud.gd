@@ -17,6 +17,20 @@ const MAX_LIFE_TOTAL = 100
 
 
 func _ready():
+	enable_hud()
+
+
+func _process(_delta):
+	# if game is paused, resume
+	if get_tree().is_paused():
+		battle_hud_node.hide()
+		area_hud_node.hide()
+	else:
+	# if game is not paused, pause
+		enable_hud()
+
+
+func enable_hud():
 	if GlobalVariables.current_stage != null:
 		battle_hud_node.show()
 		area_hud_node.hide()

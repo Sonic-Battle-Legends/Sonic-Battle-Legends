@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Scripts/Score_screen.gd" id="1_8jk2u"]
 
-[node name="Score_screen" type="Control" node_paths=PackedStringArray("win_text_node")]
+[node name="Score_screen" type="Control" node_paths=PackedStringArray("win_text_node", "play_again_button")]
 process_mode = 3
 layout_mode = 3
 anchors_preset = 15
@@ -12,6 +12,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_8jk2u")
 win_text_node = NodePath("win text")
+play_again_button = NodePath("play again button")
 
 [node name="IntroAnimation" type="VideoStreamPlayer" parent="."]
 layout_mode = 1

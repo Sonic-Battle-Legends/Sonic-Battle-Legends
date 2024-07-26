@@ -149,7 +149,7 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "Quit"
 
-[node name="OptionsMenu" type="Control" parent="." node_paths=PackedStringArray("up_button", "left_button", "down_button", "right_button", "punch_button", "special_button", "jump_button", "guard_button")]
+[node name="OptionsMenu" type="Control" parent="." node_paths=PackedStringArray("up_button", "left_button", "down_button", "right_button", "punch_button", "special_button", "jump_button", "guard_button", "upper_button", "flip_camera_button")]
 process_mode = 3
 layout_mode = 1
 anchors_preset = 15
@@ -166,6 +166,8 @@ punch_button = NodePath("TabContainer/Input Map/Attacks/punch/punchButton")
 special_button = NodePath("TabContainer/Input Map/Attacks/special/specialButton")
 jump_button = NodePath("TabContainer/Input Map/Other/jump/jumpButton")
 guard_button = NodePath("TabContainer/Input Map/Other/guard/guardButton")
+upper_button = NodePath("TabContainer/Input Map/Other/upper/upperButton")
+flip_camera_button = NodePath("TabContainer/Input Map/Other/flip camera/flipCameraButton")
 
 [node name="title" type="RichTextLabel" parent="OptionsMenu"]
 layout_mode = 1
@@ -367,6 +369,38 @@ offset_top = -1.0
 offset_right = 235.0
 offset_bottom = 30.0
 text = "CTRL"
+
+[node name="upper" type="RichTextLabel" parent="OptionsMenu/TabContainer/Input Map/Other"]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 110.0
+offset_right = 252.0
+offset_bottom = 145.0
+text = "upper"
+
+[node name="upperButton" type="Button" parent="OptionsMenu/TabContainer/Input Map/Other/upper"]
+layout_mode = 0
+offset_left = 68.0
+offset_top = -1.0
+offset_right = 235.0
+offset_bottom = 30.0
+text = "E"
+
+[node name="flip camera" type="RichTextLabel" parent="OptionsMenu/TabContainer/Input Map/Other"]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 150.0
+offset_right = 252.0
+offset_bottom = 185.0
+text = "flip cam"
+
+[node name="flipCameraButton" type="Button" parent="OptionsMenu/TabContainer/Input Map/Other/flip camera"]
+layout_mode = 0
+offset_left = 68.0
+offset_top = -1.0
+offset_right = 235.0
+offset_bottom = 30.0
+text = "TAB"
 
 [node name="restoreDefaultButton" type="Button" parent="OptionsMenu/TabContainer/Input Map"]
 layout_mode = 0
@@ -756,6 +790,8 @@ autoplay = true
 [connection signal="pressed" from="OptionsMenu/TabContainer/Input Map/Attacks/special/specialButton" to="OptionsMenu" method="_on_special_button_pressed"]
 [connection signal="pressed" from="OptionsMenu/TabContainer/Input Map/Other/jump/jumpButton" to="OptionsMenu" method="_on_jump_button_pressed"]
 [connection signal="pressed" from="OptionsMenu/TabContainer/Input Map/Other/guard/guardButton" to="OptionsMenu" method="_on_guard_button_pressed"]
+[connection signal="pressed" from="OptionsMenu/TabContainer/Input Map/Other/upper/upperButton" to="OptionsMenu" method="_on_upper_button_pressed"]
+[connection signal="pressed" from="OptionsMenu/TabContainer/Input Map/Other/flip camera/flipCameraButton" to="OptionsMenu" method="_on_flip_camera_button_pressed"]
 [connection signal="pressed" from="OptionsMenu/TabContainer/Input Map/restoreDefaultButton" to="OptionsMenu" method="_on_restore_default_button_pressed"]
 [connection signal="pressed" from="OptionsMenu/TabContainer/Other/ShakeCameraCheckBox" to="OptionsMenu" method="_on_shake_camera_check_box_pressed"]
 [connection signal="pressed" from="OptionsMenu/options back button" to="." method="_on_options_back_button_pressed"]

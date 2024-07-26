@@ -23,6 +23,7 @@ extends Control
 
 var focused = false
 
+
 func _ready():
 	GlobalVariables.main_menu = self
 	
@@ -43,6 +44,7 @@ func _process(_delta):
 		intro_animation.hide()
 		main_menu.show()
 	
+	# grab focus on the next visible button
 	if focused == false:
 		for i in range(get_children().size()):
 			if get_child(i).name != "AudioStreamPlayer" and get_child(i).is_visible_in_tree():
@@ -115,6 +117,7 @@ func _on_options_back_button_pressed():
 	# return to pause menu if the game is was paused
 	if GlobalVariables.current_character != null:
 		pause_menu.show()
+		pause_menu.resume_button.grab_focus()
 	else:
 		main_menu.show()
 

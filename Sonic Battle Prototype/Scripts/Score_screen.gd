@@ -6,12 +6,14 @@ var done: bool = false
 var button_pressed: bool = false
 
 @export var win_text_node: RichTextLabel
+@export var play_again_button: Button
 
 
 func _process(_delta):
 	if winner != null and done == false:
 		done = true
 		win_text_node.text = "Player " + str(winner) + " Won!"
+		play_again_button.grab_focus()
 	
 	if button_pressed:
 		queue_free()

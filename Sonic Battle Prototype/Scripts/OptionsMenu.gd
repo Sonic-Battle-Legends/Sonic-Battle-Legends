@@ -20,19 +20,21 @@ var current_action = ""
 @export var special_button: Button
 @export var jump_button: Button
 @export var guard_button: Button
+@export var upper_button: Button
+@export var flip_camera_button: Button
 
 var current_button = null
 
 var buttons: Array
 
-var actions_list = ["up", "left", "down", "right", "punch", "special", "jump", "guard"]
-var default_inputs = {"up": null, "left": null, "down": null, "right": null, "punch": null, "special": null, "jump": null, "guard": null}
+var actions_list = ["up", "left", "down", "right", "punch", "special", "jump", "guard", "upper_button", "flip_camera_button"]
+var default_inputs = {"up": null, "left": null, "down": null, "right": null, "punch": null, "special": null, "jump": null, "guard": null, "upper_button": null, "flip_camera_button": null}
 var current_inputs = {}
 
 
 func _ready():
 	# add the button nodes to the list
-	buttons = [up_button, left_button, down_button, right_button, punch_button, special_button, jump_button, guard_button]
+	buttons = [up_button, left_button, down_button, right_button, punch_button, special_button, jump_button, guard_button, upper_button, flip_camera_button]
 	# store the default inputs from global variables
 	current_inputs = GlobalVariables.DEFAULT_INPUTS.duplicate()
 	# load the default inputs
@@ -40,11 +42,8 @@ func _ready():
 
 
 func _on_restore_default_button_pressed():
-	#print(InputMap.get_actions())
 	InputMap.load_from_project_settings()
 	set_default_values()
-	#print("after")
-	#print(InputMap.get_actions())
 
 
 func _on_up_button_pressed():
@@ -142,12 +141,12 @@ func set_default_values():
 	#var default_inputs = {"up": null, "left": null, "down": null, "right": null, "punch": null, "special": null, "jump": null, "guard": null}
 	
 	for i in range(buttons.size()):
-		var input = InputMap.action_get_events(default_inputs[i][0])[0]
+		var input = InputMap.action_get_events(actions_list[i])[0]
 		
-		InputMap.action_erase_events(default_inputs[i][0])
-		InputMap.action_add_event(default_inputs[i][0], input)
+		InputMap.action_erase_events(actions_list[i])
+		InputMap.action_add_event(actions_list[i], input)
 		
-		buttons[i].text = str(input)
+		buttons[i].text = current_inputs[actions_list[i]]
 		
 	current_action = ""
 	current_button = null
@@ -155,12 +154,8 @@ func set_default_values():
 
 func _input(event):
 	if current_action != "" and not event is InputEventMouseMotion:
-		# erase previous input registered for that move
-		InputMap.action_erase_events(current_action)
-		# make the button pressed the new input for that move
-		InputMap.action_add_event(current_action, event)
-		# reset the current action
-		current_action = ""
+		var new_event = event
+		
 		# change the input text in the button
 		if event is InputEventKey:
 			print(OS.get_keycode_string(event.keycode))
@@ -177,9 +172,62 @@ func _input(event):
 				current_button.text = "MMB UP"
 			if event.button_index == 5:
 				current_button.text = "MMB DOWN"
+		elif event is InputEventJoypadButton:
+			print(event.button_index)
+			current_button.text = "Joystick " + str(event.button_index)
+		elif event is InputEventJoypadMotion:
+			print(event.axis)
+			print(event.axis_value)
+			# L Horizontal
+			if event.axis == 0:
+				#new_event.axis = 0
+				# Right
+				if event.axis_value > 0:
+					current_button.text = "L H R"
+					#new_event.axis_value = 1.0
+				# Left
+				if event.axis_value < 0:
+					current_button.text = "L H L"
+					#new_event.axis_value = -1.0
+			# L Vertical
+			if event.axis == 1:
+				#new_event.axis = 1
+				# Down
+				if event.axis_value > 0:
+					current_button.text = "L V D"
+					#new_event.axis_value = 1.0
+				# Up
+				if event.axis_value < 0:
+					current_button.text = "L V U"
+					#new_event.axis_value = -1.0
+			# R Horizontal
+			if event.axis == 2:
+				#new_event.axis = 2
+				# Right
+				if event.axis_value > 0:
+					current_button.text = "R H R"
+				# Left
+				if event.axis_value < 0:
+					current_button.text = "R H L"
+			# R Vertical
+			if event.axis == 3:
+				#new_event.axis = 3
+				# Down
+				if event.axis_value > 0:
+					current_button.text = "R V D"
+				# Up
+				if event.axis_value < 0:
+					current_button.text = "R V U"
 		
 		# check joystick
 		print(event)
+		
+		# erase previous input registered for that move
+		InputMap.action_erase_events(current_action)
+		# make the button pressed the new input for that move
+		InputMap.action_add_event(current_action, new_event)
+		# reset the current action
+		current_action = ""
 		
 		# enable it
 		current_button.disabled = false
@@ -192,3 +240,19 @@ func _on_shake_camera_check_box_pressed():
 		GlobalVariables.can_shake_camera = false
 	else:
 		GlobalVariables.can_shake_camera = true
+
+
+func _on_upper_button_pressed():
+	if current_action == "":
+		current_action = "upper"
+		current_button = upper_button
+		# grey out the button
+		current_button.disabled = true
+
+
+func _on_flip_camera_button_pressed():
+	if current_action == "":
+		current_action = "change_cam_position"
+		current_button = flip_camera_button
+		# grey out the button
+		current_button.disabled = true

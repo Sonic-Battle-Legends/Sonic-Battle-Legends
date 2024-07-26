@@ -49,8 +49,10 @@ func directional_just_pressed() -> bool:
 # check double tap
 func _input(event):
 	character = GlobalVariables.current_character
-	if character:
-		if event is InputEventKey and event.is_pressed() and character.is_on_floor():
+	if character and character.is_on_floor():
+		
+		# keyboard keys
+		if event is InputEventKey and event.is_pressed():
 			if last_keycode == event.keycode and character.doubletap_timer >= 0:
 				if directional_just_pressed():
 					character.dash_triggered = true
@@ -60,3 +62,31 @@ func _input(event):
 			else:
 				last_keycode = event.keycode
 			character.doubletap_timer = character.DOUBLETAP_DELAY
+		
+		# joystick buttons
+		if event is InputEventJoypadButton and event.is_pressed():
+			if last_keycode == event.button_index and character.doubletap_timer >= 0:
+				if directional_just_pressed():
+					character.dash_triggered = true
+				if Input.is_action_just_pressed("guard"):
+					character.camera.rotate_camera()
+				last_keycode = 0
+			else:
+				last_keycode = event.button_index
+			character.doubletap_timer = character.DOUBLETAP_DELAY
+		
+		# joystick axis
+		'''
+		if event is InputEventJoypadMotion: # and event.is_pressed():
+			if last_keycode == event.button_index and character.doubletap_timer >= 0:
+				if directional_just_pressed():
+					character.dash_triggered = true
+				if Input.is_action_just_pressed("guard"):
+					character.camera.rotate_camera()
+				last_keycode = 0
+			else:
+				last_keycode = event.button_index
+			character.doubletap_timer = character.DOUBLETAP_DELAY
+		'''
+		
+		# mouse buttons
