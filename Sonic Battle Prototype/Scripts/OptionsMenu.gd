@@ -179,6 +179,44 @@ func _input(event):
 				current_button.text = "MMB UP"
 			if event.button_index == 5:
 				current_button.text = "MMB DOWN"
+		elif event is InputEventJoypadButton:
+			print(event.button_index)
+			current_button.text = "Joystick " + str(event.button_index)
+		elif event is InputEventJoypadMotion:
+			print(event.axis)
+			print(event.axis_value)
+			# L Horizontal
+			if event.axis == 0:
+				# Right
+				if event.axis_value > 0:
+					current_button.text = "L H R"
+				# Left
+				if event.axis_value < 0:
+					current_button.text = "L H L"
+			# L Vertical
+			if event.axis == 1:
+				# Down
+				if event.axis_value > 0:
+					current_button.text = "L V D"
+				# Up
+				if event.axis_value < 0:
+					current_button.text = "L V U"
+			# R Horizontal
+			if event.axis == 2:
+				# Right
+				if event.axis_value > 0:
+					current_button.text = "R H R"
+				# Left
+				if event.axis_value < 0:
+					current_button.text = "R H L"
+			# R Vertical
+			if event.axis == 3:
+				# Down
+				if event.axis_value > 0:
+					current_button.text = "R V D"
+				# Up
+				if event.axis_value < 0:
+					current_button.text = "R V U"
 		
 		# check joystick
 		print(event)
