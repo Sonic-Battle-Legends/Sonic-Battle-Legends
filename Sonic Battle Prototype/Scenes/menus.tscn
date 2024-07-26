@@ -192,7 +192,6 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Difficulty" type="TabBar" parent="OptionsMenu/TabContainer"]
-visible = false
 layout_mode = 2
 
 [node name="Difficulty_Selection_List" type="ItemList" parent="OptionsMenu/TabContainer/Difficulty"]
@@ -208,6 +207,7 @@ item_1/text = "NORMAL"
 item_2/text = "HARD"
 
 [node name="Input Map" type="TabBar" parent="OptionsMenu/TabContainer"]
+visible = false
 layout_mode = 2
 
 [node name="description" type="RichTextLabel" parent="OptionsMenu/TabContainer/Input Map"]
