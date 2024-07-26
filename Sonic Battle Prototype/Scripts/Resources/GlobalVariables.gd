@@ -87,8 +87,7 @@ const DEFAULT_INPUTS = { "up": "W", "left": "A", "down": "S", "right": "D", "pun
 var points_to_win: int = 2
 # store if someone won the game already
 var game_ended: bool = false
-#for maintaining health after falling of stage, -99 is just becuase I cant set it to null for some reason
-var respawnLife: int  = -99
+
 
 func reset_win_conditions():
 	game_ended = false

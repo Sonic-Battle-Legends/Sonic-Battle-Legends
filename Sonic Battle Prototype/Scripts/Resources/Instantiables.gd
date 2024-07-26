@@ -90,8 +90,6 @@ func add_player(parent_node, spawn_position = Vector3.ZERO):
 	# add the selected abilities to the character
 	player.set_abilities(GlobalVariables.selected_abilities)
 	player.position = spawn_position + Vector3(0, 0.2, 0)
-	if GlobalVariables.respawnLife != -99:
-		player.life_total = GlobalVariables.respawnLife
 	parent_node.add_child(player, true)
 
 
