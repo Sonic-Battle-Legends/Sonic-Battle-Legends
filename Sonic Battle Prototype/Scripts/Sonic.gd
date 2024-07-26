@@ -787,12 +787,10 @@ func set_abilities(new_abilities: Array):
 
 
 func handle_after_image():
-	print("FPS before: ", Engine.get_frames_per_second())
 	if model_animation_player.current_animation == "DASH" \
 	or "DJMP" in model_animation_player.current_animation \
 	or chasing_ring or bouncing  or chasing_aggressor:
 		create_after_image()
-		print("FPS after =======: ", Engine.get_frames_per_second())
 
 
 func create_after_image():
