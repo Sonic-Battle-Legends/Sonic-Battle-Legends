@@ -14,7 +14,7 @@ var new_material
 var current_animation_name = ""
 var current_animation_time = 0.0
 
-@export var after_image_life_time: float = 1.0
+@export var after_image_life_time: float = 0.1
 
 
 func _ready():

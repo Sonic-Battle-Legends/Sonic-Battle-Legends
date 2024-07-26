@@ -858,12 +858,11 @@ _data = {
 "walk": SubResource("Animation_ccdw7")
 }
 
-[node name="Sonic_BOT" type="CharacterBody3D" node_paths=PackedStringArray("model_node", "nav") groups=["Bot", "CanHurt", "Player"]]
+[node name="Sonic_BOT" type="CharacterBody3D" node_paths=PackedStringArray("nav") groups=["Bot", "CanHurt", "Player"]]
 collision_layer = 2
 floor_max_angle = 1.0472
 floor_snap_length = 0.2
 script = ExtResource("1_8y1bu")
-model_node = NodePath("sonicrigged2")
 nav = NodePath("NavigationAgent3D")
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
