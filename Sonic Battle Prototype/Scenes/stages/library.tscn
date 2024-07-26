@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://mggwff68a6q8" path="res://Models/original maps/library.blend" id="1_y5ugd"]
 [ext_resource type="PackedScene" uid="uid://irlpgd8spuet" path="res://Scenes/stages/invisible_walls.tscn" id="2_45erm"]
 [ext_resource type="Texture2D" uid="uid://cj8pcqrucv8dg" path="res://Models/original maps/textures/Library.png" id="2_geopp"]
-[ext_resource type="AudioStream" uid="uid://cmbe6wxtukutc" path="res://Audio/Sonic Battle Project Tracks/Stage themes/SBLM - Neon Rainforest Zone.wav" id="4_occg7"]
+[ext_resource type="AudioStream" uid="uid://de5fxhsw74vwg" path="res://Audio/Sonic Battle Project Tracks/Stage themes/SBLM - Neon Rainforest Zone.mp3" id="4_oyanm"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1pmel"]
 shading_mode = 0
@@ -22,7 +22,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_1pmel")
 transform = Transform3D(0.485, 0, 0, 0, 0.485, 0, 0, 0, 0.485, 0, -0.883603, 0)
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("4_occg7")
+stream = ExtResource("4_oyanm")
 volume_db = -15.0
 autoplay = true
 
