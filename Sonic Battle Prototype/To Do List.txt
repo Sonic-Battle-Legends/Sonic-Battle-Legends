@@ -15,9 +15,8 @@ Development Topics
 			clicking online > join > back > host and going to battle, spawns the character outside the stage;
 
 		The bot might need:
-			spamming SET is quite easy to beat the bot with
-			add navigator agents to the player attacks so bots can avoid
-			maybe other behaviours
+			other behaviours
+			pattern detection
 		
 		camera needs a way to see through objects to show the players
 			except if it is intentional to hide the player
@@ -30,15 +29,11 @@ Development Topics
 			create cap to how far the player can go
 			check what happens when the player is close to the ring when moving
 			make an arc movement like in the original
-			create after images like in the original
 
 		attack needs some visual effect to show they are working
 			and a stronger effect to emphasize it
 
 		stages and hubs need textures
-
-		characters should flash when their special is full
-			maybe a pulsing transparent sphere effect could do
 
 		create a solution to move the player out of the "infinite lifting camera lock"
 		
