@@ -323,6 +323,12 @@ func _physics_process(delta):
 		if model_animation_player.current_animation == "WALL" || can_chase:
 			handle_walljump()
 	
+	# remove the healing effect if not pressing the button
+	if (!guard_pressed or hurt) and heal_effect != null:
+		healing = false
+		healing_time = 0
+		heal_effect.hide()
+	
 	# defeated if going lower than the lower limit of the map or
 	# life total is less than or equal to zero
 	# or the character is not in a battle and don't have rings
@@ -649,7 +655,7 @@ func heal(amount = DEFAULT_HEAL_AMOUNT):
 	if life_total > MAX_LIFE_TOTAL:
 		life_total = MAX_LIFE_TOTAL
 	
-	increase_special(1)
+	increase_special(4)
 
 
 ## method to fill the character's special amount

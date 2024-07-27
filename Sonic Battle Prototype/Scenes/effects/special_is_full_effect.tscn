@@ -58,8 +58,8 @@ spread = 180.0
 initial_velocity_min = 15.0
 initial_velocity_max = 20.0
 gravity = Vector3(0, 0, 0)
-scale_min = 0.05
-scale_max = 0.2
+scale_min = 0.03
+scale_max = 0.15
 scale_curve = SubResource("CurveTexture_f3w5f")
 color_ramp = SubResource("GradientTexture1D_jl00v")
 
@@ -90,7 +90,7 @@ draw_pass_1 = SubResource("QuadMesh_glmyh")
 
 [node name="sparks lead" type="GPUParticles3D" parent="."]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0.066, 0)
-lifetime = 0.3
+lifetime = 0.2
 fixed_fps = 60
 process_material = SubResource("ParticleProcessMaterial_qi51l")
 draw_pass_1 = SubResource("QuadMesh_txh8m")

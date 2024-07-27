@@ -34,6 +34,8 @@ const MAX_SCATTERED_RINGS_ALLOWED: int = 8
 # heal points per ring collected
 const HEAL_POINTS_PER_RING: int = 2
 
+const DEFAULT_HEAL_AMOUNT: int = 4
+
 # input direction
 var direction = Vector3.ZERO
 
@@ -312,6 +314,12 @@ func _physics_process(delta):
 			velocity.z = lerp(velocity.z, 0.0, 0.1)
 		if model_animation_player.current_animation == "WALL" || can_chase:
 			handle_walljump()
+	
+	# remove the healing effect if not pressing the button
+	if (!guard_pressed or hurt) and heal_effect != null:
+		healing = false
+		healing_time = 0
+		heal_effect.hide()
 	
 	# defeated if going lower than the lower limit of the map or
 	# life total is less than or equal to zero
@@ -631,7 +639,7 @@ func handle_healing():
 
 
 ## method to heal the character's life total
-func heal(amount = 4):
+func heal(amount = DEFAULT_HEAL_AMOUNT):
 	if heal_effect == null:
 		heal_effect = Instantiables.HEALING_EFFECT.instantiate()
 		heal_effect.position = Vector3(0, -0.15, 0)
@@ -646,7 +654,8 @@ func heal(amount = 4):
 	if life_total > MAX_LIFE_TOTAL:
 		life_total = MAX_LIFE_TOTAL
 	hud.change_life(life_total)
-	increase_special(40)
+	
+	increase_special(4)
 
 
 ## method to fill the character's special amount
