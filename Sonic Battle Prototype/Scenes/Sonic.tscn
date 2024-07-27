@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://3vv715sdbbdw"]
+[gd_scene load_steps=49 format=3 uid="uid://3vv715sdbbdw"]
 
 [ext_resource type="Script" path="res://Scripts/Sonic.gd" id="1_0e6eq"]
 [ext_resource type="Texture2D" uid="uid://cnvca7d2mepgx" path="res://Sprites/Sonic.png" id="1_w8pxe"]
@@ -8,7 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://cm41j6cu5vd54" path="res://Scenes/input.tscn" id="6_uhb43"]
 [ext_resource type="PackedScene" uid="uid://cif8ar07vb2yr" path="res://Models/Sonic/sonicrigged_2.tscn" id="7_1shw0"]
 
-[sub_resource type="Animation" id="Animation_spsdn"]
+[sub_resource type="Animation" id="Animation_xv41v"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -58,8 +58,140 @@ tracks/3/keys = {
 "update": 0,
 "values": [0.0880643]
 }
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("sonicrigged2/Armature/Skeleton3D/HandAttachments/PunchParticle:emitting")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("sonicrigged2/Armature/Skeleton3D/LeftFootAttachments/KickParticle:emitting")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("sonicrigged2/Armature/Skeleton3D/RightFootAttachments/KickParticle:emitting")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("sonicrigged2/Armature/Skeleton3D/LeftFootAttachments/KickParticle:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-8.34465e-07, -0.523874, -0.24165)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("sonicrigged2/Armature/Skeleton3D/RightFootAttachments/KickParticle:position")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-0.0183412, 0.528705, -0.0416821)]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("sonicrigged2/Armature/Skeleton3D/HandAttachments/PunchParticle:position")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-0.136073, 0.819763, 0.141883)]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("sonicrigged2/Armature/Skeleton3D/LeftFootAttachments/StrongKickParticle:emitting")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("sonicrigged2/Armature/Skeleton3D/LeftFootAttachments/StrongKickParticle:position")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.00396219, -0.551658, -0.414854)]
+}
+tracks/12/type = "value"
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/path = NodePath("sonicrigged2/Armature/Skeleton3D/RightFootAttachments/StrongKickParticle:position")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.113672, 0.47642, -0.569256)]
+}
+tracks/13/type = "value"
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/path = NodePath("sonicrigged2/Armature/Skeleton3D/RightFootAttachments/StrongKickParticle:emitting")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/14/type = "value"
+tracks/14/imported = false
+tracks/14/enabled = true
+tracks/14/path = NodePath(".:pac_strong")
+tracks/14/interp = 1
+tracks/14/loop_wrap = true
+tracks/14/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
-[sub_resource type="Animation" id="Animation_likoo"]
+[sub_resource type="Animation" id="Animation_kgvaa"]
 resource_name = "aim"
 length = 0.4995
 tracks/0/type = "value"
@@ -98,8 +230,32 @@ tracks/2/keys = {
 "update": 1,
 "values": [true, false, true]
 }
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("sonicrigged2/Armature/Skeleton3D/LeftFootAttachments/StrongKickParticle:emitting")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.19, 0.46),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("sonicrigged2/Armature/Skeleton3D/LeftFootAttachments/StrongKickParticle:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.00396219, -0.551658, -0.414854)]
+}
 
-[sub_resource type="Animation" id="Animation_0pbkp"]
+[sub_resource type="Animation" id="Animation_uxl2o"]
 resource_name = "airAttack"
 length = 0.4496
 tracks/0/type = "value"
@@ -138,8 +294,32 @@ tracks/2/keys = {
 "update": 0,
 "values": [Vector3(0, -0.117817, 0.0719795)]
 }
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("sonicrigged2/Armature/Skeleton3D/RightFootAttachments/KickParticle:emitting")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("sonicrigged2/Armature/Skeleton3D/RightFootAttachments/KickParticle:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-0.0183412, 0.528705, -0.0416821)]
+}
 
-[sub_resource type="Animation" id="Animation_1ehhq"]
+[sub_resource type="Animation" id="Animation_56lxs"]
 resource_name = "airdash"
 length = 0.7
 tracks/0/type = "value"
@@ -155,7 +335,7 @@ tracks/0/keys = {
 "values": [Rect2(14, 413, 33, 33), Rect2(52, 413, 33, 33), Rect2(90, 414, 31, 31), Rect2(126, 416, 29, 27), Rect2(162, 414, 26, 31), Rect2(194, 411, 26, 36), Rect2(226, 410, 26, 36)]
 }
 
-[sub_resource type="Animation" id="Animation_ta7g8"]
+[sub_resource type="Animation" id="Animation_o367c"]
 resource_name = "dash"
 length = 0.7
 tracks/0/type = "value"
@@ -171,7 +351,7 @@ tracks/0/keys = {
 "values": [Rect2(10, 229, 25, 33), Rect2(40, 229, 30, 32), Rect2(75, 230, 30, 32), Rect2(110, 230, 24, 34), Rect2(138, 230, 31, 34), Rect2(174, 232, 35, 29), Rect2(214, 231, 34, 29)]
 }
 
-[sub_resource type="Animation" id="Animation_341sk"]
+[sub_resource type="Animation" id="Animation_147nl"]
 resource_name = "dashAttack"
 length = 1.0656
 tracks/0/type = "value"
@@ -210,8 +390,32 @@ tracks/2/keys = {
 "update": 0,
 "values": [0.218943]
 }
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("sonicrigged2/Armature/Skeleton3D/LeftFootAttachments/KickParticle:emitting")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("sonicrigged2/Armature/Skeleton3D/LeftFootAttachments/KickParticle:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.0193124, -1.05551, -0.508205)]
+}
 
-[sub_resource type="Animation" id="Animation_kh45i"]
+[sub_resource type="Animation" id="Animation_4ymsj"]
 resource_name = "fall"
 length = 0.4
 tracks/0/type = "value"
@@ -227,7 +431,7 @@ tracks/0/keys = {
 "values": [Rect2(12, 325, 25, 34), Rect2(42, 323, 30, 36), Rect2(77, 321, 35, 39), Rect2(117, 320, 35, 40)]
 }
 
-[sub_resource type="Animation" id="Animation_uknna"]
+[sub_resource type="Animation" id="Animation_ju00h"]
 resource_name = "hurt"
 length = 0.3
 tracks/0/type = "value"
@@ -255,7 +459,7 @@ tracks/1/keys = {
 "values": [true]
 }
 
-[sub_resource type="Animation" id="Animation_ghoal"]
+[sub_resource type="Animation" id="Animation_f6psk"]
 resource_name = "hurtAir"
 length = 0.4
 tracks/0/type = "value"
@@ -283,7 +487,7 @@ tracks/1/keys = {
 "values": [true]
 }
 
-[sub_resource type="Animation" id="Animation_6udib"]
+[sub_resource type="Animation" id="Animation_sqtxi"]
 resource_name = "hurtStrong"
 length = 0.4
 tracks/0/type = "value"
@@ -311,7 +515,7 @@ tracks/1/keys = {
 "values": [true]
 }
 
-[sub_resource type="Animation" id="Animation_y4uy7"]
+[sub_resource type="Animation" id="Animation_djk5s"]
 resource_name = "idle"
 length = 0.6
 loop_mode = 1
@@ -328,7 +532,7 @@ tracks/0/keys = {
 "values": [Rect2(11, 14, 22, 32), Rect2(38, 12, 22, 34), Rect2(65, 11, 24, 35), Rect2(94, 11, 24, 35), Rect2(123, 14, 26, 32), Rect2(154, 15, 24, 31)]
 }
 
-[sub_resource type="Animation" id="Animation_43k2l"]
+[sub_resource type="Animation" id="Animation_eayty"]
 resource_name = "jump"
 length = 0.5
 tracks/0/type = "value"
@@ -344,7 +548,7 @@ tracks/0/keys = {
 "values": [Rect2(9, 272, 22, 40), Rect2(36, 272, 22, 40), Rect2(63, 274, 24, 36), Rect2(92, 277, 23, 34), Rect2(120, 280, 22, 31)]
 }
 
-[sub_resource type="Animation" id="Animation_8e1k3"]
+[sub_resource type="Animation" id="Animation_qo3gl"]
 resource_name = "pac"
 length = 0.6993
 tracks/0/type = "value"
@@ -354,7 +558,7 @@ tracks/0/path = NodePath("Hitbox/CollisionShape3D2:disabled")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.23, 0.32, 0.63),
+"times": PackedFloat32Array(0, 0.18, 0.32, 0.63),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
 "values": [false, true, false, true]
@@ -366,10 +570,10 @@ tracks/1/path = NodePath("Hitbox/CollisionShape3D2:position")
 tracks/1/interp = 0
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.34),
+"times": PackedFloat32Array(0, 0.3),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector3(0, 0.0127703, 0.0489526), Vector3(0, 0.0272295, 0.0733799)]
+"values": [Vector3(0, 0.0418492, 0.0881829), Vector3(0, 0.0687211, 0.0989908)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -383,8 +587,68 @@ tracks/2/keys = {
 "update": 0,
 "values": [0.163867]
 }
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("sonicrigged2/Armature/Skeleton3D/LeftFootAttachments/KickParticle:emitting")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.22),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("sonicrigged2/Armature/Skeleton3D/LeftFootAttachments/KickParticle:position")
+tracks/4/interp = 0
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.0193118, 0.718724, -0.917981)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("sonicrigged2/Armature/Skeleton3D/LeftFootAttachments/StrongKickParticle:emitting")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0.31),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("sonicrigged2/Armature/Skeleton3D/LeftFootAttachments/StrongKickParticle:position")
+tracks/6/interp = 0
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0.3),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-0.0262434, 1.05721, -0.265516)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath(".:pac_strong")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 0.24, 0.61),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
+}
 
-[sub_resource type="Animation" id="Animation_ft7un"]
+[sub_resource type="Animation" id="Animation_nvedx"]
 resource_name = "powAir"
 length = 0.5328
 step = 0.05
@@ -425,7 +689,7 @@ tracks/2/keys = {
 "values": [0.187378]
 }
 
-[sub_resource type="Animation" id="Animation_rvrgl"]
+[sub_resource type="Animation" id="Animation_ypvpj"]
 resource_name = "powGround"
 length = 0.4
 step = 0.05
@@ -442,7 +706,7 @@ tracks/0/keys = {
 "values": [Rect2(11, 1138, 27, 33), Rect2(43, 1137, 36, 34), Rect2(84, 1138, 36, 33), Rect2(124, 1139, 34, 32), Rect2(164, 1138, 26, 33), Rect2(195, 1134, 31, 37), Rect2(232, 1135, 31, 36), Rect2(267, 1137, 24, 34)]
 }
 
-[sub_resource type="Animation" id="Animation_7mawf"]
+[sub_resource type="Animation" id="Animation_1p4n2"]
 resource_name = "punch1"
 length = 0.4995
 step = 0.05
@@ -482,8 +746,32 @@ tracks/2/keys = {
 "update": 0,
 "values": [0.151919]
 }
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("sonicrigged2/Armature/Skeleton3D/HandAttachments/PunchParticle:emitting")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.24, 0.46),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("sonicrigged2/Armature/Skeleton3D/HandAttachments/PunchParticle:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-0.136073, 0.819763, 0.141883)]
+}
 
-[sub_resource type="Animation" id="Animation_bwkoe"]
+[sub_resource type="Animation" id="Animation_mjg6d"]
 resource_name = "punch2"
 length = 0.2498
 step = 0.05
@@ -523,8 +811,32 @@ tracks/2/keys = {
 "update": 0,
 "values": [0.170393]
 }
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("sonicrigged2/Armature/Skeleton3D/LeftFootAttachments/KickParticle:emitting")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("sonicrigged2/Armature/Skeleton3D/LeftFootAttachments/KickParticle:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.0193121, 1.02505, -0.456729)]
+}
 
-[sub_resource type="Animation" id="Animation_xo7hq"]
+[sub_resource type="Animation" id="Animation_gb5xr"]
 resource_name = "punch3"
 length = 0.2997
 step = 0.05
@@ -564,8 +876,32 @@ tracks/2/keys = {
 "update": 0,
 "values": [0.150412]
 }
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("sonicrigged2/Armature/Skeleton3D/RightFootAttachments/KickParticle:emitting")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.2397),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("sonicrigged2/Armature/Skeleton3D/RightFootAttachments/KickParticle:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-0.0183407, 0.771462, -0.427343)]
+}
 
-[sub_resource type="Animation" id="Animation_xt0ui"]
+[sub_resource type="Animation" id="Animation_s0kjx"]
 resource_name = "setAir"
 length = 0.35
 step = 0.05
@@ -582,7 +918,7 @@ tracks/0/keys = {
 "values": [Rect2(10, 1462, 26, 31), Rect2(43, 1461, 31, 32), Rect2(78, 1462, 35, 31), Rect2(118, 1463, 30, 32), Rect2(154, 1463, 32, 32), Rect2(191, 1463, 28, 34), Rect2(225, 1462, 36, 36)]
 }
 
-[sub_resource type="Animation" id="Animation_qcoh8"]
+[sub_resource type="Animation" id="Animation_fkmt8"]
 resource_name = "setGround"
 length = 0.35
 step = 0.05
@@ -599,7 +935,7 @@ tracks/0/keys = {
 "values": [Rect2(9, 1416, 24, 35), Rect2(39, 1415, 24, 36), Rect2(72, 1418, 20, 33), Rect2(98, 1420, 33, 31), Rect2(133, 1420, 30, 31), Rect2(168, 1420, 31, 31), Rect2(204, 1420, 28, 31)]
 }
 
-[sub_resource type="Animation" id="Animation_a31jr"]
+[sub_resource type="Animation" id="Animation_5i1qa"]
 resource_name = "shotAir"
 length = 0.2
 step = 0.05
@@ -616,7 +952,7 @@ tracks/0/keys = {
 "values": [Rect2(162, 1036, 24, 24), Rect2(189, 1036, 24, 24), Rect2(216, 1036, 24, 24), Rect2(243, 1035, 26, 26)]
 }
 
-[sub_resource type="Animation" id="Animation_f0og0"]
+[sub_resource type="Animation" id="Animation_lo8wb"]
 resource_name = "shotGround"
 length = 0.4
 step = 0.05
@@ -633,7 +969,7 @@ tracks/0/keys = {
 "values": [Rect2(45, 1036, 23, 22), Rect2(72, 1034, 21, 24), Rect2(97, 1035, 22, 23), Rect2(123, 1036, 20, 22), Rect2(45, 1036, 23, 22), Rect2(72, 1034, 21, 24), Rect2(97, 1035, 22, 23), Rect2(123, 1036, 20, 22)]
 }
 
-[sub_resource type="Animation" id="Animation_2g8r7"]
+[sub_resource type="Animation" id="Animation_f7ujc"]
 resource_name = "startWalk"
 length = 0.2
 tracks/0/type = "value"
@@ -649,7 +985,7 @@ tracks/0/keys = {
 "values": [Rect2(10, 101, 24, 33), Rect2(45, 100, 31, 32)]
 }
 
-[sub_resource type="Animation" id="Animation_ey8f7"]
+[sub_resource type="Animation" id="Animation_8dehu"]
 resource_name = "strong"
 length = 0.5495
 step = 0.05
@@ -689,8 +1025,56 @@ tracks/2/keys = {
 "update": 0,
 "values": [Vector3(0, 0, 0)]
 }
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("sonicrigged2/Armature/Skeleton3D/LeftFootAttachments/StrongKickParticle:emitting")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("sonicrigged2/Armature/Skeleton3D/LeftFootAttachments/StrongKickParticle:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-0.554472, -1.91187, -0.937016)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("sonicrigged2/Armature/Skeleton3D/RightFootAttachments/StrongKickParticle:position")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.113672, 0.47642, -0.569256)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("sonicrigged2/Armature/Skeleton3D/RightFootAttachments/StrongKickParticle:emitting")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
 
-[sub_resource type="Animation" id="Animation_qa0cn"]
+[sub_resource type="Animation" id="Animation_tk7xx"]
 resource_name = "strongRecoil"
 length = 0.4
 tracks/0/type = "value"
@@ -706,7 +1090,7 @@ tracks/0/keys = {
 "values": [Rect2(441, 732, 39, 39), Rect2(485, 738, 34, 31), Rect2(524, 737, 30, 37), Rect2(560, 741, 25, 33)]
 }
 
-[sub_resource type="Animation" id="Animation_uxbmq"]
+[sub_resource type="Animation" id="Animation_ls470"]
 resource_name = "upStrong"
 length = 0.4995
 step = 0.05
@@ -746,8 +1130,32 @@ tracks/2/keys = {
 "update": 0,
 "values": [0.206574]
 }
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("sonicrigged2/Armature/Skeleton3D/LeftFootAttachments/StrongKickParticle:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-0.0260997, 1.11526, -0.524833)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("sonicrigged2/Armature/Skeleton3D/LeftFootAttachments/StrongKickParticle:emitting")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.12, 0.33),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
+}
 
-[sub_resource type="Animation" id="Animation_ccdw7"]
+[sub_resource type="Animation" id="Animation_8xlqd"]
 resource_name = "walk"
 length = 0.8
 loop_mode = 1
@@ -764,35 +1172,35 @@ tracks/0/keys = {
 "values": [Rect2(81, 101, 30, 32), Rect2(116, 100, 23, 34), Rect2(144, 99, 28, 35), Rect2(177, 101, 30, 33), Rect2(212, 101, 28, 33), Rect2(245, 100, 23, 34), Rect2(273, 99, 28, 35), Rect2(45, 100, 31, 32)]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_soexl"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_sv2um"]
 _data = {
-"RESET": SubResource("Animation_spsdn"),
-"aim": SubResource("Animation_likoo"),
-"airAttack": SubResource("Animation_0pbkp"),
-"airdash": SubResource("Animation_1ehhq"),
-"dash": SubResource("Animation_ta7g8"),
-"dashAttack": SubResource("Animation_341sk"),
-"fall": SubResource("Animation_kh45i"),
-"hurt": SubResource("Animation_uknna"),
-"hurtAir": SubResource("Animation_ghoal"),
-"hurtStrong": SubResource("Animation_6udib"),
-"idle": SubResource("Animation_y4uy7"),
-"jump": SubResource("Animation_43k2l"),
-"pac": SubResource("Animation_8e1k3"),
-"powAir": SubResource("Animation_ft7un"),
-"powGround": SubResource("Animation_rvrgl"),
-"punch1": SubResource("Animation_7mawf"),
-"punch2": SubResource("Animation_bwkoe"),
-"punch3": SubResource("Animation_xo7hq"),
-"setAir": SubResource("Animation_xt0ui"),
-"setGround": SubResource("Animation_qcoh8"),
-"shotAir": SubResource("Animation_a31jr"),
-"shotGround": SubResource("Animation_f0og0"),
-"startWalk": SubResource("Animation_2g8r7"),
-"strong": SubResource("Animation_ey8f7"),
-"strongRecoil": SubResource("Animation_qa0cn"),
-"upStrong": SubResource("Animation_uxbmq"),
-"walk": SubResource("Animation_ccdw7")
+"RESET": SubResource("Animation_xv41v"),
+"aim": SubResource("Animation_kgvaa"),
+"airAttack": SubResource("Animation_uxl2o"),
+"airdash": SubResource("Animation_56lxs"),
+"dash": SubResource("Animation_o367c"),
+"dashAttack": SubResource("Animation_147nl"),
+"fall": SubResource("Animation_4ymsj"),
+"hurt": SubResource("Animation_ju00h"),
+"hurtAir": SubResource("Animation_f6psk"),
+"hurtStrong": SubResource("Animation_sqtxi"),
+"idle": SubResource("Animation_djk5s"),
+"jump": SubResource("Animation_eayty"),
+"pac": SubResource("Animation_qo3gl"),
+"powAir": SubResource("Animation_nvedx"),
+"powGround": SubResource("Animation_ypvpj"),
+"punch1": SubResource("Animation_1p4n2"),
+"punch2": SubResource("Animation_mjg6d"),
+"punch3": SubResource("Animation_gb5xr"),
+"setAir": SubResource("Animation_s0kjx"),
+"setGround": SubResource("Animation_fkmt8"),
+"shotAir": SubResource("Animation_5i1qa"),
+"shotGround": SubResource("Animation_lo8wb"),
+"startWalk": SubResource("Animation_f7ujc"),
+"strong": SubResource("Animation_8dehu"),
+"strongRecoil": SubResource("Animation_tk7xx"),
+"upStrong": SubResource("Animation_ls470"),
+"walk": SubResource("Animation_8xlqd")
 }
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5pg7f"]
@@ -822,6 +1230,65 @@ properties/5/replication_mode = 1
 [sub_resource type="BoxShape3D" id="BoxShape3D_ij26k"]
 size = Vector3(0.25, 0.25, 0.25)
 
+[sub_resource type="Curve" id="Curve_xrjaj"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.992593, 0.494505), -1.54407, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_rtvat"]
+curve = SubResource("Curve_xrjaj")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_tcjsh"]
+direction = Vector3(0, 0, 0)
+spread = 0.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.05
+scale_max = 0.2
+scale_curve = SubResource("CurveTexture_rtvat")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_b8dhp"]
+transparency = 1
+albedo_color = Color(1, 1, 1, 0.701961)
+metallic_specular = 0.85
+emission_enabled = true
+emission = Color(0.259294, 0.259294, 0.259294, 1)
+emission_energy_multiplier = 2.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_2vfx1"]
+material = SubResource("StandardMaterial3D_b8dhp")
+radius = 0.3
+height = 0.6
+radial_segments = 4
+rings = 4
+
+[sub_resource type="SphereMesh" id="SphereMesh_7eaio"]
+material = SubResource("StandardMaterial3D_b8dhp")
+radius = 0.3
+height = 0.6
+radial_segments = 4
+rings = 4
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u4iyj"]
+transparency = 1
+albedo_color = Color(1, 0.647059, 0.054902, 0.886275)
+metallic_specular = 0.85
+emission_enabled = true
+emission = Color(1, 0.231373, 0, 1)
+emission_energy_multiplier = 2.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_8y53c"]
+material = SubResource("StandardMaterial3D_u4iyj")
+radius = 0.3
+height = 0.6
+radial_segments = 4
+rings = 4
+
+[sub_resource type="SphereMesh" id="SphereMesh_s0inw"]
+material = SubResource("StandardMaterial3D_b8dhp")
+radius = 0.3
+height = 0.6
+radial_segments = 4
+rings = 4
+
 [sub_resource type="SphereShape3D" id="SphereShape3D_rpmoy"]
 radius = 0.0880643
 
@@ -835,7 +1302,7 @@ camera = NodePath("MainCam")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_soexl")
+"": SubResource("AnimationLibrary_sv2um")
 }
 autoplay = "idle"
 speed_scale = 1.5
@@ -878,6 +1345,139 @@ shape = SubResource("BoxShape3D_ij26k")
 [node name="sonicrigged2" parent="." instance=ExtResource("7_1shw0")]
 transform = Transform3D(0.03, 0, 0, 0, 0.03, 0, 0, 0, 0.03, 0, -0.15, 0)
 
+[node name="Skeleton3D" parent="sonicrigged2/Armature" index="0"]
+bones/1/position = Vector3(0, 1.34527, 1.80749e-07)
+bones/1/rotation = Quaternion(0, 0, 0, 1)
+bones/2/position = Vector3(0.218935, 5.12352, 1.86889)
+bones/2/rotation = Quaternion(-5.33851e-08, 0.707107, 0.707107, -5.33851e-08)
+bones/3/position = Vector3(0.218935, 4.52855, 1.11093)
+bones/3/rotation = Quaternion(-4.93884e-07, 0.120311, -0.992736, 3.62548e-07)
+bones/3/scale = Vector3(1.56383, 1.56383, 1.56383)
+bones/4/position = Vector3(-2.4524e-06, -2.98711e-05, 3.38752e-05)
+bones/5/rotation = Quaternion(0.433548, -7.69072e-07, -5.31844e-07, 0.901131)
+bones/6/position = Vector3(1.24248, 4.48427, -1.82674)
+bones/6/rotation = Quaternion(0.474758, -0.762247, 0.252519, -0.360303)
+bones/7/position = Vector3(-1.3855e-06, 2.00756e-05, 5.04756e-05)
+bones/8/rotation = Quaternion(-7.33752e-08, 2.00613e-08, -0.708192, 0.70602)
+bones/9/rotation = Quaternion(9.28001e-08, 7.71043e-08, -0.679446, 0.733725)
+bones/10/rotation = Quaternion(-6.50869e-08, 7.77142e-09, -0.711543, 0.702643)
+bones/11/rotation = Quaternion(1.86859e-08, 1.65881e-07, -0.681365, 0.731944)
+bones/12/rotation = Quaternion(-7.45787e-08, -3.12289e-08, -0.713797, 0.700353)
+bones/13/rotation = Quaternion(5.08432e-08, 1.37769e-07, -0.687085, 0.726577)
+bones/14/rotation = Quaternion(-1.14329e-07, 1.55829e-08, -0.7182, 0.695837)
+bones/15/rotation = Quaternion(-7.54124e-08, 3.22257e-07, -0.682729, 0.730671)
+bones/18/position = Vector3(1.33331, 6.31707, -0.780616)
+bones/19/position = Vector3(-0.218935, 2.63272, 2.58263)
+bones/19/rotation = Quaternion(5.33851e-08, 0.707107, 0.707107, 5.33851e-08)
+bones/20/position = Vector3(-0.218935, 2.55576, -0.796532)
+bones/20/rotation = Quaternion(-5.6613e-08, 0.934265, 0.35658, -1.69092e-07)
+bones/21/position = Vector3(1.40698e-05, -5.84751e-05, 2.70531e-05)
+bones/22/rotation = Quaternion(0.433548, 7.69072e-07, 5.31844e-07, 0.901131)
+bones/23/position = Vector3(-1.45848, 4.96521, 0.203165)
+bones/23/rotation = Quaternion(0.0257477, 0.700244, 0.675478, -0.229617)
+bones/24/position = Vector3(-0.0109078, -0.00648827, -0.00678721)
+bones/25/rotation = Quaternion(-7.33752e-08, -2.00613e-08, 0.708192, 0.70602)
+bones/26/rotation = Quaternion(9.28001e-08, -7.71043e-08, 0.679446, 0.733725)
+bones/27/rotation = Quaternion(-6.50869e-08, -7.77142e-09, 0.711543, 0.702643)
+bones/28/rotation = Quaternion(1.86859e-08, -1.65881e-07, 0.681365, 0.731944)
+bones/29/rotation = Quaternion(-7.45787e-08, 3.12289e-08, 0.713797, 0.700353)
+bones/30/rotation = Quaternion(5.08432e-08, -1.37769e-07, 0.687085, 0.726577)
+bones/31/rotation = Quaternion(-1.14329e-07, -1.55829e-08, 0.7182, 0.695837)
+bones/32/rotation = Quaternion(-7.54124e-08, -3.22257e-07, 0.682729, 0.730671)
+bones/35/position = Vector3(-1.33331, 4.27782, 0.311842)
+bones/36/position = Vector3(0, 3.77735, -0.233058)
+bones/36/rotation = Quaternion(-0.292184, 0, 0, 0.956362)
+bones/37/rotation = Quaternion(1.76643e-07, 0.814653, 0.579948, 7.11864e-08)
+bones/38/rotation = Quaternion(-0.164742, 1.1152e-08, 1.00414e-07, 0.986337)
+bones/39/rotation = Quaternion(-0.253788, -1.5585e-08, -1.64611e-07, 0.96726)
+bones/40/rotation = Quaternion(8.46409e-08, -0.316609, 0.948556, 6.86979e-08)
+bones/41/rotation = Quaternion(-0.158821, -9.9926e-09, -1.00136e-07, 0.987307)
+bones/42/rotation = Quaternion(-0.243495, 1.6414e-08, 1.61182e-07, 0.969902)
+bones/43/rotation = Quaternion(0.355761, 0, 0, 0.934577)
+bones/46/position = Vector3(-1.93715e-07, 1.20297, 2.20294e-07)
+bones/46/rotation = Quaternion(0.0110186, 0.00066713, 0.00840359, 0.999904)
+bones/48/position = Vector3(-4.29131e-14, 1.05863, 1.78814e-07)
+bones/48/rotation = Quaternion(-0.0914652, -1.15124e-09, -3.06744e-08, 0.995808)
+bones/50/position = Vector3(3.72529e-09, 0.433329, 3.14525e-07)
+bones/50/rotation = Quaternion(-0.139428, 0.00852849, -0.0562507, 0.988596)
+bones/52/position = Vector3(8.9407e-08, 0.43826, -4.13507e-07)
+bones/52/rotation = Quaternion(0.026069, -0.0153188, 0.0630635, 0.997551)
+bones/55/position = Vector3(1.93715e-07, 1.20297, 2.20294e-07)
+bones/55/rotation = Quaternion(0.0110186, -0.00066713, -0.00840359, 0.999904)
+bones/57/position = Vector3(-8.9407e-08, 0.43826, -4.13507e-07)
+bones/57/rotation = Quaternion(0.026069, 0.0153188, -0.0630635, 0.997551)
+bones/58/rotation = Quaternion(0.332169, 0.915329, -0.220418, 0.0570302)
+bones/59/rotation = Quaternion(0.165634, -5.41247e-09, -1.03315e-07, 0.986187)
+bones/60/rotation = Quaternion(0.228402, -3.84503e-08, -1.04099e-06, 0.973567)
+bones/61/rotation = Quaternion(-0.226847, 0.568076, 0.738157, 0.284524)
+bones/62/rotation = Quaternion(0.0369316, -4.43474e-08, 2.28979e-07, 0.999318)
+bones/63/rotation = Quaternion(0.0445655, 5.81308e-09, -5.14843e-08, 0.999006)
+
+[node name="HandAttachments" type="BoneAttachment3D" parent="sonicrigged2/Armature/Skeleton3D" index="1"]
+transform = Transform3D(-0.893226, -0.286792, -0.346262, -0.274143, 0.957824, -0.0861323, 0.35636, 0.0179898, -0.934175, -1.44904, 1.17095, 0.193095)
+bone_name = "Hand.R"
+bone_idx = 24
+
+[node name="PunchParticle" type="GPUParticles3D" parent="sonicrigged2/Armature/Skeleton3D/HandAttachments"]
+transform = Transform3D(0.1, 2.32831e-10, 0, -7.45058e-09, 1.49012e-08, 0.1, 3.72529e-09, -0.1, -1.30385e-08, -0.136073, 0.819763, 0.141883)
+emitting = false
+amount = 24
+lifetime = 0.3
+one_shot = true
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_tcjsh")
+draw_pass_1 = SubResource("SphereMesh_2vfx1")
+
+[node name="LeftFootAttachments" type="BoneAttachment3D" parent="sonicrigged2/Armature/Skeleton3D" index="2"]
+transform = Transform3D(-1.56383, -6.61257e-07, 1.98953e-06, 5.42678e-08, 1.47074, 0.531485, -2.09584e-06, 0.531485, -1.47074, 0.218939, 1.0526, 2.03684)
+bone_name = "Toe.L"
+bone_idx = 5
+
+[node name="KickParticle" type="GPUParticles3D" parent="sonicrigged2/Armature/Skeleton3D/LeftFootAttachments"]
+transform = Transform3D(-4.65658e-09, 0.0633125, 0.0233578, 0.0613076, 0.00976182, -0.0264599, -0.0282031, 0.0212201, -0.0575181, -8.34465e-07, -0.523874, -0.24165)
+emitting = false
+amount = 24
+lifetime = 0.3
+one_shot = true
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_tcjsh")
+draw_pass_1 = SubResource("SphereMesh_7eaio")
+
+[node name="StrongKickParticle" type="GPUParticles3D" parent="sonicrigged2/Armature/Skeleton3D/LeftFootAttachments"]
+transform = Transform3D(-6.0335e-09, 0.0633125, 0.0233577, 0.0613076, 0.00976181, -0.0264599, -0.0282031, 0.0212201, -0.0575181, 0.00396219, -0.551658, -0.414854)
+emitting = false
+amount = 24
+lifetime = 0.3
+one_shot = true
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_tcjsh")
+draw_pass_1 = SubResource("SphereMesh_8y53c")
+
+[node name="RightFootAttachments" type="BoneAttachment3D" parent="sonicrigged2/Armature/Skeleton3D" index="3"]
+transform = Transform3D(-1, -1.14555e-07, -2.04464e-06, 1.59228e-06, -0.671347, -0.741144, -1.28776e-06, -0.741144, 0.671346, -0.218949, -1.13434, -1.41372)
+bone_name = "Toe.R"
+bone_idx = 22
+
+[node name="KickParticle" type="GPUParticles3D" parent="sonicrigged2/Armature/Skeleton3D/RightFootAttachments"]
+transform = Transform3D(-0.0266334, 0.111819, -0.0302486, 0.0854049, 0.0399239, 0.0723862, 0.0782581, -0.00551493, -0.0892913, -0.0183412, 0.528705, -0.0416821)
+emitting = false
+amount = 24
+lifetime = 0.3
+one_shot = true
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_tcjsh")
+draw_pass_1 = SubResource("SphereMesh_s0inw")
+
+[node name="StrongKickParticle" type="GPUParticles3D" parent="sonicrigged2/Armature/Skeleton3D/RightFootAttachments"]
+transform = Transform3D(5.58794e-09, 0.0633124, 0.0233577, 0.0613075, 0.0097618, -0.0264599, -0.0282031, 0.0212201, -0.057518, 0.113672, 0.47642, -0.569256)
+emitting = false
+amount = 24
+lifetime = 0.3
+one_shot = true
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_tcjsh")
+draw_pass_1 = SubResource("SphereMesh_8y53c")
+
 [node name="Hitbox" type="Area3D" parent="."]
 collision_mask = 3
 
@@ -886,7 +1486,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.134066, 0, 0)
 shape = SubResource("SphereShape3D_rpmoy")
 disabled = true
 
-[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="area_entered" from="ring_collider" to="." method="_on_ring_collider_area_entered"]
 [connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]
 

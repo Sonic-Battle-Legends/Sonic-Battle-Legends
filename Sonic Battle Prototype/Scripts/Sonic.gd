@@ -181,6 +181,10 @@ var special_is_full_effect: Node3D
 @export_category("CAMERA")
 @export var camera: Camera3D
 
+# the checker for when the current point in the "PAC" animation changes to the strong variant,
+# change this in animation player
+@export var pac_strong = false
+
 ## the character model which turns accordingly to the input direction
 ## this is used as reference direction for the Bots
 #@export var model_node: Node3D
@@ -281,6 +285,11 @@ func _physics_process(delta):
 			model_animation_player.play("KO")
 			spiked = false
 		
+	
+	if model_animation_player.current_animation == "PAC":
+		if pac_strong:
+			launch_power = Vector3(model_node.basis.z.normalized().x * 5, 5, model_node.basis.z.normalized().x * 5)
+			damage_caused = 17
 	
 	if is_on_wall() && model_animation_player.current_animation == "LAUNCHED":
 		velocity.y = 0
@@ -508,13 +517,14 @@ func handle_upper():
 			velocity = -model_node.basis.z.normalized() * 2
 		else:
 			if can_air_attack:
+				pac_strong = false
 				can_air_attack = false
 				sprite_animation_player.play("pac")
 				model_animation_player.play("PAC")
 				Audio.play(Audio.attackStrong, self)
-				launch_power = Vector3(model_node.basis.z.normalized().x * 5, 5, model_node.basis.z.normalized().x * 5)
+				launch_power = Vector3(0, 1, 0)
 				velocity.y = 3
-				damage_caused = 17
+				damage_caused = 2
 				attacking = true
 
 ## method to execute the AIM attack
@@ -600,7 +610,6 @@ func handle_attack():
 		elif current_punch == 3:
 			sprite_animation_player.play("strong")
 			model_animation_player.play("PGC 4")
-			
 			Audio.play(Audio.attackStrong, self)
 			var new_launch = model_node.transform.basis.z.normalized() * 20
 			new_launch.y = 5

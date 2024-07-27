@@ -184,6 +184,10 @@ var respawning: bool = false
 @onready var drop_shadow = $DropShadow
 @onready var hit_box = $Hitbox
 
+# the checker for when the current point in the "PAC" animation changes to the strong variant,
+# change this in animation player
+@export var pac_strong = false
+
 ## the character model which turns accordingly to the input direction
 # this is used by the cpu_controller script to have the reference of the Bot's forward
 #@export var model_node: Node3D
@@ -288,6 +292,10 @@ func _physics_process(delta):
 			pow_move = false
 		
 	
+	if model_animation_player.current_animation == "PAC":
+		if pac_strong:
+			launch_power = Vector3(model_node.basis.z.normalized().x * 5, 5, model_node.basis.z.normalized().x * 5)
+			damage_caused = 17
 	
 	if is_on_wall() && model_animation_player.current_animation == "LAUNCHED":
 		velocity.y = 0
@@ -510,12 +518,13 @@ func handle_upper():
 		else:
 			if can_air_attack:
 				can_air_attack = false
+				pac_strong = false
 				sprite_animation_player.play("pac")
 				model_animation_player.play("PAC")
 				Audio.play(Audio.attackStrong, self)
-				launch_power = Vector3(model_node.basis.z.normalized().x * 5, 5, model_node.basis.z.normalized().x * 5)
+				launch_power = Vector3(0, 1, 0)
 				velocity.y = 3
-				damage_caused = 17
+				damage_caused = 2
 				attacking = true
 
 ## method to execute the AIM attack
