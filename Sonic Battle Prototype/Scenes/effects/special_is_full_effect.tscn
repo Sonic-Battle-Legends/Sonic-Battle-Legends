@@ -1,0 +1,44 @@
+[gd_scene load_steps=9 format=3 uid="uid://dbwo2cpyg8uom"]
+
+[ext_resource type="Texture2D" uid="uid://btc3tn4rxo8sw" path="res://Textures/iris.png" id="1_te2pl"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_31shv"]
+transparency = 1
+blend_mode = 1
+vertex_color_use_as_albedo = true
+albedo_color = Color(1, 1, 1, 0.701961)
+albedo_texture = ExtResource("1_te2pl")
+billboard_mode = 1
+billboard_keep_scale = true
+
+[sub_resource type="Gradient" id="Gradient_fywli"]
+offsets = PackedFloat32Array(0, 0.198582, 0.624114, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 0.943925, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_mribq"]
+gradient = SubResource("Gradient_fywli")
+use_hdr = true
+
+[sub_resource type="Curve" id="Curve_kaql4"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_y17ql"]
+curve = SubResource("Curve_kaql4")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_2n5pe"]
+gravity = Vector3(0, 0, 0)
+scale_curve = SubResource("CurveTexture_y17ql")
+color_ramp = SubResource("GradientTexture1D_mribq")
+
+[sub_resource type="QuadMesh" id="QuadMesh_glmyh"]
+
+[node name="SpecialIsFullEffect" type="Node3D"]
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+material_override = SubResource("StandardMaterial3D_31shv")
+amount = 4
+lifetime = 0.5
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_2n5pe")
+draw_pass_1 = SubResource("QuadMesh_glmyh")

@@ -161,6 +161,8 @@ var last_spawn_position: Vector3 = Vector3.ZERO
 
 var after_image_time: float = 0.0
 
+var special_is_full_effect: Node3D
+
 # make only one $ call and store the node
 @onready var sprite_animation_player = $AnimationPlayer
 @onready var model_node = $sonicrigged2
@@ -348,6 +350,8 @@ func _physics_process(delta):
 		handle_spike()
 	
 	handle_after_image()
+	
+	handle_special_is_full()
 	
 	# Automatically handle the animation and character controller physics.
 	handle_animation()
@@ -642,7 +646,7 @@ func heal(amount = 4):
 	if life_total > MAX_LIFE_TOTAL:
 		life_total = MAX_LIFE_TOTAL
 	hud.change_life(life_total)
-	increase_special(1)
+	increase_special(40)
 
 
 ## method to fill the character's special amount
@@ -661,6 +665,19 @@ func increase_points():
 	GlobalVariables.character_points = points
 	if points >= GlobalVariables.points_to_win:
 		GlobalVariables.win(self)
+
+
+func handle_special_is_full():
+	if special_amount >= MAX_SPECIAL_AMOUNT:
+		if special_is_full_effect == null:
+			special_is_full_effect = Instantiables.SPECIAL_IS_FULL_EFFECT.instantiate()
+			special_is_full_effect.position = Vector3(0, 0.02, 0)
+			add_child(special_is_full_effect)
+		else:
+			special_is_full_effect.show()
+	else:
+		if special_is_full_effect != null:
+			special_is_full_effect.hide()
 
 
 ## gain one extra life
