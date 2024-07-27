@@ -825,14 +825,13 @@ size = Vector3(0.25, 0.25, 0.25)
 [sub_resource type="SphereShape3D" id="SphereShape3D_rpmoy"]
 radius = 0.0880643
 
-[node name="Sonic" type="CharacterBody3D" node_paths=PackedStringArray("hud", "camera", "model_node") groups=["CanHurt", "Player"]]
+[node name="Sonic" type="CharacterBody3D" node_paths=PackedStringArray("hud", "camera") groups=["CanHurt", "Player"]]
 collision_layer = 2
 floor_max_angle = 1.0472
 floor_snap_length = 0.2
 script = ExtResource("1_0e6eq")
 hud = NodePath("HUD")
 camera = NodePath("MainCam")
-model_node = NodePath("sonicrigged2")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

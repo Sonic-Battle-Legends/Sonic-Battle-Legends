@@ -26,6 +26,10 @@ const safe_distance: float = 1.0
 
 var life_offset = 35
 
+var total_healed: int = 0
+
+var last_life_total: int = 0
+
 var players_around: Array
 # store if there are rings around the stage
 var rings_around: Array
@@ -151,15 +155,25 @@ func common_behaviours():
 	planar_position.y = 0
 	var planar_distance = (planar_position - cpu_character.position).length()
 	
-	# check if player target is right above the bot
-	if planar_distance < distance_to_keep_from_target:
-		if distance_to_target > distance_to_keep_from_target \
-		and cpu_character.life_total < cpu_character.MAX_LIFE_TOTAL:
-			# if the player is trying to keep distance, keep guard on
-			# to heal
-			cpu_character.guard_pressed = true
-		else:
-			cpu_character.guard_pressed = false
+	# heal if the player is far and life is not full
+	# or if healed 35 points
+	if planar_distance > (distance_to_keep_from_target + 1.0) \
+	and cpu_character.life_total < cpu_character.MAX_LIFE_TOTAL \
+	and total_healed < life_offset:
+		# if the player is trying to keep distance, keep guard on
+		# to heal
+		cpu_character.guard_pressed = true
+		
+		# keep track of how much was healed
+		if cpu_character.life_total > last_life_total:
+			last_life_total = cpu_character.life_total
+			total_healed += cpu_character.DEFAULT_HEAL_AMOUNT
+	else:
+		# only go back to healing if hurt
+		if cpu_character.hurt:
+			total_healed = 0
+			last_life_total = cpu_character.life_total
+		cpu_character.guard_pressed = false
 
 
 ## if the target is far, move

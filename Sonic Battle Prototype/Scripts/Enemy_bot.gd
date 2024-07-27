@@ -31,6 +31,8 @@ const MAX_SCATTERED_RINGS_ALLOWED: int = 8
 # heal points per ring collected
 const HEAL_POINTS_PER_RING: int = 2
 
+const DEFAULT_HEAL_AMOUNT: int = 4
+
 # Boolean to check if Sonic is facing left or right
 var facing_left = false
 
@@ -164,6 +166,8 @@ var last_aggressor
 var last_spawn_position: Vector3 = Vector3.ZERO
 
 var after_image_time: float = 0.0
+
+var special_is_full_effect: Node3D
 
 # defeated method should trigger only once
 var was_defeated: bool = false
@@ -319,6 +323,12 @@ func _physics_process(delta):
 		if model_animation_player.current_animation == "WALL" || can_chase:
 			handle_walljump()
 	
+	# remove the healing effect if not pressing the button
+	if (!guard_pressed or hurt) and heal_effect != null:
+		healing = false
+		healing_time = 0
+		heal_effect.hide()
+	
 	# defeated if going lower than the lower limit of the map or
 	# life total is less than or equal to zero
 	# or the character is not in a battle and don't have rings
@@ -345,9 +355,11 @@ func _physics_process(delta):
 	
 	if can_spike:
 		handle_spike()
-
+	
 	handle_after_image()
-
+	
+	handle_special_is_full()
+	
 	# Automatically handle the animation and character controller physics.
 	handle_animation()
 	move_and_slide()
@@ -628,7 +640,7 @@ func handle_healing():
 
 
 ## method to heal the character's life total
-func heal(amount = 4):
+func heal(amount = DEFAULT_HEAL_AMOUNT):
 	if heal_effect == null:
 		heal_effect = Instantiables.HEALING_EFFECT.instantiate()
 		heal_effect.position = Vector3(0, -0.15, 0)
@@ -643,7 +655,7 @@ func heal(amount = 4):
 	if life_total > MAX_LIFE_TOTAL:
 		life_total = MAX_LIFE_TOTAL
 	
-	increase_special(1)
+	increase_special(4)
 
 
 ## method to fill the character's special amount
@@ -652,6 +664,19 @@ func increase_special(amount = 1):
 		special_amount += amount
 	if special_amount > MAX_SPECIAL_AMOUNT:
 		special_amount = MAX_SPECIAL_AMOUNT
+
+
+func handle_special_is_full():
+	if special_amount >= MAX_SPECIAL_AMOUNT:
+		if special_is_full_effect == null:
+			special_is_full_effect = Instantiables.SPECIAL_IS_FULL_EFFECT.instantiate()
+			special_is_full_effect.position = Vector3(0, 0.02, 0)
+			add_child(special_is_full_effect)
+		else:
+			special_is_full_effect.show()
+	else:
+		if special_is_full_effect != null:
+			special_is_full_effect.hide()
 
 
 ## increase the total points gained in-game by one
