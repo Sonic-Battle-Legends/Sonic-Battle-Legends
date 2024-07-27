@@ -80,6 +80,11 @@ func hide_menus():
 
 ## proceed with the normal screens sequence after online setup
 func after_online_setup():
+	# if no online connection was made, go offline
+	if Network.peer == null:
+		GlobalVariables.play_online = false
+		GlobalVariables.character_id = 1
+	
 	hide_menus()
 	mode_selection_menu.show()
 
@@ -230,23 +235,26 @@ func _on_difficulty_selection_list_item_selected(index):
 
 
 func _on_conditions_next_button_pressed():
+	# "sanitize" the input
+	# cast to int. non numbers will be 0
 	# store values
 	var bots_amount = int(bots_amount_node.text)
 	var wins_amount = int(wins_amount_node.text)
 	
-	# limit the amount
-	if bots_amount < 0:
-		bots_amount = 0
-	if bots_amount > GlobalVariables.MAX_BOTS_TOTAL:
-		bots_amount = GlobalVariables.MAX_BOTS_TOTAL
-	if wins_amount < 1:
-		wins_amount = 1
-	if wins_amount > GlobalVariables.MAX_WIN_POINTS:
-		wins_amount = GlobalVariables.MAX_WIN_POINTS
-		
-	# set conditions values
-	GlobalVariables.number_of_bots = bots_amount
-	GlobalVariables.points_to_win = wins_amount
-		
-	hide_menus()
-	character_selection_menu.show()
+	if typeof(bots_amount) == TYPE_INT and typeof(wins_amount) == TYPE_INT:	
+		# limit the amount
+		if bots_amount < 0:
+			bots_amount = 0
+		if bots_amount > GlobalVariables.MAX_BOTS_TOTAL:
+			bots_amount = GlobalVariables.MAX_BOTS_TOTAL
+		if wins_amount < 1:
+			wins_amount = 1
+		if wins_amount > GlobalVariables.MAX_WIN_POINTS:
+			wins_amount = GlobalVariables.MAX_WIN_POINTS
+			
+		# set conditions values
+		GlobalVariables.number_of_bots = bots_amount
+		GlobalVariables.points_to_win = wins_amount
+			
+		hide_menus()
+		character_selection_menu.show()
