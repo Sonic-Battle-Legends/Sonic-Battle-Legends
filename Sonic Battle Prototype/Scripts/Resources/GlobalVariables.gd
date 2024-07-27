@@ -16,8 +16,8 @@ var main_menu
 var play_online: bool = false
 
 # server/client related  variables
-var server_node
-var character_id
+var server_node # remove
+var character_id # remove, id from Network
 
 enum modes {battle, story, challenge}
 # which mode was selected (battle mode, story mode,...)
@@ -89,6 +89,7 @@ var points_to_win: int = 2
 var game_ended: bool = false
 #for maintaining health after falling of stage, -99 is just becuase I cant set it to null for some reason
 var respawnLife: int  = -99
+var respawnSpecial: int = -99
 
 func reset_win_conditions():
 	game_ended = false

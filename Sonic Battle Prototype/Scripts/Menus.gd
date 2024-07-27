@@ -128,25 +128,34 @@ func _on_online_button_pressed():
 	online_menu.show()
 
 
-func _on_host_button_pressed():
-	hide_menus()
+#func _on_host_button_pressed():
+	#hide_menus()
 	# the server will call the after_online_setup() in here when it's done
-	ServerJoin.configure_player()
+	#print("host button pressed")
+	#ServerJoin.configure_player()
 
 
-func _on_join_button_pressed():
+#func _on_join_button_pressed():
 	#GlobalVariables.main_menu.online_menu.hide()
-	hide_menus()
-	ServerJoin.enet_peer.create_client("localhost", ServerJoin.PORT)
-	ServerJoin.multiplayer.multiplayer_peer = ServerJoin.enet_peer
+	#hide_menus()
+	#print("join button pressed")
+	#ServerJoin.enet_peer.create_client("localhost", ServerJoin.PORT)
+	#ServerJoin.multiplayer.multiplayer_peer = ServerJoin.enet_peer
 	
-	after_online_setup()
+	#after_online_setup()
 
 
 func _on_offline_button_pressed():
 	GlobalVariables.play_online = false
 	hide_menus()
-	ServerJoin.configure_player()
+	#ServerJoin.configure_player()
+	# create a new server
+	# using ip
+	# with max number of players set to 1
+	# net dicovery to false
+	#Network.create_new_server()
+	# pretend there is a connection
+	GlobalVariables.character_id = 1
 	#canvas_server_menu.configure_player()
 	mode_selection_menu.show()
 
@@ -194,9 +203,13 @@ func _on_back_button_pressed():
 		hide_menus()
 		main_menu.show()
 	if online_menu.is_visible_in_tree():
+		# reset connection when going back
+		Network.reset_connection()
 		hide_menus()
 		online_or_offline_menu.show()
 	if mode_selection_menu.is_visible_in_tree():
+		# reset connection when going back
+		Network.reset_connection()
 		hide_menus()
 		online_or_offline_menu.show()
 	if character_selection_menu.is_visible_in_tree():
