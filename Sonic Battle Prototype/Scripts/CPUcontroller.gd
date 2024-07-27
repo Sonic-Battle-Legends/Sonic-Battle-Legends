@@ -103,7 +103,18 @@ func select_target():
 		target = GlobalVariables.current_character
 		player_target = GlobalVariables.current_character
 	rings_around = get_tree().get_nodes_in_group("Ring").duplicate()
-	players_around = get_tree().get_nodes_in_group("Player").duplicate()
+	#players_around = get_tree().get_nodes_in_group("Player").duplicate()
+	players_around.append(GlobalVariables.current_character)
+	
+	# on challenge mode the bots will search for players
+	# on battle mode bots can fight bots
+	if GlobalVariables.play_mode == GlobalVariables.modes.battle:
+		players_around = get_tree().get_nodes_in_group("Bot").duplicate()
+		
+	#if GlobalVariables.play_mode == GlobalVariables.modes.challenge:
+		#for j in players_around:
+		#	if j.is_in_group("Bot"):
+		#		players_around.erase(j)
 	
 	# store variables for possible targets
 	possible_targets.clear()

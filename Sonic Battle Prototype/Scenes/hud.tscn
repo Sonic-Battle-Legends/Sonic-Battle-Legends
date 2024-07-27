@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://kiqyfxt7rwap"]
+[gd_scene load_steps=11 format=3 uid="uid://kiqyfxt7rwap"]
 
 [ext_resource type="Script" path="res://Scripts/hud.gd" id="1_i2t3l"]
 [ext_resource type="Texture2D" uid="uid://dofyi4jiyto42" path="res://Textures/icon.svg" id="2_kygp5"]
@@ -6,6 +6,7 @@
 [ext_resource type="Theme" uid="uid://cgbqhln08lgao" path="res://Text Themes/HUD_v2.tres" id="3_sxpx6"]
 [ext_resource type="Texture2D" uid="uid://cnvca7d2mepgx" path="res://Sprites/Sonic.png" id="5_j0w7h"]
 [ext_resource type="Texture2D" uid="uid://d2p48vq8nkoy7" path="res://Textures/hub_hud_v2.png" id="6_0fpv5"]
+[ext_resource type="Texture2D" uid="uid://s3ox0cx5md2h" path="res://Textures/hub_hud_v2.webp" id="7_hoyex"]
 
 [sub_resource type="Animation" id="Animation_7jinx"]
 length = 0.001
@@ -127,11 +128,20 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="new_hud" type="Sprite2D" parent="Area HUD"]
+visible = false
 position = Vector2(100.453, 77.1052)
 scale = Vector2(1.82643, 1.84461)
 texture = ExtResource("6_0fpv5")
 region_enabled = true
 region_rect = Rect2(0, 0, 111.5, 64)
+
+[node name="TextureRect" type="TextureRect" parent="Area HUD"]
+layout_mode = 0
+offset_top = 17.0
+offset_right = 334.0
+offset_bottom = 211.0
+texture = ExtResource("7_hoyex")
+stretch_mode = 4
 
 [node name="Rings" type="Control" parent="Area HUD"]
 layout_mode = 1
@@ -152,10 +162,10 @@ region_rect = Rect2(246.987, 1176.83, 15.8053, 19.7566)
 
 [node name="RingsUI" type="RichTextLabel" parent="Area HUD/Rings"]
 layout_mode = 0
-offset_left = -198.0
-offset_top = -150.0
-offset_right = 307.0
-offset_bottom = -61.0
+offset_left = -71.5
+offset_top = -158.42
+offset_right = 433.5
+offset_bottom = -69.42
 theme = ExtResource("3_sxpx6")
 text = "9999999"
 
@@ -177,10 +187,10 @@ region_rect = Rect2(37.3665, 10.6161, 24.8369, 15.1936)
 
 [node name="ExtraLivesUI" type="RichTextLabel" parent="Area HUD/lives"]
 layout_mode = 0
-offset_left = 130.0
-offset_top = 116.0
-offset_right = 653.0
-offset_bottom = 205.0
+offset_left = 249.0
+offset_top = 140.0
+offset_right = 787.0
+offset_bottom = 229.0
 theme = ExtResource("3_sxpx6")
 text = "99"
 

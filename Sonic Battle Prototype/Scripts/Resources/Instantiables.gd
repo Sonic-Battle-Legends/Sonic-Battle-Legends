@@ -169,7 +169,6 @@ func go_to_hub(selected_hub: PackedScene):
 	load_hub(selected_hub)
 	
 	# allow a new character to be spawned
-	#GlobalVariables.main_menu.canvas_server_menu.remove_player(multiplayer.multiplayer_peer)
 	if GlobalVariables.current_character != null:
 		GlobalVariables.current_character.queue_free()
 		# the reference is still there so nullify it
@@ -205,12 +204,39 @@ func go_to_stage(new_stage: PackedScene):
 	# create the new stage
 	load_stage(new_stage)
 	
+	# Offline
 	if GlobalVariables.play_online == false:
-		spawn_bot()
+		# Battle Offline
+		if GlobalVariables.play_mode == GlobalVariables.modes.battle:
+			# free run
+			generate_bots()
+		
+		# Challenge Offline
+		if GlobalVariables.play_mode == GlobalVariables.modes.challenge:
+			# select how many bots to fight agaisnt
+			generate_bots()
+		
+		# Story Offline
+		if GlobalVariables.play_mode == GlobalVariables.modes.story:
+			# normal story
+			generate_bots()
+	
+	# Online
 	else:
-		spawn_bot()
-		spawn_bot()
-		spawn_bot()
+		# Battle Online
+		if GlobalVariables.play_mode == GlobalVariables.modes.battle:
+			# play against connected players
+			pass
+			
+		# Challenge Online
+		if GlobalVariables.play_mode == GlobalVariables.modes.challenge:
+			# players vs bots
+			generate_bots()
+		
+		# Story Online
+		if GlobalVariables.play_mode == GlobalVariables.modes.story:
+			# players vs story
+			generate_bots()
 
 
 ## load a stage in the Main hierarchy
@@ -219,6 +245,11 @@ func load_stage(new_stage):
 	GlobalVariables.current_stage = new_stage.instantiate()
 	# create the stage in the Main scene
 	GlobalVariables.main_menu.get_parent().add_child(GlobalVariables.current_stage)
+
+
+func generate_bots():
+	for i in GlobalVariables.number_of_bots:
+		spawn_bot()
 
 
 func spawn_bot():

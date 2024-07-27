@@ -70,7 +70,14 @@ var selected_abilities: Array
 var character_points: int = 0
 var defeated: bool = true
 
+# points the bot made
 var bot_points: int = 0
+
+# number of bots to be spawned per match
+var number_of_bots: int = 3
+
+# max number of bots that can be spawned
+const MAX_BOTS_TOTAL: int = 9
 
 # variables for the hud on areas and hubs
 var total_rings: int = 0
@@ -85,11 +92,14 @@ const DEFAULT_INPUTS = { "up": "W", "left": "A", "down": "S", "right": "D", "pun
 
 # win condition
 var points_to_win: int = 2
+# max number of points to win a battle
+const MAX_WIN_POINTS: int = 10
 # store if someone won the game already
 var game_ended: bool = false
 #for maintaining health after falling of stage, -99 is just becuase I cant set it to null for some reason
 var respawnLife: int  = -99
 var respawnSpecial: int = -99
+
 
 func reset_win_conditions():
 	game_ended = false
