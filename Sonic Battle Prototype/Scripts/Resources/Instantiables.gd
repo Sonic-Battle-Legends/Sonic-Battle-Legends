@@ -19,6 +19,8 @@ var KO_EFFECT = load("res://Scenes/effects/ko_effect.tscn")
 
 var SPECIAL_IS_FULL_EFFECT = load("res://Scenes/effects/special_is_full_effect.tscn")
 
+var RING_COLLECTED_EFFECT = load("res://Scenes/effects/ring_collected_effect.tscn")
+
 # sonic after image
 var AFTER_IMAGE = load("res://Scenes/effects/after_image.tscn")
 
