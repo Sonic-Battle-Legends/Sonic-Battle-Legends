@@ -38,7 +38,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Area3D/CollisionShape3D:shape:radius")
+tracks/2/path = NodePath("MineArea3D/MineCollisionShape3D:shape:radius")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -50,7 +50,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Area3D/CollisionShape3D:disabled")
+tracks/3/path = NodePath("MineArea3D/MineCollisionShape3D:disabled")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -91,7 +91,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Area3D/CollisionShape3D:shape:radius")
+tracks/2/path = NodePath("MineArea3D/MineCollisionShape3D:shape:radius")
 tracks/2/interp = 0
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -103,7 +103,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Area3D/CollisionShape3D:disabled")
+tracks/3/path = NodePath("MineArea3D/MineCollisionShape3D:disabled")
 tracks/3/interp = 0
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -143,7 +143,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Area3D/CollisionShape3D:shape:radius")
+tracks/2/path = NodePath("MineArea3D/MineCollisionShape3D:shape:radius")
 tracks/2/interp = 0
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -155,7 +155,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Area3D/CollisionShape3D:disabled")
+tracks/3/path = NodePath("MineArea3D/MineCollisionShape3D:disabled")
 tracks/3/interp = 0
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -220,10 +220,10 @@ region_rect = Rect2(103, 1520, 14, 15)
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("SphereShape3D_6uuuw")
 
-[node name="Area3D" type="Area3D" parent="."]
+[node name="MineArea3D" type="Area3D" parent="." groups=["PlayerAttack"]]
 collision_mask = 3
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+[node name="MineCollisionShape3D" type="CollisionShape3D" parent="MineArea3D"]
 shape = SubResource("SphereShape3D_fdm11")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
@@ -245,7 +245,7 @@ material = ExtResource("7_22ky2")
 [node name="sparks" parent="." instance=ExtResource("8_uik85")]
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
-[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_entered" from="MineArea3D" to="." method="_on_area_3d_body_entered"]
 
 [editable path="Sonic_set"]
 [editable path="sparks"]
