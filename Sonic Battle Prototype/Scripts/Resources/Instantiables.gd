@@ -96,6 +96,8 @@ func add_player(parent_node, spawn_position = Vector3.ZERO):
 	player.position = spawn_position + Vector3(0, 0.2, 0)
 	if GlobalVariables.respawnLife != -99:
 		player.life_total = GlobalVariables.respawnLife
+	if GlobalVariables.respawnSpecial != -99:
+		player.special_amount = GlobalVariables.respawnSpecial
 	parent_node.add_child(player, true)
 
 
@@ -167,7 +169,6 @@ func go_to_hub(selected_hub: PackedScene):
 	load_hub(selected_hub)
 	
 	# allow a new character to be spawned
-	#GlobalVariables.main_menu.canvas_server_menu.remove_player(multiplayer.multiplayer_peer)
 	if GlobalVariables.current_character != null:
 		GlobalVariables.current_character.queue_free()
 		# the reference is still there so nullify it
@@ -195,19 +196,47 @@ func go_to_stage(new_stage: PackedScene):
 	delete_places()
 	
 	# allow a new character to be spawned
-	ServerJoin.remove_player(multiplayer.multiplayer_peer)
+	#ServerJoin.remove_player(multiplayer.multiplayer_peer)
+	remove_character(multiplayer.multiplayer_peer)
 	# spawn a character with ability selector
 	respawn()
 	
 	# create the new stage
 	load_stage(new_stage)
 	
+	# Offline
 	if GlobalVariables.play_online == false:
-		spawn_bot()
+		# Battle Offline
+		if GlobalVariables.play_mode == GlobalVariables.modes.battle:
+			# free run
+			generate_bots()
+		
+		# Challenge Offline
+		if GlobalVariables.play_mode == GlobalVariables.modes.challenge:
+			# select how many bots to fight agaisnt
+			generate_bots()
+		
+		# Story Offline
+		if GlobalVariables.play_mode == GlobalVariables.modes.story:
+			# normal story
+			generate_bots()
+	
+	# Online
 	else:
-		spawn_bot()
-		spawn_bot()
-		spawn_bot()
+		# Battle Online
+		if GlobalVariables.play_mode == GlobalVariables.modes.battle:
+			# play against connected players
+			pass
+			
+		# Challenge Online
+		if GlobalVariables.play_mode == GlobalVariables.modes.challenge:
+			# players vs bots
+			generate_bots()
+		
+		# Story Online
+		if GlobalVariables.play_mode == GlobalVariables.modes.story:
+			# players vs story
+			generate_bots()
 
 
 ## load a stage in the Main hierarchy
@@ -216,6 +245,11 @@ func load_stage(new_stage):
 	GlobalVariables.current_stage = new_stage.instantiate()
 	# create the stage in the Main scene
 	GlobalVariables.main_menu.get_parent().add_child(GlobalVariables.current_stage)
+
+
+func generate_bots():
+	for i in GlobalVariables.number_of_bots:
+		spawn_bot()
 
 
 func spawn_bot():
@@ -257,6 +291,12 @@ func match_place(place_to_match: int):
 		#worlds_and_hubs.puzzle_map_3:
 		#	place_to_go = puzzle_map_3
 	return place_to_go
+
+
+func remove_character(peer_id):
+	var player = get_node_or_null(str(peer_id))
+	if player:
+		player.queue_free()
 
 
 ## respawn the character

@@ -194,11 +194,15 @@ func _enter_tree():
 	#set_multiplayer_authority(str(name).to_int())
 	set_multiplayer_authority(GlobalVariables.character_id)
 
+
 func _ready():
 	if not is_multiplayer_authority(): return
 	$MainCam.current = true
 	
 	points = GlobalVariables.character_points
+	
+	if GlobalVariables.respawnSpecial > 0:
+		special_amount = GlobalVariables.respawnSpecial
 	
 	# update the hud with the default values when starting the game
 	hud.update_hud(life_total, special_amount, points)
@@ -345,6 +349,7 @@ func _physics_process(delta):
 			hud.change_life(life_total)
 			velocity = Vector3.ZERO
 			GlobalVariables.respawnLife = life_total
+			GlobalVariables.respawnSpecial = special_amount
 			if GlobalVariables.current_character != null:
 				GlobalVariables.current_character.queue_free()
 				GlobalVariables.current_character = null
@@ -386,7 +391,7 @@ func handle_movement_input():
 			model_animation_player.play("WALK START")
 		velocity.x = lerp(velocity.x, direction.x * SPEED, 0.1)
 		velocity.z = lerp(velocity.z, direction.z * SPEED, 0.1)
-	else:
+	else:		
 		walking = false
 		velocity.x = lerp(velocity.x, 0.0, 0.1)
 		velocity.z = lerp(velocity.z, 0.0, 0.1)
@@ -769,8 +774,18 @@ func handle_animation():
 			# Animations that play when Sonic is on the ground. If he's not starting movement, at least.
 			if !starting && !dashing:
 				if round(velocity.x) != 0 || round(velocity.z) != 0:
+					# player is pressing a direction
+					#if direction:
 					sprite_animation_player.play("walk")
 					model_animation_player.play("WALK")
+					
+					# player is not pressing a direction and the character still have some velocity
+					# sonic is stopping
+					#else:
+					#	print(model_animation_player.current_animation)
+					#	if model_animation_player.current_animation == "" or \
+					#	model_animation_player.current_animation != "WALK":
+					#		model_animation_player.play("STOP")
 				else:
 					sprite_animation_player.play("idle")
 					model_animation_player.play("IDLE")
@@ -1009,6 +1024,7 @@ func defeated(): #who_owns_last_attack = null):
 		# then select a location to spawn
 		if GlobalVariables.current_stage != null:
 			GlobalVariables.respawnLife = -99 #-99 cus I cant set it to null for some reason
+			GlobalVariables.respawnSpecial = special_amount
 			Instantiables.respawn()
 		elif GlobalVariables.current_hub != null:
 			Instantiables.go_to_hub(GlobalVariables.hub_selected)

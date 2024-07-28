@@ -18,6 +18,8 @@ var shake_camera_time: float = 0.0
 const DEFAULT_SHAKE_INTENSITY: float = 1.0
 var shake_intensity: float = DEFAULT_SHAKE_INTENSITY
 
+@export var light_node: DirectionalLight3D
+
 
 func _ready():
 	# The camera locks on to the player.
@@ -45,6 +47,12 @@ func _physics_process(delta):
 	# The camera will always slowly accelerate to the player's location and look at them.
 	global_position = lerp(global_position, Vector3(player.position.x - player.velocity.x, player.position.y + 5 + difference - player.velocity.y, player.position.z + (15 * spin) - player.velocity.z), current_speed)
 	look_at(player.position)
+
+	# nighttime on the city hub 
+	if GlobalVariables.current_hub != null:
+		light_node.light_energy = 0.1
+	else:
+		light_node.light_energy = 3
 
 	# make the camera farther away on the areas
 	if GlobalVariables.current_area != null:

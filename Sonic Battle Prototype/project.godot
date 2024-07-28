@@ -19,8 +19,9 @@ config/icon="res://Textures/icon.svg"
 
 Instantiables="*res://Scripts/Resources/Instantiables.gd"
 GlobalVariables="*res://Scripts/Resources/GlobalVariables.gd"
-ServerJoin="*res://Scripts/Resources/ServerJoin.gd"
+ServerJoin="res://Scripts/Resources/ServerJoin.gd"
 Audio="*res://Scripts/Resources/Audio.gd"
+Network="*res://Scripts/Resources/Network.gd"
 
 [importer_defaults]
 

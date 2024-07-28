@@ -14,12 +14,14 @@ extends Control
 @export var online_or_offline_menu: Control
 @export var online_menu: Control
 @export var mode_selection_menu: Control
+@export var conditions_menu: Control
 @export var character_selection_menu: Control
 @export var area_selection_menu: Control
 @export var pause_menu: Control
 
-@export_category("SERVER CANVAS MENU")
-@export var canvas_server_menu: Node3D
+@export_category("CONDITIONS MENU")
+@export var bots_amount_node: TextEdit
+@export var wins_amount_node: TextEdit
 
 var focused = false
 
@@ -70,6 +72,7 @@ func hide_menus():
 	online_or_offline_menu.hide()
 	online_menu.hide()
 	mode_selection_menu.hide()
+	conditions_menu.hide()
 	character_selection_menu.hide()
 	area_selection_menu.hide()
 	pause_menu.hide()
@@ -77,6 +80,11 @@ func hide_menus():
 
 ## proceed with the normal screens sequence after online setup
 func after_online_setup():
+	# if no online connection was made, go offline
+	if Network.peer == null:
+		GlobalVariables.play_online = false
+		GlobalVariables.character_id = 1
+	
 	hide_menus()
 	mode_selection_menu.show()
 
@@ -128,45 +136,53 @@ func _on_online_button_pressed():
 	online_menu.show()
 
 
-func _on_host_button_pressed():
-	hide_menus()
+#func _on_host_button_pressed():
+	#hide_menus()
 	# the server will call the after_online_setup() in here when it's done
-	ServerJoin.configure_player()
+	#print("host button pressed")
+	#ServerJoin.configure_player()
 
 
-func _on_join_button_pressed():
+#func _on_join_button_pressed():
 	#GlobalVariables.main_menu.online_menu.hide()
-	hide_menus()
-	ServerJoin.enet_peer.create_client("localhost", ServerJoin.PORT)
-	ServerJoin.multiplayer.multiplayer_peer = ServerJoin.enet_peer
+	#hide_menus()
+	#print("join button pressed")
+	#ServerJoin.enet_peer.create_client("localhost", ServerJoin.PORT)
+	#ServerJoin.multiplayer.multiplayer_peer = ServerJoin.enet_peer
 	
-	after_online_setup()
+	#after_online_setup()
 
 
 func _on_offline_button_pressed():
 	GlobalVariables.play_online = false
 	hide_menus()
-	ServerJoin.configure_player()
-	#canvas_server_menu.configure_player()
+	#ServerJoin.configure_player()
+	# create a new server
+	# using ip
+	# with max number of players set to 1
+	# net dicovery to false
+	#Network.create_new_server()
+	# pretend there is a connection
+	GlobalVariables.character_id = 1
 	mode_selection_menu.show()
 
 
 func _on_story_mode_button_pressed():
 	GlobalVariables.play_mode = GlobalVariables.modes.story
 	hide_menus()
-	character_selection_menu.show()
+	conditions_menu.show()
 
 
 func _on_battle_mode_button_pressed():
 	GlobalVariables.play_mode = GlobalVariables.modes.battle
 	hide_menus()
-	character_selection_menu.show()
+	conditions_menu.show()
 
 
 func _on_challenge_mode_button_pressed():
 	GlobalVariables.play_mode = GlobalVariables.modes.challenge
 	hide_menus()
-	character_selection_menu.show()
+	conditions_menu.show()
 
 
 func _on_sonic_character_button_pressed():
@@ -194,14 +210,21 @@ func _on_back_button_pressed():
 		hide_menus()
 		main_menu.show()
 	if online_menu.is_visible_in_tree():
+		# reset connection when going back
+		Network.reset_connection()
 		hide_menus()
 		online_or_offline_menu.show()
 	if mode_selection_menu.is_visible_in_tree():
+		# reset connection when going back
+		Network.reset_connection()
 		hide_menus()
 		online_or_offline_menu.show()
-	if character_selection_menu.is_visible_in_tree():
+	if conditions_menu.is_visible_in_tree():
 		hide_menus()
 		mode_selection_menu.show()
+	if character_selection_menu.is_visible_in_tree():
+		hide_menus()
+		conditions_menu.show()
 	if area_selection_menu.is_visible_in_tree():
 		hide_menus()
 		character_selection_menu.show()
@@ -209,3 +232,29 @@ func _on_back_button_pressed():
 
 func _on_difficulty_selection_list_item_selected(index):
 	GlobalVariables.current_difficulty = GlobalVariables.difficulty_levels[index]
+
+
+func _on_conditions_next_button_pressed():
+	# "sanitize" the input
+	# cast to int. non numbers will be 0
+	# store values
+	var bots_amount = int(bots_amount_node.text)
+	var wins_amount = int(wins_amount_node.text)
+	
+	if typeof(bots_amount) == TYPE_INT and typeof(wins_amount) == TYPE_INT:	
+		# limit the amount
+		if bots_amount < 0:
+			bots_amount = 0
+		if bots_amount > GlobalVariables.MAX_BOTS_TOTAL:
+			bots_amount = GlobalVariables.MAX_BOTS_TOTAL
+		if wins_amount < 1:
+			wins_amount = 1
+		if wins_amount > GlobalVariables.MAX_WIN_POINTS:
+			wins_amount = GlobalVariables.MAX_WIN_POINTS
+			
+		# set conditions values
+		GlobalVariables.number_of_bots = bots_amount
+		GlobalVariables.points_to_win = wins_amount
+			
+		hide_menus()
+		character_selection_menu.show()
