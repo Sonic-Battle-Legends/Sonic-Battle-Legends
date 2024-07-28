@@ -391,7 +391,7 @@ func handle_movement_input():
 			model_animation_player.play("WALK START")
 		velocity.x = lerp(velocity.x, direction.x * SPEED, 0.1)
 		velocity.z = lerp(velocity.z, direction.z * SPEED, 0.1)
-	else:
+	else:		
 		walking = false
 		velocity.x = lerp(velocity.x, 0.0, 0.1)
 		velocity.z = lerp(velocity.z, 0.0, 0.1)
@@ -774,8 +774,18 @@ func handle_animation():
 			# Animations that play when Sonic is on the ground. If he's not starting movement, at least.
 			if !starting && !dashing:
 				if round(velocity.x) != 0 || round(velocity.z) != 0:
+					# player is pressing a direction
+					#if direction:
 					sprite_animation_player.play("walk")
 					model_animation_player.play("WALK")
+					
+					# player is not pressing a direction and the character still have some velocity
+					# sonic is stopping
+					#else:
+					#	print(model_animation_player.current_animation)
+					#	if model_animation_player.current_animation == "" or \
+					#	model_animation_player.current_animation != "WALK":
+					#		model_animation_player.play("STOP")
 				else:
 					sprite_animation_player.play("idle")
 					model_animation_player.play("IDLE")
