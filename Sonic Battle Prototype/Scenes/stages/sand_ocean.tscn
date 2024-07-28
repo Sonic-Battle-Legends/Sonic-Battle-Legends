@@ -124,6 +124,12 @@ material_override = ExtResource("2_lrgqc")
 [node name="Cube_002" parent="NavigationRegion3D/SandOcean" index="21"]
 material_override = ExtResource("2_lrgqc")
 
+[node name="Cube_003" parent="NavigationRegion3D/SandOcean" index="22"]
+visible = false
+
+[node name="CollisionShape3D" parent="NavigationRegion3D/SandOcean/Cube_003/StaticBody3D" index="0"]
+disabled = true
+
 [node name="Cube_005" parent="NavigationRegion3D/SandOcean" index="24"]
 material_override = ExtResource("2_lrgqc")
 

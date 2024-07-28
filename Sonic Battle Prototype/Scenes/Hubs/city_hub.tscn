@@ -87,6 +87,9 @@ text = "Sand Ocean"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.66375, 0, 8.85614)
 new_place = ExtResource("9_wwrb0")
 
+[node name="Label3D" parent="Markers/stage_marker2" index="4"]
+text = "H"
+
 [node name="amys_room" parent="Markers" instance=ExtResource("5_rj5n4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 0, -2)
 new_place = ExtResource("11_6g2bb")
