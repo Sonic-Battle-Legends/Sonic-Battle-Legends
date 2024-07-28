@@ -21,6 +21,7 @@ light_node = NodePath("DirectionalLight3D")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.628289, 0.77798, 0, -0.77798, 0.628289, 0, 1.25018, 3.33821)
+light_color = Color(1, 1, 0.290196, 1)
 light_energy = 3.0
 light_angular_distance = 15.0
 directional_shadow_mode = 1
