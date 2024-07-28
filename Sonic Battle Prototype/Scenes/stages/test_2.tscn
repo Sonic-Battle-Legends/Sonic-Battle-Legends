@@ -1,15 +1,38 @@
-[gd_scene load_steps=6 format=3 uid="uid://bxjkjr27crbtr"]
+[gd_scene load_steps=17 format=3 uid="uid://bxjkjr27crbtr"]
 
 [ext_resource type="PackedScene" uid="uid://bla4tnasvtn0v" path="res://Models/testmap.blend" id="1_w105v"]
 [ext_resource type="Material" uid="uid://btlly68t46bq7" path="res://Materials/spikesMaterial.tres" id="2_7p4v7"]
 [ext_resource type="PackedScene" uid="uid://irlpgd8spuet" path="res://Scenes/stages/invisible_walls.tscn" id="2_nme6q"]
+[ext_resource type="Material" uid="uid://b7d8gmdoduvwq" path="res://Materials/skate_park/wallsMaterial.tres" id="2_qclvk"]
+[ext_resource type="Material" uid="uid://cvk7j7c446s1r" path="res://Materials/skate_park/slopeMaterial.tres" id="3_2cwid"]
+[ext_resource type="Material" uid="uid://dly34i0l3i2g" path="res://Materials/skate_park/groundMaterial.tres" id="3_hm7jm"]
+[ext_resource type="Material" uid="uid://cm856g2imi3te" path="res://Materials/skate_park/ground2Material.tres" id="4_xim51"]
 [ext_resource type="AudioStream" uid="uid://clve1iy4n13t7" path="res://Audio/Sonic Battle Project Tracks/Situational - Event/SBC - Frantic Situation Complete 1.mp3" id="5_2y2wb"]
 [ext_resource type="PackedScene" uid="uid://drlu8n40mygqk" path="res://Scenes/spikes.tscn" id="6_tmgow"]
+[ext_resource type="Material" uid="uid://bxv0t25264vma" path="res://Materials/skate_park/groundChecked2Material.tres" id="6_v3quj"]
+[ext_resource type="Material" uid="uid://dcrdkuqofitup" path="res://Materials/skate_park/groundSpriteMaterial.tres" id="10_ls3yx"]
+[ext_resource type="Material" uid="uid://dcp3amjmkrysj" path="res://Materials/skate_park/groundCheckedMaterial.tres" id="11_nmdlp"]
+[ext_resource type="PackedScene" uid="uid://e340rjcvgq3u" path="res://Models/rail.blend" id="13_ynwbl"]
+[ext_resource type="Material" uid="uid://b06n1tqr7k5rg" path="res://Materials/skate_park/rail1Material.tres" id="14_utfsk"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_wmkct"]
+size = Vector2(4, 4)
+
+[sub_resource type="QuadMesh" id="QuadMesh_8axrl"]
+size = Vector2(1.5, 1.5)
 
 [node name="test2" type="Node3D"]
 
 [node name="testmap" parent="." instance=ExtResource("1_w105v")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+
+[node name="obstacles" parent="testmap" index="0"]
+surface_material_override/0 = ExtResource("2_qclvk")
+surface_material_override/1 = ExtResource("3_hm7jm")
+surface_material_override/2 = ExtResource("2_qclvk")
+surface_material_override/3 = ExtResource("4_xim51")
+surface_material_override/4 = ExtResource("3_2cwid")
+surface_material_override/5 = ExtResource("6_v3quj")
 
 [node name="spikes" parent="testmap" index="1"]
 visible = false
@@ -38,6 +61,48 @@ stream = ExtResource("5_2y2wb")
 volume_db = -15.0
 autoplay = true
 
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.01, 0)
+mesh = SubResource("QuadMesh_wmkct")
+surface_material_override/0 = ExtResource("10_ls3yx")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -3.88233, 0.01, 2.66063)
+mesh = SubResource("QuadMesh_8axrl")
+surface_material_override/0 = ExtResource("11_nmdlp")
+
+[node name="rails" type="Marker3D" parent="."]
+
+[node name="rail" parent="rails" instance=ExtResource("13_ynwbl")]
+transform = Transform3D(0.0353553, 0, -0.0141421, 0, 0.065, 0, 0.0353553, 0, 0.0141421, -0.137735, 0.108158, 1.39255)
+
+[node name="Cube" parent="rails/rail" index="0"]
+surface_material_override/0 = ExtResource("14_utfsk")
+
+[node name="rail2" parent="rails" instance=ExtResource("13_ynwbl")]
+transform = Transform3D(0.09, 0, 0, 0, 0.065, 0, 0, 0, 0.02, 0.779768, 0.353239, -0.810258)
+
+[node name="rail3" parent="rails" instance=ExtResource("13_ynwbl")]
+transform = Transform3D(-2.84124e-09, 0, 0.02, 0, 0.065, 0, -0.065, 0, -8.74228e-10, 3.00975, 0.92182, -0.540965)
+
+[node name="Cube" parent="rails/rail3" index="0"]
+surface_material_override/0 = ExtResource("14_utfsk")
+
+[node name="rail4" parent="rails" instance=ExtResource("13_ynwbl")]
+transform = Transform3D(0.065, 0, 0, 0, 0.065, 0, 0, 0, 0.02, 1.79425, 0.754213, -3.66384)
+
+[node name="Cube" parent="rails/rail4" index="0"]
+surface_material_override/0 = ExtResource("14_utfsk")
+
+[node name="rail5" parent="rails" instance=ExtResource("13_ynwbl")]
+transform = Transform3D(0.09, 0, 0, 0, 0.065, 0, 0, 0, 0.02, 3.3483, 1.02941, -4.65453)
+
+[node name="rail6" parent="rails" instance=ExtResource("13_ynwbl")]
+transform = Transform3D(0.055, 0, 0, 0, 0.065, 0, 0, 0, 0.02, -0.397673, 0.621244, 3.17694)
+
 [editable path="testmap"]
 [editable path="Spikes4"]
 [editable path="Spikes4/Spikes2"]
+[editable path="rails/rail"]
+[editable path="rails/rail3"]
+[editable path="rails/rail4"]
