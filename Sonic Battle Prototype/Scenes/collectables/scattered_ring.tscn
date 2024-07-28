@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://bx1txebnpirm5"]
+[gd_scene load_steps=11 format=3 uid="uid://bx1txebnpirm5"]
 
 [ext_resource type="Texture2D" uid="uid://cnvca7d2mepgx" path="res://Sprites/Sonic.png" id="1_5e3n8"]
 [ext_resource type="Script" path="res://Scripts/scattered_ring.gd" id="1_x8u1x"]
 [ext_resource type="PackedScene" uid="uid://764xtydd1qeo" path="res://Models/Ring/Ring.blend" id="3_vyaj5"]
+[ext_resource type="Texture2D" uid="uid://dsnhbpanlwcmt" path="res://Models/Ring/Ring.png" id="4_f130t"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_lhi6l"]
 size = Vector3(0.1, 0.1, 0.1)
@@ -73,6 +74,12 @@ _data = {
 [sub_resource type="BoxShape3D" id="BoxShape3D_cuoal"]
 size = Vector3(0.4, 0.25, 0.4)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wk5ob"]
+albedo_texture = ExtResource("4_f130t")
+metallic = 0.85
+metallic_specular = 1.0
+roughness = 0.68
+
 [node name="ScatteredRing" type="CharacterBody3D" node_paths=PackedStringArray("ring", "collision_area") groups=["Ring"]]
 collision_layer = 4
 script = ExtResource("1_x8u1x")
@@ -106,3 +113,8 @@ shape = SubResource("BoxShape3D_cuoal")
 
 [node name="Ring2" parent="." instance=ExtResource("3_vyaj5")]
 transform = Transform3D(0.0353553, 0, 0.0353553, 0, 0.05, 0, -0.0353553, 0, 0.0353553, 0, 0, 0)
+
+[node name="Ring" parent="Ring2" index="0"]
+surface_material_override/0 = SubResource("StandardMaterial3D_wk5ob")
+
+[editable path="Ring2"]

@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://ckve28f1lvhor"]
+[gd_scene load_steps=11 format=3 uid="uid://ckve28f1lvhor"]
 
 [ext_resource type="Texture2D" uid="uid://cnvca7d2mepgx" path="res://Sprites/Sonic.png" id="1_8aib6"]
 [ext_resource type="Script" path="res://Scripts/ThrowRing.gd" id="1_488t5"]
 [ext_resource type="PackedScene" uid="uid://764xtydd1qeo" path="res://Models/Ring/Ring.blend" id="3_wh8td"]
+[ext_resource type="Texture2D" uid="uid://dsnhbpanlwcmt" path="res://Models/Ring/Ring.png" id="4_f5r0e"]
 
 [sub_resource type="Animation" id="Animation_3c0ge"]
 length = 0.001
@@ -54,6 +55,12 @@ properties/1/path = NodePath("AnimationPlayer:current_animation")
 properties/1/spawn = true
 properties/1/replication_mode = 1
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_77bqx"]
+albedo_texture = ExtResource("4_f5r0e")
+metallic = 0.85
+metallic_specular = 1.0
+roughness = 0.68
+
 [node name="ThrowRing" type="CharacterBody3D"]
 collision_layer = 0
 script = ExtResource("1_488t5")
@@ -79,3 +86,8 @@ replication_config = SubResource("SceneReplicationConfig_17ln7")
 
 [node name="Ring2" parent="." instance=ExtResource("3_wh8td")]
 transform = Transform3D(0.0353553, 0, 0.0353553, 0, 0.05, 0, -0.0353553, 0, 0.0353553, 0, -0.09, 0)
+
+[node name="Ring" parent="Ring2" index="0"]
+surface_material_override/0 = SubResource("StandardMaterial3D_77bqx")
+
+[editable path="Ring2"]

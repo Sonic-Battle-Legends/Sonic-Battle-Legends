@@ -6,11 +6,12 @@ extends CharacterBody3D
 
 # Basic movement speed values for Sonic.
 const SPEED = 4.0
-const JUMP_VELOCITY = 6.0
+const JUMP_VELOCITY = 5.0
 
 # Dash speed is the speed value for the dash move executed by double tapping a direction on the ground
 # Sonic's midair jump ability is an air dash, and the speed is determined by airdash speed.
-const DASH_SPEED = 15.0
+const DASH_SPEED = 10.0
+const DASH_HEIGHT = 3.0
 const AIRDASH_SPEED = 10.0
 
 # amount of time allowed between presses to consider it as a double tap
@@ -78,6 +79,7 @@ var damage_caused: int
 var hurt = false
 var launched = false
 var spiked = false
+var rolling = false
 
 # Skills! These strings determine what Sonic's grounded and midair special type are.
 # Immunity determines which category of special move Sonic is immune to.
@@ -415,7 +417,7 @@ func handle_dash():
 	# (was suposed to substitute the double tap completely but the character was making a
 	# jump animation instead of dash animation so added the dash_triggered variable instead)
 	if dash_triggered:
-		velocity = Vector3(velocity.normalized().x * DASH_SPEED, 4, velocity.normalized().z * DASH_SPEED)
+		velocity = Vector3(velocity.normalized().x * DASH_SPEED, DASH_HEIGHT, velocity.normalized().z * DASH_SPEED)
 		dashing = true
 		coyote_timer = null
 		sprite_animation_player.play("dash")
@@ -824,10 +826,16 @@ func anim_end(anim_name):
 		starting = false
 		walking = true
 	elif anim_name == "DJMP 1":
-		model_animation_player.play("DJMP 3")
-		can_air_attack = false
-		can_airdash = false
-		coyote_timer = null
+		if !rolling:
+			model_animation_player.play("DJMP 3")
+			can_air_attack = false
+			can_airdash = false
+			coyote_timer = null
+		else:
+			rolling = false
+			hurt = false
+			starting = false
+			can_air_attack = false
 	elif anim_name == "DJMP 3":
 		# Go back to falling state when airdash ends.
 		dashing = false
@@ -904,7 +912,13 @@ func anim_end(anim_name):
 		can_air_attack = false
 	elif anim_name == "KO":
 		if life_total > 0:
-			model_animation_player.play("GET UP FULL")
+			if !direction:
+				model_animation_player.play("GET UP FULL")
+			else:
+				velocity = Vector3(direction.x, 0, direction.z) * 10
+				model_animation_player.play("DJMP 1")
+				Audio.play(Audio.bounce, self)
+				rolling = true
 		else:
 			defeated()
 	elif anim_name == "GET UP FULL":
@@ -963,9 +977,6 @@ func anim_end(anim_name):
 func _on_hitbox_body_entered(body):
 	if body.is_in_group("CanHurt") && body != self and attacking:
 		Audio.play(Audio.hit, self)
-		if model_animation_player.current_animation == "PGC 4":
-			last_aggressor = body
-			can_chase = true
 		# If the current attack is Sonic's "pow" move, the hitbox pays attention to immunities.
 		if !pow_move || body.immunity != "pow":
 			body.get_hurt.rpc_id(body.get_multiplayer_authority(), launch_power, self, damage_caused)
@@ -1133,7 +1144,7 @@ func ground_special(id, _dir):
 			launch_power = Vector3(0, 6, 0)
 			damage_caused = 7
 			velocity = (active_ring.transform.origin - transform.origin).normalized() * 7
-			velocity.y = 5
+			velocity = Vector3(clamp(velocity.x, -7, 7), clamp(velocity.y, 4, 6), clamp(velocity.z, -7, 7))
 			pow_move = true
 			sprite_animation_player.play("powAir")
 			model_animation_player.play("DJMP 2")
