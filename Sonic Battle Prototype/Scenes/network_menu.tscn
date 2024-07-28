@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Scripts/network_menu.gd" id="1_1yn1b"]
 
-[node name="Network Menu" type="Control"]
+[node name="Network Menu" type="Control" node_paths=PackedStringArray("server_ip", "player_name", "ip_edit", "create_server_button", "join_server_button", "players_list", "connection_error_screen", "connection_error_text_node")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -10,6 +10,14 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_1yn1b")
+server_ip = NodePath("server_ip")
+player_name = NodePath("player_name")
+ip_edit = NodePath("IP")
+create_server_button = NodePath("CreateServer")
+join_server_button = NodePath("JoinServer")
+players_list = NodePath("players_list")
+connection_error_screen = NodePath("connection_error_screen")
+connection_error_text_node = NodePath("connection_error_screen/error")
 
 [node name="players_list" type="ItemList" parent="."]
 layout_mode = 1

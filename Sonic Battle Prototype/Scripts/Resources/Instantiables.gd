@@ -21,6 +21,8 @@ var SPECIAL_IS_FULL_EFFECT = load("res://Scenes/effects/special_is_full_effect.t
 
 var RING_COLLECTED_EFFECT = load("res://Scenes/effects/ring_collected_effect.tscn")
 
+var FREEZE_FRAME = load("res://Scenes/effects/freeze_frame.tscn")
+
 # sonic after image
 var AFTER_IMAGE = load("res://Scenes/effects/after_image.tscn")
 
@@ -131,6 +133,15 @@ func create_scattered_ring(ring_position, scatter_origin_position):
 	new_scattered_ring.position = scatter_origin_position
 	new_scattered_ring.velocity = (ring_position - scatter_origin_position).normalized() * 2
 	GlobalVariables.main_menu.get_parent().add_child(new_scattered_ring)
+
+
+## freeze frames are scenes so that when one of this timers are running and the player exits a stage
+## the timer will continue and restore the correct time scale
+func create_freeze_frame(new_timescale, freeze_duration):
+	var new_freeze_frame = FREEZE_FRAME.instantiate()
+	new_freeze_frame.new_timescale = new_timescale
+	new_freeze_frame.freeze_duration = freeze_duration
+	GlobalVariables.main_menu.get_parent().add_child(new_freeze_frame)
 
 
 ## got to area

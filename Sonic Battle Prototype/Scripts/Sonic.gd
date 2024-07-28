@@ -1044,10 +1044,10 @@ func defeated(): #who_owns_last_attack = null):
 
 
 ## to give a bit more impact on strong attacks, freeze the screen a bit
-func freeze_frame(new_timescale, freeze_duration):
-	Engine.time_scale = new_timescale
-	await get_tree().create_timer(freeze_duration * new_timescale).timeout
-	Engine.time_scale = 1.0
+#func freeze_frame(new_timescale, freeze_duration):
+#	Engine.time_scale = new_timescale
+#	await get_tree().create_timer(freeze_duration * new_timescale).timeout
+#	Engine.time_scale = 1.0
 
 
 ## A function that handles Sonic getting hurt. Knockback is determined by the thing that initiates this
@@ -1072,7 +1072,8 @@ func get_hurt(launch_speed, owner_of_the_attack, damage_taken = 1):
 				Audio.play(Audio.ring_spread, self)
 				
 				# freeze frame
-				freeze_frame(0.1, 0.3) #(0.05, 1.0)
+				Instantiables.create_freeze_frame(0.1, 0.3)
+				#freeze_frame(0.1, 0.3) #(0.05, 1.0)
 				
 				# shake camera
 				GlobalVariables.camera.shake(0.5, 1.0)
