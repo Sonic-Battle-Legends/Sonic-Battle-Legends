@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://bxjkjr27crbtr"]
+[gd_scene load_steps=27 format=3 uid="uid://bxjkjr27crbtr"]
 
 [ext_resource type="PackedScene" uid="uid://bla4tnasvtn0v" path="res://Models/testmap.blend" id="1_w105v"]
 [ext_resource type="Material" uid="uid://btlly68t46bq7" path="res://Materials/spikesMaterial.tres" id="2_7p4v7"]
@@ -14,9 +14,10 @@
 [ext_resource type="Material" uid="uid://dcp3amjmkrysj" path="res://Materials/skate_park/groundCheckedMaterial.tres" id="11_nmdlp"]
 [ext_resource type="PackedScene" uid="uid://e340rjcvgq3u" path="res://Models/rail.blend" id="13_ynwbl"]
 [ext_resource type="Material" uid="uid://b06n1tqr7k5rg" path="res://Materials/skate_park/rail1Material.tres" id="14_utfsk"]
-[ext_resource type="Texture2D" uid="uid://bk78gcelbpm51" path="res://Textures/poster4.webp" id="15_torlt"]
+[ext_resource type="Texture2D" uid="uid://c2gr06utcr13t" path="res://Textures/poster_fang.webp" id="15_1u3ug"]
 [ext_resource type="Texture2D" uid="uid://cy1r7slx08epu" path="res://Textures/poster1.webp" id="16_q1nhc"]
 [ext_resource type="Texture2D" uid="uid://fheaeoa2f7qy" path="res://Textures/poster2.webp" id="17_i6bk0"]
+[ext_resource type="Texture2D" uid="uid://cymcwjxuvxrfb" path="res://Textures/poster3.webp" id="18_2t6w5"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_wmkct"]
 size = Vector2(4, 4)
@@ -27,7 +28,7 @@ size = Vector2(1.5, 1.5)
 [sub_resource type="QuadMesh" id="QuadMesh_lemqh"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2vgo5"]
-albedo_texture = ExtResource("15_torlt")
+albedo_texture = ExtResource("15_1u3ug")
 
 [sub_resource type="QuadMesh" id="QuadMesh_lkuc1"]
 
@@ -36,6 +37,9 @@ albedo_texture = ExtResource("16_q1nhc")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xi027"]
 albedo_texture = ExtResource("17_i6bk0")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_37uvw"]
+albedo_texture = ExtResource("18_2t6w5")
 
 [node name="test2" type="Node3D"]
 
@@ -126,13 +130,15 @@ transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -3.254
 mesh = SubResource("QuadMesh_lkuc1")
 surface_material_override/0 = SubResource("StandardMaterial3D_k681x")
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+[node name="poster_space" type="MeshInstance3D" parent="."]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 3.24234, 0.501447, 4.05653)
 mesh = SubResource("QuadMesh_lkuc1")
 surface_material_override/0 = SubResource("StandardMaterial3D_xi027")
 
-[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+[node name="poster_pizza" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -2.44204, 0.532591, -1.01661)
 mesh = SubResource("QuadMesh_lkuc1")
+surface_material_override/0 = SubResource("StandardMaterial3D_37uvw")
 
 [editable path="testmap"]
 [editable path="Spikes4"]

@@ -9,17 +9,11 @@ Development Topics
 		menu:
 	⏳️		is lacking the new design that was made;
 	⏳️		needs it’s title screen;
-			network join button needs to lead to a screen to select where to join;
-			implement new networking script and menu
 			check if instantiates call should be multiplayer spawner instead
-			clicking online > join > back > host and going to battle, spawns the character outside the stage;
 
 		The bot might need:
 			other behaviours
 			pattern detection
-		
-		camera needs a way to see through objects to show the players
-			except if it is intentional to hide the player
 
 		check if there are other animations or collisions that need fixing or to be made;
 			upper needs a collider extension
@@ -30,12 +24,16 @@ Development Topics
 			check what happens when the player is close to the ring when moving
 			make an arc movement like in the original
 
-		attack needs some visual effect to show they are working
-			and a stronger effect to emphasize it
-
 		stages and hubs need textures
+			make city hub new textures and shapes
+			green hills texture form the "H" stage
+			how sand ocean's geometry should look like?
 
 		create a solution to move the player out of the "infinite lifting camera lock"
+			detect if the velocity is increasing and the character is not moving
+				displace character and allow it to jump
+				or displace at random like the bots
+				or allow that 2 seconds placement selection like when falling in a pit
 		
 		input remap tab on the options menu:
 			allow joystick input or movement

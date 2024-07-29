@@ -175,6 +175,9 @@ var last_spawn_position: Vector3 = Vector3.ZERO
 
 var after_image_time: float = 0.0
 
+# object to allow player to see the character through objects
+var see_through_after_image: Node3D
+
 var special_is_full_effect: Node3D
 
 # make only one $ call and store the node
@@ -397,6 +400,8 @@ func _physics_process(delta):
 	
 	if can_spike:
 		handle_spike()
+	
+	handle_see_through()
 	
 	handle_after_image()
 	
@@ -872,6 +877,23 @@ func set_abilities(new_abilities: Array):
 		ground_skill = new_abilities[0]
 		air_skill = new_abilities[1]
 		immunity = new_abilities[2]
+
+
+func handle_see_through():
+	if see_through_after_image == null:
+			see_through_after_image = Instantiables.AFTER_IMAGE_SEE_THROUGH.instantiate()
+			see_through_after_image.position = Vector3.ZERO
+			add_child(see_through_after_image)
+	else:
+		if GlobalVariables.camera and GlobalVariables.camera.player_is_behind_object:
+			see_through_after_image.show()
+			see_through_after_image.rotation = model_node.rotation
+			see_through_after_image.current_animation_name = model_animation_player.current_animation
+			see_through_after_image.current_animation_time = model_animation_player.current_animation_position
+			see_through_after_image.update_pose()
+		else:
+			see_through_after_image.hide()
+	
 
 
 func handle_after_image():

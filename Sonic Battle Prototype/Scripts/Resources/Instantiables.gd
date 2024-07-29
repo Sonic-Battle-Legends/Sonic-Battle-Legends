@@ -26,6 +26,8 @@ var FREEZE_FRAME = load("res://Scenes/effects/freeze_frame.tscn")
 # sonic after image
 var AFTER_IMAGE = load("res://Scenes/effects/after_image.tscn")
 
+var AFTER_IMAGE_SEE_THROUGH = load("res://Scenes/effects/after_image_see_through.tscn")
+
 # The prefab for spawning Sonic's "shot" projectile.
 const SHOT_PROJECTILE = preload("res://Scenes/SonicWave.tscn")
 

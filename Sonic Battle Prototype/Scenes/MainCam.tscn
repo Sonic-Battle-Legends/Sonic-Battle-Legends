@@ -9,13 +9,14 @@
 material = ExtResource("2_u5h7u")
 size = Vector2(10, 10)
 
-[node name="MainCam" type="Camera3D" node_paths=PackedStringArray("light_node")]
+[node name="MainCam" type="Camera3D" node_paths=PackedStringArray("light_node", "raycast_to_player")]
 environment = SubResource("Environment_2g3hd")
 current = true
 fov = 10.0
 size = 3.0
 script = ExtResource("1_2ikkk")
 light_node = NodePath("DirectionalLight3D")
+raycast_to_player = NodePath("RayCast3D")
 
 [node name="LookingAt" type="Node3D" parent="."]
 
@@ -33,3 +34,10 @@ directional_shadow_mode = 1
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.551662)
 cast_shadow = 2
 mesh = SubResource("QuadMesh_44ec5")
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+target_position = Vector3(0, -100, 0)
+collision_mask = 3
+debug_shape_custom_color = Color(1, 0, 0, 1)
+debug_shape_thickness = 5

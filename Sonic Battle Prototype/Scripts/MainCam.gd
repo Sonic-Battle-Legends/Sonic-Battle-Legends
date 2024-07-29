@@ -18,7 +18,10 @@ var shake_camera_time: float = 0.0
 const DEFAULT_SHAKE_INTENSITY: float = 1.0
 var shake_intensity: float = DEFAULT_SHAKE_INTENSITY
 
+var player_is_behind_object: bool = false
+
 @export var light_node: DirectionalLight3D
+@export var raycast_to_player: RayCast3D
 
 
 func _ready():
@@ -67,6 +70,16 @@ func _physics_process(delta):
 		position = lerp(position, new_position, 0.01)
 		if shake_camera_time <= 0:
 			shake_intensity = DEFAULT_SHAKE_INTENSITY
+	
+	# check if player is behind a wall
+	# if so, the player will use the see through after image
+	# so the player can see the character
+	if player:
+		var new_raycast_collision = raycast_to_player.get_collider()
+		if new_raycast_collision != null and new_raycast_collision.name == player.name:
+			player_is_behind_object = false
+		else:
+			player_is_behind_object = true
 
 
 func rotate_camera():
