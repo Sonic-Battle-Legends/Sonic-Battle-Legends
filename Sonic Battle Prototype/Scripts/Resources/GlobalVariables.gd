@@ -103,6 +103,7 @@ var respawnSpecial: int = -99
 
 func reset_win_conditions():
 	game_ended = false
+	Engine.time_scale = 1.0
 	character_points = 0
 	bot_points = 0
 

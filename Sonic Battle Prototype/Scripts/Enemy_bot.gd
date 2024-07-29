@@ -52,6 +52,9 @@ var jump_clicked: bool = false
 var walking = false
 var starting = false
 
+# When letting go of a direction while moving, Sonic plays a stopping animation
+var stopped = true
+
 # Boolean for when Sonic is in the middle of a dash animation.
 var dashing = false
 
@@ -80,6 +83,9 @@ var hurt = false
 var launched = false
 var spiked = false
 var rolling = false
+
+# Checking if sonic is currently in his wall-hitting animation, also the window to tech a wall
+var hitting_wall = false
 
 # Skills! These strings determine what Sonic's grounded and midair special type are.
 # Immunity determines which category of special move Sonic is immune to.
@@ -135,6 +141,9 @@ var heal_effect: Node3D
 # boolean to check when Sonic is healing
 var healing : bool
 
+# boolean to check when Sonic is guarding
+var guarding: bool
+
 # boolean to check when the player is chasing after a successful wall jump
 var chasing_aggressor : bool
 # boolean to check when the player can do the AIM attack
@@ -152,6 +161,7 @@ var jump_pressed: bool = false
 var attack_pressed: bool = false
 var upper_pressed: bool = false
 var guard_pressed: bool = false
+var heal_pressed: bool = false
 
 # rings collected in a stage
 # start with an amount to test
@@ -185,6 +195,9 @@ var respawning: bool = false
 @onready var drop_shadow_range = $DropShadowRange
 @onready var drop_shadow = $DropShadow
 @onready var hit_box = $Hitbox
+
+# guard effect, the temporary one is a simple particle
+@onready var guard_effect = $GuardEffectTemp
 
 # the checker for when the current point in the "PAC" animation changes to the strong variant,
 # change this in animation player
@@ -257,9 +270,10 @@ func _process(delta):
 
 func _physics_process(delta):
 	if !is_on_floor():
-		# add the gravity.
-		# The speed at which Sonic falls
-		velocity.y -= GlobalVariables.gravity * delta
+		if !hitting_wall:
+			# add the gravity.
+			# The speed at which Sonic falls
+			velocity.y -= GlobalVariables.gravity * delta
 		# Since starting and walking only do things on the ground, they are set to inactive here.
 		starting = false
 		walking = false
@@ -279,7 +293,8 @@ func _physics_process(delta):
 		# Midair moves can only be used after a jump once, and they can be used again after touching the ground.
 		can_airdash = true
 		can_air_attack = true
-		chasing_aggressor = false
+		if !hitting_wall:
+			chasing_aggressor = false
 		can_spike = false
 		# If Sonic is in his midair "pow" bouncing state, his velocity sends him upwards off the ground.
 		if bouncing:
@@ -300,10 +315,18 @@ func _physics_process(delta):
 			damage_caused = 17
 	
 	if is_on_wall() && model_animation_player.current_animation == "LAUNCHED":
-		velocity.y = 0
-		model_animation_player.play("WALL")
+		model_node.rotation.y = Vector2(-get_wall_normal().z, -get_wall_normal().x).angle()
+		velocity = Vector3.ZERO
+		position.y += 0.1
+		model_animation_player.play("HIT WALL")
+		hitting_wall = true
+		
+		var sparks = Instantiables.SPARKS.instantiate()
+		sparks.position = position + Vector3(0, 0.1, 0)
+		get_parent().add_child(sparks)
+		sparks.get_child(0).emitting = true
 	
-	if !attacking && !hurt && !chasing_aggressor && !can_spike:
+	if !attacking && !hurt && !chasing_aggressor && !can_spike && !guarding:
 		if !healing:
 			handle_jump()
 
@@ -327,14 +350,19 @@ func _physics_process(delta):
 		
 	else:
 		if !chasing_ring && !bouncing && !chasing_aggressor:
-			# if Sonic is in his attacking or hurt state, he slows to a halt.
-			velocity.x = lerp(velocity.x, 0.0, 0.1)
-			velocity.z = lerp(velocity.z, 0.0, 0.1)
+			if !guarding:
+				# if Sonic is in his attacking or hurt state, he slows to a halt.
+				velocity.x = lerp(velocity.x, 0.0, 0.1)
+				velocity.z = lerp(velocity.z, 0.0, 0.1)
+			else:
+				# if Sonic is in his guard state, he slows faster.
+				velocity.x = lerp(velocity.x, 0.0, 0.4)
+				velocity.z = lerp(velocity.z, 0.0, 0.4)
 		if model_animation_player.current_animation == "WALL" || can_chase:
 			handle_walljump()
 	
 	# remove the healing effect if not pressing the button
-	if (!guard_pressed or hurt) and heal_effect != null:
+	if (!heal_pressed or hurt) and heal_effect != null:
 		healing = false
 		healing_time = 0
 		heal_effect.hide()
@@ -463,12 +491,19 @@ func handle_jump():
 
 
 func handle_walljump():
-	if jump_pressed:
+	if guard_pressed:
 		hurt = false
 		can_chase = false
 		attacking = false
 		velocity.y = 7
 		chasing_aggressor = true
+
+func handle_guard():
+	if guard_pressed && is_on_floor():
+		guarding = true
+		model_animation_player.play("GUARD")
+		guard_effect.restart()
+		# guard_effect.emitting = true
 
 ## help responsiveness feeling by forgiving the difference between the human response and the machine accuracy
 func coyote_time() -> bool:
@@ -634,7 +669,7 @@ func handle_attack():
 
 ## method to pace the healing of the character given an input
 func handle_healing():
-	if guard_pressed && is_on_floor():
+	if heal_pressed && is_on_floor():
 		healing_time += healing_pace
 		if healing_time >= healing_threshold:
 			healing = true
@@ -744,17 +779,23 @@ func scatter_rings(amount = 1):
 ## This function mostly handles what animations play with what booleans.
 func handle_animation():
 	# None of these animations play when Sonic is in his hurt or attacking state.
-	if !attacking && !hurt && !healing && !chasing_aggressor && !can_spike:
+	if !attacking && !hurt && !healing && !chasing_aggressor && !can_spike && !hitting_wall && !guarding:
 		if is_on_floor():
 			# Animations that play when Sonic is on the ground. If he's not starting movement, at least.
 			if !starting && !dashing:
 				if round(velocity.x) != 0 || round(velocity.z) != 0:
 					sprite_animation_player.play("walk")
 					model_animation_player.play("WALK")
+					stopped = false
 				else:
-					sprite_animation_player.play("idle")
-					model_animation_player.play("IDLE")
+					if stopped:
+						sprite_animation_player.play("idle")
+						model_animation_player.play("IDLE")
+					else:
+						sprite_animation_player.play("idle")
+						model_animation_player.play("STOP")
 		else:
+			stopped = true
 			# Midair animations. These don't play when Sonic is dashing.
 			if !dashing:
 				if velocity.y > 0:
@@ -767,6 +808,7 @@ func handle_animation():
 					model_animation_player.play("FALL")
 					falling = true
 	else:
+		stopped = true
 		if !is_on_floor() && "PGC" in model_animation_player.current_animation:
 			if model_animation_player.current_animation != "PGC 5":
 				attacking = false
@@ -825,6 +867,8 @@ func anim_end(anim_name):
 		# End the "starting" state when the starting animation ends.
 		starting = false
 		walking = true
+	elif anim_name == "STOP":
+		stopped = true
 	elif anim_name == "DJMP 1":
 		if !rolling:
 			model_animation_player.play("DJMP 3")
@@ -851,13 +895,14 @@ func anim_end(anim_name):
 		velocity.y = 3
 		can_air_attack = false
 		can_airdash = false
-	elif anim_name == "PGC 5" || anim_name == "UPPER":
-		# Resets Sonic's attacking state when the up strong or the regular strong recoil ends.
+	elif anim_name == "PGC 5" || anim_name == "UPPER" || anim_name == "BLOCKED":
+		# Resets Sonic's attacking state when the up strong, blocked, or regular strong recoil ends.
 		attacking = false
 		starting = false
 		can_air_attack = false
 		can_airdash = false
 		can_chase = false
+		guarding = false
 	elif anim_name == "DASH ATK":
 		# Resets Sonic's attacking state when his dash attack ends.
 		attacking = false
@@ -865,6 +910,11 @@ func anim_end(anim_name):
 	elif anim_name == "AIM":
 		attacking = false
 		can_air_attack = false
+	elif anim_name == "GUARD":
+		guarding = false
+		attacking = true
+		model_animation_player.play("BLOCKED")
+		guard_effect.emitting = false
 	elif anim_name == "AIR" || anim_name == "PAC":
 		# Resets Sonic's attacking state when his air attack ends. Also sets him to falling state.
 		attacking = false
@@ -926,9 +976,14 @@ func anim_end(anim_name):
 		starting = false
 		can_air_attack = false
 	elif anim_name == "WALL":
-		hurt = false
-		starting = false
-		can_air_attack = false
+		hitting_wall = false
+		velocity.y = 7
+		chasing_aggressor = true
+		model_animation_player.play("TARGET")
+	elif anim_name == "HIT WALL":
+		velocity = -model_node.basis.z.normalized() * 5
+		hitting_wall = false
+		model_animation_player.play("SPIKED")
 	elif anim_name == "LAUNCHED":
 		# For as long as Sonic is in the air, the animation loops. When he hits the ground, his state resets.
 		if is_on_floor():
@@ -976,10 +1031,15 @@ func anim_end(anim_name):
 ## Very simple signal state determining when the attack hitbox actually hits something.
 func _on_hitbox_body_entered(body):
 	if body.is_in_group("CanHurt") && body != self and attacking:
-		Audio.play(Audio.hit, self)
-		# If the current attack is Sonic's "pow" move, the hitbox pays attention to immunities.
-		if !pow_move || body.immunity != "pow":
-			body.get_hurt.rpc_id(body.get_multiplayer_authority(), launch_power, self, damage_caused)
+		if !body.guarding:
+			Audio.play(Audio.hit, self)
+			# If the current attack is Sonic's "pow" move, the hitbox pays attention to immunities.
+			if !pow_move || body.immunity != "pow":
+				body.get_hurt.rpc_id(body.get_multiplayer_authority(), launch_power, self, damage_caused)
+		else:
+			print("blocked")
+			model_animation_player.play("BLOCKED")
+			velocity = -model_node.basis.z.normalized() * 5
 
 
 func defeated():
@@ -1012,6 +1072,8 @@ func defeated():
 # function, which is why you don't see it here.
 @rpc("any_peer","reliable","call_local")
 func get_hurt(launch_speed, owner_of_the_attack, damage_taken = 1):
+	# just in case an attack hits through guard for whatever reason
+	guarding = false
 	if model_animation_player.current_animation != "KO" and model_animation_player.current_animation != "SPIKED":
 		# store the last player who damaged this character
 		last_aggressor = owner_of_the_attack

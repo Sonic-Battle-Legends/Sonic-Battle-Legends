@@ -30,7 +30,10 @@ func _physics_process(_delta):
 		character.special_pressed = Input.is_action_just_pressed("special")
 		
 		# guard/block/defend check
-		character.guard_pressed = Input.is_action_pressed("guard")
+		character.guard_pressed = Input.is_action_just_pressed("guard")
+		
+		# heal check
+		character.heal_pressed = Input.is_action_pressed("guard")
 		
 		# check to rotate camera
 		# also checked on _input(event) for double tap guard as the original

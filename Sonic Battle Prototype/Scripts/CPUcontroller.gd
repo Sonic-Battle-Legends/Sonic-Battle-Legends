@@ -173,7 +173,7 @@ func common_behaviours():
 	and total_healed < life_offset:
 		# if the player is trying to keep distance, keep guard on
 		# to heal
-		cpu_character.guard_pressed = true
+		cpu_character.heal_pressed = true
 		
 		# keep track of how much was healed
 		if cpu_character.life_total > last_life_total:
@@ -184,7 +184,7 @@ func common_behaviours():
 		if cpu_character.hurt:
 			total_healed = 0
 			last_life_total = cpu_character.life_total
-		cpu_character.guard_pressed = false
+		cpu_character.heal_pressed = false
 
 
 ## if the target is far, move
