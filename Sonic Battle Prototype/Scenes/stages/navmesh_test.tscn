@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://d1dv7tjtv0yse"]
+[gd_scene load_steps=6 format=3 uid="uid://d1dv7tjtv0yse"]
 
 [ext_resource type="PackedScene" uid="uid://cqc8qqujbql3v" path="res://Models/navtest.blend" id="1_v0k8a"]
-[ext_resource type="Material" uid="uid://djxad1r3jnafs" path="res://Materials/stageTopMaterial.tres" id="3_nn6jo"]
+[ext_resource type="Material" uid="uid://cwm4ljlmv0vbo" path="res://Materials/green Hills/groundMaterial.tres" id="2_07338"]
+[ext_resource type="Material" uid="uid://b4trcgernvwmr" path="res://Materials/green Hills/grassMaterial.tres" id="3_ah47y"]
 [ext_resource type="AudioStream" uid="uid://cbkkp5xho5o0m" path="res://Audio/Sonic Battle Project Tracks/Stage themes/SBLM - Resort Wip 6.mp3" id="4_jlpt7"]
 [ext_resource type="PackedScene" uid="uid://drlu8n40mygqk" path="res://Scenes/spikes.tscn" id="4_sbo7i"]
 
@@ -11,7 +12,8 @@
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, -1.0732, -4.3019)
 
 [node name="obstacles" parent="navtest" index="0"]
-surface_material_override/0 = ExtResource("3_nn6jo")
+surface_material_override/0 = ExtResource("2_07338")
+surface_material_override/1 = ExtResource("3_ah47y")
 
 [node name="links" type="Marker3D" parent="."]
 

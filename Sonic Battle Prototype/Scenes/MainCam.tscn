@@ -39,5 +39,4 @@ mesh = SubResource("QuadMesh_44ec5")
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
 target_position = Vector3(0, -100, 0)
 collision_mask = 3
-debug_shape_custom_color = Color(1, 0, 0, 1)
 debug_shape_thickness = 5
