@@ -193,6 +193,15 @@ var damage_multiplier = 1.0
 # state for going super, so no inputs are used during the animation
 var going_super = false
 
+# counter to determine when each step of the special draining happens
+var special_drain_counter: int = 0
+# the amount accrrued each cycle to count towards the threshold
+var special_drain_step: int = 1
+# the threshold for each draining
+var special_drain_threshold: int = 10
+# amount to drain from the special bar each draining while on super form
+var special_drain_amount: int = 1
+
 # make only one $ call and store the node
 @onready var sprite_animation_player = $AnimationPlayer
 @onready var model_node = $sonicrigged2
@@ -294,6 +303,10 @@ func _physics_process(delta):
 		model_animation_player = super_model_anim
 		base_model.visible = false
 		super_model.visible = true
+		
+		# drain special while on super form
+		handle_special_draining()
+		
 	else:
 		damage_multiplier = 1.0
 		model_node = base_model
@@ -790,6 +803,17 @@ func handle_special_is_full():
 	else:
 		if special_is_full_effect != null:
 			special_is_full_effect.hide()
+
+
+func handle_special_draining():
+	if special_amount > 0:
+		special_drain_counter += special_drain_step
+		if special_drain_counter >= special_drain_threshold:
+			special_drain_counter = 0
+			special_amount -= special_drain_amount
+			hud.change_special(special_amount)
+	else:
+		super_mode = false
 
 
 ## gain one extra life
