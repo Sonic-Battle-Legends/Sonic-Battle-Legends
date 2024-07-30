@@ -1,4 +1,4 @@
-[gd_scene load_steps=62 format=3 uid="uid://c21jx54148kmv"]
+[gd_scene load_steps=66 format=3 uid="uid://c21jx54148kmv"]
 
 [ext_resource type="PackedScene" uid="uid://b4sfvdfh2ssee" path="res://Models/hub_test.blend" id="1_3cksg"]
 [ext_resource type="PackedScene" uid="uid://irlpgd8spuet" path="res://Scenes/stages/invisible_walls.tscn" id="2_1lcbb"]
@@ -40,6 +40,7 @@
 [ext_resource type="PackedScene" uid="uid://qo21lw7t0p7s" path="res://Models/tree.blend" id="38_mwn8s"]
 [ext_resource type="Texture2D" uid="uid://c2el7ccjaknii" path="res://Textures/leaf2.png" id="39_7hpg8"]
 [ext_resource type="PackedScene" uid="uid://ccethmywbkawh" path="res://Scenes/traffic_lights.tscn" id="40_xe774"]
+[ext_resource type="Texture2D" uid="uid://bfgkwgli0f0ym" path="res://Textures/others_0030_emission_1k.jpg" id="41_h5lka"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_x8gvk"]
 albedo_color = Color(0.560784, 0.00392157, 0.792157, 1)
@@ -126,6 +127,24 @@ albedo_texture = ExtResource("39_7hpg8")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ndx67"]
 albedo_color = Color(0.643137, 0.470588, 0.262745, 1)
+
+[sub_resource type="QuadMesh" id="QuadMesh_nyk7i"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jkjyq"]
+transparency = 1
+blend_mode = 1
+albedo_texture = ExtResource("41_h5lka")
+albedo_texture_msdf = true
+uv1_scale = Vector3(0.695, 0.195, 1)
+uv1_offset = Vector3(0.13, 1.705, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_33vg1"]
+transparency = 1
+blend_mode = 1
+albedo_texture = ExtResource("41_h5lka")
+albedo_texture_msdf = true
+uv1_scale = Vector3(0.665, 0.195, 1)
+uv1_offset = Vector3(1.73, 1.705, 0)
 
 [node name="City_Hub" type="Node3D"]
 
@@ -384,11 +403,26 @@ surface_material_override/0 = SubResource("StandardMaterial3D_wwnfp")
 surface_material_override/1 = SubResource("StandardMaterial3D_mbc3v")
 surface_material_override/2 = SubResource("StandardMaterial3D_ndx67")
 
-[node name="traffic_lights" parent="." instance=ExtResource("40_xe774")]
+[node name="traffic_lights" parent="decorations" instance=ExtResource("40_xe774")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.14255, 0, 2.26126)
 
-[node name="traffic_lights2" parent="." instance=ExtResource("40_xe774")]
+[node name="traffic_lights2" parent="decorations" instance=ExtResource("40_xe774")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.346193, 0, 2.16958)
+
+[node name="light_on_ground" type="MeshInstance3D" parent="decorations"]
+transform = Transform3D(-2.39538e-07, -1, -4.37114e-08, 0, -4.37114e-08, 1, -5.48, 4.37114e-08, 1.91069e-15, 7.90841, 0.00337029, 4.13307)
+mesh = SubResource("QuadMesh_nyk7i")
+surface_material_override/0 = SubResource("StandardMaterial3D_jkjyq")
+
+[node name="light_on_ground2" type="MeshInstance3D" parent="decorations"]
+transform = Transform3D(3.335, -2.38419e-07, -1.04216e-14, 0, -4.37114e-08, 1, -7.95126e-07, -1, -4.37114e-08, 10.434, 0.00337029, 7.4352)
+mesh = SubResource("QuadMesh_nyk7i")
+surface_material_override/0 = SubResource("StandardMaterial3D_33vg1")
+
+[node name="light_on_ground3" type="MeshInstance3D" parent="decorations"]
+transform = Transform3D(3.335, -2.38419e-07, -1.04216e-14, 0, -4.37114e-08, 1, -7.95126e-07, -1, -4.37114e-08, 10.3895, 0.00337029, 0.771521)
+mesh = SubResource("QuadMesh_nyk7i")
+surface_material_override/0 = SubResource("StandardMaterial3D_33vg1")
 
 [editable path="hub_test"]
 [editable path="Markers/stage_marker"]

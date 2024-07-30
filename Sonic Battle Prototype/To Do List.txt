@@ -6,6 +6,8 @@ Development Topics
 
 	SAGE 2024 Scope
 
+		[ check the "To Do" channel for more recent updates ]
+
 		menu:
 	⏳️		is lacking the new design that was made;
 	⏳️		needs it’s title screen;
@@ -25,8 +27,7 @@ Development Topics
 			make an arc movement like in the original
 
 		stages and hubs need textures
-			make city hub new textures and shapes
-			how sand ocean's geometry should look like?
+			sand ocean's geometry needs texture
 
 		create a solution to move the player out of the "infinite lifting camera lock"
 			detect if the velocity is increasing and the character is not moving
