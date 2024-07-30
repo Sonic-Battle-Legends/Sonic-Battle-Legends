@@ -50,9 +50,11 @@ _data = {
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3xrcw"]
 albedo_texture = ExtResource("5_18gn2")
-metallic = 0.85
+metallic = 0.99
 metallic_specular = 1.0
 roughness = 0.68
+emission_enabled = true
+emission = Color(0.596078, 0.498039, 0.313726, 1)
 
 [node name="Ring" type="Node3D" groups=["Ring"]]
 script = ExtResource("1_mm1bn")
