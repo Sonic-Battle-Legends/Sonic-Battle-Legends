@@ -206,6 +206,9 @@ func aggressive_behaviour():
 	# if can chase or against the wall after a launch, use the chase mechanic
 	if cpu_character.can_chase or cpu_character.model_node.get_node("AnimationPlayer").current_animation == "WALL":
 		cpu_character.jump_pressed = true
+	
+	if cpu_character.special_amount == 100:
+		cpu_character.super_pressed = true
 
 
 ## keep distance from player
@@ -363,6 +366,7 @@ func reset_properties():
 	cpu_character.dash_triggered = false
 	cpu_character.jump_pressed = false
 	cpu_character.upper_pressed = false
+	cpu_character.super_pressed = false
 	# can't heal if it keeps reseting
 	#cpu_character.guard_pressed = false
 	

@@ -55,11 +55,14 @@ properties/1/path = NodePath("AnimationPlayer:current_animation")
 properties/1/spawn = true
 properties/1/replication_mode = 1
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_77bqx"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ml7h2"]
 albedo_texture = ExtResource("4_f5r0e")
-metallic = 0.85
+metallic = 0.98
 metallic_specular = 1.0
-roughness = 0.68
+roughness = 0.19
+emission_enabled = true
+emission = Color(0.184018, 0.145468, 0.0722745, 1)
+emission_energy_multiplier = 4.0
 
 [node name="ThrowRing" type="CharacterBody3D"]
 collision_layer = 0
@@ -88,6 +91,6 @@ replication_config = SubResource("SceneReplicationConfig_17ln7")
 transform = Transform3D(0.0353553, 0, 0.0353553, 0, 0.05, 0, -0.0353553, 0, 0.0353553, 0, -0.09, 0)
 
 [node name="Ring" parent="Ring2" index="0"]
-surface_material_override/0 = SubResource("StandardMaterial3D_77bqx")
+surface_material_override/0 = SubResource("StandardMaterial3D_ml7h2")
 
 [editable path="Ring2"]

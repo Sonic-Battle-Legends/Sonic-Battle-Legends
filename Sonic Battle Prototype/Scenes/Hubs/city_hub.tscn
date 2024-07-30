@@ -299,20 +299,38 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.486603, 0, 0.676679)
 [node name="Ring" parent="collectables" instance=ExtResource("7_kmrjo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.28553, 6.54966e-07, 2.16711)
 
+[node name="Ring2" parent="collectables/Ring" index="4"]
+transform = Transform3D(0.0353553, 0, 0.0353553, 0, 0.05, 0, -0.0353553, 0, 0.0353553, 0, 0.125, 0)
+
 [node name="Ring2" parent="collectables" instance=ExtResource("7_kmrjo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.57145, 6.54966e-07, 2.16711)
+
+[node name="Ring2" parent="collectables/Ring2" index="4"]
+transform = Transform3D(0.0353553, 0, 0.0353553, 0, 0.05, 0, -0.0353553, 0, 0.0353553, 0, 0.125, 0)
 
 [node name="Ring3" parent="collectables" instance=ExtResource("7_kmrjo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.87457, 6.54966e-07, 2.16711)
 
+[node name="Ring2" parent="collectables/Ring3" index="4"]
+transform = Transform3D(0.0353553, 0, 0.0353553, 0, 0.05, 0, -0.0353553, 0, 0.0353553, 0, 0.125, 0)
+
 [node name="Ring4" parent="collectables" instance=ExtResource("7_kmrjo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.16101, 6.54966e-07, 2.16711)
+
+[node name="Ring2" parent="collectables/Ring4" index="4"]
+transform = Transform3D(0.0353553, 0, 0.0353553, 0, 0.05, 0, -0.0353553, 0, 0.0353553, 0, 0.125, 0)
 
 [node name="Ring5" parent="collectables" instance=ExtResource("7_kmrjo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.44694, 6.54966e-07, 2.16711)
 
+[node name="Ring2" parent="collectables/Ring5" index="4"]
+transform = Transform3D(0.0353553, 0, 0.0353553, 0, 0.05, 0, -0.0353553, 0, 0.0353553, 0, 0.125, 0)
+
 [node name="Ring6" parent="collectables" instance=ExtResource("7_kmrjo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.75005, 6.54966e-07, 2.16711)
+
+[node name="Ring2" parent="collectables/Ring6" index="4"]
+transform = Transform3D(0.0353553, 0, 0.0353553, 0, 0.05, 0, -0.0353553, 0, 0.0353553, 0, 0.125, 0)
 
 [node name="decorations" type="Marker3D" parent="."]
 
