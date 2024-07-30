@@ -12,6 +12,7 @@ emission_energy_multiplier = 2.35
 emission_operator = 1
 emission_texture = ExtResource("1_pvjcy")
 uv1_scale = Vector3(0.35, 0.45, 0.35)
+uv1_offset = Vector3(0, -0.065, 0)
 uv1_triplanar = true
 proximity_fade_distance = 80.0
 distance_fade_min_distance = 8.0
