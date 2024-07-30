@@ -1,9 +1,9 @@
-[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://dp752la61m178"]
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://cwm4ljlmv0vbo"]
 
-[ext_resource type="Texture2D" uid="uid://bb5xbu16jesfd" path="res://Textures/tile.png" id="1_ywujl"]
+[ext_resource type="Texture2D" uid="uid://c7pqn368vuola" path="res://Textures/grass.png" id="1_17f2x"]
 
 [resource]
-albedo_texture = ExtResource("1_ywujl")
+albedo_texture = ExtResource("1_17f2x")
 metallic = 0.1
 roughness = 0.61
 emission = Color(1, 0.984314, 0, 1)

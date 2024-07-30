@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://kiqyfxt7rwap"]
+[gd_scene load_steps=14 format=3 uid="uid://kiqyfxt7rwap"]
 
 [ext_resource type="Script" path="res://Scripts/hud.gd" id="1_i2t3l"]
 [ext_resource type="Texture2D" uid="uid://dofyi4jiyto42" path="res://Textures/icon.svg" id="2_kygp5"]
@@ -6,7 +6,12 @@
 [ext_resource type="Theme" uid="uid://cgbqhln08lgao" path="res://Text Themes/HUD_v2.tres" id="3_sxpx6"]
 [ext_resource type="Texture2D" uid="uid://cnvca7d2mepgx" path="res://Sprites/Sonic.png" id="5_j0w7h"]
 [ext_resource type="Texture2D" uid="uid://d2p48vq8nkoy7" path="res://Textures/hub_hud_v2.png" id="6_0fpv5"]
+[ext_resource type="Texture2D" uid="uid://ds2tjgv2afeih" path="res://Textures/newHud.webp" id="6_murx8"]
 [ext_resource type="Texture2D" uid="uid://s3ox0cx5md2h" path="res://Textures/hub_hud_v2.webp" id="7_hoyex"]
+
+[sub_resource type="Theme" id="Theme_as4id"]
+
+[sub_resource type="Theme" id="Theme_58wkt"]
 
 [sub_resource type="Animation" id="Animation_7jinx"]
 length = 0.001
@@ -119,7 +124,49 @@ offset_bottom = 613.0
 theme = ExtResource("3_sxpx6")
 text = "0 Pt"
 
+[node name="newhud" type="Control" parent="Battle HUD"]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Sprite2D2" type="Sprite2D" parent="Battle HUD/newhud"]
+position = Vector2(44, 48)
+scale = Vector2(2, 2)
+texture = ExtResource("6_murx8")
+region_enabled = true
+region_rect = Rect2(145.364, 21.5455, 40, 47.2727)
+
+[node name="Sprite2D" type="Sprite2D" parent="Battle HUD/newhud"]
+position = Vector2(145, 55.5)
+scale = Vector2(2, 2)
+texture = ExtResource("6_murx8")
+region_enabled = true
+region_rect = Rect2(187.476, 34.121, 105.959, 33.0975)
+
+[node name="ProgressBar" type="ProgressBar" parent="Battle HUD/newhud"]
+offset_left = 53.0
+offset_top = 56.0
+offset_right = 242.0
+offset_bottom = 83.0
+theme = SubResource("Theme_as4id")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+step = 1.0
+value = 100.0
+fill_mode = 1
+
+[node name="ProgressBar2" type="ProgressBar" parent="Battle HUD/newhud"]
+layout_mode = 0
+offset_left = 70.0
+offset_top = 30.0
+offset_right = 243.0
+offset_bottom = 57.0
+theme = SubResource("Theme_58wkt")
+step = 1.0
+
 [node name="Area HUD" type="Control" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

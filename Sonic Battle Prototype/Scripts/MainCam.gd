@@ -18,8 +18,12 @@ var shake_camera_time: float = 0.0
 const DEFAULT_SHAKE_INTENSITY: float = 1.0
 var shake_intensity: float = DEFAULT_SHAKE_INTENSITY
 
-@export var light_node: DirectionalLight3D
+var player_is_behind_object: bool = false
 
+@export var light_node: DirectionalLight3D
+@export var raycast_to_player: RayCast3D
+
+var original_light_color
 
 func _ready():
 	# The camera locks on to the player.
@@ -30,6 +34,8 @@ func _ready():
 	# if it's in perspective mode, set the position to where it should be
 	if projection == 0:
 		position = Vector3(0, 10, 10)
+	
+	original_light_color = light_node.light_color
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -50,15 +56,19 @@ func _physics_process(delta):
 
 	# nighttime on the city hub 
 	if GlobalVariables.current_hub != null:
-		light_node.light_energy = 0.1
+		#light_node.light_energy = 0.1
+		light_node.light_color = Color(0, 0, 0, 1)
 	else:
 		light_node.light_energy = 3
+		light_node.light_color = original_light_color
 
 	# make the camera farther away on the areas
-	if GlobalVariables.current_area != null:
+	if GlobalVariables.current_stage == null:
 		size = 5
+		fov = 20
 	else:
 		size = 3
+		fov = 10
 	
 	# shake camera if needed
 	if shake_camera_time > 0 and GlobalVariables.can_shake_camera:
@@ -67,6 +77,16 @@ func _physics_process(delta):
 		position = lerp(position, new_position, 0.01)
 		if shake_camera_time <= 0:
 			shake_intensity = DEFAULT_SHAKE_INTENSITY
+	
+	# check if player is behind a wall
+	# if so, the player will use the see through after image
+	# so the player can see the character
+	if player:
+		var new_raycast_collision = raycast_to_player.get_collider()
+		if new_raycast_collision != null and new_raycast_collision.name == player.name:
+			player_is_behind_object = false
+		else:
+			player_is_behind_object = true
 
 
 func rotate_camera():

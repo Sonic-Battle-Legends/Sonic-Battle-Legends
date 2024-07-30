@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://df2qad5qwj77i"
-path="res://.godot/imported/ground_0043_ao_1k.jpg-89d97181f2bbc2c78c06a83f54d61a20.ctex"
+uid="uid://ds2tjgv2afeih"
+path="res://.godot/imported/newHud.webp-1c78efd71fe80b291455489f9b29fe8a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Textures/ground_0043_ao_1k.jpg"
-dest_files=["res://.godot/imported/ground_0043_ao_1k.jpg-89d97181f2bbc2c78c06a83f54d61a20.ctex"]
+source_file="res://Textures/newHud.webp"
+dest_files=["res://.godot/imported/newHud.webp-1c78efd71fe80b291455489f9b29fe8a.ctex"]
 
 [params]
 
