@@ -1167,6 +1167,7 @@ func anim_end(anim_name):
 		if !is_on_floor():
 			model_animation_player.play("SPIKED")
 		else:
+			can_recover = true
 			model_animation_player.play("KO")
 			spiked = false
 	elif anim_name in ["RING", "BOMB G (LAZY)", "BOMB A"]:
