@@ -82,11 +82,23 @@ func _physics_process(delta):
 	# if so, the player will use the see through after image
 	# so the player can see the character
 	if player:
+		# check if there is a collider
 		var new_raycast_collision = raycast_to_player.get_collider()
-		if new_raycast_collision != null and new_raycast_collision.name == player.name:
-			player_is_behind_object = false
+		# if so
+		if new_raycast_collision != null:
+			# get the position of the collision
+			var new_point = raycast_to_player.get_collision_point()
+			# store the distances
+			var camera_distance_to_point = (position - new_point).length()
+			var camera_distance_to_player = (position - player.position).length()
+			# if the point is closer to the camera than the player
+			if camera_distance_to_point < camera_distance_to_player \
+			and new_raycast_collision.name != player.name:
+				player_is_behind_object = true
+			else:
+				player_is_behind_object = false
 		else:
-			player_is_behind_object = true
+			player_is_behind_object = false
 
 
 func rotate_camera():
