@@ -1,34 +1,19 @@
-[gd_scene load_steps=9 format=3 uid="uid://wowjjq8lbw7j"]
+[gd_scene load_steps=6 format=3 uid="uid://wowjjq8lbw7j"]
 
 [ext_resource type="Script" path="res://Scripts/AfterImageSeeThrough.gd" id="1_6fxns"]
 [ext_resource type="Material" uid="uid://dfxkjglokjkff" path="res://Materials/AfterImage2Material.tres" id="2_m1vt7"]
 [ext_resource type="PackedScene" uid="uid://cif8ar07vb2yr" path="res://Models/Sonic/sonicrigged_2.tscn" id="2_r0437"]
+[ext_resource type="Material" uid="uid://bo4868fcawqa8" path="res://Materials/AfterImage3Material.tres" id="3_k6yu6"]
 [ext_resource type="PackedScene" uid="uid://wh3lifdhf3g0" path="res://Models/Characters/supersonicrigged.blend" id="4_y0swl"]
-[ext_resource type="Texture2D" uid="uid://bjf14ovos2vne" path="res://Models/Sonic/textures/sonic_model_text_super.png" id="5_2r62a"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kg3n1"]
-transparency = 1
-albedo_color = Color(0.00392157, 0.47451, 0.52549, 0.784314)
-metallic = 0.1
-roughness = 0.22
-disable_receive_shadows = true
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_j7ho6"]
-transparency = 1
-albedo_color = Color(0.00392157, 0.47451, 0.52549, 0.784314)
-metallic = 0.1
-roughness = 0.22
-disable_receive_shadows = true
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h40xh"]
-shading_mode = 0
-albedo_texture = ExtResource("5_2r62a")
-
-[node name="AfterImageSeeThrough" type="Node3D" node_paths=PackedStringArray("mesh_node", "animation_node")]
+[node name="AfterImageSeeThrough" type="Node3D" node_paths=PackedStringArray("mesh_node", "animation_node", "super_form_node", "super_animation_node")]
 script = ExtResource("1_6fxns")
 see_through_material = ExtResource("2_m1vt7")
+super_form_material = ExtResource("3_k6yu6")
 mesh_node = NodePath("sonicrigged2/Armature/Skeleton3D/Sonic")
 animation_node = NodePath("sonicrigged2/AnimationPlayer")
+super_form_node = NodePath("supersonicrigged/Armature/Skeleton3D/Sonic")
+super_animation_node = NodePath("supersonicrigged/AnimationPlayer")
 
 [node name="sonicrigged2" parent="." instance=ExtResource("2_r0437")]
 transform = Transform3D(0.03, 0, 0, 0, 0.03, 0, 0, 0, 0.03, 0, -0.15, 0)
@@ -36,12 +21,10 @@ script = null
 
 [node name="Sonic" parent="sonicrigged2/Armature/Skeleton3D" index="0"]
 cast_shadow = 0
-surface_material_override/0 = SubResource("StandardMaterial3D_kg3n1")
-surface_material_override/1 = SubResource("StandardMaterial3D_j7ho6")
+surface_material_override/0 = ExtResource("2_m1vt7")
 
 [node name="supersonicrigged" parent="." instance=ExtResource("4_y0swl")]
 transform = Transform3D(0.03, 0, 0, 0, 0.03, 0, 0, 0, 0.03, 0, -0.15, 0)
-visible = false
 
 [node name="Skeleton3D" parent="supersonicrigged/Armature" index="0"]
 bones/2/rotation = Quaternion(-5.33851e-08, 0.707107, 0.707107, -5.33851e-08)
@@ -112,8 +95,9 @@ bones/62/rotation = Quaternion(0.0208892, -5.96764e-08, 6.41882e-08, 0.999782)
 bones/63/rotation = Quaternion(0.0162818, 1.51409e-14, 1.22924e-09, 0.999867)
 
 [node name="Sonic" parent="supersonicrigged/Armature/Skeleton3D" index="0"]
-surface_material_override/0 = SubResource("StandardMaterial3D_h40xh")
-surface_material_override/1 = SubResource("StandardMaterial3D_h40xh")
+visible = false
+surface_material_override/0 = ExtResource("3_k6yu6")
+surface_material_override/1 = ExtResource("3_k6yu6")
 
 [editable path="sonicrigged2"]
 [editable path="supersonicrigged"]
