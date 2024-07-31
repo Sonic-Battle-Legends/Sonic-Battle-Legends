@@ -970,6 +970,7 @@ func handle_see_through():
 			see_through_after_image.rotation = model_node.rotation
 			see_through_after_image.current_animation_name = model_animation_player.current_animation
 			see_through_after_image.current_animation_time = model_animation_player.current_animation_position
+			see_through_after_image.character_is_in_super_mode = super_mode
 			see_through_after_image.update_pose()
 		else:
 			see_through_after_image.hide()
