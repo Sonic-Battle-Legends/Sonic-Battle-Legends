@@ -8,6 +8,10 @@ extends CharacterBody3D
 const SPEED = 4.0
 const JUMP_VELOCITY = 5.0
 
+# Basic movement speed values for Sonic.
+const RECOVERY_JUMP_VELOCITY = 3.0
+const SUPER_RECOVERY_JUMP_VELOCITY = 4.0
+
 # Basic movement speed values for Super Sonic.
 const SUPER_SPEED = 6.0
 const SUPER_JUMP_VELOCITY = 6.0
@@ -87,6 +91,9 @@ var hurt = false
 var launched = false
 var spiked = false
 var rolling = false
+
+# State for when Sonic can jump out of being launched, or other similar animations
+var can_recover = false
 
 # Checking if sonic is currently in his wall-hitting animation, also the window to tech a wall
 var hitting_wall = false
@@ -194,6 +201,15 @@ var damage_multiplier = 1.0
 # state for going super, so no inputs are used during the animation
 var going_super = false
 
+# counter to determine when each step of the special draining happens
+var special_drain_counter: int = 0
+# the amount accrrued each cycle to count towards the threshold
+var special_drain_step: int = 1
+# the threshold for each draining
+var special_drain_threshold: int = 10
+# amount to drain from the special bar each draining while on super form
+var special_drain_amount: int = 1
+
 # defeated method should trigger only once
 var was_defeated: bool = false
 
@@ -288,18 +304,23 @@ func _process(delta):
 
 
 func _physics_process(delta):
-	if super_mode:
-		damage_multiplier = 1.5
-		model_node = super_model
-		model_animation_player = super_model_anim
-		base_model.visible = false
-		super_model.visible = true
-	else:
-		damage_multiplier = 1.0
-		model_node = base_model
-		model_animation_player = base_model_anim
-		base_model.visible = true
-		super_model.visible = false
+	if sprite_animation_player.current_animation != "super":
+		if super_mode:
+			damage_multiplier = 1.5
+			model_node = super_model
+			model_animation_player = super_model_anim
+			base_model.visible = false
+			super_model.visible = true
+			
+			# drain special while on super form
+			handle_special_draining()
+			
+		else:
+			damage_multiplier = 1.0
+			model_node = base_model
+			model_animation_player = base_model_anim
+			base_model.visible = true
+			super_model.visible = false
 	
 	if !is_on_floor():
 		if !hitting_wall && !going_super:
@@ -310,6 +331,8 @@ func _physics_process(delta):
 		starting = false
 		walking = false
 	else:
+		if model_animation_player.current_animation != "KO":
+			can_recover = false
 		if spiked:
 			model_animation_player.play("KO")
 			spiked = false
@@ -385,6 +408,9 @@ func _physics_process(delta):
 			handle_healing()
 			
 		else:
+			if can_recover:
+				handle_recovery()
+			
 			if !chasing_ring && !bouncing && !chasing_aggressor:
 				if !guarding:
 					# if Sonic is in his attacking or hurt state, he slows to a halt.
@@ -479,6 +505,7 @@ func handle_super():
 		velocity = Vector3.ZERO
 		sprite_animation_player.play("idle")
 		model_animation_player.play("SUPER")
+		super_model_anim.play("SUPER")
 		going_super = true
 		healing = false
 		guarding = false
@@ -509,6 +536,21 @@ func handle_dash():
 	
 	dash_triggered = false
 
+## For handling the ability to jump out of being launched for a while.
+func handle_recovery():
+	if jump_pressed:
+		can_recover = false
+		hurt = false
+		launched = false
+		Audio.play(Audio.jump, self)
+		if !super_mode:
+			velocity.y = RECOVERY_JUMP_VELOCITY
+		else:
+			velocity.y = SUPER_RECOVERY_JUMP_VELOCITY
+		jumping = true
+		jump_clicked = true
+		# remove current coyote timer form the variable
+		coyote_timer = null
 
 ## method to control the jump
 func handle_jump():
@@ -783,6 +825,14 @@ func increase_points():
 	if points >= GlobalVariables.points_to_win:
 			GlobalVariables.win(self)
 
+func handle_special_draining():
+	if special_amount > 0:
+		special_drain_counter += special_drain_step
+		if special_drain_counter >= special_drain_threshold:
+			special_drain_counter = 0
+			special_amount -= special_drain_amount
+	else:
+		super_mode = false
 
 func collect_ring(ring):
 	# increase the amount of rings
@@ -1050,6 +1100,7 @@ func anim_end(anim_name):
 		# For as long as Sonic is in the air, the animation loops. When he hits the ground, his state resets.
 		if is_on_floor():
 			model_animation_player.play("KO")
+			can_recover = true
 		else:
 			sprite_animation_player.play("hurtStrong")
 			model_animation_player.play("LAUNCHED")
@@ -1248,6 +1299,7 @@ func ground_special(id, _dir):
 		new_shot.set_multiplayer_authority(get_multiplayer_authority())
 		get_tree().current_scene.add_child(new_shot, true)
 	elif ground_skill == "POW":
+		can_recover = true
 		# Sonic's ground "pow" move first throws a ring. If the player inputs the move again,
 		# Sonic will accelerate in the direction of the ring.
 		# The ring is sent in a specified direciton.
@@ -1327,6 +1379,7 @@ func air_special(id, _dir):
 		# Creates the projectile
 		get_tree().current_scene.add_child(new_shot, true)
 	elif air_skill == "POW":
+		can_recover = true
 		# Sonic's midair "pow" move causes him to curl into a ball and launch himself towards the ground
 		# If Sonic hits the ground, he bounces once.
 		sprite_animation_player.play("powAir")
