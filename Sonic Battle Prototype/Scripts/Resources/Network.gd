@@ -10,7 +10,7 @@ const DEFAULT_NAME = "player "
 var ip = DEFAULT_IP
 # web identifier
 var id = 0
-var player_name = ""
+var player_name = DEFAULT_NAME
 # the peer can be either a server or a client
 var peer = null
 var players = []
@@ -169,3 +169,23 @@ func return_ip():
 		if ip_list[i].begins_with("192"):
 			return ip_list[i]
 	return DEFAULT_IP
+
+
+## allow the server to call a method to any peer and local
+## only server can call
+## the server will call the method for the peers
+@rpc("any_peer", "call_local")
+func server_call_method(node_to_call_from = self, method_name: String = "", args = null):
+	# if peer is setup and this is a server (online and hosting)
+	if multiplayer.has_multiplayer_peer() and multiplayer.is_server() and node_to_call_from.has_method(method_name):
+		if args != null:
+			node_to_call_from.rpc(method_name, args)
+		else:
+			node_to_call_from.rpc(method_name)
+	else:
+		# if peer is not setup (offline)
+		if multiplayer.has_multiplayer_peer() == false:
+			if args != null:
+				node_to_call_from.call_deferred(method_name, args)
+			else:
+				node_to_call_from.call_deferred(method_name)

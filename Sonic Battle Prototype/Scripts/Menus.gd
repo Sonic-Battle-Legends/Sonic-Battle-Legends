@@ -25,6 +25,8 @@ extends Control
 
 var focused = false
 
+var list_of_menus: Array
+
 
 func _ready():
 	GlobalVariables.main_menu = self
@@ -34,6 +36,8 @@ func _ready():
 	GlobalVariables.current_stage = null
 	GlobalVariables.current_hub = null
 	GlobalVariables.current_area = null
+	
+	list_of_menus = [intro_animation, main_menu, options_menu, online_or_offline_menu, online_menu, mode_selection_menu, conditions_menu, character_selection_menu, area_selection_menu]
 	
 	# hide menus and show intro animation
 	start_menu()
@@ -50,7 +54,6 @@ func _process(_delta):
 	if focused == false:
 		for i in range(get_children().size()):
 			if get_child(i).name != "AudioStreamPlayer" and get_child(i).is_visible_in_tree():
-				#set_focus_mode(Control.FOCUS_ALL)
 				for j in range(get_child(i).get_children().size()):
 					if get_child(i).get_child(j) is Button:
 						get_child(i).get_child(j).grab_focus()
@@ -59,8 +62,32 @@ func _process(_delta):
 
 
 func start_menu():
+	show_next_menu(intro_animation)
+
+
+## use the server to call the next menu
+func show_next_menu(next_menu):
+	var next_menu_reference = list_of_menus.find(next_menu)
+	
+	if multiplayer.has_multiplayer_peer(): #Network.peer != null:
+		Network.server_call_method(self, "show_next", next_menu_reference)
+	else:
+		hide_menus()
+		next_menu.show()
+	
+
+
+@rpc("any_peer", "call_local")
+func show_next(next_menu_reference):
 	hide_menus()
-	intro_animation.show()
+	
+	# trying to call the equivalent of the next menu node to show from server
+	# to client but the server passes an "EncodedObjectAsID" instead and the
+	# documentation suggests instance_from_id() method but it asks for an int
+	# so a list was created instead and a refernce to the screen that needs
+	# to be shown is passed
+	var menu_to_show = list_of_menus[next_menu_reference]
+	menu_to_show.show()
 
 
 ## hide all menu screens so they won't overlap each other
@@ -79,14 +106,14 @@ func hide_menus():
 
 
 ## proceed with the normal screens sequence after online setup
+## called from network_menu script
 func after_online_setup():
 	# if no online connection was made, go offline
 	if Network.peer == null:
 		GlobalVariables.play_online = false
 		GlobalVariables.character_id = 1
 	
-	hide_menus()
-	mode_selection_menu.show()
+	show_next_menu(mode_selection_menu)
 
 
 ## called after the area has been selected
@@ -97,7 +124,6 @@ func go_to_area_scene():
 	# the same hub will be selected every time for now
 	#Instantiables.go_to_area(GlobalVariables.area_selected)
 	Instantiables.go_to_hub(GlobalVariables.hub_selected)
-	# hide menus
 	hide_menus()
 
 
@@ -106,8 +132,7 @@ func go_to_area_scene():
 
 # main menu
 func _on_start_button_pressed():
-	hide_menus()
-	online_or_offline_menu.show()
+	show_next_menu(character_selection_menu) #online_or_offline_menu)
 
 
 func _on_options_button_pressed():
@@ -136,68 +161,59 @@ func _on_online_button_pressed():
 	online_menu.show()
 
 
-#func _on_host_button_pressed():
-	#hide_menus()
-	# the server will call the after_online_setup() in here when it's done
-	#print("host button pressed")
-	#ServerJoin.configure_player()
-
-
-#func _on_join_button_pressed():
-	#GlobalVariables.main_menu.online_menu.hide()
-	#hide_menus()
-	#print("join button pressed")
-	#ServerJoin.enet_peer.create_client("localhost", ServerJoin.PORT)
-	#ServerJoin.multiplayer.multiplayer_peer = ServerJoin.enet_peer
-	
-	#after_online_setup()
-
-
 func _on_offline_button_pressed():
 	GlobalVariables.play_online = false
 	hide_menus()
-	#ServerJoin.configure_player()
-	# create a new server
-	# using ip
-	# with max number of players set to 1
-	# net dicovery to false
-	#Network.create_new_server()
-	# pretend there is a connection
 	GlobalVariables.character_id = 1
 	mode_selection_menu.show()
 
 
 func _on_story_mode_button_pressed():
-	GlobalVariables.play_mode = GlobalVariables.modes.story
-	hide_menus()
-	conditions_menu.show()
+	Network.server_call_method(self, "mode_select", "story")
 
 
 func _on_battle_mode_button_pressed():
-	GlobalVariables.play_mode = GlobalVariables.modes.battle
-	hide_menus()
-	conditions_menu.show()
+	Network.server_call_method(self, "mode_select", "battle")
 
 
 func _on_challenge_mode_button_pressed():
-	GlobalVariables.play_mode = GlobalVariables.modes.challenge
-	hide_menus()
-	conditions_menu.show()
+	Network.server_call_method(self, "mode_select", "challenge")
 
 
+@rpc("any_peer", "call_local")
+func mode_select(mode_selected: String):
+	match mode_selected:
+		"story":
+			GlobalVariables.play_mode = GlobalVariables.modes.story
+		"battle":
+			GlobalVariables.play_mode = GlobalVariables.modes.battle
+		"challenge":
+			GlobalVariables.play_mode = GlobalVariables.modes.challenge
+	
+	show_next_menu(conditions_menu)
+
+
+# players will select character by themselves, no rpc
+# but this should be a list
 func _on_sonic_character_button_pressed():
 	GlobalVariables.character_selected = GlobalVariables.playable_characters.sonic
 	hide_menus()
-	area_selection_menu.show()
+	online_or_offline_menu.show()
+	#area_selection_menu.show()
 
 func _on_shadow_character_button_pressed():
 	GlobalVariables.character_selected = GlobalVariables.playable_characters.shadow
 	hide_menus()
-	area_selection_menu.show()
+	online_or_offline_menu.show()
+	#area_selection_menu.show()
 
 func _on_area_1_button_pressed():
+	Network.server_call_method(self, "go_to_area_1")
+
+
+@rpc("any_peer", "call_local")
+func go_to_area_1():
 	GlobalVariables.hub_selected = Instantiables.match_place(Instantiables.worlds_and_hubs.city_hub)
-	#GlobalVariables.area_selected = Instantiables.match_place(Instantiables.worlds_and_hubs.city_hub) #Instantiables.match_place(Instantiables.worlds_and_hubs.first_world)
 	hide_menus()
 	$AudioStreamPlayer.stop()
 	go_to_area_scene()
@@ -206,28 +222,31 @@ func _on_area_1_button_pressed():
 # most of the back buttons from the menus trigger this method
 # except for the options menu, which can be changed to call this as well
 func _on_back_button_pressed():
-	if online_or_offline_menu.is_visible_in_tree():
-		hide_menus()
-		main_menu.show()
-	if online_menu.is_visible_in_tree():
-		# reset connection when going back
-		Network.reset_connection()
-		hide_menus()
-		online_or_offline_menu.show()
-	if mode_selection_menu.is_visible_in_tree():
-		# reset connection when going back
-		Network.reset_connection()
-		hide_menus()
-		online_or_offline_menu.show()
-	if conditions_menu.is_visible_in_tree():
-		hide_menus()
-		mode_selection_menu.show()
+	Network.server_call_method(self, "back_to_previous_menu")
+
+
+@rpc("any_peer", "call_local")
+func back_to_previous_menu():
 	if character_selection_menu.is_visible_in_tree():
 		hide_menus()
-		conditions_menu.show()
-	if area_selection_menu.is_visible_in_tree():
+		main_menu.show()
+		#show_next_menu(conditions_menu)
+	if online_or_offline_menu.is_visible_in_tree():
 		hide_menus()
 		character_selection_menu.show()
+		#main_menu.show()
+	if online_menu.is_visible_in_tree():
+		# reset connection when going back
+		show_next_menu(online_or_offline_menu)
+		Network.reset_connection()
+	if mode_selection_menu.is_visible_in_tree():
+		# reset connection when going back
+		show_next_menu(online_or_offline_menu)
+		Network.reset_connection()
+	if conditions_menu.is_visible_in_tree():
+		show_next_menu(mode_selection_menu)
+	if area_selection_menu.is_visible_in_tree():
+		show_next_menu(conditions_menu) #character_selection_menu)
 
 
 func _on_difficulty_selection_list_item_selected(index):
@@ -235,6 +254,11 @@ func _on_difficulty_selection_list_item_selected(index):
 
 
 func _on_conditions_next_button_pressed():
+	Network.server_call_method(self, "set_conditions")
+
+
+@rpc("any_peer", "call_local")
+func set_conditions():
 	# "sanitize" the input
 	# cast to int. non numbers will be 0
 	# store values
@@ -255,6 +279,5 @@ func _on_conditions_next_button_pressed():
 		# set conditions values
 		GlobalVariables.number_of_bots = bots_amount
 		GlobalVariables.points_to_win = wins_amount
-			
-		hide_menus()
-		character_selection_menu.show()
+		
+		show_next_menu(area_selection_menu) #character_selection_menu)

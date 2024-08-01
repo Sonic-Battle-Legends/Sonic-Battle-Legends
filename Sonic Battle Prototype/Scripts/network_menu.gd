@@ -8,9 +8,12 @@ extends Control
 @export var players_list: ItemList #$players_list
 @export var connection_error_screen: Control #$connection_error_screen
 @export var connection_error_text_node: TextEdit #$connection_error_screen/error
+@export var next_button: Button
 
 
 func _ready():
+	next_button.text = "Keep Offline"
+	next_button.disabled = false
 	# hide the server ip panel
 	server_ip.hide()
 	# connect the "list_updated" signal from Network to the "update_list" method here
@@ -21,6 +24,8 @@ func _ready():
 
 func _on_create_server_pressed():
 	disable_connection_buttons()
+	next_button.text = "Next"
+	next_button.disabled = false
 	# the server will provide the ip when created
 	# the name must be updated before creating
 	Network.update_name(player_name.text)
@@ -33,6 +38,8 @@ func _on_create_server_pressed():
 
 func _on_join_server_pressed():
 	disable_connection_buttons()
+	next_button.disabled = true
+	next_button.text = "Wait for Server"
 	# the name and ip must be updated before creating
 	Network.update_ip(ip_edit.text)
 	Network.update_name(player_name.text)
@@ -77,10 +84,11 @@ func _on_error_button_pressed():
 
 func _on_next_pressed():
 	# only the server can proceed
-	if multiplayer.is_server():
-		rpc("next_menu")
-	else:
-		return
+	Network.server_call_method(self, "next_menu")
+	#if multiplayer.is_server():
+	#	rpc("next_menu")
+	#else:
+	#	return
 
 
 @rpc("any_peer", "call_local")
