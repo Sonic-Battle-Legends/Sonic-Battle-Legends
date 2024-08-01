@@ -12,8 +12,8 @@ const SPEED = 4.0
 const JUMP_VELOCITY = 5.0
 
 # Basic movement speed values for Sonic.
-const RECOVERY_JUMP_VELOCITY = 3.0
-const SUPER_RECOVERY_JUMP_VELOCITY = 4.0
+const RECOVERY_JUMP_VELOCITY = 5.0
+const SUPER_RECOVERY_JUMP_VELOCITY = 6.0
 
 # Basic movement speed values for Super Sonic.
 const SUPER_SPEED = 6.0
@@ -331,8 +331,7 @@ func _physics_process(delta):
 		starting = false
 		walking = false
 	else:
-		if model_animation_player.current_animation != "KO":
-			can_recover = false
+		can_recover = false
 		# remove current coyote timer form the variable
 		coyote_timer = null
 		# Being on the ground means you aren't jumping or falling
@@ -558,6 +557,12 @@ func handle_recovery():
 		jump_clicked = true
 		# remove current coyote timer form the variable
 		coyote_timer = null
+
+## plays a timer after being launched by a strong attack, when it ends Sonic can recovery jump
+func launch_recovery():
+	await get_tree().create_timer(0.6).timeout
+	if model_animation_player.current_animation == "LAUNCHED":
+		can_recover = true
 
 ## method to control the jump
 func handle_jump():
@@ -1159,7 +1164,6 @@ func anim_end(anim_name):
 		# For as long as Sonic is in the air, the animation loops. When he hits the ground, his state resets.
 		if is_on_floor():
 			model_animation_player.play("KO")
-			can_recover = true
 		else:
 			sprite_animation_player.play("hurtStrong")
 			model_animation_player.play("LAUNCHED")
@@ -1167,7 +1171,6 @@ func anim_end(anim_name):
 		if !is_on_floor():
 			model_animation_player.play("SPIKED")
 		else:
-			can_recover = true
 			model_animation_player.play("KO")
 			spiked = false
 	elif anim_name in ["RING", "BOMB G (LAZY)", "BOMB A"]:
@@ -1320,6 +1323,7 @@ func get_hurt(launch_speed, owner_of_the_attack, damage_taken = 1):
 		if abs(velocity.x) > 8 || abs(velocity.z) > 8:
 			sprite_animation_player.play("hurtStrong")
 			model_animation_player.play("LAUNCHED")
+			launch_recovery()
 		else:
 			if launch_speed.y > 5:
 				sprite_animation_player.play("hurtAir")
