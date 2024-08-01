@@ -5,3 +5,8 @@
 [node name="Main" type="Node3D"]
 
 [node name="Menus" parent="." instance=ExtResource("1_krqgu")]
+
+[node name="PlayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://Scenes/ability_select.tscn", "res://Scenes/pointer_spawner.tscn", "res://Scenes/Sonic.tscn", "res://Scenes/enemies/Sonic_BOT.tscn")
+spawn_path = NodePath("..")
+spawn_limit = 10

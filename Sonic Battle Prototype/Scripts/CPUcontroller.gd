@@ -207,7 +207,7 @@ func aggressive_behaviour():
 	if cpu_character.can_chase or cpu_character.model_node.get_node("AnimationPlayer").current_animation == "WALL":
 		cpu_character.jump_pressed = true
 	
-	if cpu_character.special_amount == 100:
+	if cpu_character.special_amount == 100 and GlobalVariables.current_difficulty != GlobalVariables.difficulty_levels[0]:
 		cpu_character.super_pressed = true
 
 

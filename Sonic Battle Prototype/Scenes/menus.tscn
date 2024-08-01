@@ -449,6 +449,73 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "Back"
 
+[node name="CharacterSelection" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CharacterSelection"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -77.0
+offset_top = 64.0
+offset_right = 123.0
+offset_bottom = 155.0
+grow_horizontal = 2
+text = "Character Selection"
+
+[node name="sonic character button" type="Button" parent="CharacterSelection"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -110.0
+offset_top = -29.0
+offset_right = 1.0
+offset_bottom = 85.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Sonic"
+
+[node name="shadow character button" type="Button" parent="CharacterSelection"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 2.0
+offset_top = -29.0
+offset_right = 113.0
+offset_bottom = 85.0
+grow_horizontal = 2
+grow_vertical = 2
+disabled = true
+text = "Shadow"
+
+[node name="back button" type="Button" parent="CharacterSelection"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -83.0
+offset_top = 128.0
+offset_right = 95.0
+offset_bottom = 186.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Back"
+
 [node name="OnlineOrOffline" type="Control" parent="."]
 visible = false
 layout_mode = 1
@@ -515,9 +582,10 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "Back"
 
-[node name="Network Menu" parent="." instance=ExtResource("4_jntal")]
+[node name="Network Menu" parent="." node_paths=PackedStringArray("next_button") instance=ExtResource("4_jntal")]
 visible = false
 layout_mode = 1
+next_button = NodePath("next_button")
 
 [node name="JoinServer" parent="Network Menu" index="1"]
 offset_left = 112.0
@@ -689,73 +757,6 @@ offset_bottom = 280.0
 text = "2"
 placeholder_text = "2"
 
-[node name="CharacterSelection" type="Control" parent="."]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="RichTextLabel" type="RichTextLabel" parent="CharacterSelection"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -77.0
-offset_top = 64.0
-offset_right = 123.0
-offset_bottom = 155.0
-grow_horizontal = 2
-text = "Character Selection"
-
-[node name="sonic character button" type="Button" parent="CharacterSelection"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -110.0
-offset_top = -29.0
-offset_right = 1.0
-offset_bottom = 85.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Sonic"
-
-[node name="shadow character button" type="Button" parent="CharacterSelection"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 2.0
-offset_top = -29.0
-offset_right = 113.0
-offset_bottom = 85.0
-grow_horizontal = 2
-grow_vertical = 2
-disabled = true
-text = "Shadow"
-
-[node name="back button" type="Button" parent="CharacterSelection"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -83.0
-offset_top = 128.0
-offset_right = 95.0
-offset_bottom = 186.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Back"
-
 [node name="AreaSelect" type="Control" parent="."]
 visible = false
 layout_mode = 1
@@ -832,6 +833,9 @@ autoplay = true
 [connection signal="pressed" from="OptionsMenu/TabContainer/Input Map/restoreDefaultButton" to="OptionsMenu" method="_on_restore_default_button_pressed"]
 [connection signal="pressed" from="OptionsMenu/TabContainer/Other/ShakeCameraCheckBox" to="OptionsMenu" method="_on_shake_camera_check_box_pressed"]
 [connection signal="pressed" from="OptionsMenu/options back button" to="." method="_on_options_back_button_pressed"]
+[connection signal="pressed" from="CharacterSelection/sonic character button" to="." method="_on_sonic_character_button_pressed"]
+[connection signal="pressed" from="CharacterSelection/shadow character button" to="." method="_on_shadow_character_button_pressed"]
+[connection signal="pressed" from="CharacterSelection/back button" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="OnlineOrOffline/online button" to="." method="_on_online_button_pressed"]
 [connection signal="pressed" from="OnlineOrOffline/offline button" to="." method="_on_offline_button_pressed"]
 [connection signal="pressed" from="OnlineOrOffline/back button" to="." method="_on_back_button_pressed"]
@@ -842,9 +846,6 @@ autoplay = true
 [connection signal="pressed" from="ModeSelection/back button" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="ConditionSelection/conditions_next_button" to="." method="_on_conditions_next_button_pressed"]
 [connection signal="pressed" from="ConditionSelection/back button" to="." method="_on_back_button_pressed"]
-[connection signal="pressed" from="CharacterSelection/sonic character button" to="." method="_on_sonic_character_button_pressed"]
-[connection signal="pressed" from="CharacterSelection/shadow character button" to="." method="_on_shadow_character_button_pressed"]
-[connection signal="pressed" from="CharacterSelection/back button" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="AreaSelect/area 1 button" to="." method="_on_area_1_button_pressed"]
 [connection signal="pressed" from="AreaSelect/back button" to="." method="_on_back_button_pressed"]
 
