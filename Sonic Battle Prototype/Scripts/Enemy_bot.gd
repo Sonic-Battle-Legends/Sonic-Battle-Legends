@@ -321,6 +321,10 @@ func _physics_process(delta):
 			model_animation_player = base_model_anim
 			base_model.visible = true
 			super_model.visible = false
+	else:
+		if super_model.visible:
+			model_node = super_model
+			model_animation_player = super_model_anim
 	
 	if !is_on_floor():
 		if !hitting_wall && !going_super:
@@ -1191,7 +1195,7 @@ func defeated():
 func get_hurt(launch_speed, owner_of_the_attack, damage_taken = 1):
 	# just in case an attack hits through guard for whatever reason
 	guarding = false
-	if model_animation_player.current_animation != "KO" and model_animation_player.current_animation != "SPIKED" and model_animation_player.current_animation != "SUPER":
+	if model_animation_player.current_animation != "KO" and model_animation_player.current_animation != "SPIKED"  and !hitting_wall and model_animation_player.current_animation != "SUPER":
 		# store the last player who damaged this character
 		last_aggressor = owner_of_the_attack
 		
