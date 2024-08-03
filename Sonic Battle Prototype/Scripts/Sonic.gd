@@ -304,7 +304,7 @@ func _process(delta):
 func _physics_process(delta):
 	if !is_multiplayer_authority(): return
 	
-	if sprite_animation_player.current_animation != "super":
+	if !going_super:
 		if super_mode:
 			damage_multiplier = 1.5
 			model_node = super_model
@@ -321,10 +321,6 @@ func _physics_process(delta):
 			model_animation_player = base_model_anim
 			base_model.visible = true
 			super_model.visible = false
-	else:
-		if super_model.visible:
-			model_node = super_model
-			model_animation_player = super_model_anim
 	
 	if !is_on_floor():
 		if !hitting_wall && !going_super:
@@ -335,6 +331,7 @@ func _physics_process(delta):
 		starting = false
 		walking = false
 	else:
+		hitting_wall = false
 		can_recover = false
 		# remove current coyote timer form the variable
 		coyote_timer = null
@@ -508,14 +505,16 @@ func handle_sprite_orientation():
 	#	flip_threshold = 2
 
 func handle_super():
-	if super_pressed && special_amount == 100 && !super_mode:
-		velocity = Vector3.ZERO
-		sprite_animation_player.play("super")
-		model_animation_player.play("SUPER")
-		super_model_anim.play("SUPER")
+	if super_pressed && special_amount == 100 && !super_mode && !going_super:
 		going_super = true
+		model_node = super_model
+		model_animation_player = super_model_anim
 		healing = false
 		guarding = false
+		velocity = Vector3.ZERO
+		sprite_animation_player.play("super")
+		base_model_anim.play("SUPER")
+		super_model_anim.play("SUPER")
 
 ## method to check and perform the dash movement
 func handle_dash():
@@ -1092,8 +1091,8 @@ func anim_end(anim_name):
 		model_animation_player.play("BLOCKED")
 		guard_effect.emitting = false
 	elif anim_name == "SUPER":
-		going_super = false
 		super_mode = true
+		going_super = false
 		if !is_on_floor():
 			falling = true
 			sprite_animation_player.play("fall")

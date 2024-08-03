@@ -7,9 +7,9 @@
 [ext_resource type="Material" uid="uid://cvk7j7c446s1r" path="res://Materials/skate_park/slopeMaterial.tres" id="3_2cwid"]
 [ext_resource type="Material" uid="uid://dly34i0l3i2g" path="res://Materials/skate_park/groundMaterial.tres" id="3_hm7jm"]
 [ext_resource type="Material" uid="uid://cm856g2imi3te" path="res://Materials/skate_park/ground2Material.tres" id="4_xim51"]
-[ext_resource type="AudioStream" uid="uid://clve1iy4n13t7" path="res://Audio/Sonic Battle Project Tracks/Situational - Event/SBC - Frantic Situation Complete 1.mp3" id="5_2y2wb"]
 [ext_resource type="PackedScene" uid="uid://drlu8n40mygqk" path="res://Scenes/spikes.tscn" id="6_tmgow"]
 [ext_resource type="Material" uid="uid://bxv0t25264vma" path="res://Materials/skate_park/groundChecked2Material.tres" id="6_v3quj"]
+[ext_resource type="AudioStream" uid="uid://bajpvcg47riqs" path="res://Audio/Sonic Battle Project Tracks/Stage themes/It doesn_t matter Champion Mix but it_s actually finished.mp3" id="10_f64th"]
 [ext_resource type="Material" uid="uid://dcrdkuqofitup" path="res://Materials/skate_park/groundSpriteMaterial.tres" id="10_ls3yx"]
 [ext_resource type="Material" uid="uid://dcp3amjmkrysj" path="res://Materials/skate_park/groundCheckedMaterial.tres" id="11_nmdlp"]
 [ext_resource type="PackedScene" uid="uid://e340rjcvgq3u" path="res://Models/rail.blend" id="13_ynwbl"]
@@ -77,7 +77,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6642, 0, -1.11129)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.57528, 0, 3.33939)
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("5_2y2wb")
+stream = ExtResource("10_f64th")
 volume_db = -15.0
 autoplay = true
 

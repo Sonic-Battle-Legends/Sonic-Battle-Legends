@@ -12,4 +12,5 @@ func _process(_delta):
 
 
 func _on_animation_player_animation_finished(anim_name):
-	get_parent().anim_end(anim_name)
+	if get_parent().model_node == self:
+		get_parent().anim_end(anim_name)
