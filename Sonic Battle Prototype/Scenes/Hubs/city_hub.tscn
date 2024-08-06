@@ -1,4 +1,4 @@
-[gd_scene load_steps=72 format=3 uid="uid://c21jx54148kmv"]
+[gd_scene load_steps=73 format=3 uid="uid://c21jx54148kmv"]
 
 [ext_resource type="PackedScene" uid="uid://b4sfvdfh2ssee" path="res://Models/hub_test.blend" id="1_3cksg"]
 [ext_resource type="PackedScene" uid="uid://irlpgd8spuet" path="res://Scenes/stages/invisible_walls.tscn" id="2_1lcbb"]
@@ -34,6 +34,7 @@
 [ext_resource type="Texture2D" uid="uid://fheaeoa2f7qy" path="res://Textures/poster2.webp" id="24_opq7a"]
 [ext_resource type="PackedScene" uid="uid://bsjed211uvp1m" path="res://Scenes/stages/big_stage.tscn" id="25_qepny"]
 [ext_resource type="PackedScene" path="res://Scenes/stages/king_of_the_heal.tscn" id="26_8e574"]
+[ext_resource type="PackedScene" uid="uid://dn6soenbfit7t" path="res://Scenes/stages/shadow_test_level.tscn" id="27_gy86h"]
 [ext_resource type="Texture2D" uid="uid://cpfsdsu1yshyt" path="res://Textures/crosswalk.png" id="33_1hbam"]
 [ext_resource type="Texture2D" uid="uid://dv1io6elesdvh" path="res://Textures/casino2.png" id="34_nkido"]
 [ext_resource type="Texture2D" uid="uid://c4uyd6bypfsl5" path="res://Textures/building2door.png" id="35_ia0ml"]
@@ -251,6 +252,14 @@ new_place = ExtResource("26_8e574")
 
 [node name="Label3D" parent="Markers/King of the Heal" index="4"]
 text = "King of the Heal"
+
+[node name="Shadow Test Level" parent="Markers" node_paths=PackedStringArray("label") instance=ExtResource("5_rj5n4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.60289, 0, 2)
+label = NodePath("../colosseum/Label3D")
+new_place = ExtResource("27_gy86h")
+
+[node name="Label3D" parent="Markers/Shadow Test Level" index="4"]
+text = "Shadow Test Level"
 
 [node name="emerald_beach" parent="Markers" instance=ExtResource("5_rj5n4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, -7)
@@ -572,6 +581,7 @@ autoplay = "IMPATIENT"
 [editable path="Markers/colosseum"]
 [editable path="Markers/Big Stage"]
 [editable path="Markers/King of the Heal"]
+[editable path="Markers/Shadow Test Level"]
 [editable path="Markers/emerald_beach"]
 [editable path="Markers/holy_summit"]
 [editable path="Markers/library"]
