@@ -1,4 +1,4 @@
-[gd_scene load_steps=70 format=3 uid="uid://c21jx54148kmv"]
+[gd_scene load_steps=72 format=3 uid="uid://c21jx54148kmv"]
 
 [ext_resource type="PackedScene" uid="uid://b4sfvdfh2ssee" path="res://Models/hub_test.blend" id="1_3cksg"]
 [ext_resource type="PackedScene" uid="uid://irlpgd8spuet" path="res://Scenes/stages/invisible_walls.tscn" id="2_1lcbb"]
@@ -32,6 +32,8 @@
 [ext_resource type="PackedScene" uid="uid://ojg3xdti5ja0" path="res://Scenes/stages/metal_depot.tscn" id="17_40nqy"]
 [ext_resource type="PackedScene" uid="uid://e340rjcvgq3u" path="res://Models/rail.blend" id="23_akyvp"]
 [ext_resource type="Texture2D" uid="uid://fheaeoa2f7qy" path="res://Textures/poster2.webp" id="24_opq7a"]
+[ext_resource type="PackedScene" uid="uid://bsjed211uvp1m" path="res://Scenes/stages/big_stage.tscn" id="25_qepny"]
+[ext_resource type="PackedScene" path="res://Scenes/stages/king_of_the_heal.tscn" id="26_8e574"]
 [ext_resource type="Texture2D" uid="uid://cpfsdsu1yshyt" path="res://Textures/crosswalk.png" id="33_1hbam"]
 [ext_resource type="Texture2D" uid="uid://dv1io6elesdvh" path="res://Textures/casino2.png" id="34_nkido"]
 [ext_resource type="Texture2D" uid="uid://c4uyd6bypfsl5" path="res://Textures/building2door.png" id="35_ia0ml"]
@@ -233,6 +235,22 @@ new_place = ExtResource("13_qhgwm")
 
 [node name="Label3D" parent="Markers/colosseum" index="4"]
 text = "Colosseum"
+
+[node name="Big Stage" parent="Markers" node_paths=PackedStringArray("label") instance=ExtResource("5_rj5n4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.60289, 0, -1)
+label = NodePath("../colosseum/Label3D")
+new_place = ExtResource("25_qepny")
+
+[node name="Label3D" parent="Markers/Big Stage" index="4"]
+text = "Big Stage"
+
+[node name="King of the Heal" parent="Markers" node_paths=PackedStringArray("label") instance=ExtResource("5_rj5n4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.60289, 0, -1)
+label = NodePath("../colosseum/Label3D")
+new_place = ExtResource("26_8e574")
+
+[node name="Label3D" parent="Markers/King of the Heal" index="4"]
+text = "King of the Heal"
 
 [node name="emerald_beach" parent="Markers" instance=ExtResource("5_rj5n4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, -7)
@@ -552,6 +570,8 @@ autoplay = "IMPATIENT"
 [editable path="Markers/amys_room"]
 [editable path="Markers/chao_ruin"]
 [editable path="Markers/colosseum"]
+[editable path="Markers/Big Stage"]
+[editable path="Markers/King of the Heal"]
 [editable path="Markers/emerald_beach"]
 [editable path="Markers/holy_summit"]
 [editable path="Markers/library"]

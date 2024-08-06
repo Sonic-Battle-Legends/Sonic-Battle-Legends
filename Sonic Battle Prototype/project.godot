@@ -23,6 +23,10 @@ ServerJoin="res://Scripts/Resources/ServerJoin.gd"
 Audio="*res://Scripts/Resources/Audio.gd"
 Network="*res://Scripts/Resources/Network.gd"
 
+[dotnet]
+
+project/assembly_name="Sonic Battle Prototype"
+
 [importer_defaults]
 
 texture={
