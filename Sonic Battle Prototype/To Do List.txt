@@ -1,12 +1,16 @@
 Development Topics
 	List of things to be completed for the current scope
 
-	legend:
-		⏳️: on going, someone is taking care of it
+	Legends:
+		⏳️: On going
+		✅: Complete
+		❌: In-complete
+		⚠️: Glitch | Error
+		❗: Critical Error
 
-	SAGE 2025 Scope
+	🔰SAGE 2025 Scope of completion🔰
 
-		[ check the "To Do" channel for more recent updates ]
+	[ check the "To Do" channel for more recent updates ]
 
 Main Menu:
 		Basic Title screen menu.
